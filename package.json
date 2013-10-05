@@ -1,0 +1,22 @@
+{
+  "name": "Laboratory",
+  "version": "0.0.1",
+  "main": "index.html",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mborysenko/laboratory.git"
+  },
+  "author": "",
+  "license": "",
+  "description": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tap": "~0.2.5",
+    "rimraf": "~2.0.2"
+  },
+  "keywords": [
+    "javascript library"
+  ]
+}
