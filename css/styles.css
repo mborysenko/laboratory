@@ -1,0 +1,22 @@
+*
+{
+	font-family: Segoe UI, Verdana, Arial, sans-serif;
+	font-size: 100%;
+}
+
+a
+{
+	color: #39c;
+}
+
+.b-list
+{
+	font-size: 0.75em;
+	/*list-style: none;*/
+	list-style-type: circle;
+}
+
+.b-list li
+{
+	margin: 0.2em;
+}

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd">
+	<extensions>
+		<resourceExtension for="SDL.Client.Models">
+			<insert name="SDL.Client.Models.Base.Model"/>
+			<insert name="SDL.Client.Models.URL"/>
+			<insert name="SDL.Client.Models.Base.Clipboard"/>
+			<insert name="SDL.Client.Models.MessageCenter"/>
+		</resourceExtension>
+	</extensions>
+</configuration>

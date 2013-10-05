@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:complexType name="typeHosting">
+		<xs:annotation>
+			<xs:documentation>
+				Defines settings for an application hosted in an application host
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all minOccurs="0">
+			<xs:element type="xs:string" name="defaultApplicationEntryPointId" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Defines the ID of an application entry point selected by default after redirecting to the application host
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="defaultApplicationSuiteId" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Defines the ID of an application suite of the application entry point selected by default after redirecting to the application host
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:string" name="defaultApplicationHostUrl" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Defines url of the 'default' application host, used to redirect when the application is loaded stand-alone
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element type="xs:boolean" name="useHostedLibraryResources" minOccurs="0" maxOccurs="1" default="true">
+				<xs:annotation>
+					<xs:documentation>
+						If set to 'false' or when the application host originates from an untrusted domain
+						the application will get library resources (js, css and html) from its own server rather than from the parent application host
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="restrictions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Defines security policies for the current application
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:all minOccurs="0">
+						<xs:element type="typeDomains" name="trustedApplicationHostDomains" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>
+									Application Host is considered trusted only when loaded from one of the specified domains.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="trustedApplications" minOccurs="0" maxOccurs="1">
+							<xs:complexType>
+								<xs:annotation>
+									<xs:documentation>
+										Only specified applications are considered trusted.
+									</xs:documentation>
+								</xs:annotation>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="applicationId" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>
+												Defines an application ID
+											</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element type="typeDomains" name="trustedApplicationDomains" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>
+									Only applications loaded from one of the specified domains are considered trusted.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="typeDomains">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="domain" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Defines a domain, i.e. http://www.sdl.com:80
+					</xs:documentation>
+				</xs:annotation>				
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

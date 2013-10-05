@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd" merge="false">
+	<appSettings>
+		<setting name="modelRepositoryDiscoveryMode" value="2" />	<!-- possible values are: 0 (none), 1 (top), 2 (opener), 3 (full) -->
+		<setting name="modelRepositoryId" value="common" />
+	</appSettings>
+
+	<customSections>
+		<domainModels xmlns="http://wwww.sdlcommonui.com/core/models">
+			<caching>
+				<!-- when an item implements several configured interfaces, the setting for the interface with the highest priority will be applied -->
+				<cache implementation="SDL.Client.Models.Base.List" priority="100" max-age="300" />
+				<cache implementation="SDL.Client.Models.Base.Item" priority="100" max-age="3600" />
+				<cache implementation="SDL.Client.Models.CacheableObject" priority="0" max-age="3600" />
+			</caching>
+		</domainModels>
+	</customSections>
+</configuration>

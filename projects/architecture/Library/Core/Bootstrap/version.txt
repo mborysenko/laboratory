@@ -1,0 +1,2 @@
+﻿confVersion = 0.0.0.0	//configuration version. Change it when the main configuration file configuration.xml changes
+initVersion = 0.0.0.0	//version of the "SDL.Client.Init.js" package, which is loaded before the main configuration is loaded. Change it when one or more js files from the initial package change

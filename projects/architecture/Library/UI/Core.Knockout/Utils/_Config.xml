@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Core.Knockout.Utils">
+			<files>
+				<file name="Dom.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+	<extensions>
+		<resourceExtension for="SDL.UI.Core.Knockout.Libraries.Knockout">
+			<insert name="SDL.UI.Core.Knockout.Utils" position="after"/>
+		</resourceExtension>
+	</extensions>
+	
+</configuration>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd">
+
+	<packages>
+		<package name="SDL.UI.Core">
+			<resourceGroups>
+				<resourceGroup name="SDL.UI.Core"/>
+				<resourceGroup name="SDL.UI.Core.Init"/>
+			</resourceGroups>
+		</package>
+	</packages>
+
+</configuration>

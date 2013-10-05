@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd">
+
+	<packages>
+		<package name="SDL.UI.Controls">
+			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.Tooltip"/>
+			</resourceGroups>
+		</package>
+
+		<package name="SDL.UI.Controls.JQuery">
+			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Tooltip"/>
+			</resourceGroups>
+		</package>
+	</packages>
+
+</configuration>

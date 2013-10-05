@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Models.URL">
+			<files>
+				<file name="Document.js"/>
+				<file name="ModelFactory.js"/>
+				<file name="Model.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models"/>
+				<dependency name="SDL.Client.Models.Base"/>
+				<dependency name="SDL.Client.Types.Url"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+</configuration>

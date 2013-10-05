@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Models.Base">
+			<files>				
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Base.ContinousIterationObject"/>
+				<dependency name="SDL.Client.Models.Base.EditableItem"/>
+				<dependency name="SDL.Client.Models.Base.EditableXmlBasedObject"/>
+				<dependency name="SDL.Client.Models.Base.FilteredNavigationObject"/>
+				<dependency name="SDL.Client.Models.Base.Item"/>
+				<dependency name="SDL.Client.Models.Base.List"/>
+				<dependency name="SDL.Client.Models.Base.ListFilter"/>
+				<dependency name="SDL.Client.Models.Base.ListProvider"/>
+				<dependency name="SDL.Client.Models.Base.ModelFactory"/>
+				<dependency name="SDL.Client.Models.Base.ObjectWithEditor"/>
+				<dependency name="SDL.Client.Models.Base.TreeProvider"/>
+				<dependency name="SDL.Client.Models.Base.Tree"/>
+				<dependency name="SDL.Client.Models.Base.VersionableItem"/>
+				<dependency name="SDL.Client.Models.Base.XmlBasedObject"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.ContinousIterationObject">
+			<files>
+				<file name="ContinuousIterationObject.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+				<dependency name="SDL.Client.MessageCenter"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.EditableItem">
+			<files>
+				<file name="EditableItem.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.EditableXmlBasedObject">
+			<files>
+				<file name="EditableXmlBasedObject.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.FilteredNavigationObject">
+			<files>
+				<file name="FilteredNavigationObject.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.Item">
+			<files>
+				<file name="Item.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.List">
+			<files>
+				<file name="List.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+				<dependency name="SDL.Client.Models.Base.FilteredNavigationObject"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.ListFilter">
+			<files>
+				<file name="ListFilter.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.ListProvider">
+			<files>
+				<file name="ListProvider.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.Tree">
+			<files>
+				<file name="Tree.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+				<dependency name="SDL.Client.MessageCenter"/>
+				<dependency name="SDL.Client.Models.Base.FilteredNavigationObject"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.ObjectWithEditor">
+			<files>
+				<file name="ObjectWithEditor.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.TreeProvider">
+			<files>
+				<file name="TreeProvider.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+				<dependency name="SDL.Client.MessageCenter"/>
+			</dependencies>
+		</resourceGroup>
+		<resourceGroup name="SDL.Client.Models.Base.VersionableItem">
+			<files>
+				<file name="VersionableItem.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.XmlBasedObject">
+			<files>
+				<file name="XmlBasedObject.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.ModelFactory">
+			<files>
+				<file name="ModelFactory.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models"/>
+				<dependency name="SDL.Client.Types.RegExp"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models.Base.Model">
+			<files>
+				<file name="ModelsBrowserList.js"/>
+				<file name="ModelsBrowser.js"/>
+				<file name="Model.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models"/>
+				<dependency name="SDL.Client.Models.Base"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Models.Base.Clipboard">
+			<files>
+				<file name="Clipboard.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+
+</configuration>

@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:complexType name="typeApplicationSuite">
+		<xs:annotation>
+			<xs:documentation>
+				Defines applications hosted in an Application Host
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all minOccurs="0">
+			<xs:element type="typeApplicationDomains" name="applicationDomains" minOccurs="0" maxOccurs="1" />
+			<xs:element type="typeApplicationEntryPointGroups" name="applicationEntryPointGroups" minOccurs="0" maxOccurs="1" />
+		</xs:all>
+		<xs:attribute name="id" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Application suite's identifier, used for defining trusts between applications</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="authenticationUrl" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Defines the url of a page used for user authentication</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="authenticationMode" type="typeAuthenticationMode" use="optional" default="on-startup"/>
+	</xs:complexType>
+
+	<xs:complexType name="typeApplicationDomains">
+		<xs:annotation>
+			<xs:documentation>
+				Defines alternatives for the application entries domains
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element name="applicationDomain">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>
+							Defines domains for application entries
+						</xs:documentation>
+					</xs:annotation>
+					<xs:sequence maxOccurs="unbounded" minOccurs="0">
+						<xs:element name="alternativeDomain" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Alternative domain name.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:ID" use="required">
+						<xs:annotation>
+							<xs:documentation>Defines an ID for the domain to be referenced from application entries.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="domain" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Domain used for loading application entries. Use an empty string for the 'current' domain.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+
+					<xs:attribute name="deferred" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>'deferred' domains can be redefined runtime using ApplicationHost.initializeApplicationSuite method.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="typeApplicationEntryPointGroups">
+		<xs:annotation>
+			<xs:documentation>
+				Defines groups of application entries
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element type="typeApplicationEntryPointGroup" name="applicationEntryPointGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeApplicationEntryPointGroup">
+		<xs:annotation>
+			<xs:documentation>
+				Defines a group of application entries
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all minOccurs="1">
+			<xs:element type="typeTranslations" name="translations" minOccurs="0"/>
+			<xs:element type="typeApplicationEntryPoints" name="applicationEntryPoints" />
+		</xs:all>
+		<xs:attribute name="id" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Identifier of the application entries group, used in application host shortcut urls and can be referenced by the corresponding navigation group</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="title" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of the group, used by the application host as a label for the corresponding navigation group</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="typeApplicationEntryPoints">
+		<xs:annotation>
+			<xs:documentation>
+				Defines application entries
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="applicationEntryPoint">
+				<xs:annotation>
+					<xs:documentation>
+						Defines an application entry
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="typeTranslations" name="translations" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Identifier of the application entry, used in application host shortcut urls and as an identifier for an application facade that can be exposed by this entry</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="domainId" type="xs:IDREF" use="required">
+						<xs:annotation>
+							<xs:documentation>Defines the domain of the application entry.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="url" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Defines the location of the application entry page, relative to the domain specified with the 'domainId' attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="title" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Name of the application entry point, used by the application host as a label for the corresponding navigation item</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="icon" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Defines the location of the application entry icon.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="external" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>Defines the application entry as external.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="type" type="typeApplicationEntryPointType" use="optional"/>
+					<xs:attribute name="targetDisplay" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Application entries with the same targetDisplay value will be loaded in the same iframe in the application host.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="contextual" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>Contextual application entries are only applicable in a certain context.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="overlay" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>Indicates whether the application entry will be overlayed when shown in the application host</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeTranslations">
+		<xs:annotation>
+			<xs:documentation>
+				Defines translations for the name
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="title">
+				<xs:annotation>
+					<xs:documentation>
+						Defines name for the specified language
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="lang" use="required" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="typeApplicationEntryPointType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines the type for an application entry.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="home"/>
+			<xs:enumeration value="activities"/>
+			<xs:enumeration value="settings"/>
+			<xs:enumeration value="about"/>
+			<xs:enumeration value="help"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="typeAuthenticationMode">
+		<xs:annotation>
+			<xs:documentation>
+				Defines when the authentication page is loaded.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="on-access"/>
+			<xs:enumeration value="on-startup"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

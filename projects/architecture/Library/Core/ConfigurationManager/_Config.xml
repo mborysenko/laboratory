@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Configuration.ConfigurationManager">
+			<files>
+				<file name="ConfigurationManager.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.Client.Types.Url"/>
+				<dependency name="SDL.Client.Net.Ajax"/>
+				<dependency name="SDL.Client.Xml"/>
+			</dependencies>
+		</resourceGroup>		
+	</resourceGroups>
+</configuration>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+
+	<!-- Entire Repository Package -->
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Repository">
+			<files>
+				<file name="RepositoryBase.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+				<dependency name="SDL.Client.Configuration.ConfigurationManager"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

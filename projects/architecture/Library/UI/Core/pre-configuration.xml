@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd">
+
+	<appSettings>
+		<setting name="version" value="0.0.0.0" />
+	</appSettings>
+
+	<!-- SDL.Client core configuration -->
+	<include src="../../Core/configuration.xml"/>
+
+	<include src="Bootstrap/_Config.xml" />
+	<include src="Controls/_Config.xml"/>
+	<include src="Event/_Config.xml"/>
+	<include src="Utils/_Config.xml"/>
+	<include src="Views/_Config.xml"/>
+	<include src="Renderers/_Config.xml"/>
+
+	<include src="packages.xml"/>
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Core">
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+				<dependency name="SDL.UI.Core.Event"/>
+				<dependency name="SDL.UI.Core.Renderers"/>
+				<dependency name="SDL.UI.Core.Utils"/>
+				<dependency name="SDL.UI.Core.View"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

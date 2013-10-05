@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Application">
+			<files>
+				<file name="ApplicationHost.js"/>
+				<file name="Application.js"/>
+				<file name="ApplicationFacade.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Xml"/>
+				<dependency name="SDL.Client.Types.Url"/>
+				<dependency name="SDL.Client.Types.ObjectWithEvents"/>
+				<dependency name="SDL.Client.Configuration.ConfigurationManager"/>
+				<dependency name="SDL.Client.CrossDomainMessaging"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+</configuration>
