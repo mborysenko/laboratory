@@ -1,0 +1,18 @@
+{
+    "name": "catalog",
+    "version": "0.0.1",
+    "main": "index.html",
+    "scripts": {},
+    "author": "Maksym Borysenko <mborysenko@sdl.com>",
+    "license": "BSD",
+    "description": "Catalogue of products",
+    "dependencies": {},
+    "devDependencies": {
+        "tap": "~0.2.5",
+        "rimraf": "~2.0.2",
+        "grunt": "~0.4.1"
+    },
+    "keywords": [
+        "javascript laboratory"
+    ]
+}
