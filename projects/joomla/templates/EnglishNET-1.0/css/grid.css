@@ -27,11 +27,11 @@ body
     color: white;
 }
 
-.__fixed .lvf-grid_row
-{
-    width: 1280px;
-    margin: 0 auto;
-}
+/*.__fixed .lvf-grid_row*/
+/*{*/
+    /*min-width: 1200px;*/
+    /*margin: 0 auto;*/
+/*}*/
 
 .lvf-page
 {

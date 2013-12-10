@@ -1,15 +1,20 @@
 .lvf-heading
 {
     display: block;
-    font-weight: lighter;
-    color: #b22234;
     line-height: 120%;
     margin-bottom: 0.5em;
 }
 
+.lvf-heading.__h1,
 .lvf-heading.__h3
 {
-    font-size: 1.2em;
+    color: #b22234;
+    font-family: "Segoe UI Light", Arial, Verdana, Tahome, serif;
+}
+
+.lvf-heading.__h1
+{
+    font-size: 1.8em;
 }
 
 .lvf-heading.__h2
@@ -17,7 +22,15 @@
     font-size: 1.5em;
 }
 
-.lvf-heading.__h1
+.lvf-heading.__h3
 {
-    font-size: 1.8em;
+    font-size: 1.2em;
 }
+
+.lvf-heading.__h5
+{
+    font-size: 0.75em;
+    font-weight: bold;
+
+}
+

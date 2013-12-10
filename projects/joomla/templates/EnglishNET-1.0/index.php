@@ -59,6 +59,7 @@ if ($this->params->get('logoFile')) {
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <jdoc:include type="head"/>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,100italic,100,400italic,500,500italic,700,700italic,900,900italic&subset=cyrillic-ext,latin-ext,latin' rel='stylesheet' type='text/css'>
     <!--[if lt IE 9]>
     <script src="<?php echo $this->baseurl ?>/media/jui/js/html5.js"></script>
     <![endif]-->
@@ -73,53 +74,149 @@ if ($this->params->get('logoFile')) {
 
 <!-- Body -->
 <div id="body" class="lvf-page">
-    <div class="lvf-page_wrapper">
+<div class="lvf-page_wrapper">
 
-        <div class="lvf-grid_container __fill __scheme_blue">
-            <div id="header" class="lvf-grid_row fluid-row">
-                <div class="lvf-grid_cell span2">
-                    <div id="logotype">
-                        Logo
-                    </div>
-                    <div id="slogan">
-                        <span>Lessons, activities, news and networking</span>
-                    </div>
-                </div>
+<div class="lvf-grid_container __fill __scheme_blue">
+    <div id="header" class="lvf-grid_row row-fluid">
+        <div class="lvf-grid_cell span2">
+            <div id="logotype">
+                Logo
+            </div>
+            <div id="slogan">
+                <span>Lessons, activities, news and networking</span>
+            </div>
+        </div>
 
-                <div class="lvf-grid_cell span2">
-                    <div>
-                        <span>Call Us:</span>
-                    </div>
-                </div>
-
-                <div class="lvf-grid_cell span2">
-                    <div>
-                        <span>Email Us:</span>
-                    </div>
-                    <div>
-                        <span>Use Skype:</span>
-                    </div>
-                </div>
-
-                <div class="lvf-grid_cell span2">
-                    <div>
-                        <span>We in the social networks</span>
-                    </div>
-                </div>
-
-                <div class="lvf-grid_cell span2 offset2">
-                    Profile
+        <div class="lvf-grid_cell span2">
+            <div class="lvf-info">
+                <div class="lvf-heading __h5">
+                    <span>Call Us:</span>
                 </div>
             </div>
         </div>
 
-        <div class="lvf-grid_container">
+        <div class="lvf-grid_cell span2">
+            <div class="lvf-info">
+                <div class="lvf-heading __h5">
+                    <span>Email Us:</span>
+                </div>
+            </div>
 
-            <div id="navigation" class="lvf-grid_row row-fluid __cfx">
+            <div class="lvf-info">
+                <div class="lvf-heading __h5">
+                    <span>Use Skype:</span>
+                </div>
+            </div>
 
-                <div id="menu" class="span9">
-                    <ul class="lvf-menu __horizontal __big clearfix __upper">
-                        <li class="lvf-menu_item __active">
+        </div>
+
+        <div class="lvf-grid_cell span2">
+            <div class="lvf-info">
+                <div class="lvf-heading __h5">
+                    <span>Join Us:</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lvf-grid_cell span3 offset1">
+            <div id="userpanel" class="lvf-userpanel pull-right">
+                <div class="lvf-userpanel_part __upper">
+                    <a href="">Log In</a>
+                    <a href="">Sign Up</a>
+                    <a href="">Help</a>
+                </div>
+                <div class="lvf-userpanel_part __upper">
+                    <a href="">Profile</a>
+                    <a href="">Activity</a>
+                    <a href="">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lvf-grid_container">
+
+    <div id="navigation" class="lvf-grid_row row-fluid __cfx">
+
+        <div id="menu" class="span9">
+            <ul class="lvf-menu __horizontal __big clearfix __upper">
+                <li class="lvf-menu_item __active">
+                    <a href="#">Getting Started</a>
+                </li>
+                <li class="lvf-menu_item">
+                    <a href="#">Courses</a>
+                </li>
+                <li class="lvf-menu_item">
+                    <a href="#">Learn</a>
+                </li>
+                <li class="lvf-menu_item">
+                    <a href="#">Practice</a>
+                </li>
+                <li class="lvf-menu_item">
+                    <a href="#">About</a>
+                </li>
+            </ul>
+            <jdoc:include type="modules" name="menu" style="none"/>
+        </div>
+
+        <div id="search" class="span3">
+            Search
+            <jdoc:include type="modules" name="search" style="none"/>
+        </div>
+
+    </div>
+</div>
+
+<div class="lvf-grid_container container-fluid">
+    <div id="breadcrumbs" class="lvf-grid_row">
+        <jdoc:include type="modules" name="position-2" />
+<!--        <ul class="lvf-pathway">-->
+<!--            <li>-->
+<!--                <a class="__upper" href="#">Home</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+    </div>
+</div>
+
+<div class="lvf-grid_container">
+
+    <div id="content" class="lvf-grid_row">
+
+        <div class="row-fluid clearfix">
+            <div class="span9">
+                <div class="lvf-content_inner">
+                    <div class="lvf-article">
+                        <div class="lvf-heading __h1">
+                            <span>Free Online English Level Test</span>
+                        </div>
+                        <div>
+                            <p>
+                                To take our online level test, simply read the questions below, and answer them by
+                                pressing "Click to Record" below each question. Then click "Allow" and begin speaking.
+                                Please try to answer in complete sentences and be as detailed as possible.
+                            </p>
+
+                            <p>
+                                For the most accurate results, you should only make one recording per question. When you
+                                are ready to save the recording, click "Click here to save", and then click on "Email".
+                                The email should be sent to test@englishnet.com.ua, with the subject heading "Level
+                                Test, (your name)". Please make sure to make a different recording for each question.
+                            </p>
+
+                            <p>
+                                After we have evaluated your answers, we will contact you with the results. Good luck!
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span3">
+                <div id="sidebar">
+                    <ul class="lvf-menu clearfix __upper">
+                        <li class="lvf-menu_item">
                             <a href="#">Getting Started</a>
                         </li>
                         <li class="lvf-menu_item">
@@ -135,175 +232,112 @@ if ($this->params->get('logoFile')) {
                             <a href="#">About</a>
                         </li>
                     </ul>
-                    <jdoc:include type="modules" name="menu" style="none"/>
                 </div>
-
-                <div id="search" class="span3">
-                    Search
-                    <jdoc:include type="modules" name="search" style="none"/>
-                </div>
-
             </div>
         </div>
 
-        <div class="lvf-grid_container">
-            <div id="breadcrumbs" class="lvf-grid_row">
-                <ul class="lvf-pathway">
-                    <li>
-                        <a class="__upper" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <div class="container-fluid hidden">
+            <div id="offerings" class="row-fluid">
+                <div class="span3">
 
-        <div class="lvf-grid_container">
-
-            <div id="content" class="lvf-grid_row">
-
-                <div class="row-fluid clearfix">
-                    <div class="span9">
-                        <div class="lvf-article">
-                            <div class="lvf-heading __h1">
-                                <span>Free Online English Level Test</span>
-                            </div>
-                            <div>
-                                <p>
-                                    To take our online level test, simply read the questions below, and answer them by pressing "Click to Record" below each question.  Then click "Allow" and begin speaking.  Please try to answer in complete sentences and be as detailed as possible.
-                                </p>
-                                <p>
-                                    For the most accurate results, you should only make one recording per question.  When you are ready to save the recording, click "Click here to save", and then click on "Email".  The email should be sent to test@englishnet.com.ua, with the subject heading "Level Test, (your name)".  Please make sure to make a different recording for each question.
-                                </p>
-                                <p>
-                                    After we have evaluated your answers, we will contact you with the results.  Good luck!
-                                </p>
-                            </div>
+                    <div class="lvf-offering">
+                        <div class="lvf-offering_title lvf-heading __h3">
+                            <span>Lessons via Video Conference</span>
                         </div>
-                    </div>
-                    <div class="span3 lvf-layout">
-                        <ul class="lvf-menu clearfix __upper">
-                            <li class="lvf-menu_item">
-                                <a href="#">Getting Started</a>
-                            </li>
-                            <li class="lvf-menu_item">
-                                <a href="#">Courses</a>
-                            </li>
-                            <li class="lvf-menu_item">
-                                <a href="#">Learn</a>
-                            </li>
-                            <li class="lvf-menu_item">
-                                <a href="#">Practice</a>
-                            </li>
-                            <li class="lvf-menu_item">
-                                <a href="#">About</a>
-                            </li>
-                        </ul>
+
+                        <div class="lvf-offering_text">
+                            <p>
+                                Enjoy live online English classes with real teachers at home, at your office, or
+                                wherever there is an internet connection. No more snow, no more traffic jams, no
+                                more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can
+                                study whenever it is convenient.
+                            </p>
+                        </div>
                     </div>
                 </div>
+                <div class="span3">
 
-
-                <div id="offerings" class="row-fluid hidden">
-                    <div class="span3">
-
-                        <div class="lvf-offering">
-                            <div class="lvf-offering_title lvf-heading __h3">
-                                <span>Lessons via Video Conference</span>
-                            </div>
-
-                            <div class="lvf-offering_text">
-                                <p>
-                                    Enjoy live online English classes with real teachers at home, at your office, or
-                                    wherever there is an internet connection. No more snow, no more traffic jams, no
-                                    more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can
-                                    study whenever it is convenient.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="span3">
-
-                        <div class="lvf-offering">
-                            <div class="lvf-offering_title lvf-heading __h3">
-                                <span>Choose your Price</span>
-                            </div>
-
-                            <div class="lvf-offering_text">
-                                <p>
-                                    Study privately for the fastest results, or reduce the cost by studying with up to
-                                    three other students.
-                                </p>
-                                <a href="#">Course Options</a>
-                            </div>
+                    <div class="lvf-offering">
+                        <div class="lvf-offering_title lvf-heading __h3">
+                            <span>Choose your Price</span>
                         </div>
 
-                    </div>
-                    <div class="span3">
-                        <div class="lvf-offering">
-                            <div class="lvf-offering_title lvf-heading __h3">
-                                <span>Optional Reading and Writing</span>
-                            </div>
-
-                            <div class="lvf-offering_text">
-                                <p>
-                                    Reading and writing practice is free at EnglishNET. Every week, there are new
-                                    articles to read and comment on. Your comments are corrected by our teachers. There
-                                    are also weekly writing contests.
-                                </p>
-                            </div>
+                        <div class="lvf-offering_text">
+                            <p>
+                                Study privately for the fastest results, or reduce the cost by studying with up to
+                                three other students.
+                            </p>
+                            <a href="#">Course Options</a>
                         </div>
-
                     </div>
-                    <div class="span3">
-                        <div class="lvf-offering">
-                            <div class="lvf-offering_title lvf-heading __h3">
-                                <span>Bilingual Learning System</span>
-                            </div>
 
-                            <div class="lvf-offering_text">
-                                <p>
-                                    Our system works! Understand and drill new grammar and concepts with a Ukrainian or
-                                    Russian teacher, and then practice what you have learned with a native English
-                                    teacher. You may choose only native or non-native teachers for your online English
-                                    classes if you would like.
-                                </p>
-                                <a href="#">Our Team</a>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
+                <div class="span3">
+                    <div class="lvf-offering">
+                        <div class="lvf-offering_title lvf-heading __h3">
+                            <span>Optional Reading and Writing</span>
+                        </div>
 
+                        <div class="lvf-offering_text">
+                            <p>
+                                Reading and writing practice is free at EnglishNET. Every week, there are new
+                                articles to read and comment on. Your comments are corrected by our teachers. There
+                                are also weekly writing contests.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="span3">
+                    <div class="lvf-offering">
+                        <div class="lvf-offering_title lvf-heading __h3">
+                            <span>Bilingual Learning System</span>
+                        </div>
+
+                        <div class="lvf-offering_text">
+                            <p>
+                                Our system works! Understand and drill new grammar and concepts with a Ukrainian or
+                                Russian teacher, and then practice what you have learned with a native English
+                                teacher. You may choose only native or non-native teachers for your online English
+                                classes if you would like.
+                            </p>
+                            <a href="#">Our Team</a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-
-
     </div>
 </div>
-<!-- Footer -->
-<div class="lvf-bottom">
-    <div class="lvf-grid_container">
-        <div id="footer" class="lvf-grid_row fluid-row">
 
-            <div class="lvf-grid_cell span2">
+</div>
+</div>
+<!-- Footer -->
+<div class="lvf-bottom" id="bottom">
+    <div class="lvf-grid_container container-fluid">
+        <div id="footer" class="lvf-footer_inner row-fluid">
+            <div class="span2">
                 <span class="__upper">Help</span>
             </div>
-            <div class="lvf-grid_cell span2">
+            <div class="span2">
                 <span class="__upper">About</span>
             </div>
-            <div class="lvf-grid_cell span2">
+            <div class="span2">
                 <span class="__upper">Career</span>
             </div>
-            <div class="lvf-grid_cell span2">
+            <div class="span2">
                 <span class="__upper">Social</span>
             </div>
-            <div class="lvf-grid_cell span2 offset2">
-                Bottom logo
+            <div class="span2 offset2">
+                <div class="pull-right">Bottom logo</div>
             </div>
 
             <jdoc:include type="modules" name="footer" style="none"/>
         </div>
     </div>
 
-    <div class="lvf-grid_container __fill __scheme_blue">
+    <div class="lvf-grid_container container-fluid __fill __scheme_blue">
         <div id="copyright" class="lvf-grid_row row-fluid">
 
             <div class="lvf-grid_cell span2 offset10">

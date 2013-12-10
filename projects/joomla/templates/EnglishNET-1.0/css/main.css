@@ -1,12 +1,47 @@
+#body,
+#bottom
+{
+    /*min-width: 1024px;*/
+}
+
 #header
 {
-    height: 82px;
+    min-height: 53px;
     padding: 12px 0;
+}
+
+.lvf-userpanel
+{
+    font-size: 90%;
+    background-color: white;
+    padding: 0 12px;
+}
+
+.lvf-userpanel_part
+{
+    background-color: white;
+    height: 32px;
+    line-height: 32px;
+}
+
+#content
+{
+}
+
+.lvf-content_inner
+{
+    padding-left: 20px;
 }
 
 #footer
 {
     height: 162px;
+}
+
+.lvf-footer_inner
+{
+    padding: 6px 0 12px 0;
+    font-size: 90%;
 }
 
 #copyright
@@ -25,6 +60,12 @@
 {
     height: 51px;
     border-bottom: 1px solid #b22234;
+}
+
+#sidebar
+{
+    padding-bottom: 52px;
+    border-left: 1px solid #b22234;
 }
 
 .__cfx
