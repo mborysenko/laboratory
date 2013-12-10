@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="3.1" type="template" client="site">
+    <name>Leviafan</name>
+    <version>1.0</version>
+    <creationDate>10/12/2013</creationDate>
+    <author>Maksym Borysenko</author>
+    <authorEmail>borysenko.maksym@gmail.com</authorEmail>
+    <copyright>Copyright (C) 2013 EnglishNET</copyright>
+    <description>TPL_LEVIAFAN_XML_DESCRIPTION</description>
+    <files>
+        <filename>component.php</filename>
+        <filename>error.php</filename>
+        <filename>favicon.ico</filename>
+        <filename>index.php</filename>
+        <filename>templateDetails.xml</filename>
+        <filename>template_preview.png</filename>
+        <filename>template_thumbnail.png</filename>
+        <folder>css</folder>
+        <folder>html</folder>
+        <folder>images</folder>
+        <folder>js</folder>
+        <folder>language</folder>
+        <folder>less</folder>
+    </files>
+    <positions>
+        <position>header</position>
+        <position>user-panel</position>
+        <position>navigation</position>
+        <position>menu</position>
+        <position>search</position>
+        <position>breadcrumbs</position>
+        <position>leftColumn</position>
+        <position>centerColumn</position>
+        <position>rightColumn</position>
+        <position>footer</position>
+        <position>bottom</position>
+    </positions>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.tpl_leviafan.ini</language>
+        <language tag="en-GB">en-GB/en-GB.tpl_leviafan.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="advanced">
+                <field name="logoFile" class="" type="media" default=""
+                       label="TPL_LEVIAFAN_LOGO_LABEL"
+                       description="TPL_LEVIAFAN_LOGO_DESC"/>
+
+                <field name="sitetitle" type="text" default=""
+                       label="JGLOBAL_TITLE"
+                       description="JFIELD_ALT_PAGE_TITLE_LABEL"
+                       filter="string"/>
+
+                <field name="sitedescription" type="text" default=""
+                       label="JGLOBAL_DESCRIPTION"
+                       description="JGLOBAL_SUBHEADING_DESC"
+                       filter="string"/>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

@@ -1,0 +1,23 @@
+.lvf-heading
+{
+    display: block;
+    font-weight: lighter;
+    color: #b22234;
+    line-height: 120%;
+    margin-bottom: 0.5em;
+}
+
+.lvf-heading.__h3
+{
+    font-size: 1.2em;
+}
+
+.lvf-heading.__h2
+{
+    font-size: 1.5em;
+}
+
+.lvf-heading.__h1
+{
+    font-size: 1.8em;
+}

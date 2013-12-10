@@ -1,0 +1,57 @@
+.lvf-menu
+{
+    margin: 0;
+    padding: 0;
+}
+
+.lvf-menu_item
+{
+    padding: 0 14px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 90%;
+}
+
+.lvf-menu.__big .lvf-menu_item
+{
+    padding: 0 20px;
+    height: 52px;
+    line-height: 52px;
+}
+
+
+.lvf-menu_item a
+{
+    color: #3c3b6e;
+    text-decoration: none;
+}
+
+.lvf-menu_item:hover
+{
+    background-color: #b22234;
+    cursor: pointer;
+}
+
+.lvf-menu_item:hover a
+{
+    color: white;
+}
+
+.lvf-menu.__horizontal .lvf-menu_item
+{
+    float: left;
+}
+
+/* Breadcrumbs */
+.lvf-pathway
+{
+    margin: 0;
+    height: 52px;
+}
+
+.lvf-pathway li
+{
+    height: 52px;
+    line-height: 52px;
+}
+/* /Breadcrumbs */

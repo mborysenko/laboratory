@@ -1,0 +1,53 @@
+html,
+body
+{
+    height: 100%;
+    min-height: 100%;
+}
+
+#body
+{
+    min-height: 100%;
+}
+
+body
+{
+    font-family: "Segoe UI", Arial, Verdana, Tahome, serif;
+}
+
+.__fill.__scheme_blue
+{
+    background-color: #3c3b6e;
+    color: white;
+}
+
+.__fill.__scheme_red
+{
+    background-color: #b22234;
+    color: white;
+}
+
+.__fixed .lvf-grid_row
+{
+    width: 1280px;
+    margin: 0 auto;
+}
+
+.lvf-page
+{
+
+}
+
+.lvf-page_wrapper
+{
+    padding-bottom: 230px;
+}
+
+.lvf-bottom
+{
+    height: 204px;
+    position: relative;
+    top: -205px;
+    border-top: 1px solid #3c3b6e;
+}
+

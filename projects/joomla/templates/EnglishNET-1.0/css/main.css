@@ -1,0 +1,51 @@
+#header
+{
+    height: 82px;
+    padding: 12px 0;
+}
+
+#footer
+{
+    height: 162px;
+}
+
+#copyright
+{
+    height: 42px;
+    font-size: 90%;
+    line-height: 42px;
+}
+
+#breadcrumbs
+{
+    height: 52px;
+}
+
+#navigation
+{
+    height: 51px;
+    border-bottom: 1px solid #b22234;
+}
+
+.__cfx
+{
+    *zoom: 1;
+}
+
+.__cfx:before,
+.__cfx:after
+{
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.__cfx:after
+{
+    clear: both;
+}
+
+.__upper
+{
+    text-transform: uppercase;
+}
