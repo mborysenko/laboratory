@@ -40,6 +40,7 @@ $doc->addStyleSheet('templates/' . $this->template . '/css/grid.css');
 $doc->addStyleSheet('templates/' . $this->template . '/css/styles.css');
 $doc->addStyleSheet('templates/' . $this->template . '/css/main.css');
 $doc->addStyleSheet('templates/' . $this->template . '/css/menu.css');
+$doc->addStyleSheet('templates/' . $this->template . '/css/social.css');
 
 // Add current user information
 $user = JFactory::getUser();
@@ -59,7 +60,9 @@ if ($this->params->get('logoFile')) {
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <jdoc:include type="head"/>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,100italic,100,400italic,500,500italic,700,700italic,900,900italic&subset=cyrillic-ext,latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link
+        href='http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,100italic,100,400italic,500,500italic,700,700italic,900,900italic&subset=cyrillic-ext,latin-ext,latin'
+        rel='stylesheet' type='text/css'>
     <!--[if lt IE 9]>
     <script src="<?php echo $this->baseurl ?>/media/jui/js/html5.js"></script>
     <![endif]-->
@@ -80,7 +83,7 @@ if ($this->params->get('logoFile')) {
     <div id="header" class="lvf-grid_row row-fluid">
         <div class="lvf-grid_cell span2">
             <div id="logotype">
-                Logo
+                <?php echo $logo ?>
             </div>
             <div id="slogan">
                 <span>Lessons, activities, news and networking</span>
@@ -92,13 +95,23 @@ if ($this->params->get('logoFile')) {
                 <div class="lvf-heading __h5">
                     <span>Call Us:</span>
                 </div>
+                <div class="lvf-info_content">
+                    <div>+38 (068) 721 04 00</div>
+                    <div>+38 (066) 322 15 65</div>
+                    <div>+38 (063) 341 38 55</div>
+                </div>
+
             </div>
         </div>
 
         <div class="lvf-grid_cell span2">
+
             <div class="lvf-info">
                 <div class="lvf-heading __h5">
                     <span>Email Us:</span>
+                </div>
+                <div class="lvf-info_content">
+                    <div>info@englishnet.com.ua</div>
                 </div>
             </div>
 
@@ -106,21 +119,31 @@ if ($this->params->get('logoFile')) {
                 <div class="lvf-heading __h5">
                     <span>Use Skype:</span>
                 </div>
+                <div class="lvf-info_content"   >
+                    <div>eng.ua</div>
+                </div>
             </div>
-
         </div>
 
         <div class="lvf-grid_cell span2">
-            <div class="lvf-info">
+            <div class="lvf-info lvf-social">
                 <div class="lvf-heading __h5">
                     <span>Join Us:</span>
                 </div>
+                <div class="lvf-social_links">
+                    <a class="lvf-link __social __g-plus" href="#">G+</a>
+                    <a class="lvf-link __social __fb" href="#">FB</a>
+                    <a class="lvf-link __social __tw" href="#">TW</a>
+                    <a class="lvf-link __social __in" href="#">IN</a>
+                    <a class="lvf-link __social __ok" href="#">OK</a>
+                    <a class="lvf-link __social __vk" href="#">VK</a>
+                </div>
             </div>
-
         </div>
 
         <div class="lvf-grid_cell span3 offset1">
             <div id="userpanel" class="lvf-userpanel pull-right">
+                <jdoc:include type="modules" name="user-panel" style="none"/>
                 <div class="lvf-userpanel_part __upper">
                     <a href="">Log In</a>
                     <a href="">Sign Up</a>
@@ -141,7 +164,8 @@ if ($this->params->get('logoFile')) {
     <div id="navigation" class="lvf-grid_row row-fluid __cfx">
 
         <div id="menu" class="span9">
-            <ul class="lvf-menu __horizontal __big clearfix __upper">
+            <jdoc:include type="modules" name="menu" style="none"/>
+            <!--<ul class="lvf-menu __horizontal __big clearfix">
                 <li class="lvf-menu_item __active">
                     <a href="#">Getting Started</a>
                 </li>
@@ -157,37 +181,44 @@ if ($this->params->get('logoFile')) {
                 <li class="lvf-menu_item">
                     <a href="#">About</a>
                 </li>
-            </ul>
-            <jdoc:include type="modules" name="menu" style="none"/>
+            </ul>-->
         </div>
 
         <div id="search" class="span3">
-            Search
             <jdoc:include type="modules" name="search" style="none"/>
         </div>
 
     </div>
 </div>
 
+<div class="lvf-grid_container">
+    <div id="banner" class="lvf-grid_row row-fluid __cfx">
+        <jdoc:include type="modules" name="centerColumn" style="none"/>
+    </div>
+</div>
+
 <div class="lvf-grid_container container-fluid">
     <div id="breadcrumbs" class="lvf-grid_row">
-        <jdoc:include type="modules" name="position-2" />
-<!--        <ul class="lvf-pathway">-->
-<!--            <li>-->
-<!--                <a class="__upper" href="#">Home</a>-->
-<!--            </li>-->
-<!--        </ul>-->
+        <jdoc:include type="modules" name="position-2"/>
+        <!--        <ul class="lvf-pathway">-->
+        <!--            <li>-->
+        <!--                <a class="__upper" href="#">Home</a>-->
+        <!--            </li>-->
+        <!--        </ul>-->
     </div>
 </div>
 
 <div class="lvf-grid_container">
 
-    <div id="content" class="lvf-grid_row">
+    <div class="lvf-grid_row">
 
         <div class="row-fluid clearfix">
-            <div class="span9">
+            <div class="span9" class="lvf-content" id="content">
                 <div class="lvf-content_inner">
-                    <div class="lvf-article">
+                    <jdoc:include type="message"/>
+                    <jdoc:include type="component"/>
+
+                    <div class="lvf-article hidden">
                         <div class="lvf-heading __h1">
                             <span>Free Online English Level Test</span>
                         </div>
@@ -214,7 +245,7 @@ if ($this->params->get('logoFile')) {
                 </div>
             </div>
             <div class="span3">
-                <div id="sidebar">
+                <div id="sidebar" class="lvf-sidebar">
                     <ul class="lvf-menu clearfix __upper">
                         <li class="lvf-menu_item">
                             <a href="#">Getting Started</a>
@@ -315,8 +346,8 @@ if ($this->params->get('logoFile')) {
 </div>
 <!-- Footer -->
 <div class="lvf-bottom" id="bottom">
-    <div class="lvf-grid_container container-fluid">
-        <div id="footer" class="lvf-footer_inner row-fluid">
+    <div class="lvf-grid_container container-fluid" id="footer">
+        <div class="lvf-footer_inner row-fluid">
             <div class="span2">
                 <span class="__upper">Help</span>
             </div>

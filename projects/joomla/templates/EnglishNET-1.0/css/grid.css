@@ -48,6 +48,7 @@ body
     height: 204px;
     position: relative;
     top: -205px;
+    margin-bottom: -100%;
     border-top: 1px solid #3c3b6e;
 }
 

@@ -14,24 +14,31 @@
 
 .lvf-menu.__big .lvf-menu_item
 {
-    padding: 0 20px;
-    height: 52px;
-    line-height: 52px;
+    padding: 0 14px;
+    height: 44px;
+    line-height: 44px;
 }
-
 
 .lvf-menu_item a
 {
+    text-transform: uppercase;
     color: #3c3b6e;
     text-decoration: none;
 }
 
-.lvf-menu_item:hover
+.lvf-menu_item:hover,
+.lvf-menu_item.__current
 {
     background-color: #b22234;
     cursor: pointer;
 }
 
+.lvf-menu_item:hover
+{
+    cursor: pointer;
+}
+
+.lvf-menu_item.__current a,
 .lvf-menu_item:hover a
 {
     color: white;
@@ -45,13 +52,42 @@
 /* Breadcrumbs */
 .lvf-pathway
 {
+    font-size: 90%;
     margin: 0;
     height: 52px;
 }
 
+.lvf-pathway .lvf-pathway_label
+{
+    margin-right: 1em;
+}
+
+.lvf-pathway_divider
+{
+    margin: 0 0.5em;
+}
+
 .lvf-pathway li
 {
+    float: left;
     height: 52px;
     line-height: 52px;
+}
+
+.lvf-pathway li a
+{
+    color: #3c3b6e;
+    text-decoration: underline;
+}
+
+.lvf-pathway li a:hover
+{
+    color: #b22234;
+    text-decoration: none;
+}
+
+.lvf-pathway li.__active span
+{
+    font-weight: bold;
 }
 /* /Breadcrumbs */

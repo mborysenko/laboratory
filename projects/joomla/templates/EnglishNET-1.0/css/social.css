@@ -1,0 +1,91 @@
+.lvf-social_links
+{
+}
+
+.lvf-link.__social
+{
+    font-size: 90%;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    width: 24px;
+    text-align: center;
+    text-decoration: none;
+    outline: 0;
+}
+
+.lvf-link.__social:hover
+{
+    background-color: grey;
+}
+
+.lvf-link.__social:hover,
+.lvf-link.__social.__g-plus:hover,
+.lvf-link.__social.__tw:hover,
+.lvf-link.__social.__fb:hover,
+.lvf-link.__social.__in:hover,
+.lvf-link.__social.__vk:hover,
+.lvf-link.__social.__ok:hover
+{
+    color: #fff;
+}
+
+.lvf-link.__social.__g-plus
+{
+    color: #db2814;
+}
+
+.lvf-link.__social.__g-plus:hover
+{
+    background-color: #db2814;
+}
+
+.lvf-link.__social.__tw
+{
+    color: #2b97f0;
+}
+
+.lvf-link.__social.__tw:hover
+{
+    background-color: #2b97f0;
+}
+
+.lvf-link.__social.__fb
+{
+    color: #3b5a9b;
+}
+
+.lvf-link.__social.__fb:hover
+{
+    background-color: #3b5a9b;
+}
+
+.lvf-link.__social.__in
+{
+    color: #006699;
+}
+
+.lvf-link.__social.__in:hover
+{
+    background-color: #006699;
+}
+
+.lvf-link.__social.__vk
+{
+    color: #4e729a;
+}
+
+.lvf-link.__social.__vk:hover
+{
+    background-color: #4e729a;
+}
+
+.lvf-link.__social.__ok
+{
+    color: #cf6700;
+}
+
+.lvf-link.__social.__ok:hover
+{
+    background-color: #cf6700;
+}

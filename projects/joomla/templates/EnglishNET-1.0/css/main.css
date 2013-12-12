@@ -33,6 +33,11 @@
     padding-left: 20px;
 }
 
+.lvf-sidebar
+{
+    padding-right: 20px;
+}
+
 #footer
 {
     height: 162px;
@@ -58,7 +63,7 @@
 
 #navigation
 {
-    height: 51px;
+    height: 44px;
     border-bottom: 1px solid #b22234;
 }
 
