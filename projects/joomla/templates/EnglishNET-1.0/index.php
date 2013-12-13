@@ -77,7 +77,7 @@ if ($this->params->get('logoFile')) {
 
 <!-- Body -->
 <div id="body" class="lvf-page">
-<div class="lvf-page_wrapper">
+<div class="lvf-page_wrapper clearfix">
 
 <div class="lvf-grid_container __fill __scheme_blue">
     <div id="header" class="lvf-grid_row row-fluid">
@@ -119,7 +119,7 @@ if ($this->params->get('logoFile')) {
                 <div class="lvf-heading __h5">
                     <span>Use Skype:</span>
                 </div>
-                <div class="lvf-info_content"   >
+                <div class="lvf-info_content">
                     <div>eng.ua</div>
                 </div>
             </div>
@@ -198,7 +198,7 @@ if ($this->params->get('logoFile')) {
 </div>
 
 <div class="lvf-grid_container container-fluid">
-    <div id="breadcrumbs" class="lvf-grid_row">
+    <div class="lvf-grid_row">
         <jdoc:include type="modules" name="position-2"/>
         <!--        <ul class="lvf-pathway">-->
         <!--            <li>-->
@@ -217,31 +217,6 @@ if ($this->params->get('logoFile')) {
                 <div class="lvf-content_inner">
                     <jdoc:include type="message"/>
                     <jdoc:include type="component"/>
-
-                    <div class="lvf-article hidden">
-                        <div class="lvf-heading __h1">
-                            <span>Free Online English Level Test</span>
-                        </div>
-                        <div>
-                            <p>
-                                To take our online level test, simply read the questions below, and answer them by
-                                pressing "Click to Record" below each question. Then click "Allow" and begin speaking.
-                                Please try to answer in complete sentences and be as detailed as possible.
-                            </p>
-
-                            <p>
-                                For the most accurate results, you should only make one recording per question. When you
-                                are ready to save the recording, click "Click here to save", and then click on "Email".
-                                The email should be sent to test@englishnet.com.ua, with the subject heading "Level
-                                Test, (your name)". Please make sure to make a different recording for each question.
-                            </p>
-
-                            <p>
-                                After we have evaluated your answers, we will contact you with the results. Good luck!
-                            </p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="span3">
@@ -267,78 +242,78 @@ if ($this->params->get('logoFile')) {
             </div>
         </div>
 
-        <div class="container-fluid hidden">
-            <div id="offerings" class="row-fluid">
-                <div class="span3">
-
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Lessons via Video Conference</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Enjoy live online English classes with real teachers at home, at your office, or
-                                wherever there is an internet connection. No more snow, no more traffic jams, no
-                                more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can
-                                study whenever it is convenient.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span3">
-
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Choose your Price</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Study privately for the fastest results, or reduce the cost by studying with up to
-                                three other students.
-                            </p>
-                            <a href="#">Course Options</a>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="span3">
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Optional Reading and Writing</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Reading and writing practice is free at EnglishNET. Every week, there are new
-                                articles to read and comment on. Your comments are corrected by our teachers. There
-                                are also weekly writing contests.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="span3">
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Bilingual Learning System</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Our system works! Understand and drill new grammar and concepts with a Ukrainian or
-                                Russian teacher, and then practice what you have learned with a native English
-                                teacher. You may choose only native or non-native teachers for your online English
-                                classes if you would like.
-                            </p>
-                            <a href="#">Our Team</a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <!--        <div class="container-fluid hidden">-->
+        <!--            <div id="offerings" class="row-fluid">-->
+        <!--                <div class="span3">-->
+        <!---->
+        <!--                    <div class="lvf-offering">-->
+        <!--                        <div class="lvf-offering_title lvf-heading __h3">-->
+        <!--                            <span>Lessons via Video Conference</span>-->
+        <!--                        </div>-->
+        <!---->
+        <!--                        <div class="lvf-offering_text">-->
+        <!--                            <p>-->
+        <!--                                Enjoy live online English classes with real teachers at home, at your office, or-->
+        <!--                                wherever there is an internet connection. No more snow, no more traffic jams, no-->
+        <!--                                more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can-->
+        <!--                                study whenever it is convenient.-->
+        <!--                            </p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="span3">-->
+        <!---->
+        <!--                    <div class="lvf-offering">-->
+        <!--                        <div class="lvf-offering_title lvf-heading __h3">-->
+        <!--                            <span>Choose your Price</span>-->
+        <!--                        </div>-->
+        <!---->
+        <!--                        <div class="lvf-offering_text">-->
+        <!--                            <p>-->
+        <!--                                Study privately for the fastest results, or reduce the cost by studying with up to-->
+        <!--                                three other students.-->
+        <!--                            </p>-->
+        <!--                            <a href="#">Course Options</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!---->
+        <!--                </div>-->
+        <!--                <div class="span3">-->
+        <!--                    <div class="lvf-offering">-->
+        <!--                        <div class="lvf-offering_title lvf-heading __h3">-->
+        <!--                            <span>Optional Reading and Writing</span>-->
+        <!--                        </div>-->
+        <!---->
+        <!--                        <div class="lvf-offering_text">-->
+        <!--                            <p>-->
+        <!--                                Reading and writing practice is free at EnglishNET. Every week, there are new-->
+        <!--                                articles to read and comment on. Your comments are corrected by our teachers. There-->
+        <!--                                are also weekly writing contests.-->
+        <!--                            </p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!---->
+        <!--                </div>-->
+        <!--                <div class="span3">-->
+        <!--                    <div class="lvf-offering">-->
+        <!--                        <div class="lvf-offering_title lvf-heading __h3">-->
+        <!--                            <span>Bilingual Learning System</span>-->
+        <!--                        </div>-->
+        <!---->
+        <!--                        <div class="lvf-offering_text">-->
+        <!--                            <p>-->
+        <!--                                Our system works! Understand and drill new grammar and concepts with a Ukrainian or-->
+        <!--                                Russian teacher, and then practice what you have learned with a native English-->
+        <!--                                teacher. You may choose only native or non-native teachers for your online English-->
+        <!--                                classes if you would like.-->
+        <!--                            </p>-->
+        <!--                            <a href="#">Our Team</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!---->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 
@@ -347,7 +322,7 @@ if ($this->params->get('logoFile')) {
 <!-- Footer -->
 <div class="lvf-bottom" id="bottom">
     <div class="lvf-grid_container container-fluid" id="footer">
-        <div class="lvf-footer_inner row-fluid">
+        <div class="lvf-footer_inner lvf-grid_row row-fluid">
             <div class="span2">
                 <span class="__upper">Help</span>
             </div>

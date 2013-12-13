@@ -17,13 +17,13 @@ body
 
 .__fill.__scheme_blue
 {
-    background-color: #3c3b6e;
+    background-color: #0b2647;
     color: white;
 }
 
 .__fill.__scheme_red
 {
-    background-color: #b22234;
+    background-color: #a61717;
     color: white;
 }
 
@@ -52,3 +52,8 @@ body
     border-top: 1px solid #3c3b6e;
 }
 
+.lvf-grid_row
+{
+    max-width: 1280px;
+    margin: 0 auto;
+}

@@ -19,22 +19,24 @@
         <folder>css</folder>
         <folder>html</folder>
         <folder>images</folder>
+        <folder>img</folder>
         <folder>js</folder>
         <folder>language</folder>
         <folder>less</folder>
     </files>
     <positions>
         <position>header</position>
-        <position>user-panel</position>
+        <position>user</position>
         <position>navigation</position>
         <position>menu</position>
         <position>search</position>
-        <position>breadcrumbs</position>
-        <position>leftColumn</position>
-        <position>centerColumn</position>
-        <position>rightColumn</position>
-        <position>footer</position>
+        <position>banner</position>
+        <position>pathway</position>
+        <position>left</position>
+        <position>center</position>
+        <position>right</position>
         <position>bottom</position>
+        <position>footer</position>
     </positions>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.tpl_leviafan.ini</language>
