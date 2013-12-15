@@ -37,6 +37,7 @@
         <position>right</position>
         <position>bottom</position>
         <position>footer</position>
+        <position>copyright</position>
     </positions>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.tpl_leviafan.ini</language>

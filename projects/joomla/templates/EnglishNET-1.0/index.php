@@ -141,19 +141,19 @@ if ($this->params->get('logoFile')) {
             </div>
         </div>
 
-        <div class="lvf-grid_cell span3 offset1">
+        <div class="lvf-grid_cell span3 offset1 clearfix">
             <div id="userpanel" class="lvf-userpanel pull-right">
-                <jdoc:include type="modules" name="user-panel" style="none"/>
-                <div class="lvf-userpanel_part __upper">
-                    <a href="">Log In</a>
-                    <a href="">Sign Up</a>
-                    <a href="">Help</a>
-                </div>
-                <div class="lvf-userpanel_part __upper">
-                    <a href="">Profile</a>
-                    <a href="">Activity</a>
-                    <a href="">Log Out</a>
-                </div>
+                <jdoc:include type="modules" name="user" style="none"/>
+<!--                <div class="lvf-userpanel_part __upper">-->
+<!--                    <a href="">Log In</a>-->
+<!--                    <a href="">Sign Up</a>-->
+<!--                    <a href="">Help</a>-->
+<!--                </div>-->
+<!--                <div class="lvf-userpanel_part __upper">-->
+<!--                    <a href="">Profile</a>-->
+<!--                    <a href="">Activity</a>-->
+<!--                    <a href="">Log Out</a>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -193,13 +193,13 @@ if ($this->params->get('logoFile')) {
 
 <div class="lvf-grid_container">
     <div id="banner" class="lvf-grid_row row-fluid __cfx">
-        <jdoc:include type="modules" name="centerColumn" style="none"/>
+        <jdoc:include type="modules" name="banner" style="none"/>
     </div>
 </div>
 
 <div class="lvf-grid_container container-fluid">
     <div class="lvf-grid_row">
-        <jdoc:include type="modules" name="position-2"/>
+        <jdoc:include type="modules" name="pathway"/>
         <!--        <ul class="lvf-pathway">-->
         <!--            <li>-->
         <!--                <a class="__upper" href="#">Home</a>-->
@@ -209,19 +209,30 @@ if ($this->params->get('logoFile')) {
 </div>
 
 <div class="lvf-grid_container">
+    <div class="lvf-grid_row">
+        <div id="message">
+            <jdoc:include type="message"/>
+        </div>
+    </div>
+</div>
+<div class="lvf-grid_container">
 
     <div class="lvf-grid_row">
-
         <div class="row-fluid clearfix">
             <div class="span9" class="lvf-content" id="content">
-                <div class="lvf-content_inner">
-                    <jdoc:include type="message"/>
+                <div id="center" class="lvf-content_inner">
+
+                    <jdoc:include type="modules" name="right"/>
+
                     <jdoc:include type="component"/>
+
                 </div>
             </div>
             <div class="span3">
-                <div id="sidebar" class="lvf-sidebar">
+                <div id="right" class="lvf-sidebar">
                     <ul class="lvf-menu clearfix __upper">
+                        <jdoc:include type="modules" name="right"/>
+
                         <li class="lvf-menu_item">
                             <a href="#">Getting Started</a>
                         </li>
@@ -323,6 +334,8 @@ if ($this->params->get('logoFile')) {
 <div class="lvf-bottom" id="bottom">
     <div class="lvf-grid_container container-fluid" id="footer">
         <div class="lvf-footer_inner lvf-grid_row row-fluid">
+            <jdoc:include type="modules" name="bottom"/>
+
             <div class="span2">
                 <span class="__upper">Help</span>
             </div>
@@ -339,15 +352,13 @@ if ($this->params->get('logoFile')) {
                 <div class="pull-right">Bottom logo</div>
             </div>
 
-            <jdoc:include type="modules" name="footer" style="none"/>
         </div>
     </div>
 
     <div class="lvf-grid_container container-fluid __fill __scheme_blue">
-        <div id="copyright" class="lvf-grid_row row-fluid">
-
-            <div class="lvf-grid_cell span2 offset10">
-                <span class="pull-right">&copy; <?php echo $siteName; ?> <?php echo date('Y'); ?></span>
+        <div id="copyright" class="lvf-grid_row row-fluid clearfix">
+            <div class="lvf-grid_cell pull-right">
+                <jdoc:include type="modules" name="copyright" style="none"/>
             </div>
 
         </div>
