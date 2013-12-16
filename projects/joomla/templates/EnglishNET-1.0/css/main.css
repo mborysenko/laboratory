@@ -69,6 +69,18 @@
 #navigation
 {}
 
+#menu-target .lvf-submenu_layout
+{
+    position: absolute;
+    width: 100%;
+}
+
+#menu-target
+{
+    position: relative;
+    height: 0;
+}
+
 .__add_border.__lvf_scheme_red
 {
     border-bottom: 1px solid #a61717;
@@ -101,4 +113,25 @@
 .__upper
 {
     text-transform: uppercase;
+}
+
+dl.lvf-idiom
+{
+    color: white;
+    font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
+    font-weight: lighter;
+}
+
+dl.lvf-idiom dt
+{
+    font-size: 210%;
+    font-weight: lighter;
+    margin-bottom: 1.6em;
+}
+
+dl.lvf-idiom dd
+{
+    font-size: 120%;
+    line-height: 140%;
+    font-weight: lighter;
 }

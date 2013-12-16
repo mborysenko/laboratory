@@ -148,16 +148,16 @@ if ($this->params->get('logoFile')) {
         <div class="lvf-grid_cell span3 offset1 clearfix">
             <div id="userpanel" class="lvf-userpanel pull-right">
                 <jdoc:include type="modules" name="user" style="none"/>
-<!--                <div class="lvf-userpanel_part __upper">-->
-<!--                    <a href="">Log In</a>-->
-<!--                    <a href="">Sign Up</a>-->
-<!--                    <a href="">Help</a>-->
-<!--                </div>-->
-<!--                <div class="lvf-userpanel_part __upper">-->
-<!--                    <a href="">Profile</a>-->
-<!--                    <a href="">Activity</a>-->
-<!--                    <a href="">Log Out</a>-->
-<!--                </div>-->
+                <!--                <div class="lvf-userpanel_part __upper">-->
+                <!--                    <a href="">Log In</a>-->
+                <!--                    <a href="">Sign Up</a>-->
+                <!--                    <a href="">Help</a>-->
+                <!--                </div>-->
+                <!--                <div class="lvf-userpanel_part __upper">-->
+                <!--                    <a href="">Profile</a>-->
+                <!--                    <a href="">Activity</a>-->
+                <!--                    <a href="">Log Out</a>-->
+                <!--                </div>-->
             </div>
         </div>
     </div>
@@ -174,7 +174,40 @@ if ($this->params->get('logoFile')) {
         <div id="search" class="span3">
             <jdoc:include type="modules" name="search" style="none"/>
         </div>
+    </div>
+</div>
 
+<div id="menu-target">
+    <div class="lvf-grid_container __lvf_scheme_red __fill _hidden lvf-submenu_layout">
+        <div class="lvf-grid_row row-fluid clearfix">
+            <div class="span3">
+                <ul class="lvf-menu __deeper">
+                    <li class="lvf-menu_item">
+                        <a href="#">Sample Materials</a>
+                    </li>
+                    <li class="lvf-menu_item">
+                        <a href="#">Free English Level Test</a>
+                    </li>
+                    <li class="lvf-menu_item">
+                        <a href="#">What’s Included</a>
+                    </li>
+                    <li class="lvf-menu_item">
+                        <a href="#">Course Options</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span4 offset1">
+                <dl class="lvf-idiom">
+                    <dt>
+                        <span>"To pick someone’s brains."</span>
+                    </dt>
+                    <dd>
+                        To ask for information or advice from someone who knows more about a subject that you do.
+                    </dd>
+                </dl>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -203,23 +236,21 @@ if ($this->params->get('logoFile')) {
         <div class="row-fluid clearfix">
 
             <?php
-                $centerSpan = '';
-                if(($this->countModules("left") && !$this->countModules("right")) || (!$this->countModules("left") && $this->countModules("right")))
-                {
-                    $centerSpan = "span10";
-                }
+            $centerSpan = '';
+            if (($this->countModules("left") && !$this->countModules("right")) || (!$this->countModules("left") && $this->countModules("right"))) {
+                $centerSpan = "span10";
+            }
 
-                if($this->countModules("left") && $this->countModules("right"))
-                {
-                    $centerSpan = "span8";
-                }
+            if ($this->countModules("left") && $this->countModules("right")) {
+                $centerSpan = "span8";
+            }
             ?>
-            <?php if($showLeftColumn): ?>
-            <div class="span2">
-                <div id="right" class="lvf-sidebar">
-                    <jdoc:include type="modules" name="left"/>
+            <?php if ($showLeftColumn): ?>
+                <div class="span2">
+                    <div id="right" class="lvf-sidebar">
+                        <jdoc:include type="modules" name="left"/>
+                    </div>
                 </div>
-            </div>
             <?php endif ?>
 
             <div class="<?php echo $centerSpan ?>" class="lvf-content" id="content">
@@ -232,12 +263,12 @@ if ($this->params->get('logoFile')) {
                 </div>
             </div>
 
-            <?php if($showRightColumn): ?>
-            <div class="span2">
-                <div id="right" class="lvf-sidebar">
-                    <jdoc:include type="modules" name="right"/>
+            <?php if ($showRightColumn): ?>
+                <div class="span2">
+                    <div id="right" class="lvf-sidebar">
+                        <jdoc:include type="modules" name="right"/>
+                    </div>
                 </div>
-            </div>
             <?php endif ?>
         </div>
 

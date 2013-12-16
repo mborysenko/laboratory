@@ -15,6 +15,11 @@
     text-transform: uppercase;
 }
 
+.lvf-submenu_layout
+{
+    padding: 12px 0;
+}
+
 .lvf-menu.__big .lvf-menu_item
 {
 }
@@ -30,13 +35,25 @@
 .lvf-menu_item.__current
 {
     background-color: #a61717;
-    cursor: pointer;
+}
+
+.lvf-menu.__deeper .lvf-menu_item a
+{
+    text-transform: capitalize;
+    font-size: 120%;
+    color: white;
+    font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
+    font-weight: lighter;
+}
+
+.lvf-menu.__deeper .lvf-menu_item a:hover
+{
+    background-color: #0b2647;
 }
 
 .lvf-menu_item.__current a,
 .lvf-menu_item a:hover
 {
-    cursor: pointer;
     color: white;
     text-decoration: none;
 }
