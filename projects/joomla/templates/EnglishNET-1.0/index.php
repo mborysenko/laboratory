@@ -9,6 +9,10 @@
 
 defined('_JEXEC') or die;
 
+// Check modules
+$showRightColumn = $this->countModules('right');
+$showLeftColumn = $this->countModules('left');
+
 // Getting params from template
 $params = JFactory::getApplication()->getTemplate(true)->params;
 
@@ -79,7 +83,7 @@ if ($this->params->get('logoFile')) {
 <div id="body" class="lvf-page">
 <div class="lvf-page_wrapper clearfix">
 
-<div class="lvf-grid_container __fill __scheme_blue">
+<div class="lvf-grid_container __fill __lvf_scheme_blue">
     <div id="header" class="lvf-grid_row row-fluid">
         <div class="lvf-grid_cell span2">
             <div id="logotype">
@@ -159,29 +163,12 @@ if ($this->params->get('logoFile')) {
     </div>
 </div>
 
-<div class="lvf-grid_container">
+<div class="lvf-grid_container __add_border __lvf_scheme_red">
 
     <div id="navigation" class="lvf-grid_row row-fluid __cfx">
 
         <div id="menu" class="span9">
             <jdoc:include type="modules" name="menu" style="none"/>
-            <!--<ul class="lvf-menu __horizontal __big clearfix">
-                <li class="lvf-menu_item __active">
-                    <a href="#">Getting Started</a>
-                </li>
-                <li class="lvf-menu_item">
-                    <a href="#">Courses</a>
-                </li>
-                <li class="lvf-menu_item">
-                    <a href="#">Learn</a>
-                </li>
-                <li class="lvf-menu_item">
-                    <a href="#">Practice</a>
-                </li>
-                <li class="lvf-menu_item">
-                    <a href="#">About</a>
-                </li>
-            </ul>-->
         </div>
 
         <div id="search" class="span3">
@@ -200,11 +187,6 @@ if ($this->params->get('logoFile')) {
 <div class="lvf-grid_container container-fluid">
     <div class="lvf-grid_row">
         <jdoc:include type="modules" name="pathway"/>
-        <!--        <ul class="lvf-pathway">-->
-        <!--            <li>-->
-        <!--                <a class="__upper" href="#">Home</a>-->
-        <!--            </li>-->
-        <!--        </ul>-->
     </div>
 </div>
 
@@ -219,38 +201,44 @@ if ($this->params->get('logoFile')) {
 
     <div class="lvf-grid_row">
         <div class="row-fluid clearfix">
-            <div class="span9" class="lvf-content" id="content">
+
+            <?php
+                $centerSpan = '';
+                if(($this->countModules("left") && !$this->countModules("right")) || (!$this->countModules("left") && $this->countModules("right")))
+                {
+                    $centerSpan = "span10";
+                }
+
+                if($this->countModules("left") && $this->countModules("right"))
+                {
+                    $centerSpan = "span8";
+                }
+            ?>
+            <?php if($showLeftColumn): ?>
+            <div class="span2">
+                <div id="right" class="lvf-sidebar">
+                    <jdoc:include type="modules" name="left"/>
+                </div>
+            </div>
+            <?php endif ?>
+
+            <div class="<?php echo $centerSpan ?>" class="lvf-content" id="content">
                 <div id="center" class="lvf-content_inner">
 
-                    <jdoc:include type="modules" name="right"/>
+                    <jdoc:include type="modules" name="center"/>
 
                     <jdoc:include type="component"/>
 
                 </div>
             </div>
-            <div class="span3">
-                <div id="right" class="lvf-sidebar">
-                    <ul class="lvf-menu clearfix __upper">
-                        <jdoc:include type="modules" name="right"/>
 
-                        <li class="lvf-menu_item">
-                            <a href="#">Getting Started</a>
-                        </li>
-                        <li class="lvf-menu_item">
-                            <a href="#">Courses</a>
-                        </li>
-                        <li class="lvf-menu_item">
-                            <a href="#">Learn</a>
-                        </li>
-                        <li class="lvf-menu_item">
-                            <a href="#">Practice</a>
-                        </li>
-                        <li class="lvf-menu_item">
-                            <a href="#">About</a>
-                        </li>
-                    </ul>
+            <?php if($showRightColumn): ?>
+            <div class="span2">
+                <div id="right" class="lvf-sidebar">
+                    <jdoc:include type="modules" name="right"/>
                 </div>
             </div>
+            <?php endif ?>
         </div>
 
         <!--        <div class="container-fluid hidden">-->
@@ -355,7 +343,7 @@ if ($this->params->get('logoFile')) {
         </div>
     </div>
 
-    <div class="lvf-grid_container container-fluid __fill __scheme_blue">
+    <div class="lvf-grid_container container-fluid __fill __lvf_scheme_blue">
         <div id="copyright" class="lvf-grid_row row-fluid clearfix">
             <div class="lvf-grid_cell pull-right">
                 <jdoc:include type="modules" name="copyright" style="none"/>

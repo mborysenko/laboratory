@@ -13,7 +13,7 @@
 .lvf-heading.__h1,
 .lvf-heading.__h3
 {
-    color: #b22234;
+    color: #a61717;
     font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
     font-weight: lighter;
 }
@@ -51,8 +51,8 @@
     position: relative;
     top: 50%;
     margin-top: -16px;
-    height: 28px;
-    line-height: 24px;
+    height: 40px;
+    line-height: 36px;
     vertical-align: middle;
     border: 2px solid #3c3b6e;
 }
@@ -68,8 +68,8 @@ input.lvf-search_input[type="text"]
     outline: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    height: 24px;
-    line-height: 24px;
+    height: 36px;
+    line-height: 36px;
 }
 
 .lvf-info

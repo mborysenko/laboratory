@@ -9,11 +9,16 @@
     min-height: 53px;
     padding: 12px 0;
 }
+
+#search
+{
+    height: 56px;
+}
+
 .lvf-userpanel
 {
     font-size: 90%;
     background-color: white;
-    padding: 0 12px;
 }
 
 .lvf-userpanel_part
@@ -34,7 +39,8 @@
 
 .lvf-sidebar
 {
-    padding-right: 20px;
+    padding: 0 0 10em 0;
+    border-left: 1px solid #a61717;
 }
 
 #footer
@@ -61,15 +67,17 @@
 }
 
 #navigation
+{}
+
+.__add_border.__lvf_scheme_red
 {
-    height: 44px;
-    border-bottom: 1px solid #b22234;
+    border-bottom: 1px solid #a61717;
 }
 
 #sidebar
 {
     padding-bottom: 52px;
-    border-left: 1px solid #b22234;
+    border-left: 1px solid #a61717;
 }
 
 .__cfx

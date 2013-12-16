@@ -15,13 +15,13 @@ body
     font-family: "Segoe UI", Arial, Verdana, Tahome, serif;
 }
 
-.__fill.__scheme_blue
+.__fill.__lvf_scheme_blue
 {
     background-color: #0b2647;
     color: white;
 }
 
-.__fill.__scheme_red
+.__fill.__lvf_scheme_red
 {
     background-color: #a61717;
     color: white;

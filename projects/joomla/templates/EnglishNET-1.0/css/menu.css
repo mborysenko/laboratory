@@ -4,44 +4,41 @@
     padding: 0;
 }
 
-.lvf-menu_item
+.lvf-menu_item a
 {
+    display: block;
     padding: 0 14px;
     height: 42px;
     line-height: 42px;
-    font-size: 90%;
+    color: #223fa1;
+    text-decoration: none;
+    text-transform: uppercase;
 }
 
 .lvf-menu.__big .lvf-menu_item
 {
-    padding: 0 14px;
-    height: 44px;
-    line-height: 44px;
 }
 
-.lvf-menu_item a
+.__big .lvf-menu_item a
 {
-    text-transform: uppercase;
-    color: #3c3b6e;
-    text-decoration: none;
+    padding: 0 1.5em;
+    height: 56px;
+    line-height: 56px;
 }
 
-.lvf-menu_item:hover,
+.lvf-menu_item a:hover,
 .lvf-menu_item.__current
 {
-    background-color: #b22234;
-    cursor: pointer;
-}
-
-.lvf-menu_item:hover
-{
+    background-color: #a61717;
     cursor: pointer;
 }
 
 .lvf-menu_item.__current a,
-.lvf-menu_item:hover a
+.lvf-menu_item a:hover
 {
+    cursor: pointer;
     color: white;
+    text-decoration: none;
 }
 
 .lvf-menu.__horizontal .lvf-menu_item
@@ -82,7 +79,7 @@
 
 .lvf-pathway li a:hover
 {
-    color: #b22234;
+    color: #a61717;
     text-decoration: none;
 }
 
