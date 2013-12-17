@@ -167,7 +167,7 @@ if ($this->params->get('logoFile')) {
 
     <div id="navigation" class="lvf-grid_row row-fluid __cfx">
 
-        <div id="menu" class="span9">
+        <div id="menu" class="span9 __horizontal __big">
             <jdoc:include type="modules" name="menu" style="none"/>
         </div>
 
@@ -178,7 +178,7 @@ if ($this->params->get('logoFile')) {
 </div>
 
 <div id="menu-target">
-    <div class="lvf-grid_container __lvf_scheme_red __fill _hidden lvf-submenu_layout">
+    <div class="lvf-grid_container __lvf_scheme_red __fill hidden lvf-submenu_layout">
         <div class="lvf-grid_row row-fluid clearfix">
             <div class="span3">
                 <ul class="lvf-menu __deeper">
@@ -353,19 +353,18 @@ if ($this->params->get('logoFile')) {
 <div class="lvf-bottom" id="bottom">
     <div class="lvf-grid_container container-fluid" id="footer">
         <div class="lvf-footer_inner lvf-grid_row row-fluid">
-            <jdoc:include type="modules" name="bottom"/>
+            <div class="span2">
+                <jdoc:include type="modules" name="bottom_a"/>
+            </div>
+            <div class="span2">
+                <jdoc:include type="modules" name="bottom_b"/>
+            </div>
+            <div class="span2">
+                <jdoc:include type="modules" name="bottom_c"/>
+            </div>
+            <div class="span2">
+                <jdoc:include type="modules" name="bottom_d"/>
 
-            <div class="span2">
-                <span class="__upper">Help</span>
-            </div>
-            <div class="span2">
-                <span class="__upper">About</span>
-            </div>
-            <div class="span2">
-                <span class="__upper">Career</span>
-            </div>
-            <div class="span2">
-                <span class="__upper">Social</span>
             </div>
             <div class="span2 offset2">
                 <div class="pull-right">Bottom logo</div>

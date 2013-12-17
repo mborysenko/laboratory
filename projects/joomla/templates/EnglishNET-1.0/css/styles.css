@@ -41,18 +41,16 @@
 
 .lvf-search
 {
-    height: 44px;
-    line-height: 44px;
-    padding: 0 8px;
+    height: 52px;
 }
 
 .lvf-search_inner
 {
     position: relative;
     top: 50%;
-    margin-top: -16px;
-    height: 40px;
-    line-height: 36px;
+    margin-top: -18px;
+    height: 32px;
+    /*line-height: 32px;*/
     vertical-align: middle;
     border: 2px solid #3c3b6e;
 }
@@ -68,8 +66,11 @@ input.lvf-search_input[type="text"]
     outline: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    height: 36px;
-    line-height: 36px;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    margin: 0;
+    height: 32px;
+    line-height: 32px;
 }
 
 .lvf-info

@@ -20,15 +20,12 @@
     padding: 12px 0;
 }
 
-.lvf-menu.__big .lvf-menu_item
-{
-}
-
+.lvf-menu.__big .lvf-menu_item,
 .__big .lvf-menu_item a
 {
     padding: 0 1.5em;
-    height: 56px;
-    line-height: 56px;
+    height: 52px;
+    line-height: 52px;
 }
 
 .lvf-menu_item a:hover,
@@ -58,7 +55,8 @@
     text-decoration: none;
 }
 
-.lvf-menu.__horizontal .lvf-menu_item
+.lvf-menu.__horizontal .lvf-menu_item,
+.__horizontal .lvf-menu .lvf-menu_item
 {
     float: left;
 }

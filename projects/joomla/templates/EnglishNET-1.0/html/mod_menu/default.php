@@ -19,7 +19,7 @@ if ($params->get('tag_id') != null) {
 
 ?>
 
-<ul class="lvf-menu __horizontal __big clearfix"<?php if (isset($tag)) { ?> id="<?php echo $tag ?>"<?php } ?>>
+<ul class="lvf-menu clearfix"<?php if (isset($tag)) { ?> id="<?php echo $tag ?>"<?php } ?>>
     <?php
     foreach ($list as $i => &$item) :
         $class = 'lvf-menu_item item-' . $item->id;

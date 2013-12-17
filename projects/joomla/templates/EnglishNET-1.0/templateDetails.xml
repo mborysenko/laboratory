@@ -35,7 +35,10 @@
         <position>left</position>
         <position>center</position>
         <position>right</position>
-        <position>bottom</position>
+        <position>bottom_a</position>
+        <position>bottom_b</position>
+        <position>bottom_c</position>
+        <position>bottom_d</position>
         <position>footer</position>
         <position>copyright</position>
     </positions>
