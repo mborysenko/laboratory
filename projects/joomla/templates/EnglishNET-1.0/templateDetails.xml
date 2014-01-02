@@ -26,6 +26,8 @@
     </files>
     <positions>
         <position>header</position>
+        <position>popup_a</position>
+        <position>popup_b</position>
         <position>user</position>
         <position>navigation</position>
         <position>menu</position>

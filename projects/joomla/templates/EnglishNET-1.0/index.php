@@ -79,6 +79,12 @@ if ($this->params->get('logoFile')) {
     . ($itemid ? ' itemid-' . $itemid : '');
 ?>">
 
+<div class="hidden" id="popup-a">
+    <jdoc:include type="modules" name="popup_a" style="none"/>
+</div>
+<div class="hidden" id="popup-b">
+    <jdoc:include type="modules" name="popup_b" style="none"/>
+</div>
 <!-- Body -->
 <div id="body" class="lvf-page">
 <div class="lvf-page_wrapper clearfix">
