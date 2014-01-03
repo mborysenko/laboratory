@@ -1,5 +1,4 @@
 #body,
-#bottom
 {
     /*min-width: 1024px;*/
 }
@@ -34,7 +33,6 @@
 
 .lvf-content_inner
 {
-    padding-left: 20px;
 }
 
 .lvf-sidebar
@@ -45,20 +43,10 @@
 
 #footer
 {
-    height: 162px;
 }
 
 .lvf-footer_inner
 {
-    padding: 6px 0 12px 0;
-    font-size: 90%;
-}
-
-#copyright
-{
-    height: 42px;
-    font-size: 90%;
-    line-height: 42px;
 }
 
 #breadcrumbs

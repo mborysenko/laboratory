@@ -153,17 +153,12 @@ if ($this->params->get('logoFile')) {
 
         <div class="lvf-grid_cell span3 offset1 clearfix">
             <div id="userpanel" class="lvf-userpanel pull-right">
-                <jdoc:include type="modules" name="user" style="none"/>
-                <!--                <div class="lvf-userpanel_part __upper">-->
-                <!--                    <a href="">Log In</a>-->
-                <!--                    <a href="">Sign Up</a>-->
-                <!--                    <a href="">Help</a>-->
-                <!--                </div>-->
-                <!--                <div class="lvf-userpanel_part __upper">-->
-                <!--                    <a href="">Profile</a>-->
-                <!--                    <a href="">Activity</a>-->
-                <!--                    <a href="">Log Out</a>-->
-                <!--                </div>-->
+                <div class="lvf-userpanel_part __upper __horizontal">
+                    <jdoc:include type="modules" name="user_a" style="none"/>
+                </div>
+                <div class="lvf-userpanel_part __upper">
+                    <jdoc:include type="modules" name="user_b" style="none"/>
+                </div>
             </div>
         </div>
     </div>
@@ -244,11 +239,11 @@ if ($this->params->get('logoFile')) {
             <?php
             $centerSpan = '';
             if (($this->countModules("left") && !$this->countModules("right")) || (!$this->countModules("left") && $this->countModules("right"))) {
-                $centerSpan = "span10";
+                $centerSpan = "span9";
             }
 
             if ($this->countModules("left") && $this->countModules("right")) {
-                $centerSpan = "span8";
+                $centerSpan = "span7";
             }
             ?>
             <?php if ($showLeftColumn): ?>
@@ -270,7 +265,7 @@ if ($this->params->get('logoFile')) {
             </div>
 
             <?php if ($showRightColumn): ?>
-                <div class="span2">
+                <div class="span3">
                     <div id="right" class="lvf-sidebar">
                         <jdoc:include type="modules" name="right"/>
                     </div>
@@ -357,31 +352,16 @@ if ($this->params->get('logoFile')) {
 </div>
 <!-- Footer -->
 <div class="lvf-bottom" id="bottom">
-    <div class="lvf-grid_container container-fluid" id="footer">
-        <div class="lvf-footer_inner lvf-grid_row row-fluid">
-            <div class="span2">
-                <jdoc:include type="modules" name="bottom_a"/>
-            </div>
-            <div class="span2">
-                <jdoc:include type="modules" name="bottom_b"/>
-            </div>
-            <div class="span2">
-                <jdoc:include type="modules" name="bottom_c"/>
-            </div>
-            <div class="span2">
-                <jdoc:include type="modules" name="bottom_d"/>
-
-            </div>
-            <div class="span2 offset2">
-                <div class="pull-right">Bottom logo</div>
-            </div>
-
-        </div>
-    </div>
 
     <div class="lvf-grid_container container-fluid __fill __lvf_scheme_blue">
-        <div id="copyright" class="lvf-grid_row row-fluid clearfix">
-            <div class="lvf-grid_cell pull-right">
+        <div id="footer" class="lvf-footer_inner lvf-grid_row row-fluid clearfix">
+            <div class="lvf-grid_cell span4">
+                <jdoc:include type="modules" name="footer_a" style="none"/>
+            </div>
+            <div class="lvf-grid_cell span4">
+                <jdoc:include type="modules" name="footer_b" style="none"/>
+            </div>
+            <div class="lvf-grid_cell pull-right span4" id="copyright">
                 <jdoc:include type="modules" name="copyright" style="none"/>
             </div>
 

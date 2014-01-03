@@ -45,11 +45,12 @@ body
 
 .lvf-bottom
 {
-    height: 204px;
+    height: 42px;
     position: relative;
-    top: -205px;
+    top: -42px;
     margin-bottom: -100%;
-    border-top: 1px solid #3c3b6e;
+    font-size: 90%;
+    line-height: 42px;
 }
 
 .lvf-grid_row

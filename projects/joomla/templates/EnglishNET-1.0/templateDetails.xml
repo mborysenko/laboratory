@@ -28,7 +28,9 @@
         <position>header</position>
         <position>popup_a</position>
         <position>popup_b</position>
-        <position>user</position>
+        <position>user_a</position>
+        <position>user_b</position>
+        <position>user_c</position>
         <position>navigation</position>
         <position>menu</position>
         <position>search</position>
@@ -37,11 +39,8 @@
         <position>left</position>
         <position>center</position>
         <position>right</position>
-        <position>bottom_a</position>
-        <position>bottom_b</position>
-        <position>bottom_c</position>
-        <position>bottom_d</position>
-        <position>footer</position>
+        <position>footer_a</position>
+        <position>footer_b</position>
         <position>copyright</position>
     </positions>
     <languages folder="language">
