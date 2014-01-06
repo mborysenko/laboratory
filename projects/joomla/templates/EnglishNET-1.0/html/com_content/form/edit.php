@@ -9,11 +9,11 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.calendar');
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
+//JHtml::_('behavior.keepalive');
+//JHtml::_('behavior.calendar');
+//JHtml::_('behavior.formvalidation');
+//JHtml::_('formbehavior.chosen', 'select');
+//JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
 
 // Create shortcut to parameters.
 $params = $this->state->get('params');
