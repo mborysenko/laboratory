@@ -31,10 +31,6 @@ $itemid = $app->input->getCmd('Itemid', '');
 
 $siteName = $app->getCfg('sitename');
 
-
-$doc->addScript('templates/' . $this->template . '/js/application.js');
-$doc->addScript('templates/' . $this->template . '/js/main.js');
-
 // Add Stylesheets
 $doc->addStyleSheet('templates/' . $this->template . '/css/reset.css');
 $doc->addStyleSheet('templates/' . $this->template . '/css/normalize.css');
@@ -370,5 +366,10 @@ if ($this->params->get('logoFile')) {
 
 </div>
 <jdoc:include type="modules" name="debug" style="none"/>
+
+<!-- Include javascript files at the bottom to prevent hanging up the page -->
+<script type="text/javascript" src="<?php echo 'templates/' . $this->template . '/js/application.js' ?>"></script>
+<script type="text/javascript" src="<?php echo 'templates/' . $this->template . '/js/main.js' ?>"></script>
+
 </body>
 </html>
