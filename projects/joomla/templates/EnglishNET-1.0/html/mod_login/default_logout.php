@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.keepalive');
 ?>
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" class="form-vertical">
 <?php if ($params->get('greeting')) : ?>

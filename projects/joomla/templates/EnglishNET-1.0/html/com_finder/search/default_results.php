@@ -9,12 +9,6 @@
 
 defined('_JEXEC') or die;
 
-// Activate the highlighter if enabled.
-if (!empty($this->query->highlight) && $this->params->get('highlight_terms', 1))
-{
-	JHtml::_('behavior.highlighter', $this->query->highlight);
-}
-
 // Get the application object.
 $app = JFactory::getApplication();
 

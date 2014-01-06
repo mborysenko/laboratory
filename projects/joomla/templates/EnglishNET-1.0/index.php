@@ -368,6 +368,7 @@ if ($this->params->get('logoFile')) {
 <jdoc:include type="modules" name="debug" style="none"/>
 
 <!-- Include javascript files at the bottom to prevent hanging up the page -->
+<script type="text/javascript" src="<?php echo 'templates/' . $this->template . '/js/library/jquery.debug.js' ?>"></script>
 <script type="text/javascript" src="<?php echo 'templates/' . $this->template . '/js/application.js' ?>"></script>
 <script type="text/javascript" src="<?php echo 'templates/' . $this->template . '/js/main.js' ?>"></script>
 

@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidation');
-
 if (isset($this->error)) : ?>
 	<div class="contact-error">
 		<?php echo $this->error; ?>

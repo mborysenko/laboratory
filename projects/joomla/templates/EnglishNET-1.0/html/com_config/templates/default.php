@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
 $user = JFactory::getUser();
 
 ?>
