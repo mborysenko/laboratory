@@ -17,8 +17,20 @@ module.exports = function (grunt) {
                 stripBanners: true
             },
             dist: {
-                src: ['js/**/*.js'],
-                dest: 'dist/<%= pkg.title || pkg.name %>/main.js'
+                files: {
+                    'js/template.js': ['js/**/*.js'],
+                }
+            }
+        },
+        cssmin: {
+            options: {
+                banner: '<%= banner %>',
+                keepSpecialComments: '0'
+            },
+            dist: {
+                files: {
+                    'css/template.min.css': ['css/**/*.css']
+                }
             }
         },
         uglify: {
@@ -26,8 +38,8 @@ module.exports = function (grunt) {
                 banner: '<%= banner %>'
             },
             dist: {
-                src: '<%= concat.dist.dest %>',
-                dest: 'dist/<%= pkg.name %>.min.js'
+                src: 'js/**/*.js',
+                dest: 'js/template.min.js'
             }
         },
         jshint: {
@@ -69,17 +81,36 @@ module.exports = function (grunt) {
             }
         },
         copy: {
-            main: {
+            debug: {
                 cwd: ".",
-                src: ["css/**", "html/**", "images/**", "js", "language", "*.php", "*.png", "*.xml"],
+                src: ["css/**", "html/**", "images/**", "js/**", "language/**", "*.php", "*.png", "*.xml"],
+                dest: "dist/"
+            },
+            release: {
+                cwd: ".",
+                src: ["css/template.min.css", "html/**", "images/**", "js/template.min.js", "language/**", "*.php", "*.png", "*.xml"],
                 dest: "dist/"
             }
+        },
+        clean: ['dist', 'js/template.min.js', 'css/template.min.css'],
+        compress: {
+            main: {
+                options: {
+                    archive: 'dist/<%= pkg.name || pkg.title%>-<%=pkg.version%>.zip',
+                    mode: 'zip',
+                    level: 9
+                },
+                cwd: 'dist/',
+                src: '**/*'
+            }
         }
+
     });
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -88,6 +119,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task.
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['clean', 'cssmin', 'uglify', 'copy:release', 'compress']);
+    grunt.registerTask('debug', ['clean', 'copy:debug', 'compress']);
 
 };
