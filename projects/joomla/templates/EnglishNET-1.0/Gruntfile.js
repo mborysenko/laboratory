@@ -71,7 +71,7 @@ module.exports = function (grunt) {
         copy: {
             main: {
                 cwd: ".",
-                src: ["css", "html", "images", "js", "language", "*.php", "*.png", "*.xml"],
+                src: ["css/**", "html/**", "images/**", "js", "language", "*.php", "*.png", "*.xml"],
                 dest: "dist/"
             }
         }
@@ -85,6 +85,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task.
     grunt.registerTask('default', ['build']);
