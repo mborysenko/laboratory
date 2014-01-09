@@ -1,125 +1,57 @@
-#body,
-{
-    /*min-width: 1024px;*/
+#body {
+  /*min-width: 1024px;*/
 }
-
-#header
-{
-    min-height: 53px;
-    padding: 12px 0;
+#logotype {
+  margin-bottom: 12px;
 }
-
-#search
-{
-    height: 52px;
+#header {
+  min-height: 53px;
+  padding: 12px 0;
 }
-
-.lvf-userpanel
-{
-    font-size: 90%;
-    background-color: white;
+#search {
+  height: 52px;
 }
-
-.lvf-userpanel_part
-{
-    background-color: white;
-    height: 32px;
-    line-height: 32px;
+.lvf-user {
+  font-size: 90%;
+  background-color: white;
 }
-
-#content
-{
+.lvf-user_box {
+  background-color: white;
 }
-
-.lvf-content_inner
-{
+.lvf-sidebar {
+  padding: 0 0 10em 0;
+  border-left: 1px solid #a61717;
 }
-
-.lvf-sidebar
-{
-    padding: 0 0 10em 0;
-    border-left: 1px solid #a61717;
+#breadcrumbs {
+  height: 52px;
 }
-
-#footer
-{
+#menu-target .lvf-submenu_layout {
+  position: absolute;
+  width: 100%;
 }
-
-.lvf-footer_inner
-{
+#menu-target {
+  position: relative;
+  height: 0;
 }
-
-#breadcrumbs
-{
-    height: 52px;
+.__add_border.__lvf_scheme_red {
+  border-bottom: 1px solid #a61717;
 }
-
-#navigation
-{}
-
-#menu-target .lvf-submenu_layout
-{
-    position: absolute;
-    width: 100%;
+#sidebar {
+  padding-bottom: 52px;
+  border-left: 1px solid #a61717;
 }
-
-#menu-target
-{
-    position: relative;
-    height: 0;
+dl.lvf-idiom {
+  color: white;
+  font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
+  font-weight: lighter;
 }
-
-.__add_border.__lvf_scheme_red
-{
-    border-bottom: 1px solid #a61717;
+dl.lvf-idiom dt {
+  font-size: 210%;
+  font-weight: lighter;
+  margin-bottom: 1.6em;
 }
-
-#sidebar
-{
-    padding-bottom: 52px;
-    border-left: 1px solid #a61717;
-}
-
-.__cfx
-{
-    *zoom: 1;
-}
-
-.__cfx:before,
-.__cfx:after
-{
-    display: table;
-    line-height: 0;
-    content: "";
-}
-
-.__cfx:after
-{
-    clear: both;
-}
-
-.__upper
-{
-    text-transform: uppercase;
-}
-
-dl.lvf-idiom
-{
-    color: white;
-    font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
-    font-weight: lighter;
-}
-
-dl.lvf-idiom dt
-{
-    font-size: 210%;
-    font-weight: lighter;
-    margin-bottom: 1.6em;
-}
-
-dl.lvf-idiom dd
-{
-    font-size: 120%;
-    line-height: 140%;
-    font-weight: lighter;
+dl.lvf-idiom dd {
+  font-size: 120%;
+  line-height: 140%;
+  font-weight: lighter;
 }

@@ -2,6 +2,7 @@
 {
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 .lvf-menu_item a
@@ -34,10 +35,17 @@
     background-color: #a61717;
 }
 
+.lvf-menu .lvf-menu.__deeper
+{
+    position: absolute;
+    top: 100%;
+    padding-bottom: 2em;
+}
+
 .lvf-menu.__deeper .lvf-menu_item a
 {
     text-transform: capitalize;
-    font-size: 120%;
+    font-size: 100%;
     color: white;
     font-family: "Segoe UI Light", "Segoe UI", Arial, Verdana, Tahome, serif;
     font-weight: lighter;
@@ -59,6 +67,12 @@
 .__horizontal .lvf-menu .lvf-menu_item
 {
     float: left;
+}
+
+.lvf-menu.__deeper.__horizontal .lvf-menu_item,
+.__horizontal .lvf-menu.__deeper .lvf-menu_item
+{
+    float: none;
 }
 
 /* Breadcrumbs */
@@ -103,3 +117,26 @@
     font-weight: bold;
 }
 /* /Breadcrumbs */
+
+/* Language Switcher */
+.lvf-lang
+{
+    margin: 0;
+    padding: 0 0.7em;
+}
+
+.lvf-lang.__with_icons .lvf-lang_item:first-child
+{
+    padding-left: 0;
+}
+
+.lvf-lang.__with_icons .lvf-lang_item:last-child
+{
+    padding-right: 0;
+}
+.lvf-lang.__with_icons .lvf-lang_item
+{
+    float: left;
+    padding: 0 0.35em;
+}
+/* /Language Switcher */
