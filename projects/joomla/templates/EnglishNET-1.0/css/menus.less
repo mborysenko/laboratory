@@ -5,12 +5,15 @@
     position: relative;
 }
 
+.lvf-menu_item
+{
+    padding: 1em 0;
+}
+
 .lvf-menu_item a
 {
+    padding: 0 1.5em;
     display: block;
-    padding: 0 14px;
-    height: 42px;
-    line-height: 42px;
     color: #223fa1;
     text-decoration: none;
     text-transform: uppercase;
@@ -22,11 +25,14 @@
 }
 
 .lvf-menu.__big .lvf-menu_item,
-.__big .lvf-menu_item a
+.__big .lvf-menu .lvf-menu_item
 {
-    padding: 0 1.5em;
-    height: 52px;
-    line-height: 52px;
+    padding: 1.5em 0;
+}
+
+.lvf-menu .lvf-menu_item.__has_children a
+{
+    padding:0 24px 0 1.5em;
 }
 
 .lvf-menu_item a:hover,
@@ -42,8 +48,13 @@
     padding-bottom: 2em;
 }
 
+.lvf-menu.__deeper .lvf-menu_item
+{
+    padding: 0.75em 0;
+}
 .lvf-menu.__deeper .lvf-menu_item a
 {
+    padding: 0 24px 0 1.5em;
     text-transform: capitalize;
     font-size: 100%;
     color: white;
@@ -54,6 +65,17 @@
 .lvf-menu.__deeper .lvf-menu_item a:hover
 {
     background-color: #0b2647;
+}
+
+.lvf-menu .lvf-menu_item.__has_children
+{
+    position: relative;
+}
+
+.lvf-menu .lvf-menu_item.__has_children .lvf-icon.__16x16
+{
+    position: absolute;
+    right: 4px;
 }
 
 .lvf-menu_item.__current a,
@@ -116,6 +138,7 @@
 {
     font-weight: bold;
 }
+
 /* /Breadcrumbs */
 
 /* Language Switcher */
@@ -134,9 +157,11 @@
 {
     padding-right: 0;
 }
+
 .lvf-lang.__with_icons .lvf-lang_item
 {
     float: left;
     padding: 0 0.35em;
 }
+
 /* /Language Switcher */
