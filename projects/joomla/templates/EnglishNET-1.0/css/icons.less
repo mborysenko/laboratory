@@ -1,8 +1,15 @@
 @import "mixins";
+
 .lvf-icon
 {
-    display: inline-block;
+    display: block;
     background: url("../images/icons.png") no-repeat;
+}
+
+a.lvf-icon,
+a.lvf-icon:hover
+{
+    text-decoration: none;
 }
 
 .__language
@@ -68,7 +75,8 @@
     .size(48px; 48px);
 }
 
-.__justify_middle
+.__justify_middle,
+.__justify_middle .lvf-icon,
 {
     position: relative;
     top: 50%;
@@ -84,7 +92,8 @@
     margin-top: -8px;
 }
 
-.__24x24.__justify_middle
+.__24x24.__justify_middle,
+.__justify_middle .__24x24
 {
     margin-top: -12px;
 }

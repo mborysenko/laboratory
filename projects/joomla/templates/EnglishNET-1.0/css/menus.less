@@ -1,3 +1,4 @@
+@import "mixins";
 .lvf-menu
 {
     margin: 0;
@@ -184,20 +185,28 @@
     padding: 0 0.7em;
 }
 
-.lvf-lang.__with_icons .lvf-lang_item:first-child
-{
-    padding-left: 0;
-}
-
 .lvf-lang.__with_icons .lvf-lang_item:last-child
 {
-    padding-right: 0;
+    margin-right: 0;
 }
 
 .lvf-lang.__with_icons .lvf-lang_item
 {
     float: left;
-    padding: 0 0.35em;
+    margin-right: 0.35em;
+    .size(28px; 28px);
+    border: 2px solid transparent;
+}
+
+.lvf-lang.__with_icons .lvf-lang_item .lvf-icon
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lvf-lang.__with_icons .lvf-lang_item:hover
+{
+    border-color: #a61717;
 }
 
 /* /Language Switcher */
