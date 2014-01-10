@@ -5,14 +5,9 @@
     position: relative;
 }
 
-.lvf-menu_item
+.lvf-menu .lvf-menu_link
 {
-    padding: 1em 0;
-}
-
-.lvf-menu_item a
-{
-    padding: 0 1.5em;
+    padding: 0.75em 1.5em;
     display: block;
     color: #223fa1;
     text-decoration: none;
@@ -24,15 +19,28 @@
     padding: 12px 0;
 }
 
-.lvf-menu.__big .lvf-menu_item,
-.__big .lvf-menu .lvf-menu_item
+.lvf-menu.__big .lvf-menu_link,
+.__big .lvf-menu .lvf-menu_link
 {
-    padding: 1.5em 0;
+    padding: 1.25em 2em;
 }
 
-.lvf-menu .lvf-menu_item.__has_children a
+.lvf-menu.__normal .lvf-menu_link,
+.__normal .lvf-menu .lvf-menu_link
 {
-    padding:0 24px 0 1.5em;
+    padding: 1 1.5em;
+}
+
+.lvf-menu_item.__has_children .lvf-menu_link
+{
+    position: relative;
+    padding-right: 36px;
+}
+
+.lvf-menu .lvf-menu_item.__has_children .lvf-menu_text
+{
+    display: block;
+    text-wrap: none;
 }
 
 .lvf-menu_item a:hover,
@@ -41,20 +49,42 @@
     background-color: #a61717;
 }
 
+.lvf-menu .lvf-menu_holder
+{
+    position: absolute;
+    min-width: 100%;
+}
+
+.lvf-menu_holder .lvf-menu_holder.__lvl1
+{
+    position: absolute;
+    left: 100%;
+    min-height: 100%;
+    min-width: 100%;
+}
+
 .lvf-menu .lvf-menu.__deeper
 {
     position: absolute;
-    top: 100%;
-    padding-bottom: 2em;
+    min-width: 100%;
+    padding: 0 0 2em 0;
 }
 
-.lvf-menu.__deeper .lvf-menu_item
+.lvf-menu .lvf-menu.__deeper.__lvl0
 {
-    padding: 0.75em 0;
+    top: 0;
 }
-.lvf-menu.__deeper .lvf-menu_item a
+
+.lvf-menu .lvf-menu.__deeper.__lvl1
 {
-    padding: 0 24px 0 1.5em;
+    top: 0;
+    left: 100%;
+    background-color: #0b2647;
+}
+
+.lvf-menu.__deeper .lvf-menu_link
+{
+    padding: 0.75em 1.5em;
     text-transform: capitalize;
     font-size: 100%;
     color: white;
@@ -67,6 +97,12 @@
     background-color: #0b2647;
 }
 
+.lvf-menu.__deeper.__lvl1 .lvf-menu_link:hover
+{
+    background-color: #a61717;
+    color: #fff;
+}
+
 .lvf-menu .lvf-menu_item.__has_children
 {
     position: relative;
@@ -75,7 +111,7 @@
 .lvf-menu .lvf-menu_item.__has_children .lvf-icon.__16x16
 {
     position: absolute;
-    right: 4px;
+    right: 8px;
 }
 
 .lvf-menu_item.__current a,
