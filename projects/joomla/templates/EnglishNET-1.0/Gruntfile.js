@@ -83,12 +83,12 @@ module.exports = function (grunt) {
         copy: {
             debug: {
                 cwd: ".",
-                src: ["css/**", "html/**", "images/**", "js/**", "language/**", "*.php", "*.png", "*.xml"],
+                src: ["css/**", "html/**", "images/**", "js/**", "language/**", "*.php", "*.png", "*.xml", "*.ico"],
                 dest: "dist/"
             },
             release: {
                 cwd: ".",
-                src: ["css/template.min.css", "html/**", "images/**", "js/template.min.js", "language/**", "*.php", "*.png", "*.xml"],
+                src: ["css/template.min.css", "html/**", "images/**", "js/template.min.js", "language/**", "*.php", "*.png", "*.xml", "*.ico"],
                 dest: "dist/"
             }
         },

@@ -32,7 +32,8 @@
     padding: 1 1.5em;
 }
 
-.lvf-menu_item.__has_children .lvf-menu_link
+.lvf-menu_item.__has_children .lvf-menu_link,
+.lvf-menu.__deeper .lvf-menu_item.__has_children .lvf-menu_link
 {
     position: relative;
     padding-right: 36px;
@@ -41,7 +42,7 @@
 .lvf-menu .lvf-menu_item.__has_children .lvf-menu_text
 {
     display: block;
-    text-wrap: none;
+    white-space: nowrap;
 }
 
 .lvf-menu_item a:hover,
@@ -53,33 +54,33 @@
 .lvf-menu .lvf-menu_holder
 {
     position: absolute;
+}
+
+.lvf-menu .lvf-menu_holder.__lvl0
+{
     min-width: 100%;
 }
 
 .lvf-menu_holder .lvf-menu_holder.__lvl1
 {
     position: absolute;
+    top: 0;
     left: 100%;
     min-height: 100%;
-    min-width: 100%;
 }
 
 .lvf-menu .lvf-menu.__deeper
 {
-    position: absolute;
     min-width: 100%;
     padding: 0 0 2em 0;
 }
 
 .lvf-menu .lvf-menu.__deeper.__lvl0
 {
-    top: 0;
 }
 
 .lvf-menu .lvf-menu.__deeper.__lvl1
 {
-    top: 0;
-    left: 100%;
     background-color: #0b2647;
 }
 
