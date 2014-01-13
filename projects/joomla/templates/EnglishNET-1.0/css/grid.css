@@ -33,6 +33,11 @@ body {
   line-height: 42px;
 }
 .lvf-grid_row {
-  max-width: 1180px;
   margin: 0 auto;
+}
+table.lvf-grid td {
+  vertical-align: middle;
+}
+.lvf-grid_row_label {
+  padding-right: 0.5em;
 }

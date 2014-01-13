@@ -1,4 +1,5 @@
 @import "mixins";
+@import "environment";
 .lvf-menu
 {
     margin: 0;
@@ -205,9 +206,15 @@
     margin-right: auto;
 }
 
+.lvf-lang.__with_icons .lvf-lang_item.__active,
+.lvf-lang.__with_icons .lvf-lang_item.__active:hover
+{
+    border-color: @lvf-red;
+}
+
 .lvf-lang.__with_icons .lvf-lang_item:hover
 {
-    border-color: #a61717;
+    border-color: @lvf-blue;
 }
 
 /* /Language Switcher */

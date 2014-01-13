@@ -18,7 +18,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'js/template.js': ['js/**/*.js'],
+                    'js/template.js': ['js/**/*.js']
                 }
             }
         },
@@ -29,7 +29,17 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'css/template.min.css': ['css/**/*.css']
+                    'css/template.min.css': [
+                        'css/reset.css',
+                        'css/normalize.css',
+                        'css/bootstrap.css',
+                        'css/grid.css',
+                        'css/main.css',
+                        'css/styles.css',
+                        'css/icons.css',
+                        'css/social.css',
+                        'css/menus.css'
+                    ]
                 }
             }
         },

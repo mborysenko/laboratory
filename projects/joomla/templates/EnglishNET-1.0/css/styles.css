@@ -8,10 +8,10 @@ td {
   float: left;
 }
 .__hide {
-  display: none;
+  display: none !important;
 }
 .__show {
-  display: block;
+  display: block !important;
 }
 .__invisible {
   visibility: hidden;

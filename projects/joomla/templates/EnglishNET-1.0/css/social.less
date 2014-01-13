@@ -1,3 +1,5 @@
+@import "environment";
+
 .lvf-social_links
 {
 }
@@ -93,4 +95,80 @@
 .lvf-link.__social.__ok:hover
 {
     background-color: #cf6700;
+}
+
+.lvf-fb-like
+{
+    display: inline-block;
+}
+
+.lvf-fb-like_box
+{
+    display: inline-block;
+    padding: 4px;
+    height: 16px;
+    line-height: 16px;
+    border: 1px solid @fb-color;
+}
+
+.lvf-fb-like_control
+{
+    position: relative;
+    background-color: @fb-color;
+    padding-left: 25px;
+}
+
+.lvf-fb-like_control .lvf-icon.__16x16
+{
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    margin-top: -8px;
+}
+
+.lvf-fb-like_balloon
+{
+    margin-left: 5px;
+    position: relative;
+    background-color: @white;
+    border: 1px solid @fb-color;
+}
+
+.lvf-fb-like_balloon:before,
+.lvf-fb-like_balloon:after
+{
+    left: -5px;
+    top: 50%;
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    border-style: solid;
+}
+
+.lvf-fb-like_balloon:before
+{
+    left: -5px;
+    margin-top: -5px;
+    border-width: 5px 5px 5px 0;
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    border-style: solid;
+    border-color: transparent @fb-color;
+}
+
+.lvf-fb-like_balloon:after
+{
+    left: -4px;
+    margin-top: -4px;
+    border-width: 4px 4px 4px 0;
+    border-color: transparent @white;
+}
+
+
+.lvf-fb-like_balloon_text
+{
+    color: @black;
 }
