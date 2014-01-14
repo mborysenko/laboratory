@@ -46,15 +46,23 @@
     white-space: nowrap;
 }
 
-.lvf-menu_item a:hover,
-.lvf-menu_item.__current
+.lvf-menu_item.__hovered>.lvf-menu_link
 {
-    background-color: #a61717;
+    background-color: @lvf-red;
+    color: @white;
+    text-decoration: none;
+}
+
+.lvf-menu_item.__has_children.__hovered>.lvf-menu_holder
+{
+    background-color: @lvf-red;
+    display: block;
 }
 
 .lvf-menu .lvf-menu_holder
 {
     position: absolute;
+    display: none;
 }
 
 .lvf-menu .lvf-menu_holder.__lvl0
@@ -82,7 +90,7 @@
 
 .lvf-menu .lvf-menu.__deeper.__lvl1
 {
-    background-color: #0b2647;
+    background-color: @lvf-blue;
 }
 
 .lvf-menu.__deeper .lvf-menu_link
@@ -95,9 +103,9 @@
     font-weight: lighter;
 }
 
-.lvf-menu.__deeper .lvf-menu_item a:hover
+.lvf-menu.__deeper .lvf-menu_item.__hovered .lvf-menu_link
 {
-    background-color: #0b2647;
+    background-color: @lvf-blue;
 }
 
 .lvf-menu.__deeper.__lvl1 .lvf-menu_link:hover
@@ -115,13 +123,6 @@
 {
     position: absolute;
     right: 8px;
-}
-
-.lvf-menu_item.__current a,
-.lvf-menu_item a:hover
-{
-    color: white;
-    text-decoration: none;
 }
 
 .lvf-menu.__horizontal .lvf-menu_item,

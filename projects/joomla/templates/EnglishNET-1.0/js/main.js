@@ -8,9 +8,8 @@
 
 (function ($) {
     $(document).ready(function () {
-        var app = new Application();
+        var app = new LVF.Application();
 
-        app.initialize();
         app.run();
     })
 })(jQuery);
