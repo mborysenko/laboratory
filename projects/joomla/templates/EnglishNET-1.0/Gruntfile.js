@@ -113,9 +113,42 @@ module.exports = function (grunt) {
                 cwd: 'dist/',
                 src: '**/*'
             }
-        }
+        },
 
+        less: {
+            development: {
+                options: {
+                    paths: "css"
+                },
+                files: {
+                    "css/grid.css": "css/grid.less",
+                    "css/icons.css": "css/icons.less",
+                    "css/main.css": "css/main.less",
+                    "css/menus.css": "css/menus.less",
+                    "css/social.css": "css/social.less",
+                    "css/styles.css": "css/styles.less"
+                }
+            },
+            release: {
+                options: {
+                    paths: "css"
+                },
+                files: {
+                    "css/template.min.css": [
+                        "css/grid.less",
+                        "css/icons.less",
+                        "css/main.less",
+                        "css/menus.less",
+                        "css/social.less",
+                        "css/styles.less"
+                    ]
+                }
+            }
+
+        }
     });
+
+
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-concat');
@@ -127,9 +160,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     // Default task.
     grunt.registerTask('default', ['clean', 'cssmin', 'uglify', 'copy:release', 'compress']);
+    grunt.registerTask('build', ['less']);
     grunt.registerTask('debug', ['clean', 'copy:debug', 'compress']);
 
 };
