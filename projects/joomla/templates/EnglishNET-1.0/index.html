@@ -85,21 +85,31 @@
             </div>
 
             <div class="lvf-info">
-                <div class="lvf-fb-like">
-
-                    <div class="lvf-fb-like_control lvf-fb-like_box">
+                <!-- Facebook -->
+                <div class="lvf-social_control lvf-like __fb">
+                    <div class="lvf-like_action lvf-like_box">
                         <span class="lvf-icon __16x16 __fb-done __hide"></span>
                         <span class="lvf-icon __16x16 __fb-undo  __hide"></span>
                         <span class="lvf-icon __16x16 __fb __cover"></span>
-                        <span class="lvf-fb-like_control_text">Like</span>
+                        <span class="__text __cursor">Like</span>
                     </div>
-
-                    <div class="lvf-fb-like_balloon lvf-fb-like_box">
-                        <span class="__call_out"></span>
-                        <span class="lvf-fb-like_balloon_text __cursor_">25</span>
+                    <div class="lvf-like_count lvf-like_box">
+                        <span class="__text">25</span>
                     </div>
-
                 </div>
+                <!-- /Facebook -->
+
+                <!-- Google+ -->
+                <div class="lvf-social_control lvf-like __gplus">
+                    <div class="lvf-like_action lvf-like_box">
+                        <span class="lvf-icon __16x16 __gplus __cover"></span>
+                        <span class="__text __cursor">+1</span>
+                    </div>
+                    <div class="lvf-like_count lvf-like_box">
+                        <span class="__text">251</span>
+                    </div>
+                </div>
+                <!-- Google+ -->
             </div>
 
         </div>
@@ -247,6 +257,17 @@
 
         <div id="search" class="span3">
             <!--<jdoc:include type="modules" name="search" style="none"/>-->
+            <div class="lvf-search clearfix">
+                <div class="lvf-search_inner">
+                    <form action="/" method="post" class="form-inline">
+                        <input id="mod-search-searchword" name="searchword" class="lvf-search_input __wide" maxlength="20" type="text" value="Search..." onblur="if (this.value == '') this.value = 'Search...';" onfocus="if (this.value == 'Search...') this.value = '';">
+                        <input type="hidden" name="task" value="search">
+                        <input type="hidden" name="task" value="search">
+                        <input type="hidden" name="option" value="com_search">
+                        <input type="hidden" name="Itemid" value="110">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -291,7 +312,7 @@
     </div>
 </div>
 
-<div class="lvf-grid_container container-fluid">
+<div class="lvf-grid_container">
     <div class="lvf-grid_row">
         <ul class="lvf-pathway">
             <li><a href="/">Home</a><span class="lvf-pathway_divider">/</span></li>
@@ -310,7 +331,7 @@
 </div>
 <div class="lvf-grid_container">
 
-    <div class="lvf-grid_row">
+    <div class="lvf-grid_row container-fluid">
         <div class="row-fluid clearfix">
 
             <!--<div class="span2 __hide">-->
@@ -337,76 +358,74 @@
             </div>
         </div>
 
-        <div class="container-fluid hidden">
-            <div id="offerings" class="row-fluid">
-                <div class="span3">
+        <div id="offerings" class="row-fluid">
+            <div class="span3">
 
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Lessons via Video Conference</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Enjoy live online English classes with real teachers at home, at your office, or
-                                wherever there is an internet connection. No more snow, no more traffic jams, no
-                                more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can
-                                study whenever it is convenient.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span3">
-
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Choose your Price</span>
-                        </div>
-
-                        <div class="lvf-offering_text">
-                            <p>
-                                Study privately for the fastest results, or reduce the cost by studying with up to
-                                three other students.
-                            </p>
-                            <a href="#">Course Options</a>
-                        </div>
+                <div class="lvf-offering">
+                    <div class="lvf-offering_title lvf-heading __h3">
+                        <span>Lessons via Video Conference</span>
                     </div>
 
+                    <div class="lvf-offering_text">
+                        <p>
+                            Enjoy live online English classes with real teachers at home, at your office, or
+                            wherever there is an internet connection. No more snow, no more traffic jams, no
+                            more crowded buses, no more large, noisy classrooms. And with EnglishNET, you can
+                            study whenever it is convenient.
+                        </p>
+                    </div>
                 </div>
-                <div class="span3">
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Optional Reading and Writing</span>
-                        </div>
+            </div>
+            <div class="span3">
 
-                        <div class="lvf-offering_text">
-                            <p>
-                                Reading and writing practice is free at EnglishNET. Every week, there are new
-                                articles to read and comment on. Your comments are corrected by our teachers. There
-                                are also weekly writing contests.
-                            </p>
-                        </div>
+                <div class="lvf-offering">
+                    <div class="lvf-offering_title lvf-heading __h3">
+                        <span>Choose your Price</span>
                     </div>
 
+                    <div class="lvf-offering_text">
+                        <p>
+                            Study privately for the fastest results, or reduce the cost by studying with up to
+                            three other students.
+                        </p>
+                        <a href="#">Course Options</a>
+                    </div>
                 </div>
-                <div class="span3">
-                    <div class="lvf-offering">
-                        <div class="lvf-offering_title lvf-heading __h3">
-                            <span>Bilingual Learning System</span>
-                        </div>
 
-                        <div class="lvf-offering_text">
-                            <p>
-                                Our system works! Understand and drill new grammar and concepts with a Ukrainian or
-                                Russian teacher, and then practice what you have learned with a native English
-                                teacher. You may choose only native or non-native teachers for your online English
-                                classes if you would like.
-                            </p>
-                            <a href="#">Our Team</a>
-                        </div>
+            </div>
+            <div class="span3">
+                <div class="lvf-offering">
+                    <div class="lvf-offering_title lvf-heading __h3">
+                        <span>Optional Reading and Writing</span>
                     </div>
 
+                    <div class="lvf-offering_text">
+                        <p>
+                            Reading and writing practice is free at EnglishNET. Every week, there are new
+                            articles to read and comment on. Your comments are corrected by our teachers. There
+                            are also weekly writing contests.
+                        </p>
+                    </div>
                 </div>
+
+            </div>
+            <div class="span3">
+                <div class="lvf-offering">
+                    <div class="lvf-offering_title lvf-heading __h3">
+                        <span>Bilingual Learning System</span>
+                    </div>
+
+                    <div class="lvf-offering_text">
+                        <p>
+                            Our system works! Understand and drill new grammar and concepts with a Ukrainian or
+                            Russian teacher, and then practice what you have learned with a native English
+                            teacher. You may choose only native or non-native teachers for your online English
+                            classes if you would like.
+                        </p>
+                        <a href="#">Our Team</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
