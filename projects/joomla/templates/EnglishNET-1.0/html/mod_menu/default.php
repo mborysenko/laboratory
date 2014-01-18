@@ -19,7 +19,7 @@ if ($params->get('tag_id') != null) {
 
 ?>
 
-<ul class="lvf-menu clearfix"<?php if (isset($tag)) { ?> id="<?php echo $tag ?>"<?php } ?>>
+<ul class="lvf-menu __cfx"<?php if (isset($tag)) { ?> id="<?php echo $tag ?>"<?php } ?>>
     <?php
     foreach ($list as $i => &$item) :
         $class = 'lvf-menu_item item-' . $item->id;
@@ -42,10 +42,9 @@ if ($params->get('tag_id') != null) {
             $class .= ' divider';
         }
 
-//	if ($item->deeper)
-//	{
-//		$class .= ' deeper';
-//	}
+        if ($item->deeper) {
+            $class .= ' __has_children';
+        }
 
         if ($item->parent) {
             $class .= ' parent';
@@ -73,7 +72,7 @@ if ($params->get('tag_id') != null) {
 
         // The next item is deeper.
         if ($item->deeper) {
-            echo '<ul class="hidden lvf-menu __deeper">';
+            echo '<ul class="__hide lvf-menu __lvl0 __deeper">';
         } // The next item is shallower.
         elseif ($item->shallower) {
             echo '</li>';
@@ -83,4 +82,5 @@ if ($params->get('tag_id') != null) {
             echo '</li>';
         }
     endforeach;
-    ?></ul>
+    ?>
+</ul>
