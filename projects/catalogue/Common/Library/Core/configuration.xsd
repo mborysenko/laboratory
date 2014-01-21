@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="Schemas/applicationHost.xsd"/>
+	<xs:include schemaLocation="Schemas/manifest.xsd"/>
+	<xs:include schemaLocation="Schemas/hosting.xsd"/>
+	
+	<xs:element name="configuration" type="typeConfiguration" />
+
+	<xs:complexType name="typeConfiguration">
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:choice>
+				<xs:element type="typeAppSettings" name="appSettings" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typePages" name="pages" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeInclude" name="include" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element type="typeResourceGroups" name="resourceGroups" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeExtensions" name="extensions" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeCustomSections" name="customSections" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typePackages" name="packages" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeApplicationHost" name="applicationHost" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeApplicationSuite" name="applicationSuite" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeHosting" name="hosting" minOccurs="0" maxOccurs="1" />
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="merge" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="generated" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	
+	<xs:complexType name="typeAppSettings">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="setting" minOccurs="0">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="value" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typePages">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="page" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="preloadPackages" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="package" minOccurs="0">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="optional" />
+											<xs:attribute name="url" type="xs:string" use="required" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="url" type="xs:string" use="required" />
+					<xs:attribute name="view" type="xs:string" use="optional" />
+					<xs:attribute name="resource" type="xs:string" use="optional" />
+					<xs:attribute name="title" type="xs:string" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeResourceGroups">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="resourceGroup">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="files" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence minOccurs="0">
+									<xs:element minOccurs="0" maxOccurs="unbounded" name="file">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="required" />
+											<xs:attribute name="modification" type="xs:string" use="optional" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="dependencies">
+							<xs:complexType>
+								<xs:sequence minOccurs="0">
+									<xs:element maxOccurs="unbounded" name="dependency">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="required" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="packaging" type="typeGroupPackaging" use="optional" default="auto"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeInclude">
+		<xs:sequence>
+			<xs:element name="configuration" type="typeConfiguration" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="src" type="xs:string" use="required" />
+		<xs:attribute name="modification" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="typeExtensions">
+		<xs:sequence>
+			<xs:element name="resourceExtension" maxOccurs="unbounded" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="insert" maxOccurs="unbounded" minOccurs="0">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:string" use="required"/>
+								<xs:attribute name="position" type="typeInsertPosition"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="for" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeCustomSections">
+		<xs:sequence minOccurs="0">
+			<xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typePackages">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="resourceGroups" type="typeResourceGroups" />
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="recursive" type="typePackageRecursive" use="optional" default="auto"/>
+					<xs:attribute name="src" type="xs:string" use="optional"/>
+					<xs:attribute name="modification" type="xs:string" use="optional" />
+					<xs:attribute name="location" type="xs:string" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="typeInsertPosition">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="before"/>
+			<xs:enumeration value="after"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="typeGroupPackaging">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="auto"/>
+			<xs:enumeration value="exclude"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="typePackageRecursive">
+		<xs:annotation>
+			<xs:documentation>
+				Defines whether dependencies of the specified resource groups should be included too:
+				'false' means the dependencies should not be included;
+				'auto' (default) means the dependencies should be included, unless another package has them included;
+				'true' forces all dependedncies to be included. Use with causion: may result in resources included in multiple groups.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="auto"/>
+			<xs:enumeration value="false"/>
+			<xs:enumeration value="true"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

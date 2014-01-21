@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"  ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd">
+	<appSettings>
+		<setting name="version" value="0.0.0.0" />
+		<setting name="debug" value="false"/>
+		<setting name="corePath" value="../" />
+		<setting name="coreVersion" value="0.0.0.0" />
+		<!--<setting name="culture" value="nl-NL"/>-->
+	</appSettings>
+
+	<pages>
+		<page url="*" resource="SDL.Client.UI.ApplicationHost.Views.Frame.Init" view="SDL.Client.UI.ApplicationHost.Views.Frame" title="SDL">
+			<preloadPackages>
+				<package name="SDL.Client.UI.ApplicationHost" url="Packages/SDL.Client.UI.ApplicationHost.txt"/>
+				<package name="SDL.UI.Core" url="~/Library/UI/Core/Packages/SDL.UI.Core.js"/>
+				<package name="SDL.UI.Core.Knockout" url="~/Library/UI/Core.Knockout/Packages/SDL.UI.Core.Knockout.js"/>
+			</preloadPackages>
+		</page>
+	</pages>
+
+	<!-- applications configuration -->
+	<include src="../../settings.xml"/>
+
+	<!-- UI library configuration -->
+	<include src="~/configuration.xml"/>
+
+	<!-- Application's configuration -->
+	<include src="_Config.xml" />
+
+	<packages>
+		<package name="SDL.Client.UI.ApplicationHost">
+			<resourceGroups>
+				<resourceGroup name="SDL.Client.UI.ApplicationHost"/>
+			</resourceGroups>
+		</package>
+	</packages>
+</configuration>

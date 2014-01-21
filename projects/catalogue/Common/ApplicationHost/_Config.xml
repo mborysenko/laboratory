@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd">
+
+	<!-- ApplicationHost view -->
+	<include src="ApplicationHost/_Config.xml" />
+	
+</configuration>

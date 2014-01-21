@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd">
+
+	<packages>
+
+		<package name="SDL.Client.Init" recursive="true">
+			<resourceGroups>
+				<resourceGroup name="SDL.Client.Init"/>
+			</resourceGroups>
+		</package>
+
+		<package name="SDL.Client.Core" recursive="auto">
+			<resourceGroups>
+				<resourceGroup name="SDL.Client.Exception"/>
+				<resourceGroup name="SDL.Client.MessageCenter"/>
+				<resourceGroup name="SDL.Client.Libraries.JQuery" />
+				<resourceGroup name="SDL.Client.Libraries.SDL.JQuery" />
+				<resourceGroup name="SDL.Client.Types.Base" />
+				<resourceGroup name="SDL.Client.Diagnostics.Assert" />
+				<resourceGroup name="SDL.Client.Event.Event" />
+				<resourceGroup name="SDL.Client.Types.Array" />
+				<resourceGroup name="SDL.Client.Types.Function" />
+				<resourceGroup name="SDL.Client.Types.OO" />
+				<resourceGroup name="SDL.Client.Types.Object" />
+				<resourceGroup name="SDL.Client.Types.DisposableObject" />
+				<resourceGroup name="SDL.Client.Types.ObjectWithEvents" />
+				<resourceGroup name="SDL.Client.Event.EventRegister" />
+				<resourceGroup name="SDL.Client.Types.RegExp" />
+				<resourceGroup name="SDL.Client.Types.Url" />
+				<resourceGroup name="SDL.Client.Core"/>
+			</resourceGroups>
+		</package>
+
+		<package name="SDL.Client.Models" recursive="auto">
+			<resourceGroups>
+				<resourceGroup name="SDL.Client.Models"/>
+				<resourceGroup name="SDL.Client.Repository"/>
+				<!-- model extensions -->
+				<resourceGroup name="SDL.Client.Models.System"/>
+				<resourceGroup name="SDL.Client.Models.URL"/>
+				<resourceGroup name="SDL.Client.Models.Clipboard"/>
+				<resourceGroup name="SDL.Client.Models.MessageCenter"/>
+			</resourceGroups>
+		</package>
+
+		<package name="SDL.Client.Models.ModelsClient" recursive="auto">
+			<resourceGroups>
+				<resourceGroup name="SDL.Client.Models.ModelsClient"/>
+			</resourceGroups>
+		</package>
+
+	</packages>
+
+</configuration>

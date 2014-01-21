@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sdl.com/2013/ApplicationHost" xmlns:apphost="http://www.sdl.com/2013/ApplicationHost"
+	attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:import id="core" schemaLocation="..\..\..\SDL.Client\SDL.Client.Core\configuration.xsd"/>
+
+	<xs:element name="navigation" type="apphost:typeNavigation" />
+
+	<xs:complexType name="typeNavigation">
+		<xs:annotation>
+			<xs:documentation>
+				Defines navigation structure for application host
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:choice>
+				<xs:element name="navigationGroup">
+					<xs:annotation>
+						<xs:documentation>
+							Defines a group of navigation items dsplayed in the application host.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:all minOccurs="0">
+							<xs:element type="apphost:typeTranslations" name="translations" minOccurs="0"/>
+							<xs:element name="navigationItems" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>
+										Defines a list of navigation items dsplayed in the navigation group.
+									</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="navigationItem">
+											<xs:annotation>
+												<xs:documentation>
+													Defines a navigation item dsplayed in the navigation group.
+												</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element type="apphost:typeTranslations" name="translations" minOccurs="0"/>
+												</xs:sequence>
+												<xs:attribute name="applicationEntryPointId" type="xs:string" use="required">
+													<xs:annotation>
+														<xs:documentation>
+															References an application entry defined by a hosted application. Navigation item will be built based on the referenced application entry.
+														</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="applicationSuiteId" type="xs:string" use="optional">
+													<xs:annotation>
+														<xs:documentation>
+															Defines the parent application of a referenced application entry point defined with 'applicationEntryPointId'.
+														</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="title" type="xs:string" use="optional">
+													<xs:annotation>
+														<xs:documentation>Text displayed for the navigation item</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="titleResource" type="apphost:typeNameStringResource" use="optional">
+													<xs:annotation>
+														<xs:documentation>One of the predefined string resources used for translating the name of the navigation item.</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="icon" type="xs:string" use="optional">
+													<xs:annotation>
+														<xs:documentation>Defines the location of the navigation item icon</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="external" type="xs:boolean" use="optional">
+													<xs:annotation>
+														<xs:documentation>If set to 'true' the corresponding application entry url will be opened in a new browser window or tab</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="type" type="typeApplicationEntryPointType" use="optional"/>
+												<xs:attribute name="contextual" type="xs:boolean" use="optional">
+													<xs:annotation>
+														<xs:documentation>Contextual navigation items will only be shown when selected using setActiveApplicationEntryPoint() method call.</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="overlay" type="xs:boolean" use="optional">
+													<xs:annotation>
+														<xs:documentation>Indicates whether the application entry will be overlayed by the navigation pane</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="id" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>
+									Defines an identifier for the navigation group.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="title" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>Name of the navigation group</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="applicationEntryPointGroupId" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>
+									References an application entry point group defined by a hosted application. Navigation group will be built based on the referenced application entry group.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="applicationSuiteId" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>
+									Defines the parent application of a referenced application entry point group defined with 'applicationEntryPointGroupId'.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeTranslations">
+		<xs:annotation>
+			<xs:documentation>
+				Defines translations for the name
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="title">
+				<xs:annotation>
+					<xs:documentation>
+						Defines name for the specified language
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="lang" use="required" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="typeNameStringResource">
+		<xs:annotation>
+			<xs:documentation>
+				Defines when the authentication page is loaded.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="apphost.home"/>
+			<xs:enumeration value="apphost.settings"/>
+			<xs:enumeration value="apphost.activities"/>
+			<xs:enumeration value="apphost.help"/>
+			<xs:enumeration value="apphost.about"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

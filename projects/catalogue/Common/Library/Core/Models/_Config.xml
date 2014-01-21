@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+	<!-- Base Package -->
+	<include src="Base/_Config.xml" />
+
+	<include src="System/_Config.xml" />
+	<include src="Clipboard/_Config.xml" />
+
+	<!-- MessageCenter Package -->
+	<include src="MessageCenter/_Config.xml" />
+
+	<!-- URL Package -->
+	<include src="URL/_Config.xml" />
+	<!-- Entire Models Package -->
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Models.Classes">
+			<files>
+				<file name="MarshallableArray.js"/>
+				<file name="MarshallableObject.js"/>
+				<file name="IdentifiableObject.js"/>
+				<file name="ModelObject.js"/>
+				<file name="CacheableObject.js"/>
+				<file name="LoadableObject.js"/>
+				<file name="UpdatableObject.js"/>
+				<file name="UpdatableListObject.js"/>
+				<file name="Navigator.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.OO"/>
+				<dependency name="SDL.Client.Types.Object"/>
+				<dependency name="SDL.Client.Exception"/>
+				<dependency name="SDL.Client.MessageCenter"/>
+				<dependency name="SDL.Client.Types.ObjectWithEvents"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Models">
+			<files>
+				<file name="Models.js"/>
+				<file name="ModelFactory.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Models.Classes"/>				
+				<dependency name="SDL.Client.Repository"/>
+			</dependencies>
+		</resourceGroup>		
+		<resourceGroup name="SDL.Client.Models.ModelsClient">
+			<files>
+				<file name="ModelsClient.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

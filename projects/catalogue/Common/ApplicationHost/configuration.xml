@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
+  <appSettings>
+    <setting name="version" value="1.1.0.81" />
+    <setting name="debug" value="false" />
+    <setting name="corePath" value="../" />
+    <setting name="coreVersion" value="1.1.0.81" />
+    <!--<setting name="culture" value="nl-NL"/>-->
+  </appSettings>
+  <pages>
+    <page url="*" resource="SDL.Client.UI.ApplicationHost.Views.Frame.Init" view="SDL.Client.UI.ApplicationHost.Views.Frame" title="SDL">
+      <preloadPackages>
+        <package name="SDL.Client.UI.ApplicationHost" url="Packages/SDL.Client.UI.ApplicationHost.txt" />
+        <package name="SDL.UI.Core" url="~/Library/UI/Core/Packages/SDL.UI.Core.js" />
+        <package name="SDL.UI.Core.Knockout" url="~/Library/UI/Core.Knockout/Packages/SDL.UI.Core.Knockout.js" />
+      </preloadPackages>
+    </page>
+  </pages>
+  <!-- applications configuration -->
+  <include src="../../settings.xml" />
+  <!-- UI library configuration -->
+  <include src="~/configuration.xml" />
+  <!-- Application's configuration -->
+  <include src="_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <!-- ApplicationHost view -->
+      <include src="ApplicationHost/_Config.xml">
+        <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <!-- Views -->
+          <include src="ApplicationHost/Views/_Config.xml">
+            <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <!-- Frame view -->
+              <include src="ApplicationHost/Views/Frame/_Config.xml">
+                <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  <resourceGroups>
+                    <resourceGroup name="SDL.Client.UI.ApplicationHost.Views.Frame">
+                      <files>
+                        <file name="ApplicationHost/Views/Frame/Frame.js" />
+                        <file name="ApplicationHost/Views/Frame/styles/Frame.css" />
+                        <file name="ApplicationHost/Views/Frame/cultures/frame.js" />
+                        <file name="ApplicationHost/Views/Frame/cultures/frame.{CULTURE}.js" />
+                        <file name="ApplicationHost/Views/Frame/Frame.htm" />
+                      </files>
+                      <dependencies>
+                        <dependency name="SDL.Client.UI.ApplicationHost.ViewModels" />
+                        <dependency name="SDL.UI.Core.Views.ViewBase" />
+                        <dependency name="SDL.UI.Core.Knockout.Renderers" />
+                        <dependency name="SDL.Client.Libraries.SDL.Globalize" />
+                      </dependencies>
+                    </resourceGroup>
+                    <resourceGroup name="SDL.Client.UI.ApplicationHost.Views.Frame.Init">
+                      <dependencies>
+                        <dependency name="SDL.Client.UI.ApplicationHost.Views.Frame" />
+                        <dependency name="SDL.UI.Core.Init" />
+                      </dependencies>
+                    </resourceGroup>
+                  </resourceGroups>
+                </configuration>
+              </include>
+              <resourceGroups>
+                <resourceGroup name="SDL.Client.UI.ApplicationHost.Views">
+                  <files />
+                  <dependencies>
+                    <dependency name="SDL.Client.UI.ApplicationHost.Views.Frame" />
+                  </dependencies>
+                </resourceGroup>
+              </resourceGroups>
+            </configuration>
+          </include>
+          <!-- View Models -->
+          <include src="ApplicationHost/ViewModels/_Config.xml">
+            <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <resourceGroups>
+                <resourceGroup name="SDL.Client.UI.ApplicationHost.ViewModels">
+                  <files>
+                    <file name="ApplicationHost/ViewModels/Navigation.js" />
+                  </files>
+                  <dependencies>
+                    <dependency name="SDL.Client.ApplicationHost" />
+                    <dependency name="SDL.Client.Types.Url" />
+                    <dependency name="SDL.Client.Types.Array" />
+                    <dependency name="SDL.UI.Core.Knockout.ViewModels.Base" />
+                  </dependencies>
+                </resourceGroup>
+              </resourceGroups>
+            </configuration>
+          </include>
+          <!-- Models -->
+          <include src="ApplicationHost/Models/_Config.xml">
+            <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <resourceGroups>
+                <resourceGroup name="SDL.Client.UI.ApplicationHost.Models">
+                  <files />
+                  <dependencies />
+                </resourceGroup>
+              </resourceGroups>
+            </configuration>
+          </include>
+          <!-- Application resources -->
+          <resourceGroups>
+            <!-- Main application -->
+            <resourceGroup name="SDL.Client.UI.ApplicationHost">
+              <files />
+              <dependencies>
+                <dependency name="SDL.Client.UI.ApplicationHost.Models" />
+                <dependency name="SDL.Client.UI.ApplicationHost.ViewModels" />
+                <dependency name="SDL.Client.UI.ApplicationHost.Views" />
+              </dependencies>
+            </resourceGroup>
+          </resourceGroups>
+        </configuration>
+      </include>
+    </configuration>
+  </include>
+  <packages>
+    <package name="SDL.Client.UI.ApplicationHost" src="Packages/SDL.Client.UI.ApplicationHost.txt">
+      <resourceGroups>
+        <resourceGroup name="SDL.Client.UI.ApplicationHost.ViewModels" />
+        <resourceGroup name="SDL.Client.UI.ApplicationHost.Views.Frame" />
+      </resourceGroups>
+    </package>
+  </packages>
+</configuration>

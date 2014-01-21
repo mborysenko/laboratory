@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd">
+
+	<appSettings>
+		<setting name="version" value="0.0.0.0" />
+	</appSettings>
+
+	<!-- SDL.Client.UI.Core configuration -->
+	<include src="../Core/configuration.xml"/>
+
+	<include src="Libraries/_Config.xml"/>
+	<include src="Controls/_Config.xml"/>
+	<include src="Utils/_Config.xml"/>
+	<include src="Renderers/_Config.xml"/>
+	<include src="ViewModels/_Config.xml"/>
+	<include src="BindingHandlers/_Config.xml"/>
+
+	<include src="packages.xml"/>
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Core.Knockout">
+			<dependencies>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+				<dependency name="SDL.UI.Core.Knockout.Controls"/>
+				<dependency name="SDL.UI.Core.Knockout.Utils"/>
+				<dependency name="SDL.UI.Core.Knockout.Renderers"/>
+				<dependency name="SDL.UI.Core.Knockout.ViewModels"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

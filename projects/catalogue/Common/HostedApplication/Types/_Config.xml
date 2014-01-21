@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+	<resourceGroups>
+
+		<resourceGroup name="SDL.Client.Types.Url1">
+			<files>
+				<file name="Url1.js"/>
+			</files>
+		</resourceGroup>
+
+	</resourceGroups>
+</configuration>

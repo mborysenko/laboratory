@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+	<!-- Knockout Package -->
+	<resourceGroups>
+
+		<resourceGroup name="SDL.UI.Core.Knockout.Renderers">
+			<files>
+				<file name="KnockoutRenderer.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Renderers.ViewRenderer"/>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+	<extensions>
+		<resourceExtension for="SDL.UI.Core.Renderers.ViewRenderer">
+			<insert name="SDL.UI.Core.Knockout.Renderers" position="after"/>
+		</resourceExtension>
+	</extensions>
+	
+</configuration>

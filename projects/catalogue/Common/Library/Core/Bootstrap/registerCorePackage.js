@@ -1,0 +1,1 @@
+﻿SDL.Client.Resources.ResourceManager.registerPackageRendered("SDL.Client.Core");

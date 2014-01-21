@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+	<!-- Entire MessageCenter Package -->
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.MessageCenter">
+			<files>
+				<file name="MessageCenter.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.OO"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+				<dependency name="SDL.Client.Types.ObjectWithEvents"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

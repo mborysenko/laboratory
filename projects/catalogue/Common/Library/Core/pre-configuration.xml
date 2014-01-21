@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd">
+
+	<appSettings>
+		<setting name="version" value="0.0.0.0" />
+	</appSettings>
+
+
+	<!-- Library core settings -->
+	<include src="settings.xml" />
+
+	<!-- Diagnostics resources -->
+	<include src="Diagnostics/_Config.xml" />
+
+	<!-- Application resources -->
+	<include src="Application/_Config.xml" />
+
+	<!-- ApplicationHost resources -->
+	<include src="ApplicationHost/_Config.xml" />
+
+	<!-- Bootstrap resources -->
+	<include src="Bootstrap/_Config.xml" />
+
+	<!-- CrossDomainMessaging resources -->
+	<include src="CrossDomainMessaging/_Config.xml" />
+
+	<!-- Exception resources -->
+	<include src="Exception/_Config.xml" />
+
+	<!-- Repository resources -->
+	<include src="Repository/_Config.xml" />
+
+	<!-- Net resources -->
+	<include src="Net/_Config.xml" />
+
+	<!-- Resources -->
+	<include src="Resources/_Config.xml" />
+
+	<!-- Libraries resources -->
+	<include src="Libraries/_Config.xml" />
+
+	<!-- Localization resources -->
+	<include src="Localization/_Config.xml" />
+
+	<!-- MessageCenter resources-->
+	<include src="MessageCenter/_Config.xml" />
+
+	<!-- Event resources-->
+	<include src="Event/_Config.xml" />
+
+	<!-- Types package -->
+	<include src="Types/_Config.xml" />
+
+	<!-- Configuration Manager resources -->
+	<include src="ConfigurationManager/_Config.xml" />
+
+	<!-- Models resources -->
+	<include src="Models/_Config.xml" />
+
+	<!-- Xml resources -->
+	<include src="Xml/_Config.xml" />
+
+	<!-- Models configuration -->
+	<include src="models.xml" />
+
+	<!-- Packages configuration -->
+	<include src="packages.xml" />
+
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Core">
+			<files>
+				<file name="Bootstrap/registerCorePackage.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Application"/>
+				<dependency name="SDL.Client.ApplicationHost"/>
+				<dependency name="SDL.Client.Configuration.ConfigurationManager"/>
+				<dependency name="SDL.Client.CrossDomainMessaging"/>
+				<dependency name="SDL.Client.Diagnostics"/>
+				<dependency name="SDL.Client.Event"/>
+				<dependency name="SDL.Client.Exception"/>
+				<dependency name="SDL.Client.Libraries"/>
+				<dependency name="SDL.Client.Localization"/>
+				<dependency name="SDL.Client.MessageCenter"/>
+				<dependency name="SDL.Client.Net"/>
+				<dependency name="SDL.Client.Resources"/>
+				<dependency name="SDL.Client.Types"/>
+				<dependency name="SDL.Client.Xml"/>
+				<dependency name="SDL.Client.Resources.ResourceManager"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

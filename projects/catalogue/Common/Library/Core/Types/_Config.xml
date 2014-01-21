@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+	<resourceGroups>
+
+		<resourceGroup name="SDL.Client.Types">
+			<dependencies>
+				<dependency name="SDL.Client.Types.DisposableObject"/>
+				<dependency name="SDL.Client.Types.ObjectWithEvents"/>
+				<dependency name="SDL.Client.Types.OO"/>
+				<dependency name="SDL.Client.Types.Url"/>
+				<dependency name="SDL.Client.Types.String"/>
+				<dependency name="SDL.Client.Types.Array"/>
+				<dependency name="SDL.Client.Types.Date"/>
+				<dependency name="SDL.Client.Types.RegExp"/>
+				<dependency name="SDL.Client.Types.Function"/>
+				<dependency name="SDL.Client.Types.Object"/>
+				<dependency name="SDL.Client.Types.Number"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Types.DisposableObject">
+			<files>
+				<file name="DisposableObject.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.OO"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.ObjectWithEvents">
+			<files>
+				<file name="ObjectWithEvents.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.DisposableObject"/>
+				<dependency name="SDL.Client.Types.Object"/>
+				<dependency name="SDL.Client.Event.Event"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.OO">
+			<files>
+				<file name="OO.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Diagnostics"/>
+				<dependency name="SDL.Client.Types.Base"/>
+				<dependency name="SDL.Client.Types.Array"/>
+				<dependency name="SDL.Client.Types.Function"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Base">
+			<files>
+				<file name="Types.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Url1">
+			<files>
+				<file name="Url1.js"/>
+			</files>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Types.Url2">
+			<files>
+				<file name="Url2.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Url1"/>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Types.Url">
+			<files>
+				<file name="Url.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Diagnostics"/>
+				<dependency name="SDL.Client.Types.Base"/>
+				<dependency name="SDL.Client.Types.RegExp"/>
+				<dependency name="SDL.Client.Types.Url2"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.String">
+			<files>
+				<file name="String.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Array">
+			<files>
+				<file name="Array.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Date">
+			<files>
+				<file name="Date.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.RegExp">
+			<files>
+				<file name="RegExp.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Function">
+			<files>
+				<file name="Function.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Object">
+			<files>
+				<file name="Object.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Types.Number">
+			<files>
+				<file name="Number.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+			</dependencies>
+		</resourceGroup>
+
+	</resourceGroups>
+</configuration>

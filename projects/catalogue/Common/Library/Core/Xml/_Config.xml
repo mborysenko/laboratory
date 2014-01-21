@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+	<!-- All Libraries -->
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Xml.Base">
+			<files>
+				<file name="Xml.Base.js"/>
+			</files>
+			<dependencies>
+			</dependencies>
+		</resourceGroup>
+		
+		<resourceGroup name="SDL.Client.Xml">
+			<files>
+				<file name="Xml.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Diagnostics"/>
+				<dependency name="SDL.Client.Types.Base"/>
+				<dependency name="SDL.Client.Types.String"/>
+				<dependency name="SDL.Client.Xml.Base"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+
+</configuration>

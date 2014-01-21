@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+	<!-- Entire Resources Package -->
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Resources">
+			<dependencies>
+				<dependency name="SDL.Client.Resources.ResourceManager"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Resources.ResourceManager">
+			<files>
+				<file name="ResourceLoader.js"/>
+				<file name="FileResourceHandler.js"/>
+				<file name="FileHandlers/CssFileHandler.js"/>
+				<file name="FileHandlers/HtmlFileHandler.js"/>
+				<file name="FileHandlers/JsFileHandler.js"/>
+				<file name="ResourceManager.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.Client.Net.Ajax"/>
+				<dependency name="SDL.Client.Application"/>
+				<dependency name="SDL.Client.Localization"/>
+				<dependency name="SDL.Client.Types.Array"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

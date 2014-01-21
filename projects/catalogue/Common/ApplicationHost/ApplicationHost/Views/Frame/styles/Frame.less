@@ -1,0 +1,758 @@
+﻿html, body, #main-view-target
+{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+/* RIGHT-HAND SIDE WHERE APPLICATIONS ARE SHOWN */
+.frame-applications, .frame-applications div, .frame-applications iframe
+{
+	position: absolute;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.frame-applications
+{
+	background-color: #eee;
+	overflow: hidden;
+}
+
+.frame-applications .frame-application-scroll-wrapper
+{
+	position: relative;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.frame-applications > div, .frame-applications .frame-application-loading
+{
+	/*padding-top: 31px;	/* not showing the header bar for now */
+	transition: padding .6s;
+}
+
+.frame-applications .frame-application-fixed, .frame-application-fixed .frame-application-loading
+{
+	padding-left: 246px;
+}
+
+.frame-applications .frame-application-hidden
+{
+	z-index: -1;
+	left: 100%;		/* needed to enable proper scrolling on iPad */
+}
+
+.frame-application-loading > div
+{
+	position: relative;
+}
+
+.frame-application-loading > div > div
+{
+	position: absolute;
+	display: table;
+}
+
+.frame-application-loading > div > div:first-child
+{
+	background-color: white;
+	opacity: .9;
+}
+
+.frame-application-loading > div > div > span
+{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
+    cursor: default;
+	text-transform: uppercase;
+	font-family: Lucida Sans;
+	font-size: 19px;
+	color: #878787;
+}
+
+.frame-application-loading-text
+{
+	display: inline-block;
+	width: 130px;
+}
+
+.frame-application-loading-rotate
+{
+	display: inline-block;
+	border-radius: 150px;
+	-moz-border-radius: 150px;
+	border: 13px solid #666666;
+	border-top-color: #CDCDCD;
+	border-right-color: #CDCDCD;
+	width: 144px;
+	height: 144px;
+	animation: frame-application-loading-rotate 1.0s;
+	-webkit-animation: frame-application-loading-rotate 1.0s;
+	animation-iteration-count: infinite;
+	-webkit-animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-timing-function: linear;
+}
+
+@keyframes frame-application-loading-rotate
+{
+	from { transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
+@-webkit-keyframes frame-application-loading-rotate
+{
+	from { -webkit-transform: rotate(0deg);}
+	to {-webkit-transform: rotate(360deg);}
+}
+
+/* NAVIGATION PANEL */
+.frame-navigation
+{
+	display: none;	/* this is to prevent animation immediately after loading the page */
+	position: absolute;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	top: 0;
+	height: 100%;
+	width: 246px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #262933;
+	background-color: #474E58;
+	outline: none;
+	-moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
+    transition: left .6s;
+}
+
+.frame-navigation-shown
+{
+	display: block;
+	left:0;
+	box-shadow: 2px 1px 10px #5C636D;
+}
+
+.frame-navigation-hidden
+{
+	display: block;
+	left: -246px;
+	box-shadow: none;
+}
+
+.frame-navigation-pane
+{
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	color: #FFF;
+	font-family: Arial;
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: 0 1px #2B2F36;
+    cursor: default;
+}
+
+.frame-navigation-logo
+{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	height: 30px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-left: none;
+	border-right: none;
+	border-top: 1px solid #5C636D;
+	border-bottom: 1px solid #353B46;
+	background-color: #454B53;
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+/* all navigation options */
+.frame-navigation-pane ul
+{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none outside none;
+}
+
+.frame-navigation-option:hover
+{
+	background-color: #576172 !important;
+}
+
+.frame-navigation-option-selected,
+.frame-navigation-option-selected:hover
+{
+	background-color: #296ACC !important;
+}
+
+.frame-navigation-option-icon,
+.frame-navigation-option-text,
+.frame-navigation-option-right
+{
+	display: table-cell;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.frame-navigation-option-text
+{
+    overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.frame-navigation-option-icon,
+.frame-navigation-option-right
+{
+	background-repeat: no-repeat;
+}
+
+.frame-navigation-option-right
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-clip: content-box;
+	width: 17px;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	padding: 12px 0 11px 0;
+	line-height: 16px;
+}
+
+/* top area with big buttons */
+ul.frame-navigation-top
+{
+	position: relative;
+	border: none;
+	border-bottom: 1px solid #262933;
+	display: table;
+	table-layout: fixed;
+	box-shadow: 0 7px 10px #474E58;
+	z-index: 1;		/* this is to show the border box shadow on top of the element under */
+}
+
+.frame-navigation-top li:not(:only-child)
+{
+	display: table-cell;
+	height: 79px;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid #5C636D;
+	border-left: 1px solid #5C636D;
+	border-right: 1px solid #353B46;
+	border-bottom: none;
+	overflow: hidden;
+	vertical-align: bottom;
+	text-align: center;
+}
+
+.frame-navigation-top li:first-child:not(:only-child)
+{
+	border-left: none;
+}
+
+.frame-navigation-top li:last-child:not(:only-child)
+{
+	border-right: 3px solid #5C636D;
+}
+
+.frame-navigation-top li:not(:only-child) .frame-navigation-option-text
+{
+	display: block;
+	padding-top: 1px;
+	min-height: 31px;
+    max-height: 48px;
+}
+
+/* top buttons icons */
+.frame-navigation-top .frame-navigation-option-icon
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+}
+
+.frame-navigation-top li:not(:only-child) .frame-navigation-option-icon
+{
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-bottom: 3px;
+}
+
+.frame-navigation-top li:not(:only-child) .frame-navigation-option-home
+{
+	background-position: -25px -29px;
+}
+
+.frame-navigation-top li:not(:only-child) .frame-navigation-option-activities
+{
+	background-position: 0 -29px;
+}
+
+.frame-navigation-top li:not(:only-child) .frame-navigation-option-settings
+{
+	background-position: -49px -29px;
+}
+
+.frame-navigation-top li:only-child .frame-navigation-option-home
+{
+	background-position: -35px -44px;
+}
+
+/* middle (scrollable) area with expandable groups */
+.frame-navigation-middle
+{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.frame-navigation-pane-no-top .frame-navigation-middle
+{
+	top: 30px;
+}
+
+.frame-navigation-pane-one-top .frame-navigation-middle
+{
+	top: 72px;
+}
+
+.frame-navigation-pane-full-top .frame-navigation-middle
+{
+	top: 111px;
+}
+
+.frame-navigation-middle-background	/* lighter line at the right */
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 3px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background-color: #5c636D;
+}
+
+.frame-navigation-middle-scroll
+{
+	position: relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	border: none;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.pc .frame-navigation-middle-scroll	/* hide native scrollbar for a custom scroll bar for PC implementation */
+{
+	width: 300px;
+}
+
+.pc .frame-navigation-middle-scroll ul
+{
+	border: 0;
+	width: 244px;
+}
+
+.frame-navigation-middle-scroll li
+{
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+
+.frame-navigation-middle-scroll li div,
+.frame-navigation-group li,
+.frame-navigation-top li:only-child
+{
+	display: table;
+	table-layout: fixed;
+	margin: 0;
+	padding: 0;
+	padding-left: 15px;
+	border: none;
+	height: 40px;
+	box-sizing: content-box;			/* iPad doesn't seem to appreciate border-box => have to use content-box + fixed width in pixels rather than 100% */
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	border-top: 1px solid #5C636D;
+}
+
+.frame-navigation-middle-scroll li div,
+.frame-navigation-group li
+{
+	width: 212px;
+	border-bottom: 1px solid #353B46;
+}
+
+.frame-navigation-top li:only-child
+{
+	width: 226px;
+}
+
+.frame-navigation-middle-scroll .frame-navigation-option-icon,
+.frame-navigation-top li:only-child .frame-navigation-option-icon
+{
+	width: 16px;
+	padding: 12px 9px 11px 0px;
+	background-clip: content-box;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	line-height: 17px;
+}
+
+.frame-navigation-middle-scroll .frame-navigation-option-text,
+.frame-navigation-top li:only-child .frame-navigation-option-text
+{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.frame-navigation-group
+{
+	background-color: #576172;
+}
+
+.frame-navigation-group ul
+{
+	overflow: hidden;
+	transition: height .6s;
+}
+
+.frame-navigation-group-collapsed ul
+{
+	height: 0;
+}
+
+.frame-navigation-group > div > .frame-navigation-option-right
+{
+	background-position: -106px -43px;
+}
+
+.frame-navigation-group-collapsed > div > .frame-navigation-option-right
+{
+	background-position: -120px -44px;
+}
+
+.frame-navigation-middle-scroll .frame-navigation-option,
+.frame-navigation-top .frame-navigation-option:only-child
+{
+	background-color: #474E58;
+	border-right: 3px solid #5c636D;
+}
+
+.frame-navigation-group li
+{
+	padding-right: 14px;
+}
+
+.frame-navigation-group li.frame-navigation-option-selected,
+.frame-navigation-group li:hover,
+.frame-navigation-top li.frame-navigation-option-selected:only-child,
+.frame-navigation-top li:only-child:hover
+{
+	border-right: none;
+}
+
+.frame-navigation-middle-scroll li div,
+.frame-navigation-group li.frame-navigation-option-selected,
+.frame-navigation-group li:hover
+{
+	padding-right: 17px;
+}
+
+.frame-navigation-top li:only-child:hover,
+.frame-navigation-top li.frame-navigation-option-selected:only-child
+{
+	padding-right: 3px;
+}
+
+.frame-navigation-middle-scroll .frame-navigation-option-external
+{
+	background-position: -51px -44px;
+}
+
+.frame-navigation-option-icon	/* default icon */
+{
+	background-position: left center;
+}
+
+.frame-navigation-option-home	/* default home icon */
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-position: -35px -44px;
+}
+
+.frame-navigation-option-activities	/* default activities icon */
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-position: -91px -18px;
+}
+
+.frame-navigation-option-settings	/* default settings icon */
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-position: -74px -18px;
+}
+
+.frame-navigation-option-help	/* default help icon */
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-position: 0 -44px;
+}
+
+.frame-navigation-option-about	/* default about icon */
+{
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-position: -17px -44px;
+}
+
+/* Log in option */
+.frame-navigation-group li.frame-navigation-option-login
+{
+	height: 86px;
+	padding-left: 0;
+	width: 227px;
+	text-align: center;
+}
+
+.frame-navigation-group li.frame-navigation-option-login .frame-navigation-option-text
+{
+	white-space: normal;
+	padding-left: 7px;
+}
+
+.frame-navigation-group li.frame-navigation-option-login .frame-navigation-option-icon
+{
+	display: inline-block;
+	padding: 0;
+	height: 17px;
+	width: 17px;
+	line-height: 17px;
+	margin-bottom: 3px;
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-repeat: no-repeat;
+	background-position: -108px -30px;
+
+}
+
+.frame-navigation-group li.frame-navigation-option-login .frame-application-loading-rotate
+{
+	border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-width: 6px;
+	width: 30px;
+	height: 30px;
+}
+
+/* TOGGLE BUTTON FOR SHOWING/HIDING THE NAVIGATION PANE */
+.frame-navigation-toggle
+{
+	position: absolute;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	top: -1px;
+	right: -32px;
+	height: 31px;
+	width: 32px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #262933;
+	background-color: #296ACC;
+	overflow: hidden;
+}
+
+.frame-navigation-hidden .frame-navigation-toggle
+{
+	right: -33px;
+	border-top-color: #353B46;
+	border-bottom-color: #353B46;
+	border-left-style: none;
+	border-right-style: none;
+	background-color: #454B53;
+}
+
+.frame-navigation-hidden .frame-navigation-toggle:hover
+{
+	border-top-color: #262933;
+	border-bottom-color: #262933;
+	border-left-style: solid;
+	border-right-style: solid;
+	background-color: #296ACC;
+}
+
+.frame-navigation-toggle div
+{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+	border: none;
+	border-top: 1px solid #5B8EDE;
+	background-image: url("{PATH}/sprite.png{VERSION}");
+	background-repeat: no-repeat;
+	background-position: -79px -50px;
+	padding: 6px 7px;
+	background-clip: content-box;
+}
+
+.frame-navigation-hidden .frame-navigation-toggle div
+{
+	border-top-color: #5C636D;
+	padding: 6px 8px;
+	background-position: -61px -50px;
+}
+
+.frame-navigation-hidden .frame-navigation-toggle:hover div
+{
+	border-top-color: #5B8EDE;
+	padding: 6px 7px;
+	background-position: -79px -50px;
+}
+
+/* CUSTOM SCROLLBAR (SHOWN ONLY FOR PC) */
+.frame-navigation-scroll-wrapper
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 15px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	overflow: hidden;
+}
+
+.pc .frame-navigation-scroll-wrapper
+{
+	display: block;
+}
+
+.frame-navigation-scroll-wrapper-hidden
+{
+	right: -20px;
+}
+
+/* semi-transparent background of the custom scrollbar */
+.frame-navigation-scroll-bar
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background-color: #454B53;
+	opacity: 0.5;
+}
+
+/* up/down buttons */
+.frame-navigation-scroll-up, .frame-navigation-scroll-down
+{
+	position: absolute;
+	height: 16px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-repeat: no-repeat;
+	background-image: url("{PATH}/sprite.png{VERSION}");
+}
+
+.frame-navigation-scroll-up
+{
+	top: 0;
+	background-position: -134px -57px;
+}
+
+.frame-navigation-scroll-down
+{
+	bottom: 0;
+	background-position: -147px -58px;
+}
+
+/* draggable handle of the scrollbar */
+.frame-navigation-scroll-handle
+{
+	position: absolute;
+	right: 0;
+	left: 0;
+	height: 0;
+	margin: 0 3px;
+	padding: 0;
+	border: none;
+	border-radius: 4px;
+	background-color: #818B99;
+	overflow: hidden;
+}
+
+/* transparent area with native scroll bar (placed in front of the custom bar to do the actual scrolling) */
+.frame-navigation-scroll
+{
+	position: absolute;
+	right: 1px;
+	height: 100%;
+	width: 50px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	opacity: 0;
+}
+
+/* content that exceeds the scrollable area (causes the native scrollbar to appear) */
+.frame-navigation-scroll-content
+{
+	height:0;
+	padding:0;
+	margin:0;
+	border:none;
+	overflow:hidden;
+}

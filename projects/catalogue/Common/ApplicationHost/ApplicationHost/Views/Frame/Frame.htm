@@ -1,0 +1,152 @@
+﻿<script id='SDL.Client.UI.ApplicationHost.Views.Frame' type='text/html+knockout'>
+	<div data-bind="attr: {lang: culture}">
+		<!-- ko if: !initialized() -->
+			<div class="frame-applications">
+				<div class="frame-application-loading">
+					<div>
+						<div class="frame-application-loading-screen">&nbsp;</div>
+						<div>
+							<span>
+								<span data-bind="text: $root.localize('apphost.loading')" class="frame-application-loading-text"></span>
+							</span>
+						</div>
+						<div>
+							<span>
+								<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- /ko -->
+		<!-- ko if: initialized -->
+			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays), event: {scroll: function() {$element.scrollLeft = 0;}}">
+				<div data-bind="if: accessed() && !disposed(),
+								css: {'frame-application-fixed': $data.navigationItem && $data.navigationItem() &&
+																	($data.navigationItem().overlay === false || ($data.navigationItem().type == 'home' && !$data.navigationItem().overlay)) &&
+																	$root.navigationPaneShown(),
+									'frame-application-hidden': $data != $root.shownTargetDisplay() }">
+					<div class="frame-application-scroll-wrapper">
+						<iframe data-bind="attr: { src: src, foo: $root.registerTargetDisplayFrame($data, $element) },
+							event: {load: function() {loaded(true);}, focus: $root.blurredNavigationPane}"></iframe>
+					</div>
+					<!-- ko if: $root.setTargetDisplayLocation($data, $element) -->
+						<!-- setting iframe's location via javascript to:
+							1. manage history (using location.replace())
+							2. do not reload if the change is only a hash parameter
+						-->
+					<!-- /ko -->
+					<!-- ko if: loading -->
+						<div class="frame-application-loading">
+							<div>
+								<div class="frame-application-loading-screen">&nbsp;</div>
+								<div>
+									<span>
+										<span data-bind="text: $root.localize('apphost.loading')" class="frame-application-loading-text"></span>
+									</span>
+								</div>
+								<div>
+									<span>
+										<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					<!-- /ko -->
+				</div>
+			</div>
+
+			<div class="frame-navigation" data-bind="css: {'frame-navigation-hidden': !navigationPaneShown(), 'frame-navigation-shown': navigationPaneShown},
+						event: {blur: blurredNavigationPane}" tabIndex="0">
+				<div class="frame-navigation-toggle" data-bind="click: toggleNavigationPane, visible: navigationPaneToggleShown"><div _unselectable="on"></div></div>
+				<div class="frame-navigation-pane" data-bind="css: {
+						'frame-navigation-pane-no-top': !topNavigationGroup.shownItems(),
+						'frame-navigation-pane-one-top': topNavigationGroup.shownItems() == 1,
+						'frame-navigation-pane-full-top': topNavigationGroup.shownItems() > 1}">
+					<div class="frame-navigation-logo" unselectable="on"></div>
+					<!-- ko if: topNavigationGroup.shownItems() > 0 -->
+						<ul class="frame-navigation-top">
+							<!-- ko if: $root.homeNavigationItem -->
+								<li data-bind="click: function() {$root.selectNavigationItem($root.homeNavigationItem)},
+												css: { 'frame-navigation-option-selected': $root.homeNavigationItem == $root.currentNavigationItem() }"
+											class="frame-navigation-option" unselectable="on">
+									<span class="frame-navigation-option-icon frame-navigation-option-home" unselectable="on">&nbsp;</span>
+									<span class="frame-navigation-option-text" data-bind="text: $root.localize('apphost.home')" unselectable="on"></span>
+								</li>
+							<!-- /ko -->
+						</ul>
+					<!-- /ko -->
+					<div class="frame-navigation-middle" data-bind="css: { pc: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile }">
+						<div class="frame-navigation-middle-background"></div>
+						<div class="frame-navigation-middle-scroll" unselectable="on">
+							<ul data-bind="foreach: navigationGroups">
+								<!-- ko if: $data.shownItems() > 0 -->
+									<li class="frame-navigation-group" data-bind="css: { 'frame-navigation-group-collapsed': $data != $root.expandedNavigationGroup() }">
+										<div unselectable="on" data-bind="click: $root.toggleExpandNavigationGroup">
+											<span class="frame-navigation-option-text"
+												data-bind="text: $root.getNavigationGroupName($data)" unselectable="on"></span>
+											<span class="frame-navigation-option-right" unselectable="on">&nbsp;</span>
+										</div>
+
+										<!-- ko if: $data.authenticationTargetDisplay && $data.authenticationTargetDisplay() -->
+											<ul data-bind="style: {height: ($data == $root.expandedNavigationGroup() ? 88 : 0) + 'px'}">
+												<li class="frame-navigation-option frame-navigation-option-login"
+													data-bind="css: { 'frame-navigation-option-selected':
+																	$root.currentNavigationItem() ? $data == $root.currentNavigationItem().navigationGroup : $data == $root.currentNavigationGroup() },
+														click: $root.selectNavigationGroup">
+													<span class="frame-navigation-option-text" unselectable="on">
+														<!-- ko if: authenticationTargetDisplay().loading() -->
+															<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
+														<!-- /ko -->
+														<!-- ko if: !authenticationTargetDisplay().loading() -->
+															<span class="frame-navigation-option-icon" unselectable="on">&nbsp;</span><br/>
+															<span data-bind="html: $root.localize('apphost.toaccess', ['<strong>' + $root.localize('apphost.login') + '</strong>'])"></span>
+														<!-- /ko -->
+													</span>
+												</li>
+											</ul>
+										<!-- /ko -->
+
+										<!-- ko if: !$data.authenticationTargetDisplay || !$data.authenticationTargetDisplay() -->
+											<ul data-bind="foreach: navigationItems, style: {height: ($data == $root.expandedNavigationGroup() ? shownItems() * 42 : 0) + 'px'}">
+												<!-- ko if: !$data.hidden() && !$data.contextual() -->
+													<li class="frame-navigation-option"
+														data-bind="css: { 'frame-navigation-option-selected': $data == $root.currentNavigationItem() },
+															click: $root.selectNavigationItem">
+														<span class = "frame-navigation-option-icon" unselectable="on"
+															data-bind="css: {'frame-navigation-option-home': !$data.icon && $data.type == 'home',
+																	'frame-navigation-option-activities': !$data.icon && $data.type == 'activities',
+																	'frame-navigation-option-settings': !$data.icon && $data.type == 'settings',
+																	'frame-navigation-option-help': !$data.icon && $data.type == 'help',
+																	'frame-navigation-option-about': !$data.icon && $data.type == 'about'},
+																	attr: {style: $data.icon ? 'background-image: url(\'' + $data.icon + '\')' : ''}">&nbsp;</span>
+														<span class="frame-navigation-option-text" data-bind="text: $root.getNavigationItemName($data)" unselectable="on"></span>
+														<!-- ko if: $data.external -->
+															<span class="frame-navigation-option-right frame-navigation-option-external" unselectable="on">&nbsp;</span>
+														<!-- /ko -->
+													</li>
+												<!-- /ko -->
+											</ul>
+										<!-- /ko -->
+									</li>
+								<!-- /ko -->
+							</ul>
+						</div>
+
+						<!-- ko if: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile -->
+							<div class="frame-navigation-scroll-wrapper" data-bind="attr: {foo: $root.initCustomScroll($element)}">
+								<div class="frame-navigation-scroll-bar"></div>
+								<div class="frame-navigation-scroll-up"></div>
+								<div class="frame-navigation-scroll-handle"></div>
+								<div class="frame-navigation-scroll-down"></div>
+								<div class="frame-navigation-scroll">
+									<div class="frame-navigation-scroll-content"></div>
+								</div>
+							</div>
+						<!-- /ko -->
+					</div>
+				</div>
+			</div>
+		<!-- /ko -->
+	</div>
+</script>

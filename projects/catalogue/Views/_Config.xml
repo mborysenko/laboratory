@@ -1,0 +1,14 @@
+﻿<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+    <resourceGroups>
+        <resourceGroup name="LVF.Views.Dashboard">
+            <files>
+                <file name="Dashboard.html"/>
+                <file name="Dashboard.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Init"/>
+                <dependency name="SDL.UI.Core.Views.ViewBase"/>
+            </dependencies>
+        </resourceGroup>
+    </resourceGroups>
+</configuration>

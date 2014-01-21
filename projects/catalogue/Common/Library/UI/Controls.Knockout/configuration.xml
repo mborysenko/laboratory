@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
+  <appSettings>
+    <setting name="version" value="1.1.0.81" />
+  </appSettings>
+  <!-- SDL.UI.Controls configuration -->
+  <include src="../Controls/configuration.xml" />
+  <!-- SDL.UI.Core.Knockout configuration -->
+  <include src="../Core.Knockout/configuration.xml" />
+  <!-- Controls -->
+  <include src="Tooltip/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Tooltip">
+          <files>
+            <file name="Tooltip/Tooltip.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Tooltip" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <!-- Packages -->
+  <include src="packages.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <packages>
+        <package name="SDL.UI.Controls.Knockout" src="Packages/SDL.UI.Controls.Knockout.js">
+          <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.Knockout.Tooltip" />
+          </resourceGroups>
+        </package>
+      </packages>
+    </configuration>
+  </include>
+  <resourceGroups></resourceGroups>
+  <packages />
+</configuration>

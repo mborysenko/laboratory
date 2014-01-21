@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers">
+			<dependencies>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler">
+			<files>
+				<file name="ControlKnockoutBindingHandler.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Renderers.ControlRenderer"/>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler">
+			<files>
+				<file name="ViewKnockoutBindingHandler.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Renderers.ViewRenderer"/>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

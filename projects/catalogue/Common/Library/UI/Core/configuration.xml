@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
+  <appSettings>
+    <setting name="version" value="1.1.0.81" />
+  </appSettings>
+  <!-- SDL.Client core configuration -->
+  <include src="../../Core/configuration.xml" />
+  <include src="Bootstrap/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <!-- All Libraries -->
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Init">
+          <files>
+            <file name="Bootstrap/init.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Init" />
+            <dependency name="SDL.UI.Core.Renderers.ViewRenderer" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Controls/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Controls">
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Controls.ControlBase">
+          <files>
+            <file name="Controls/Base.js" />
+            <file name="Controls/jQuery.js" />
+            <file name="Controls/ControlBase.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Types.OO" />
+            <dependency name="SDL.Client.Types.ObjectWithEvents" />
+            <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Event/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <!-- All Libraries -->
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Event">
+          <files />
+          <dependencies>
+            <dependency name="SDL.UI.Core.Event.Constants" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Event.Constants">
+          <files>
+            <file name="Event/Constants.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.Base" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Utils/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Utils">
+          <files />
+          <dependencies>
+            <dependency name="SDL.UI.Core.Utils.Css" />
+            <dependency name="SDL.UI.Core.Utils.Dom" />
+            <dependency name="SDL.UI.Core.Utils.Event" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Utils.Css">
+          <files>
+            <file name="Utils/Css.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Diagnostics" />
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Types.String" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Utils.Dom">
+          <files>
+            <file name="Utils/Dom.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Types.Array" />
+            <dependency name="SDL.Client.Types.Object" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Utils.Event">
+          <files>
+            <file name="Utils/Event.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.Base" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Views/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.View">
+          <files />
+          <dependencies>
+            <dependency name="SDL.UI.Core.Views.ViewBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Views.ViewBase">
+          <files>
+            <file name="Views/ViewBase.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.OO" />
+            <dependency name="SDL.Client.Types.ObjectWithEvents" />
+            <dependency name="SDL.Client.Event.EventRegister" />
+            <dependency name="SDL.UI.Core.Renderers.ViewRenderer" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Renderers/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Renderers">
+          <dependencies>
+            <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
+            <dependency name="SDL.UI.Core.Renderers.ViewRenderer" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Renderers.ControlRenderer">
+          <files>
+            <file name="Renderers/ControlRenderer.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Diagnostics" />
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Types.Array" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Renderers.ViewRenderer">
+          <files>
+            <file name="Renderers/ViewRenderer.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Diagnostics" />
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Types.Array" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="packages.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <packages>
+        <package name="SDL.UI.Core" src="Packages/SDL.UI.Core.js">
+          <resourceGroups>
+            <resourceGroup name="SDL.UI.Core.Renderers.ControlRenderer" />
+            <resourceGroup name="SDL.UI.Core.Controls.ControlBase" />
+            <resourceGroup name="SDL.UI.Core.Event.Constants" />
+            <resourceGroup name="SDL.UI.Core.Renderers.ViewRenderer" />
+            <resourceGroup name="SDL.UI.Core.Utils.Css" />
+            <resourceGroup name="SDL.UI.Core.Utils.Dom" />
+            <resourceGroup name="SDL.UI.Core.Utils.Event" />
+            <resourceGroup name="SDL.UI.Core.Views.ViewBase" />
+            <resourceGroup name="SDL.UI.Core.Init" />
+          </resourceGroups>
+        </package>
+      </packages>
+    </configuration>
+  </include>
+  <resourceGroups>
+    <resourceGroup name="SDL.UI.Core">
+      <dependencies>
+        <dependency name="SDL.UI.Core.Controls.ControlBase" />
+        <dependency name="SDL.UI.Core.Event" />
+        <dependency name="SDL.UI.Core.Renderers" />
+        <dependency name="SDL.UI.Core.Utils" />
+        <dependency name="SDL.UI.Core.View" />
+      </dependencies>
+    </resourceGroup>
+  </resourceGroups>
+  <packages />
+</configuration>

@@ -1,0 +1,2 @@
+confVersion = 1.1.0.81
+initVersion = 1.1.0.81

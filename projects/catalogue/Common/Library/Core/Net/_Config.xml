@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Net">
+			<files>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Net.Ajax"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.Client.Net.Ajax">
+			<files>
+				<file name="Ajax.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Xml"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+				<dependency name="SDL.Client.Types.Function"/>
+				<dependency name="SDL.Client.Types.String"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+</configuration>

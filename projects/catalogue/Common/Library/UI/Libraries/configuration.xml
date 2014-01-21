@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
+  <appSettings>
+    <setting name="version" value="1.1.0.81" />
+  </appSettings>
+  <include src="D3/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Libraries.D3">
+          <files>
+            <file name="D3/d3.debug.js" />
+          </files>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <packages>
+    <package name="SDL.UI.Libraries.D3" src="Packages/SDL.UI.Libraries.D3.js">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Libraries.D3" />
+      </resourceGroups>
+    </package>
+  </packages>
+</configuration>
