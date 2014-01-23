@@ -15,6 +15,10 @@ LVF.Application = (function()
             id: "#main-menu"
         });
 
+        this.components['mainMenu'] = new LVF.UI.Menu({
+            id: "#user-menu"
+        });
+
         console.log("Info: main application has been initialized");
     };
 
