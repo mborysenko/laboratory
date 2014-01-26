@@ -22,7 +22,7 @@ else
 }
 
 if ($item->deeper) {
-    $linktype .= '<span class="lvf-icon"></span>';
+    $linktype .= '<span class="lvf-icon __16x16 __drop_bottom __justify_middle"></span>';
 }
 
 switch ($item->browserNav) :

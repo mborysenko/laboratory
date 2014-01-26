@@ -16,12 +16,11 @@ defined('_JEXEC') or die;
 if ($params->get('tag_id') != null) {
     $tag = $params->get('tag_id');
 }
-
 ?>
 
 <ul class="lvf-menu __cfx"<?php if (isset($tag)) { ?> id="<?php echo $tag ?>"<?php } ?>>
-    <?php
-    foreach ($list as $i => &$item) :
+    <?php foreach ($list as $i => &$item) : ?>
+    <?
         $class = 'lvf-menu_item item-' . $item->id;
         if ($item->id == $active_id) {
             $class .= ' __current';
@@ -39,7 +38,7 @@ if ($params->get('tag_id') != null) {
         }
 
         if ($item->type == 'separator') {
-            $class .= ' divider';
+            $class .= ' __divider';
         }
 
         if ($item->deeper) {
@@ -47,15 +46,12 @@ if ($params->get('tag_id') != null) {
         }
 
         if ($item->parent) {
-            $class .= ' parent';
+            $class .= ' __parent';
         }
+    ?>
 
-        if (!empty($class)) {
-            $class = ' class="' . trim($class) . '"';
-        }
-
-        echo '<li' . $class . '>';
-
+    <li class="<?php echo $class; ?>">
+    <?php
         // Render the menu item.
         switch ($item->type) :
             case 'separator':
@@ -69,18 +65,19 @@ if ($params->get('tag_id') != null) {
                 require JModuleHelper::getLayoutPath('mod_menu', 'default_url');
                 break;
         endswitch;
-
-        // The next item is deeper.
-        if ($item->deeper) {
-            echo '<ul class="__hide lvf-menu __lvl0 __deeper">';
-        } // The next item is shallower.
-        elseif ($item->shallower) {
-            echo '</li>';
-            echo str_repeat('</ul></li>', $item->level_diff);
-        } // The next item is on the same level.
-        else {
-            echo '</li>';
-        }
-    endforeach;
     ?>
+
+    <?php // The next item is deeper. ?>
+    <?php if ($item->deeper): ?>
+        <div class="lvf-menu_holder __lvl0">
+            <ul class="lvf-menu __deeper __fill __lvf_scheme_red">
+    <?php  // The next item is shallower. ?>
+    <?php  elseif ($item->shallower): ?>
+    </li>
+    <?php echo str_repeat('</ul></li>', $item->level_diff); ?>
+    <?php // The next item is on the same level. ?>
+    <?php else: ?>
+    </li>
+    <?php endif; ?>
+    <? endforeach; ?>
 </ul>

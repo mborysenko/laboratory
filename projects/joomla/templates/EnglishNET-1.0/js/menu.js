@@ -1,129 +1,176 @@
-LVF.UI.Menu = LVF.UI.Menu || {};
-
-LVF.UI.Menu = (function($)
+LVF.UI.BaseMenu = (function ($)
 {
-    function Menu(options)
+    function BaseMenu(options)
     {
-        this.element = null;
+        if (!options.element)
+        {
+            console.log("Menu: Element has nod been defined");
+            return;
+        }
 
         this.defaults = {
-
+            delayTimeout: 500 // milliseconds
         };
+        this.children = [];
+        this.element = null;
+        this.delayTimer = false;
+        this.delayTimeout = 0;
 
         this.options = $.extend(this.defaults, options);
 
         this.initialize();
     }
 
-    Menu.prototype.initialize = function()
+    BaseMenu.prototype.initialize = function ()
     {
-        var o = this.options;
+        var options = this.options;
 
-        if((this.element = $(o.id)).length == 0)
-        {
-            (typeof console != 'undefined') && console.log("Element" + o.id + " not found");
-            return;
-        }
+        this.element = options.element || null;
+        this.delayTimeout = !isNaN(options.delayTimeout) ? options.delayTimeout : 0;
+
 
         var items = $(">.lvf-menu_item", this.element);
-
-        for(var i = 0, len = items.length; i < len; i++)
+        for (var i = 0, len = items.length; i < len; i++)
         {
             this.initMenuItem(items[i]);
         }
     };
 
-    Menu.prototype.collapseOthers = function()
+    BaseMenu.prototype.collapseOthers = function (except)
     {
+        this.element.find(">.lvf-menu_item").not(except).removeClass(LVF.UI.Constants.MENU_STATE_HOVERED_CLASS);
     };
 
-    Menu.prototype.initMenuItem = function(item)
+    BaseMenu.prototype.initMenuItem = function (item)
     {
         item = $(item);
         var __this = this;
-        item
-            .mouseover(this.onMenuItemHovered)
-            .mouseout(this.onMenuItemLeft);
-
-        var deeperMenu = item.find(".lvf-menu_holder.__lvl0>.lvf-menu");
-
-        var deeperItems = deeperMenu.find(">.lvf-menu_item");
-
-        for (var i = 0, len = deeperItems.length; i < len; i++)
+        item.mouseover(function (e)
         {
-            this.initDeeperMenuItem(deeperItems[i]);
+            debugger;
+            e.preventDefault();
+            var element = $(e.currentTarget);
+            __this.collapseOthers(element);
+
+            if (__this.delayTimer)
+            {
+                clearTimeout(__this.delayTimer)
+            }
+
+            element.addClass(LVF.UI.Constants.MENU_STATE_HOVERED_CLASS);
+        });
+
+        item.mouseout(function (e)
+        {
+            e.preventDefault();
+
+            __this.delayTimer = setTimeout(function ()
+            {
+                var element = $(e.currentTarget);
+                element.removeClass(LVF.UI.Constants.MENU_STATE_HOVERED_CLASS);
+            }, __this.delayTimeout)
+        })
+
+        if (item.hasClass("__has_children"))
+        {
+            var deeperMenu = item.find(">.lvf-menu_holder>.lvf-menu");
+
+            this.children.push(new LVF.UI.AuxiliaryMenu({
+                element: deeperMenu
+            }));
         }
     };
 
-    Menu.prototype.onMenuItemHovered = function(e)
-    {
-        e.preventDefault();
-
-        var element = $(e.currentTarget);
-
-        element.addClass(LVF.UI.Menu.Constants.MENU_STATE_HOVERED_CLASS);
-    };
-
-    Menu.prototype.onDeeperMenuItemHovered = function(e)
-    {
-        e.preventDefault();
-
-        var element = $(e.currentTarget);
-
-        element.addClass(LVF.UI.Menu.Constants.MENU_STATE_HOVERED_CLASS);
-
-        if(element.hasClass(LVF.UI.Menu.Constants.MENU_ITEM_HAS_CHILDREN_CLASS))
-        {
-            var itemId = element.attr("id");
-
-            var parentHolder = element.closest(".lvf-menu_holder.__lvl0");
-
-            var menuHolder = parentHolder.find("#menu-for-" + itemId);
-            menuHolder.show();
-
-        }
-    };
-
-    Menu.prototype.onMenuItemLeft = function(e)
-    {
-        e.preventDefault();
-        var element = $(e.currentTarget);
-
-        element.removeClass(LVF.UI.Menu.Constants.MENU_STATE_HOVERED_CLASS);
-    };
-
-    Menu.prototype.onDeeperMenuItemLeft = function(e)
-    {
-        e.preventDefault();
-        var element = $(e.currentTarget);
-
-        element.removeClass(LVF.UI.Menu.Constants.MENU_STATE_HOVERED_CLASS);
-        if(element.hasClass(LVF.UI.Menu.Constants.MENU_ITEM_HAS_CHILDREN_CLASS))
-        {
-            var itemId = element.attr("id");
-
-            var parentHolder = element.closest(".lvf-menu_holder.__lvl0");
-
-            var menuHolder = parentHolder.find("#menu-for-" + itemId);
-            menuHolder.hide();
-        }
-
-    };
-
-    Menu.prototype.initDeeperMenuItem = function(item)
-    {
-        item = $(item);
-
-        item
-            .mouseover(this.onDeeperMenuItemHovered)
-            .mouseout(this.onDeeperMenuItemLeft);
-    };
-
-
-    return Menu;
+    return BaseMenu;
 })(jQuery);
 
-LVF.UI.Menu.Constants = {
+LVF.UI.Menu = (function ($)
+{
+
+    function Menu(options)
+    {
+        Menu.superclass.constructor.call(this, options)
+    }
+
+    Menu.extend(LVF.UI.BaseMenu);
+
+    return Menu;
+})(jQuery)
+
+LVF.UI.AuxiliaryMenu = (function ($)
+{
+
+    function AuxiliaryMenu(options)
+    {
+        AuxiliaryMenu.superclass.constructor.call(this, options)
+    }
+
+    AuxiliaryMenu.extend(LVF.UI.BaseMenu);
+
+
+    AuxiliaryMenu.prototype.initMenuItem = function (item)
+    {
+        item = $(item);
+        var __this = this;
+        item.mouseover(function (e)
+        {
+            e.preventDefault();
+            var element = $(e.currentTarget);
+            __this.collapseOthers(element)
+
+            if (__this.delayTimer)
+            {
+                clearTimeout(__this.delayTimer)
+            }
+
+
+            element.addClass(LVF.UI.Constants.MENU_STATE_HOVERED_CLASS);
+            if (element.hasClass(LVF.UI.Constants.MENU_ITEM_HAS_CHILDREN_CLASS))
+            {
+                var itemId = element.attr("id");
+
+                var holder = element.closest(".lvf-menu_holder.__lvl0");
+
+                var menuItemsHolder = holder.find("#menu-for-" + itemId);
+                menuItemsHolder.show();
+            }
+        });
+
+        item.mouseout(function (e)
+        {
+            e.preventDefault();
+            var element = $(e.currentTarget);
+
+            __this.delayTimer = setTimeout(function ()
+            {
+                element.removeClass(LVF.UI.Constants.MENU_STATE_HOVERED_CLASS);
+                if (element.hasClass(LVF.UI.Constants.MENU_ITEM_HAS_CHILDREN_CLASS))
+                {
+                    var itemId = element.attr("id");
+
+                    var parentHolder = element.closest(".lvf-menu_holder.__lvl0");
+
+                    var menuHolder = parentHolder.find("#menu-for-" + itemId);
+                    menuHolder.hide();
+                }
+            }, __this.delayTimeout);
+        })
+
+        if (item.hasClass("__has_children"))
+        {
+            var deeperMenu = item.find(">.lvf-menu_holder>.lvf-menu");
+
+            this.children.push(new LVF.UI.AuxiliaryMenu({
+                element: deeperMenu
+            }));
+        }
+    };
+
+
+    return AuxiliaryMenu;
+})(jQuery)
+
+LVF.UI.Constants = {
     MENU_STATE_HOVERED_CLASS: "__hovered",
     MENU_ITEM_HAS_CHILDREN_CLASS: "__has_children"
 };
