@@ -1,11 +1,16 @@
+/// <reference path="../Libraries/jQuery/SDL.jQuery.ts" />
+/// <reference path="../Types/Types.d.ts" />
+/// <reference path="../Diagnostics/Assert.d.ts" />
+/// <reference path="../Event/Event.d.ts" />
+/// <reference path="DisposableObject.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-if (SDL.jQuery.inArray("data", (SDL.jQuery).event.props) == -1) {
-    (SDL.jQuery).event.props.push("data");
+if (SDL.jQuery.inArray("data", SDL.jQuery.event.props) == -1) {
+    SDL.jQuery.event.props.push("data"); // ObjectWithEvents will be passing additional data in 'data' property
 }
 
 var SDL;
@@ -133,7 +138,7 @@ var SDL;
                     this.fireEvent("dispose");
                 };
                 return ObjectWithEvents;
-            })(Types.DisposableObject);
+            })(SDL.Client.Types.DisposableObject);
             Types.ObjectWithEvents = ObjectWithEvents;
             ;
 

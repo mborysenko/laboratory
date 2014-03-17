@@ -87,7 +87,7 @@ var SDL;
                             errorText = "Could not find appropriate progID";
                         }
                     } else {
-                        xmlDoc = (new (window).DOMParser()).parseFromString(xml, "text/xml");
+                        xmlDoc = (new window.DOMParser()).parseFromString(xml, "text/xml");
                         var namespaceURI = xmlDoc.documentElement.namespaceURI;
                         if (xmlDoc.documentElement.nodeName == "parsererror" && (namespaceURI == "http://www.w3.org/1999/xhtml" || namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml")) {
                             errorText = Xml.getInnerText(xmlDoc);
@@ -125,13 +125,13 @@ var SDL;
 
                 if (node) {
                     if (node.nodeType == 9) {
-                        node = (node).documentElement;
+                        node = node.documentElement;
                     }
 
                     if (node.textContent != undefined) {
                         return node.textContent;
                     } else {
-                        return (node).text;
+                        return node.text;
                     }
                 }
             }
@@ -141,22 +141,22 @@ var SDL;
             function selectSingleNode(parent, xPath, namespaces) {
                 var doc = (!parent || parent.nodeType == 9) ? parent : parent.ownerDocument;
                 if (doc) {
-                    if ((doc).evaluate) {
-                        var xPathResult = (doc).evaluate(xPath, parent, createResolver(namespaces), (window).XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                    if (doc.evaluate) {
+                        var xPathResult = doc.evaluate(xPath, parent, createResolver(namespaces), window.XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 
                         return xPathResult.singleNodeValue;
                     } else {
                         if (namespaces) {
-                            var nsList = String((doc).getProperty("SelectionNamespaces") || "").split(" ");
+                            var nsList = String(doc.getProperty("SelectionNamespaces") || "").split(" ");
                             for (var prefix in namespaces) {
                                 var spec = "xmlns:" + prefix + "=\"" + namespaces[prefix] + "\"";
                                 if (nsList.indexOf(spec) == -1) {
                                     nsList.push(spec);
                                 }
                             }
-                            (doc).setProperty("SelectionNamespaces", nsList.join(" "));
+                            doc.setProperty("SelectionNamespaces", nsList.join(" "));
                         }
-                        return (parent).selectSingleNode(xPath);
+                        return parent.selectSingleNode(xPath);
                     }
                 }
             }
@@ -167,8 +167,8 @@ var SDL;
                 var result = [];
                 var doc = (!parent || parent.nodeType == 9) ? parent : parent.ownerDocument;
                 if (doc) {
-                    if ((doc).evaluate) {
-                        var xPathResult = (doc).evaluate(xPath, parent, createResolver(namespaces), (window).XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+                    if (doc.evaluate) {
+                        var xPathResult = doc.evaluate(xPath, parent, createResolver(namespaces), window.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
                         var node = xPathResult.iterateNext();
                         while (node) {
@@ -177,16 +177,16 @@ var SDL;
                         }
                     } else {
                         if (namespaces) {
-                            var nsList = String((doc).getProperty("SelectionNamespaces") || "").split(" ");
+                            var nsList = String(doc.getProperty("SelectionNamespaces") || "").split(" ");
                             for (var prefix in namespaces) {
                                 var spec = "xmlns:" + prefix + "=\"" + namespaces[prefix] + "\"";
                                 if (nsList.indexOf(spec) == -1) {
                                     nsList.push(spec);
                                 }
                             }
-                            (doc).setProperty("SelectionNamespaces", nsList.join(" "));
+                            doc.setProperty("SelectionNamespaces", nsList.join(" "));
                         }
-                        result = (parent).selectNodes(xPath);
+                        result = parent.selectNodes(xPath);
                     }
                 }
                 return result;
@@ -210,7 +210,7 @@ var SDL;
             */
             function getParseError(doc) {
                 if (doc && hasParseError(doc)) {
-                    return (doc).url + ": (" + (doc).parseError.reason + ")";
+                    return doc.url + ": (" + doc.parseError.reason + ")";
                 } else if (!doc || doc.nodeType != 9) {
                     throw Error("Xml.getParseError: Object should be a document node");
                 }
@@ -224,7 +224,7 @@ var SDL;
             * @return {Boolean} <c>true</c> if the specified documen has a parse error; otherwise <c>false</c>.
             */
             function hasParseError(doc) {
-                return ((doc).parseError && (doc).parseError.errorCode != 0) || false;
+                return (doc.parseError && doc.parseError.errorCode != 0) || false;
             }
             Xml.hasParseError = hasParseError;
             ;

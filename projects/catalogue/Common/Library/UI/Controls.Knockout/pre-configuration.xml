@@ -10,9 +10,19 @@
 
 	<!-- SDL.UI.Core.Knockout configuration -->
 	<include src="../Core.Knockout/configuration.xml"/>
+
+	<!-- SDL.UI.Client.UI.Libraries configuration -->
+	<include src="../Libraries/configuration.xml"/>
 	
 	<!-- Controls -->
+	<include src="Button/_Config.xml"/>
+	<include src="Callout/_Config.xml"/>
+	<include src="Dialog/_Config.xml"/>
+	<include src="Message/_Config.xml"/>
+	<include src="Tabs/_Config.xml"/>
 	<include src="Tooltip/_Config.xml"/>
+	<include src="ScrollView/_Config.xml"/>
+	<include src="LineGraph/_Config.xml"/>
 	
 	<!-- Packages -->
 	<include src="packages.xml"/>

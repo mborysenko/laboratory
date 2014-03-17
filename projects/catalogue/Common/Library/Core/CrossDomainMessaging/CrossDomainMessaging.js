@@ -1,14 +1,14 @@
+/// <reference path="../Types/Url1.ts" />
 var SDL;
 (function (SDL) {
     (function (Client) {
-        /// <reference path="../Types/Url1.ts" />
         /**
         *	implemented in SDL.Client.HostedApplication, copied to SDL.Client.Core
         **/
         (function (CrossDomainMessaging) {
             var reqId = new Date().getTime();
             var callbacks = {};
-            var trustedDomains = [Client.Types.Url.getDomain(window.location.href)];
+            var trustedDomains = [SDL.Client.Types.Url.getDomain(window.location.href)];
             var allowedHandlerBases;
             var parentXdm = undefined;
 
@@ -18,7 +18,7 @@ var SDL;
                         trustedDomains = ["*"];
                     } else {
                         for (var i = 0, len = trustedDomains.length; i < len; i++) {
-                            if (Client.Types.Url.isSameDomain(trustedDomains[i], url)) {
+                            if (SDL.Client.Types.Url.isSameDomain(trustedDomains[i], url)) {
                                 return;
                             }
                         }
@@ -106,15 +106,14 @@ var SDL;
                             }
 
                             execute.sourceWindow = source;
-                            execute.sourceDomain = Client.Types.Url.getDomain(origin);
+                            execute.sourceDomain = SDL.Client.Types.Url.getDomain(origin);
 
                             result = execute();
 
                             if (message.reqId) {
                                 _postMessage(source, {
                                     respId: message.reqId,
-                                    args: [result]
-                                }, origin);
+                                    args: [result] }, origin);
                             }
                         }
                     } else if (message.respId) {
@@ -128,7 +127,7 @@ var SDL;
                                     callback.apply(window, message.args || []);
                                 };
                                 execute.sourceWindow = source;
-                                execute.sourceDomain = Client.Types.Url.getDomain(origin);
+                                execute.sourceDomain = SDL.Client.Types.Url.getDomain(origin);
                                 execute();
                             }
                         }
@@ -148,7 +147,7 @@ var SDL;
                     if (target == window.parent) {
                         if (parentXdm === undefined) {
                             try  {
-                                parentXdm = (target).SDL.Client.CrossDomainMessaging;
+                                parentXdm = target.SDL.Client.CrossDomainMessaging;
                             } catch (err) {
                                 parentXdm = null;
                             }
@@ -156,9 +155,9 @@ var SDL;
 
                         remoteXdm = parentXdm;
                     }
-                } else if (Client.Types.Url.isSameDomain(origin, window.location.href)) {
+                } else if (SDL.Client.Types.Url.isSameDomain(origin, window.location.href)) {
                     try  {
-                        remoteXdm = (target).SDL.Client.CrossDomainMessaging;
+                        remoteXdm = target.SDL.Client.CrossDomainMessaging;
                     } catch (err) {
                     }
                 }
@@ -166,7 +165,7 @@ var SDL;
                 if (remoteXdm) {
                     remoteXdm.executeMessage(message, window, window.location.href);
                 } else {
-                    target.postMessage("sdl:" + (window).JSON.stringify(message), origin);
+                    target.postMessage("sdl:" + window.JSON.stringify(message), origin);
                 }
             }
 
@@ -175,15 +174,13 @@ var SDL;
                     _postMessage(target, {
                         respId: callbackId,
                         retire: !fnc.reoccuring,
-                        args: [].slice.call(arguments)
-                    }, domain);
+                        args: [].slice.call(arguments) }, domain);
                 };
                 fnc.retire = function () {
                     _postMessage(target, {
                         respId: callbackId,
                         execute: false,
-                        retire: true
-                    }, domain);
+                        retire: true }, domain);
                 };
                 return fnc;
             }
@@ -193,7 +190,7 @@ var SDL;
                     var allowed = trustedDomains[0] == "*";
                     if (!allowed) {
                         for (var i = 0, len = trustedDomains.length; i < len; i++) {
-                            if (Client.Types.Url.isSameDomain(trustedDomains[i], e.origin)) {
+                            if (SDL.Client.Types.Url.isSameDomain(trustedDomains[i], e.origin)) {
                                 allowed = true;
                                 break;
                             }
@@ -201,7 +198,7 @@ var SDL;
                     }
 
                     if (allowed) {
-                        executeMessage((window).JSON.parse(e.data.slice(4)), e.source, e.origin);
+                        executeMessage(window.JSON.parse(e.data.slice(4)), e.source, e.origin);
                     }
                 }
             }

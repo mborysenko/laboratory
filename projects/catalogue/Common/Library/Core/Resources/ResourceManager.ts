@@ -109,7 +109,7 @@ module SDL.Client.Resources
 				}
 				Configuration.ConfigurationManager.configurationFiles = null;
 
-				SDL.jQuery.each(Xml.selectNodes(config, "//resourceGroups[parent::configuration and resourceGroup]"), (index, resourceGroupsElement: Element) =>
+				SDL.jQuery.each(Xml.selectNodes(config, "//resourceGroups[parent::configuration and resourceGroup]"), (index: number, resourceGroupsElement: Element) =>
 				{
 					var appVersionNodes =  Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/appSettings/setting[@name='version']/@value");
 					var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
@@ -117,12 +117,12 @@ module SDL.Client.Resources
 					var baseUrlNodes =  Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/@baseUrl");
 					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
-					SDL.jQuery.each(Xml.selectNodes(resourceGroupsElement, "resourceGroup"), (index, resourceGroupElement: Element) =>
+					SDL.jQuery.each(Xml.selectNodes(resourceGroupsElement, "resourceGroup"), (index: number, resourceGroupElement: Element) =>
 					{
 						var name = resourceGroupElement.getAttribute("name");
 						var resourceGroup: IResourceGroupOptions = { name: name, files: [], dependencies: [], extensions: [] };
 					
-						SDL.jQuery.each(Xml.selectNodes(resourceGroupElement, "files/file[@name]"), (index, fileElement: Element) =>
+						SDL.jQuery.each(Xml.selectNodes(resourceGroupElement, "files/file[@name]"), (index: number, fileElement: Element) =>
 						{
 							var modification = fileElement.getAttribute("modification");
 							var url = fileElement.getAttribute("name");
@@ -156,7 +156,7 @@ module SDL.Client.Resources
 					});
 				});
 
-				SDL.jQuery.each(Xml.selectNodes(config, "//packages[parent::configuration and package]"), (index, packagesNode: Element) =>
+				SDL.jQuery.each(Xml.selectNodes(config, "//packages[parent::configuration and package]"), (index: number, packagesNode: Element) =>
 				{
 					var appVersionNodes =  Xml.selectNodes(packagesNode, "ancestor::configuration/appSettings/setting[@name='version']/@value");
 					var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
@@ -164,7 +164,7 @@ module SDL.Client.Resources
 					var baseUrlNodes =  Xml.selectNodes(packagesNode, "ancestor::configuration/@baseUrl");
 					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
-					SDL.jQuery.each(Xml.selectNodes(packagesNode, "package"), (index, packageElement: Element) =>
+					SDL.jQuery.each(Xml.selectNodes(packagesNode, "package"), (index: number, packageElement: Element) =>
 					{
 						var url = packageElement.getAttribute("src");
 						var modification = packageElement.getAttribute("modification");
@@ -175,7 +175,7 @@ module SDL.Client.Resources
 							version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
 							resourceGroups: []};
 
-						SDL.jQuery.each(Xml.selectNodes(packageElement, ".//resourceGroups/resourceGroup"), (index, groupElement: Element) =>
+						SDL.jQuery.each(Xml.selectNodes(packageElement, ".//resourceGroups/resourceGroup"), (index: number, groupElement: Element) =>
 						{
 							var groupName = groupElement.getAttribute("name");
 							var files: string[] = [];

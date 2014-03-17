@@ -1,3 +1,7 @@
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Models/Models.d.ts" />
+/// <reference path="ViewModelBase.ts" />
+/// <reference path="ViewModelItem.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -9,10 +13,6 @@ var SDL;
     (function (UI) {
         (function (Core) {
             (function (Knockout) {
-                /// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Models\Models.d.ts" />
-                /// <reference path="ViewModelBase.ts" />
-                /// <reference path="ViewModelItem.ts" />
                 (function (ViewModels) {
                     eval(SDL.Client.Types.OO.enableCustomInheritance);
                     var ViewModel = (function (_super) {
@@ -22,7 +22,7 @@ var SDL;
                             this.item = item;
                         }
                         return ViewModel;
-                    })(ViewModels.ViewModelBase);
+                    })(SDL.UI.Core.Knockout.ViewModels.ViewModelBase);
                     ViewModels.ViewModel = ViewModel;
 
                     ViewModel.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Core$ViewModels$Knockout$ViewModel$disposeInterface() {

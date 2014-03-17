@@ -1,12 +1,14 @@
+/// <reference path="../../SDL.Client.UI.Core/Renderers/ViewRenderer.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Views/ViewBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Controls/Base.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
+/// <reference path="../Utils/knockout.ts" />
+/// <reference path="KnockoutBindingHandlers.ts" />
 var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
             (function (Knockout) {
-                /// <reference path="../../SDL.Client.UI.Core/Renderers/ViewRenderer.d.ts" />
-                /// <reference path="../../SDL.Client.UI.Core/Views/ViewBase.d.ts" />
-                /// <reference path="../../SDL.Client.UI.Core/Controls/Base.d.ts" />
-                /// <reference path="../Libraries/knockout/knockout.d.ts" />
                 (function (BindingHandlers) {
                     var ViewKnockoutBindingHandler = (function () {
                         function ViewKnockoutBindingHandler() {
@@ -39,6 +41,7 @@ var SDL;
                                 if (handler !== null) {
                                     if (!handler) {
                                         $e.data("view-update", true);
+                                        SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data); // this is to make sure observables are evaluated, otherwise ko will not notify us when they change
                                     } else if (handler.update) {
                                         handler.update(element, ViewKnockoutBindingHandler.getDataValueAccessor(valueAccessor), allBindingsAccessor, viewModel, bindingContext);
                                     } else {
@@ -51,10 +54,9 @@ var SDL;
                         ViewKnockoutBindingHandler.initViewBinding = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                             var $e = SDL.jQuery(element);
                             if ($e.data("view-create")) {
-                                var value = ko.toJS(valueAccessor()) || "";
-
-                                var type = value.type || "" + value;
-                                var handlerName = value.handler;
+                                var value = ko.unwrap(valueAccessor()) || "";
+                                var type = ko.unwrap(value.type) || "" + value;
+                                var handlerName = ko.unwrap(value.handler);
                                 var handler;
 
                                 if (handlerName) {
@@ -75,6 +77,7 @@ var SDL;
                                     // otherwise use the type to find the ko binding
                                     handler = ko.bindingHandlers[type];
                                 }
+
                                 if (handler) {
                                     var dataValueAccessor = ViewKnockoutBindingHandler.getDataValueAccessor(valueAccessor);
                                     if (handler.init) {
@@ -91,7 +94,7 @@ var SDL;
                                     $e.data("view-handler", null);
                                     if (type) {
                                         // no handler is found, just create the view
-                                        SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element, value.data, ViewKnockoutBindingHandler.addViewDisposalCallback);
+                                        SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element, SDL.UI.Core.Knockout.BindingHandlers.areKnockoutObservableSettingsEnabled(type) ? value.data : SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data), ViewKnockoutBindingHandler.addViewDisposalCallback);
                                     }
                                 }
                             }
@@ -116,7 +119,7 @@ var SDL;
                     })();
                     ;
 
-                    (ko.bindingHandlers).view = (new ViewKnockoutBindingHandler());
+                    ko.bindingHandlers.view = (new ViewKnockoutBindingHandler());
                 })(Knockout.BindingHandlers || (Knockout.BindingHandlers = {}));
                 var BindingHandlers = Knockout.BindingHandlers;
             })(Core.Knockout || (Core.Knockout = {}));

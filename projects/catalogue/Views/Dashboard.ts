@@ -3,7 +3,7 @@
 
 module LVF.Views
 {
-    eval(SDL.Client.Types.OO.enableCustomInheritance);
+    eval(SDL.Client.Types.OO.enbleCustomInheritance);
     export class Dashboard extends SDL.UI.Core.Views.ViewBase
     {
         constructor(element: HTMLElement, settings?: any)

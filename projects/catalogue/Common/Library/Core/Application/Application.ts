@@ -174,6 +174,7 @@ module SDL.Client.Application
 			registerResourceGroupRendered("SDL.Client.Application");
 			if (jQuery)
 			{
+				(<any>SDL).jQuery = jQuery;
 				registerResourceGroupRendered("SDL.Client.Libraries.JQuery");
 			}
 
@@ -392,7 +393,7 @@ module SDL.Client.Application
 						interval = null;
 					}
 
-					applicationHostUrl = sessionStorage["applicationHostUrl"] = data.applicationHostUrl;
+					applicationHostUrl = sessionStorage["appHost-url"] = data.applicationHostUrl;
 					applicationHostCorePath = data.applicationHostCorePath;
 					Application.applicationSuiteId = data.applicationSuiteId;
 
@@ -429,7 +430,7 @@ module SDL.Client.Application
 		}
 		else if (defaultApplicationHostUrl)	// only redirect if defaultApplicationHostUrl is specified, regardless of the applicationHostUrl stored in sessionStorage
 		{
-			applicationHostUrl = sessionStorage["applicationHostUrl"] || defaultApplicationHostUrl;	// use sessionStorage value if specified
+			applicationHostUrl = sessionStorage["appHost-url"] || defaultApplicationHostUrl;	// use sessionStorage value if specified
 			_initCallbacks = null;
 			Application.isReloading = true;
 			window.location.replace(applicationHostUrl +

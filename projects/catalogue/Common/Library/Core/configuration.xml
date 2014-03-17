@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
   </appSettings>
   <!-- Library core settings -->
   <include src="settings.xml" />
@@ -44,6 +44,27 @@
           </dependencies>
         </resourceGroup>
       </resourceGroups>
+    </configuration>
+  </include>
+  <include src="ApplicationLocalization/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.Client.Application.Localization">
+          <files>
+            <file name="ApplicationLocalization/ApplicationLocalization.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Application" />
+            <dependency name="SDL.Client.Localization" />
+            <dependency name="SDL.Client.Event.EventRegister" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+      <extensions>
+        <resourceExtension for="SDL.Client.Application">
+          <insert name="SDL.Client.Application.Localization" />
+        </resourceExtension>
+      </extensions>
     </configuration>
   </include>
   <!-- ApplicationHost resources -->
@@ -804,10 +825,11 @@
             <resourceGroup name="SDL.Client.MessageCenter" />
             <resourceGroup name="SDL.Client.Types.RegExp" />
             <resourceGroup name="SDL.Client.Types.Url" />
+            <resourceGroup name="SDL.Client.Localization" />
+            <resourceGroup name="SDL.Client.Application.Localization" />
             <resourceGroup name="SDL.Client.Types.String" />
             <resourceGroup name="SDL.Client.Xml" />
             <resourceGroup name="SDL.Client.Net.Ajax" />
-            <resourceGroup name="SDL.Client.Localization" />
             <resourceGroup name="SDL.Client.Resources.ResourceManager" />
             <resourceGroup name="SDL.Client.ApplicationHost" />
             <resourceGroup name="SDL.Client.Types.Date" />
@@ -856,6 +878,7 @@
       </files>
       <dependencies>
         <dependency name="SDL.Client.Application" />
+        <dependency name="SDL.Client.Application.Localization" />
         <dependency name="SDL.Client.ApplicationHost" />
         <dependency name="SDL.Client.Configuration.ConfigurationManager" />
         <dependency name="SDL.Client.CrossDomainMessaging" />

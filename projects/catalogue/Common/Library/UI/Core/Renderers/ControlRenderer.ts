@@ -10,11 +10,11 @@ module SDL.UI.Core.Renderers
 {
 	export class ControlRenderer
 	{
-		private static types: {[index: string]: Controls.IControlType;} = {};
-		private static createdControls: {[type: string]: Controls.IControl[]; } = {};
+		/*private*/ static types: {[index: string]: Controls.IControlType;} = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
+		/*private*/ static createdControls: {[type: string]: Controls.IControl[]; } = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		static renderControl(type: string, element: HTMLElement, settings: any,
-				callback?: (control: Controls.IControl) => void, errorcallback?: (error: string)=>void): void
+				callback?: (control: Controls.IControl) => void, errorcallback?: (error: string) => void): void
 		{
 			if (element)
 			{
@@ -35,7 +35,7 @@ module SDL.UI.Core.Renderers
 						{
 							if (ctor.createElement)
 							{
-								element = ctor.createElement(document, settings, SDL.jQuery, callback ? (() => callback(control)) : null, errorcallback);
+								element = ctor.createElement(document, settings, SDL.jQuery);
 							}
 							else
 							{
@@ -44,32 +44,12 @@ module SDL.UI.Core.Renderers
 						}
 
 						// Instantiate the control
-						var control: Controls.IControl;
-						if (ctor.isAsynchronous)
-						{
-							var callbackInvoked = false;
-							var _callback = callback ? () => {
-									callbackInvoked = true;
-									if (control)
-									{
-										callback(control);
-										callback = null;
-									}
-								}: null;
-							control = new ctor(element, settings, SDL.jQuery, _callback, errorcallback);
-							if (callback && callbackInvoked)
-							{
+						var control: Controls.IControl = new ctor(element, settings, SDL.jQuery);
+
+						// Render control
+						control.render(callback ? () => {
 								callback(control);
-							}
-						}
-						else
-						{
-							control = new ctor(element, settings, SDL.jQuery);
-							if (callback)
-							{
-								callback(control);
-							}
-						}
+							}: null, errorcallback);
 					}
 				});
 		}
@@ -93,9 +73,9 @@ module SDL.UI.Core.Renderers
 			{
 				SDL.jQuery(control.getElement()).removeData();
 			}
-			if (control.dispose)
+			if ((<SDL.Client.Types.IDisposableObject><any>control).dispose)
 			{
-				control.dispose();
+				(<SDL.Client.Types.IDisposableObject><any>control).dispose();
 			}
 		}
 

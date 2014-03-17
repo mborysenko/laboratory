@@ -1,6 +1,6 @@
 /// <reference path="../Types/Types.d.ts" />
-/// <reference path="../Application/Application.ts" 
-/// <reference path="../ApplicationFacade.ts" 
+/// <reference path="../Application/Application.ts" />
+/// <reference path="../Application/ApplicationFacade.ts" />
 /// <reference path="../ConfigurationManager/ConfigurationManager.ts" />
 /// <reference path="../CrossDomainMessaging/CrossDomainMessaging.ts" />
 /// <reference path="../Types/Object.d.ts" />
@@ -28,11 +28,23 @@ module SDL.Client.ApplicationHost
 		exposeApplicationFacade(applicationEntryPointId: string): void;
 		applicationEntryPointUnloaded(): void;
 		setCulture(culture: string): void;
+		startCaptureDomEvents(events: string[]): void;
+		stopCaptureDomEvents(events?: string[]): void;
 		setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void;
 		setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string, allowedDomains?: string[]): void;
 		callApplicationFacade(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string, allowedDomains?: string[]): void;
 		initializeApplicationSuite(includeApplicationEntryPointIds?: string[], excludeApplicationEntryPointIds?: string[], domainDefinitions?: {[id: string]: Application.IApplicationDomain;}): void;
 		resetApplicationSuite(): void;
+
+		storeApplicationData(key: string, data: any): void;
+		storeApplicationSessionData(key: string, data: any): void;
+		getApplicationData(key: string): any;
+		getApplicationSessionData(key: string): any;
+		clearApplicationData(): void;
+		clearApplicationSessionData(): void;
+		removeApplicationData(key: string): void;
+		removeApplicationSessionData(key: string): void;
+
 		resolveCommonLibraryResources(resourceGroupName: string): Resources.IResolvedResourceGroupResult[];
 		getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
 		getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
@@ -64,11 +76,16 @@ module SDL.Client.ApplicationHost
 		validDomains: string[];
 	};
 
+	export interface ITranslations
+	{
+		[lang: string]: string;
+	};
+
 	export interface IApplicationEntryPointGroup
 	{
 		id: string;
 		title: string;
-		translations?: {[lang: string]: string;};
+		translations?: ITranslations;
 		entryPoints: IApplicationEntryPoint[];
 		application: IApplication;
 	};
@@ -77,7 +94,7 @@ module SDL.Client.ApplicationHost
 	{
 		id: string;
 		title: string;
-		translations: {[lang: string]: string;};
+		translations: ITranslations;
 		domain: IApplicationDomain;
 		baseUrl: string;
 		url: string;
@@ -94,6 +111,7 @@ module SDL.Client.ApplicationHost
 
 	export interface ITargetDisplay
 	{
+		id: string;
 		application?: IApplication;
 		frame?: HTMLIFrameElement;
 		loadedDomain?: string;
@@ -141,6 +159,27 @@ module SDL.Client.ApplicationHost
 		visited?: boolean;
 	}
 
+	interface IApplicationStorageEntryPointDomainData
+	{
+		[key: string]: any;
+	}
+
+	interface IApplicationStorageManifestDomainData
+	{
+		[entryPointDomain: string]: IApplicationStorageEntryPointDomainData;
+	}
+
+	interface IApplicationStorageData
+	{
+		[manifestDomain: string]: IApplicationStorageManifestDomainData;
+	}
+
+	var CaptureDomEvents =
+	{
+		mouseup: "mouseup",
+		mousemove: "mousemove"
+	}
+
 	eval(Types.OO.enableCustomInheritance);
 	class ApplicationHostClass extends Types.ObjectWithEvents implements IApplicationHost
 	{
@@ -148,14 +187,16 @@ module SDL.Client.ApplicationHost
 		public applicationsIndex: {[id: string]: IApplication;} = {};
 		
 		private activeApplicationEntryPointId: string;
+		private activeApplicationEntryPoint: IApplicationEntryPoint;
 		private activeApplicationId: string;
-		private selfTargetDisplay: ITargetDisplay = {};
+		private selfTargetDisplay: ITargetDisplay = { id: "display-self" };
 		private initialized = false;
 		private libraryVersions: string[] = [];
 		private initCallbacks: {(): void;}[] = [];
 		private applicationManifestsCount = 0;
 		private applicationManifests: IApplicationManifest[] = [];
 		private applicationsSessionData: {[id: string]: IApplicationSessionData};
+		private domEventsTargetDisplays: {[id: string]: string[];} = {};
 
 		public applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: {type: string; data: any;}) => void): Application.IApplicationHostData
 		{
@@ -169,6 +210,7 @@ module SDL.Client.ApplicationHost
 				}
 				else
 				{
+					this._stopCaptureDomEvents(targetDisplay);
 					targetDisplay.eventHandler = null;
 				}
 
@@ -176,6 +218,7 @@ module SDL.Client.ApplicationHost
 						applicationHostUrl: window.location.href.replace(/#.*$/, ""),	// remove the hash parameters from the URL
 						applicationHostCorePath: Types.Url.getAbsoluteUrl(Configuration.ConfigurationManager.corePath),
 						applicationSuiteId: targetDisplay.application.id,
+						version: Configuration.ConfigurationManager.version,
 						libraryVersionSupported: !libraryVersion || this.libraryVersions.indexOf(libraryVersion) != -1,
 						culture: Localization.getCulture(),
 						activeApplicationEntryPointId: this.activeApplicationEntryPointId,
@@ -225,6 +268,7 @@ module SDL.Client.ApplicationHost
 			var targetDisplay: ITargetDisplay = this.getCallerTargetDisplay(true, false, true);
 			if (targetDisplay)
 			{
+				this._stopCaptureDomEvents(targetDisplay);
 				targetDisplay.eventHandler = null;
 				targetDisplay.loadedDomain = null;
 				(<IApplicationEntryPointTargetDisplay>targetDisplay).exposedApplicationFacade = null;
@@ -238,6 +282,48 @@ module SDL.Client.ApplicationHost
 			{
 				Localization.setCulture(culture);
 			}
+		}
+
+		public startCaptureDomEvents(events: string[]): void
+		{
+			if (events && events.length)
+			{
+				var targetDisplay: ITargetDisplay = this.getCallerTargetDisplay(true, false, true);
+				if (targetDisplay)
+				{
+					var targetDisplayId = targetDisplay.id;
+					var targetDisplayEvents: string[] = this.domEventsTargetDisplays[targetDisplayId];
+					if (!targetDisplayEvents)
+					{
+						targetDisplayEvents = this.domEventsTargetDisplays[targetDisplayId] = [];
+					}
+					SDL.jQuery.each(events, (i: number, event: string) =>
+						{
+							if ((event in CaptureDomEvents) && targetDisplayEvents.indexOf(event) == -1)
+							{
+								targetDisplayEvents.push(event);
+								var listening = false;
+								SDL.jQuery.each(this.domEventsTargetDisplays, (id: string, events: string[]) =>
+									{
+										if (id != targetDisplayId && events.indexOf(event) != -1)
+										{
+											listening = true;
+											return false;
+										}
+									});
+								if (!listening)
+								{
+									this.addCaptureDomEventListener(event);
+								}
+							}
+						});
+				}
+			}
+		}
+
+		public stopCaptureDomEvents(events?: string[]): void
+		{
+			this._stopCaptureDomEvents(this.getCallerTargetDisplay(true, false, true), events);
 		}
 
 		public setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void
@@ -259,6 +345,7 @@ module SDL.Client.ApplicationHost
 				applicationSuiteId = applicationEntryPointId ? applicationSuiteId || targetDisplay.application.id : null;
 				if (applicationEntryPointId != this.activeApplicationEntryPointId || applicationSuiteId != this.activeApplicationId)
 				{
+					this.activeApplicationEntryPoint = applicationEntryPoint;
 					this.activeApplicationEntryPointId = applicationEntryPointId;
 					this.activeApplicationId = applicationSuiteId;
 
@@ -509,11 +596,83 @@ module SDL.Client.ApplicationHost
 					application.authenticated = false;
 					SDL.jQuery.each(application.entryPointGroups, (index: number, entryPointGroup: IApplicationEntryPointGroup) =>
 						SDL.jQuery.each(entryPointGroup.entryPoints,
-								(index, entryPoint: IApplicationEntryPoint) => { entryPoint.hidden = false }));
+								(index: number, entryPoint: IApplicationEntryPoint) => { entryPoint.hidden = false }));
 
 					this.fireEvent("applicationsuitereset", { applicationId: application.id });
 				}
 				return;
+			}
+		}
+
+		public storeApplicationData(key: string, data: any): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._storeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key, data);
+			}
+		}
+
+		public storeApplicationSessionData(key: string, data: any): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._storeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key, data);
+			}
+		}
+
+		public getApplicationData(key: string): any
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				return this._getApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+			}
+		}
+
+		public getApplicationSessionData(key: string): any
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				return this._getApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+			}
+		}
+
+		public clearApplicationData(): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._removeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain);
+			}
+		}
+
+		public clearApplicationSessionData(): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._removeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain);
+			}
+		}
+
+		public removeApplicationData(key: string): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._removeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+			}
+		}
+
+		public removeApplicationSessionData(key: string): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true);
+			if (targetDisplay)
+			{
+				this._removeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
 			}
 		}
 
@@ -938,7 +1097,7 @@ module SDL.Client.ApplicationHost
 
 				var manifestTimeout = (<any>Xml.getInnerText(Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/manifestLoadTimeout") | 0) || 5;	//default to 5 seconds
 
-				CrossDomainMessaging.addAllowedHandlerBase(ApplicationManifestReceiver);
+				CrossDomainMessaging.addAllowedHandlerBase(SDL.Client.ApplicationHost.ApplicationManifestReceiver);
 				SDL.jQuery.each(nodes, (i: number, xmlElement: Element) =>
 					{
 						var baseUrlNodes =  Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
@@ -1057,7 +1216,6 @@ module SDL.Client.ApplicationHost
 					}
 					
 					var manifestUrl = Url.getAbsoluteUrl(Url.combinePath(baseUrl, applicationReferenceNode.getAttribute("url")));
-					var applicationDomain = Url.getDomain(manifestUrl);
 
 					var applicationSuiteNode = <Element>Xml.selectSingleNode(applicationReferenceNode, ".//configuration/applicationSuite");
 					var authenticationUrl = applicationSuiteNode.getAttribute("authenticationUrl");
@@ -1067,11 +1225,11 @@ module SDL.Client.ApplicationHost
 					for (var j = 0, lenj = domainNodes.length; j < lenj; j++)
 					{
 						var domainNode = <Element>domainNodes[j];
-						var domainUrl = Url.combinePath(applicationDomain, domainNode.getAttribute("domain"));
+						var domainUrl = Url.combinePath(manifestUrl, domainNode.getAttribute("domain"));
 
 						var altDomainNodes = Xml.selectNodes(domainNode, "alternativeDomain");
 						var validDomains: string[] = [domainUrl].concat(SDL.jQuery.map(altDomainNodes,
-								(altDomainsNode: Node) => Url.combinePath(applicationDomain, Xml.getInnerText(altDomainsNode))));
+								(altDomainsNode: Node) => Url.combinePath(manifestUrl, Xml.getInnerText(altDomainsNode))));
 
 						var domainId = domainNode.getAttribute("id");
 						var deferredAttribute = domainNode.getAttribute("deferred");
@@ -1084,7 +1242,7 @@ module SDL.Client.ApplicationHost
 
 						domains[domainId] = {
 								id: domainId,
-								baseUrl: applicationDomain,
+								baseUrl: manifestUrl,
 								domain: domainUrl,
 								deferred: deferred,
 								initialized: !deferred,
@@ -1113,6 +1271,7 @@ module SDL.Client.ApplicationHost
 					if (authenticationUrl)
 					{
 						application.authenticationTargetDisplay = {
+								id: "display-" + Types.Object.getNextId(),
 								application: application,
 								frame: null
 							};
@@ -1178,6 +1337,7 @@ module SDL.Client.ApplicationHost
 			if (!targetDisplay)
 			{
 				targetDisplay = parentApplication.targetDisplaysIndex[targetDisplayName] = {
+						id: "display-" + Types.Object.getNextId(),
 						name: targetDisplayName,
 						application: parentApplication,
 						entryPoints: [],
@@ -1228,9 +1388,9 @@ module SDL.Client.ApplicationHost
 			return entryPoint;
 		}
 
-		private buildNameTranslations(parent: Element): {[lang: string]: string;}
+		private buildNameTranslations(parent: Element): ITranslations
 		{
-			var translations = {};
+			var translations = <ITranslations>{};
 			var translationNodes = Xml.selectNodes(parent, "translations/title[@lang]");
 			for (var i = 0, len = translationNodes.length; i < len; i++)
 			{
@@ -1244,7 +1404,7 @@ module SDL.Client.ApplicationHost
 		{
 			if (!this.applicationsSessionData)
 			{
-				this.applicationsSessionData = Types.Object.deserialize(sessionStorage["applicationsData"] || "{}");
+				this.applicationsSessionData = Types.Object.deserialize(sessionStorage["appHost-applications"] || "{}");
 			}
 
 			var applicationSuiteId = applicationEntryPoint.application.id;
@@ -1268,15 +1428,15 @@ module SDL.Client.ApplicationHost
 			{
 				entryPointData.baseUrl = baseUrl;
 			}
-			entryPointData[property] = applicationEntryPoint[property];
-			sessionStorage["applicationsData"] = Types.Object.serialize(this.applicationsSessionData);
+			(<any>entryPointData)[property] = (<any>applicationEntryPoint)[property];
+			sessionStorage["appHost-applications"] = Types.Object.serialize(this.applicationsSessionData);
 		}
 
 		private getApplicationEntryPointSessionData(applicationSuiteId: string, applicationEntryPointId: string, baseUrl: string, property: string): any
 		{
 			if (!this.applicationsSessionData)
 			{
-				this.applicationsSessionData = Types.Object.deserialize(sessionStorage["applicationsData"] || "{}");
+				this.applicationsSessionData = Types.Object.deserialize(sessionStorage["appHost-applications"] || "{}");
 			}
 			var applicationData = this.applicationsSessionData[applicationSuiteId];
 			if (applicationData)
@@ -1284,12 +1444,193 @@ module SDL.Client.ApplicationHost
 				var entryPointData: IApplicationEntryPointSessionData = applicationData.entryPoints[applicationEntryPointId];
 				if (entryPointData && entryPointData.baseUrl == baseUrl)
 				{
-					return entryPointData[property];
+					return (<any>entryPointData)[property];
+				}
+			}
+		}
+
+		private _getRawApplicationStorageData(storage: Storage, application: IApplication): IApplicationStorageData
+		{
+			var rawAppStorageData: string = storage["appHost-appData-" + application.id];
+			if (rawAppStorageData)
+			{
+				return JSON.parse(rawAppStorageData);
+			}
+		}
+
+		private _storeApplicationData(storage: Storage, application: IApplication, applicationEntryPointDomain: string, key: string, data: any): void
+		{
+			if (application)
+			{
+				var manifestDomain = Types.Url.getDomain(application.manifestUrl);
+				var appStorageData: IApplicationStorageData = this._getRawApplicationStorageData(storage, application) || {};
+				var appStorageManifestDomainData = appStorageData[manifestDomain] || (appStorageData[manifestDomain] = {});
+				var appStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain] || (appStorageManifestDomainData[applicationEntryPointDomain] = {});
+				appStorageEntryPointDomainData[key] = data;
+				storage["appHost-appData-" + application.id] = JSON.stringify(appStorageData);
+			}
+		}
+
+		private _getApplicationData(storage: Storage, application: IApplication, applicationEntryPointDomain: string, key: string): any
+		{
+			var appStorageData = this._getRawApplicationStorageData(storage, application);
+			if (appStorageData)
+			{
+				var appStorageManifestDomainData = appStorageData[Types.Url.getDomain(application.manifestUrl)];
+				if (appStorageManifestDomainData)
+				{
+					var appStorageEntryPointDomainData: IApplicationStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain];
+					if (appStorageEntryPointDomainData)
+					{
+						return appStorageEntryPointDomainData[key];
+					}
+				}
+			}
+		}
+
+		private _removeApplicationData(storage: Storage, application: IApplication, applicationEntryPointDomain: string, key?: string): any
+		{
+			var appStorageData = this._getRawApplicationStorageData(storage, application);
+			if (appStorageData)
+			{
+				var appStorageManifestDomainData = appStorageData[Types.Url.getDomain(application.manifestUrl)];
+				if (appStorageManifestDomainData)
+				{
+					var appStorageEntryPointDomainData: IApplicationStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain];
+					if (appStorageEntryPointDomainData)
+					{
+						if (key)
+						{
+							delete appStorageEntryPointDomainData[key];
+						}
+						else
+						{
+							delete appStorageManifestDomainData[applicationEntryPointDomain];
+						}
+						storage["appHost-appData-" + application.id] = JSON.stringify(appStorageData);
+					}
+				}
+			}
+		}
+
+		private _stopCaptureDomEvents(targetDisplay: ITargetDisplay, events?: string[]): void
+		{
+			if (!events || events.length)
+			{
+				if (targetDisplay)
+				{
+					var targetDisplayId = targetDisplay.id;
+					var targetDisplayEvents: string[] = this.domEventsTargetDisplays[targetDisplayId];
+					if (targetDisplayEvents)
+					{
+						var newEvents: string[] = events ? [] : null;
+
+						SDL.jQuery.each(targetDisplayEvents, (i: number, event: string) =>
+						{
+							if (!events || events.indexOf(event) != -1)
+							{
+								var listening = false;
+								SDL.jQuery.each(this.domEventsTargetDisplays, (id: string, events: string[]) =>
+									{
+										if (id != targetDisplayId && events.indexOf(event) != -1)
+										{
+											listening = true;
+											return false;
+										}
+									});
+
+								if (!listening)
+								{
+									this.removeCaptureDomEventListener(event);
+								}
+							}
+							else
+							{
+								newEvents.push(event);
+							}
+						});
+
+						if (!events || !newEvents.length)
+						{
+							delete this.domEventsTargetDisplays[targetDisplayId];
+						}
+						else
+						{
+							this.domEventsTargetDisplays[targetDisplayId] = newEvents;
+						}
+					}
+				}
+			}
+		}
+
+		private addCaptureDomEventListener(event: string): void
+		{
+			switch (event)
+			{
+				case "mouseup":
+				case "mousemove":
+					Client.Event.EventRegister.addEventHandler(document, event, this.getDelegate(this.handleCaptureDomEvent));
+					break;
+			}
+		}
+
+		private removeCaptureDomEventListener(event: string): void
+		{
+			switch (event)
+			{
+				case "mouseup":
+				case "mousemove":
+					Client.Event.EventRegister.removeEventHandler(document, event, this.getDelegate(this.handleCaptureDomEvent));
+					break;
+			}
+		}
+
+		private handleCaptureDomEvent(e: JQueryEventObject)
+		{
+			if (this.activeApplicationId && (e.type in CaptureDomEvents))
+			{
+				var application = this.applicationsIndex[this.activeApplicationId];
+				var targetDisplay: ITargetDisplay;
+				if (application.authenticationUrl && !application.authenticated)
+				{
+					targetDisplay = application.authenticationTargetDisplay;
+				}
+				else if (this.activeApplicationEntryPoint)
+				{
+					targetDisplay = this.activeApplicationEntryPoint.targetDisplay;
+				}
+
+				if (targetDisplay && targetDisplay.eventHandler)
+				{
+					var events = this.domEventsTargetDisplays[targetDisplay.id];
+					if (events && events.indexOf(e.type) != -1)
+					{
+						switch (e.type)
+						{
+							case "mouseup":
+							case "mousemove":
+								targetDisplay.eventHandler({type: "domevent", data:
+									{
+										type: e.type,
+										metaKey: e.metaKey,
+										altKey: e.altKey,
+										ctrlKey: e.ctrlKey,
+										shiftKey: e.shiftKey,
+										screenX: e.screenX,
+										screenY: e.screenY,
+										button: e.button
+									}});
+								break;
+						}
+					}
 				}
 			}
 		}
 	}
+
 	SDL.Client.Types.OO.createInterface("SDL.Client.ApplicationHost.ApplicationHostClass", ApplicationHostClass);
-	export var ApplicationHost: IApplicationHost = new SDL.Client.ApplicationHost["ApplicationHostClass"]();
+	// using [new SDL.Client.ApplicationHost["ApplicationHostClass"]()] instead of [new ApplicationHostClass()]
+	// because [new ApplicationHostClass()] would refer to a closure, not the interface defined in the line above
+	export var ApplicationHost: IApplicationHost = new (<any>SDL.Client.ApplicationHost)["ApplicationHostClass"]();
 	ApplicationHost.initialize();
 }

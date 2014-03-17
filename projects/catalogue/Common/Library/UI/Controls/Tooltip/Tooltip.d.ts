@@ -12,14 +12,15 @@ declare module SDL.UI.Controls {
         showIfNoOverflow?: boolean;
         content?: string;
     }
-    class Tooltip extends UI.Core.Controls.ControlBase {
-        private static tooltipTimer;
-        private static shownTooltip;
+    class Tooltip extends Core.Controls.ControlBase {
+        static tooltipTimer: number;
+        static shownTooltip: Tooltip;
         private $;
         private $element;
         private settings;
         private mouse;
         private shown;
+        constructor(element: HTMLElement, options?: ITooltipOptions, jQuery?: JQueryStatic);
         public $initialize(): void;
         public update(options?: ITooltipOptions): void;
         /**

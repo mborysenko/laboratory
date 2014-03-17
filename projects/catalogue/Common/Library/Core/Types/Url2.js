@@ -37,7 +37,7 @@ var SDL;
                     } else {
                         var hashIndx = base.indexOf("#");
                         if (hashIndx != -1) {
-                            base = base.slice(0, hashIndx);
+                            base = base.slice(0, hashIndx); // removed the hash from the base if present
                         }
 
                         var charAt0 = path.charAt(0);
@@ -54,12 +54,12 @@ var SDL;
                             var baseParts = parseUrl(base);
 
                             if (charAt0 != "/") {
-                                path = Types.Url.normalize(baseParts[UrlParts.PATH] + path);
+                                path = SDL.Client.Types.Url.normalize(baseParts[4 /* PATH */] + path);
                             } else if (path.charAt(1) == "/") {
                                 // path starts with // (a hostname without the protocol)
-                                return baseParts[UrlParts.PROTOCOL] + path;
+                                return baseParts[0 /* PROTOCOL */] + path;
                             }
-                            return baseParts[UrlParts.DOMAIN] + path;
+                            return baseParts[3 /* DOMAIN */] + path;
                         }
                     }
                 }
@@ -67,9 +67,10 @@ var SDL;
                 ;
 
                 function normalize(url) {
+                    // get rid of /../ and /./
                     if (url) {
                         var parts = parseUrl(url);
-                        var path = parts[UrlParts.PATH];
+                        var path = parts[4 /* PATH */];
                         if (path) {
                             var pathParts = path.match(/[^\/]+/g);
                             if (pathParts) {
@@ -90,16 +91,16 @@ var SDL;
                                 }
 
                                 if (path.charAt(path.length - 1) == "/") {
-                                    pathParts.push("");
+                                    pathParts.push(""); // will add / at the end
                                 }
 
                                 if (path.charAt(0) == "/" && (pathParts.length <= 1 || pathParts[0] != "")) {
-                                    pathParts.unshift("");
+                                    pathParts.unshift(""); // will add / at the start
                                 }
                                 path = pathParts.join("/");
                             }
                         }
-                        url = parts[UrlParts.DOMAIN] + path + parts[UrlParts.FILE] + parts[UrlParts.SEARCH] + parts[UrlParts.HASH];
+                        url = parts[3 /* DOMAIN */] + path + parts[5 /* FILE */] + parts[6 /* SEARCH */] + parts[7 /* HASH */];
                     }
                     return url;
                 }
@@ -110,14 +111,14 @@ var SDL;
                     if (url != null) {
                         var m = url.toString().match(/^(([\w]+:)?\/{2,}([^\/?#:]+)(:(\d+))?)?([^?#]*\/)*([^\/?#]*)?(\?[^#]*)?(#.*)?$/);
                         var parts = [];
-                        parts[UrlParts.PROTOCOL] = m[2] || "";
-                        parts[UrlParts.HOSTNAME] = m[3] || "";
-                        parts[UrlParts.PORT] = m[5] || "";
-                        parts[UrlParts.DOMAIN] = m[1] || "";
-                        parts[UrlParts.PATH] = m[6] || (m[1] ? "/" : "");
-                        parts[UrlParts.FILE] = m[7] || "";
-                        parts[UrlParts.SEARCH] = m[8] || "";
-                        parts[UrlParts.HASH] = m[9] || "";
+                        parts[0 /* PROTOCOL */] = m[2] || "";
+                        parts[1 /* HOSTNAME */] = m[3] || "";
+                        parts[2 /* PORT */] = m[5] || "";
+                        parts[3 /* DOMAIN */] = m[1] || "";
+                        parts[4 /* PATH */] = m[6] || (m[1] ? "/" : "");
+                        parts[5 /* FILE */] = m[7] || "";
+                        parts[6 /* SEARCH */] = m[8] || "";
+                        parts[7 /* HASH */] = m[9] || "";
                         return parts;
                     }
                 }

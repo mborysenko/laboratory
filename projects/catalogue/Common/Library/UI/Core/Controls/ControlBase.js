@@ -1,3 +1,8 @@
+/// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/ObjectWithEvents.d.ts" />
+/// <reference path="../Renderers/ControlRenderer.ts" />
+/// <reference path="Base.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -8,23 +13,16 @@ var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
-            /// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/ObjectWithEvents.d.ts" />
-            /// <reference path="../Renderers/ControlRenderer.ts" />
-            /// <reference path="Base.ts" />
             (function (Controls) {
                 eval(SDL.Client.Types.OO.enableCustomInheritance);
                 var ControlBase = (function (_super) {
                     __extends(ControlBase, _super);
-                    function ControlBase(element, options, jQuery, callback, errorcallback) {
+                    function ControlBase(element, options, jQuery) {
                         _super.call(this);
                         var p = this.properties;
                         p.element = element;
                         p.options = options;
                         p.jQuery = jQuery;
-                        p.callback = callback;
-                        p.errorcallback = errorcallback;
                     }
                     ControlBase.prototype.update = function (options) {
                         this.properties.options = options;
@@ -33,22 +31,18 @@ var SDL;
 
                     ControlBase.prototype.$initialize = function () {
                         var controlType = SDL.Client.Type.resolveNamespace(this.getTypeName());
-                        this.properties.element[Controls.getInstanceAttributeName(controlType)] = this;
-                        Core.Renderers.ControlRenderer.onControlCreated(this);
-                        this.render();
+                        this.properties.element[SDL.UI.Core.Controls.getInstanceAttributeName(controlType)] = this;
+                        SDL.UI.Core.Renderers.ControlRenderer.onControlCreated(this);
                     };
 
-                    ControlBase.prototype.render = function () {
-                        this.setRendered();
+                    ControlBase.prototype.render = function (callback, errorcallback) {
+                        this.setRendered(callback);
                         // override in subclasses
                     };
 
-                    ControlBase.prototype.setRendered = function () {
-                        var p = this.properties;
-                        p.errorcallback = null;
-                        if (p.callback) {
-                            p.callback();
-                            p.callback = null;
+                    ControlBase.prototype.setRendered = function (callback) {
+                        if (callback) {
+                            callback();
                         }
                     };
 
@@ -62,7 +56,7 @@ var SDL;
 
                     ControlBase.prototype.dispose = function () {
                         this.callBase("SDL.Client.Types.ObjectWithEvents", "dispose");
-                        Core.Renderers.ControlRenderer.onControlDisposed(this);
+                        SDL.UI.Core.Renderers.ControlRenderer.onControlDisposed(this);
                     };
                     return ControlBase;
                 })(SDL.Client.Types.ObjectWithEvents);

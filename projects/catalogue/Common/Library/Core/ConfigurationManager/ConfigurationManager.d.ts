@@ -5,7 +5,7 @@ declare module SDL.Client.Configuration {
     var settingsFile: string;
     var settingsVersion: string;
     interface IConfigurationManager {
-        configuration: Node;
+        configuration: Element;
         configurationFiles: {
             [resolvedUrl: string]: {
                 url: string;
@@ -13,10 +13,12 @@ declare module SDL.Client.Configuration {
             };
         };
         corePath: string;
+        version: string;
         coreVersion: string;
         initialize(callback?: () => void, nonCoreInitCallback?: () => void): void;
         isInitialized: boolean;
         getAppSetting(name: string): string;
+        getCurrentPageConfigurationNode(): Element;
         isApplicationHost: boolean;
     }
     var ConfigurationManager: IConfigurationManager;

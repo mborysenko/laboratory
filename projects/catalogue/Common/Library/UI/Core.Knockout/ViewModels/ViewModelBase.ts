@@ -1,12 +1,12 @@
-/// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Types\DisposableObject.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Libraries\Globalize\SDL.Globalize.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Event\EventRegister.d.ts" />
-/// <reference path="..\Libraries\knockout\knockout.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/DisposableObject.d.ts" />
+/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
+/// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
 
 module SDL.UI.Core.Knockout.ViewModels
 {
-	eval(SDL.Client.Types.OO.enableCustomInheritance);
+	eval(Client.Types.OO.enableCustomInheritance);
 
 	var culture: KnockoutObservable<string> = ko.observable(SDL.Globalize.culture().name);
 	SDL.Client.Event.EventRegister.addEventHandler(SDL.Globalize, "culturechange", (e: Client.Event.Event) =>

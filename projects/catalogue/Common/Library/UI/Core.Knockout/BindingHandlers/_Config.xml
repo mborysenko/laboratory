@@ -15,6 +15,7 @@
 			<dependencies>
 				<dependency name="SDL.UI.Core.Renderers.ControlRenderer"/>
 				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common"/>
 			</dependencies>
 		</resourceGroup>
 
@@ -25,7 +26,14 @@
 			<dependencies>
 				<dependency name="SDL.UI.Core.Renderers.ViewRenderer"/>
 				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common"/>
 			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Common">
+			<files>
+				<file name="KnockoutBindingHandlers.js"/>
+			</files>
 		</resourceGroup>
 	</resourceGroups>
 

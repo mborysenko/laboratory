@@ -1,13 +1,13 @@
+/// <reference path="../../SDL.Client.Core/Resources/Resources.d.ts" />
+/// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core.Knockout/Libraries/Knockout/knockout.d.ts" />
+/// <reference path="../Types/Url1.ts" />
+/// <reference path="../CrossDomainMessaging/CrossDomainMessaging.ts" />
+/// <reference path="ApplicationHost.ts" />
+/// <reference path="ApplicationFacade.ts" />
 var SDL;
 (function (SDL) {
     (function (Client) {
-        /// <reference path="../../SDL.Client.Core/Resources/Resources.d.ts" />
-        /// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
-        /// <reference path="../../SDL.Client.UI.Core.Knockout/Libraries/Knockout/knockout.d.ts" />
-        /// <reference path="../Types/Url1.ts" />
-        /// <reference path="../CrossDomainMessaging/CrossDomainMessaging.ts" />
-        /// <reference path="ApplicationHost.ts" />
-        /// <reference path="ApplicationFacade.ts" />
         /**
         *	implemented in SDL.Client.HostedApplication, copied to SDL.Client.Core
         **/
@@ -103,7 +103,7 @@ var SDL;
                 if (!Application.isHosted) {
                     throw Error("Cannot expose Application facade: application is not hosted.");
                 }
-                Application.ApplicationHost.exposeApplicationFacade(Client.Application.defaultApplicationEntryPointId);
+                Application.ApplicationHost.exposeApplicationFacade(Application.defaultApplicationEntryPointId);
             }
             Application.exposeApplicationFacade = exposeApplicationFacade;
             ;
@@ -112,7 +112,7 @@ var SDL;
                 if (!Application.isHosted) {
                     throw Error("Cannot expose Application facade: application is not hosted.");
                 }
-                Application.ApplicationHost.exposeApplicationFacadeUnsecure(Client.Application.defaultApplicationEntryPointId);
+                Application.ApplicationHost.exposeApplicationFacadeUnsecure(Application.defaultApplicationEntryPointId);
             }
             Application.exposeApplicationFacadeUnsecure = exposeApplicationFacadeUnsecure;
             ;
@@ -130,9 +130,9 @@ var SDL;
             ;
 
             function loadLibraryResourceGroup(resourceGroupName, jQuery, knockout, callback) {
-                if ((SDL.Client).Configuration) {
-                    Client.Application.addReadyCallback(function () {
-                        (Client.Resources).ResourceManager.load(resourceGroupName, callback);
+                if (SDL.Client.Configuration) {
+                    SDL.Client.Application.addReadyCallback(function () {
+                        SDL.Client.Resources.ResourceManager.load(resourceGroupName, callback);
                     });
                 } else {
                     if (!Application.isHosted) {
@@ -147,6 +147,7 @@ var SDL;
                     registerResourceGroupRendered("SDL.Client.CrossDomainMessaging");
                     registerResourceGroupRendered("SDL.Client.Application");
                     if (jQuery) {
+                        SDL.jQuery = jQuery;
                         registerResourceGroupRendered("SDL.Client.Libraries.JQuery");
                     }
 
@@ -169,7 +170,7 @@ var SDL;
                                         for (var j = 0; j < count; j++) {
                                             filesToRender[filesToRender.length] = filesToLoad[filesToLoad.length] = { url: files[j] };
                                         }
-                                        filesToRender[filesToRender.length - 1].resourceName = resourceName;
+                                        filesToRender[filesToRender.length - 1].resourceName = resourceName; // adding the name of the group to the last file of the resource group
                                         resourceForCallback = resourceName;
                                     } else {
                                         // no files to render, mark group as rendered right away
@@ -240,7 +241,7 @@ var SDL;
             function renderFile(url, data, context, resourceName) {
                 if (data) {
                     if (url.slice(-3).toLowerCase() == ".js") {
-                        data += ("\n//@ sourceURL=" + Client.Application.applicationHostCorePath + url.slice(2));
+                        data += ("\n//@ sourceURL=" + Application.applicationHostCorePath + url.slice(2));
                         if (context) {
                             (function () {
                                 globalEval(arguments[0]);
@@ -286,7 +287,7 @@ var SDL;
                 var hosted = (window.top != window);
 
                 if (hosted) {
-                    Client.CrossDomainMessaging.addTrustedDomain("*");
+                    SDL.Client.CrossDomainMessaging.addTrustedDomain("*");
 
                     // notify the host the app is loaded, and see if the library version can be served by the host
                     var interval;
@@ -302,57 +303,57 @@ var SDL;
                         }, 1000);
                     }
 
-                    var host = new Application.ApplicationHostProxyClass();
+                    var host = new SDL.Client.Application.ApplicationHostProxyClass();
                     var onUnload = function () {
                         host.applicationEntryPointUnloaded();
                         window.removeEventListener("unload", onUnload);
                     };
                     window.addEventListener("unload", onUnload);
 
-                    host.applicationEntryPointLoaded(Client.Application.libraryVersion, function (data) {
+                    host.applicationEntryPointLoaded(Application.libraryVersion, function (data) {
                         if (interval) {
                             window.clearInterval(interval);
                             interval = null;
                         }
 
-                        Application.applicationHostUrl = sessionStorage["applicationHostUrl"] = data.applicationHostUrl;
+                        Application.applicationHostUrl = sessionStorage["appHost-url"] = data.applicationHostUrl;
                         Application.applicationHostCorePath = data.applicationHostCorePath;
-                        Client.Application.applicationSuiteId = data.applicationSuiteId;
+                        Application.applicationSuiteId = data.applicationSuiteId;
 
-                        var applicationHostDomain = (arguments.callee.caller).sourceDomain;
-                        host.isTrusted = Client.Types.Url.isSameDomain(window.location.href, applicationHostDomain);
+                        var applicationHostDomain = arguments.callee.caller.sourceDomain;
+                        host.isTrusted = SDL.Client.Types.Url.isSameDomain(window.location.href, applicationHostDomain);
                         if (!host.isTrusted) {
                             var domains = Application.trustedApplicationHostDomains || [];
                             for (var i = 0, len = domains.length; i < len; i++) {
-                                if (Client.Types.Url.isSameDomain(domains[i], applicationHostDomain)) {
+                                if (SDL.Client.Types.Url.isSameDomain(domains[i], applicationHostDomain)) {
                                     host.isTrusted = true;
                                     break;
                                 }
                             }
                         }
 
-                        Client.CrossDomainMessaging.clearTrustedDomains();
-                        Client.CrossDomainMessaging.addTrustedDomain(applicationHostDomain);
-                        Client.CrossDomainMessaging.addAllowedHandlerBase(Application.ApplicationFacadeStub);
+                        SDL.Client.CrossDomainMessaging.clearTrustedDomains();
+                        SDL.Client.CrossDomainMessaging.addTrustedDomain(applicationHostDomain);
+                        SDL.Client.CrossDomainMessaging.addAllowedHandlerBase(SDL.Client.Application.ApplicationFacadeStub);
 
-                        Client.Application.ApplicationHost = host;
-                        Client.Application.isHosted = true;
+                        Application.ApplicationHost = host;
+                        Application.isHosted = true;
 
                         if (!host.isTrusted || !data.libraryVersionSupported) {
-                            Client.Application.useHostedLibraryResources = false;
+                            Application.useHostedLibraryResources = false;
                         }
 
                         Application.isInitialized = _isInitialized = true;
                         callbacks();
                     });
                 } else if (Application.defaultApplicationHostUrl) {
-                    Application.applicationHostUrl = sessionStorage["applicationHostUrl"] || Application.defaultApplicationHostUrl;
+                    Application.applicationHostUrl = sessionStorage["appHost-url"] || Application.defaultApplicationHostUrl; // use sessionStorage value if specified
                     _initCallbacks = null;
-                    Client.Application.isReloading = true;
-                    window.location.replace(Application.applicationHostUrl + (Application.defaultApplicationSuiteId ? ("#app=" + encodeURIComponent(Application.defaultApplicationSuiteId) + (Application.defaultApplicationEntryPointId ? "&entry=" + encodeURIComponent(Client.Application.defaultApplicationEntryPointId) + "&url=" + encodeURIComponent(location.href) : "")) : ""));
+                    Application.isReloading = true;
+                    window.location.replace(Application.applicationHostUrl + (Application.defaultApplicationSuiteId ? ("#app=" + encodeURIComponent(Application.defaultApplicationSuiteId) + (Application.defaultApplicationEntryPointId ? "&entry=" + encodeURIComponent(Application.defaultApplicationEntryPointId) + "&url=" + encodeURIComponent(location.href) : "")) : ""));
                 } else {
-                    Client.Application.isHosted = false;
-                    Client.Application.useHostedLibraryResources = false;
+                    Application.isHosted = false;
+                    Application.useHostedLibraryResources = false;
                     Application.isInitialized = _isInitialized = true;
                     callbacks();
                 }

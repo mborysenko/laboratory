@@ -19,10 +19,10 @@ module SDL
 		browser: JQueryBrowserInfo;
 	}
 
-	export var jQuery:SDL.SDLJQueryStatic;
+	export var jQuery: SDL.SDLJQueryStatic;
 }
 
-SDL.jQuery = <SDL.SDLJQueryStatic>jQuery.noConflict(true);
+SDL.jQuery = SDL.jQuery || <SDL.SDLJQueryStatic>jQuery.noConflict(true);
 
 (function($: SDL.SDLJQueryStatic)
 {
@@ -35,7 +35,7 @@ SDL.jQuery = <SDL.SDLJQueryStatic>jQuery.noConflict(true);
 			var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
 				/(webkit)[ \/]([\w.]+)/.exec(ua) ||
 				/(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-				/(msie) ([\w.]+)/.exec(ua) || (ua.indexOf("trident\/") > -1  && [null, "msie", (/(\brv\:([\w.]+))/.exec(ua) || <any[]>[])[2]])
+				/(msie) ([\w.]+)/.exec(ua) || (ua.indexOf("trident\/") > -1  && [null, "msie", (/(\brv\:([\w.]+))/.exec(ua) || <any[]>[])[2]]) ||
 				ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
 				<any>[];
 
@@ -50,7 +50,7 @@ SDL.jQuery = <SDL.SDLJQueryStatic>jQuery.noConflict(true);
 
 		if (matched.browser)
 		{
-			browser[matched.browser] = true;
+			(<{[prop: string]: boolean}>browser)[matched.browser] = true;
 			browser.version = matched.version;
 		}
 

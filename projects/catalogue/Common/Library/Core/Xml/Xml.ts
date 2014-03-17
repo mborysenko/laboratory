@@ -476,7 +476,7 @@ module SDL.Client.Xml
 				}
 			}
 
-			var result: Object;
+			var result: any;
 
 			if (nodeType == 2)	// attribute
 			{

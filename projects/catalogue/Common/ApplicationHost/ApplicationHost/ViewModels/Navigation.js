@@ -1,17 +1,17 @@
+/// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
 var SDL;
 (function (SDL) {
     (function (Client) {
         (function (UI) {
             (function (ApplicationHost) {
                 (function (ViewModels) {
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\ApplicationHost\ApplicationHost.d.ts" />
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\Types\Url.d.ts" />
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\Libraries\knockout\knockout.d.ts" />
                     (function (Navigation) {
                         var Url = SDL.Client.Types.Url;
                         var AppHost = SDL.Client.ApplicationHost;
 
-                        Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
+                        SDL.Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
 
                         ;
 
@@ -62,7 +62,8 @@ var SDL;
                                 var newSrc = Url.getHashParameter(window.location.href, "url") || "";
 
                                 if (newAppId != prevAppId || newEntryId != prevEntryId || newSrc != prevSrc) {
-                                    var newNavItem = getNavigationItemById(newEntryId, newAppId);
+                                    var newNavItem = getNavigationItemById(newEntryId, newAppId) || (newAppId ? getNavigationItemById(null, newAppId) : null);
+
                                     if (newNavItem && !newNavItem.external && !newNavItem.hidden()) {
                                         if (newNavItem.applicationEntryPoint) {
                                             if (ignoreErrors) {
@@ -170,10 +171,10 @@ var SDL;
                         ;
 
                         function initializeNavigationViewModel() {
-                            var navigationNode = Client.Xml.selectSingleNode(Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
+                            var navigationNode = SDL.Client.Xml.selectSingleNode(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
                             if (navigationNode) {
                                 // navigation is defined in configuration
-                                var navigationGroupNodes = Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
+                                var navigationGroupNodes = SDL.Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
                                 Navigation.navigationGroups = SDL.jQuery.map(navigationGroupNodes, function (navigationGroupNode, index) {
                                     var applicationEntryPointGroupId = navigationGroupNode.getAttribute("applicationEntryPointGroupId");
                                     if (applicationEntryPointGroupId) {
@@ -274,7 +275,7 @@ var SDL;
                                         newHref = Url.setHashParameter(newHref, "entry", navItem.id);
                                         newHref = Url.setHashParameter(newHref, "group", null);
 
-                                        navItem.src();
+                                        navItem.src(); // this is to trigger computed to recalculate when src() changes
                                         if (appEntryPoint.url && appEntryPoint.url != appEntryPoint.baseUrl) {
                                             newHref = Url.setHashParameter(newHref, "url", Url.makeRelativeUrl(appEntryPoint.baseUrl, appEntryPoint.url));
                                         } else {
@@ -301,7 +302,7 @@ var SDL;
 
                                 if (window.location.href != newHref) {
                                     if (newHref.indexOf("#") == -1) {
-                                        newHref += "#";
+                                        newHref += "#"; // making sure there's a hash parameter, otherwise the whole window will refresh
                                     }
                                     window.location.href = newHref;
                                 }
@@ -365,7 +366,7 @@ var SDL;
 
                         function buildNavigationGroup(navigationGroupNode, isFirstGroup) {
                             var groupApplicationId = navigationGroupNode.getAttribute("applicationSuiteId");
-                            var navigationItemNodes = Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
+                            var navigationItemNodes = SDL.Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
                             var navigationGroup = {
                                 id: navigationGroupNode.getAttribute("id"),
                                 title: navigationGroupNode.getAttribute("title"),
@@ -505,7 +506,7 @@ var SDL;
                                 var icon = navigationItemNode.getAttribute("icon");
                                 if (icon) {
                                     if (icon.charAt(0) != "/" && icon.indexOf("~/") == -1) {
-                                        var baseUrlNodes = Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
+                                        var baseUrlNodes = SDL.Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
                                         var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
                                         icon = Url.combinePath(baseUrl, icon);
                                     }
@@ -602,10 +603,10 @@ var SDL;
 
                         function buildNameTranslations(parent) {
                             var translations = {};
-                            var translationNodes = Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
+                            var translationNodes = SDL.Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
                             for (var i = 0, len = translationNodes.length; i < len; i++) {
                                 var translationNode = translationNodes[i];
-                                translations[translationNode.getAttribute("lang")] = Client.Xml.getInnerText(translationNode);
+                                translations[translationNode.getAttribute("lang")] = SDL.Client.Xml.getInnerText(translationNode);
                             }
                             return translations;
                         }
@@ -928,7 +929,7 @@ var SDL;
                                 authenticationTargetDisplay.targetDisplay.frame = null;
                                 setTimeout(function () {
                                     return authenticationTargetDisplay.disposed(true);
-                                }, 1);
+                                }, 1); // Chrome crashes without the timeout
                             }
                         }
                         ;

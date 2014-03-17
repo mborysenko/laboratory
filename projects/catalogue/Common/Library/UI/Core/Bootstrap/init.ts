@@ -10,53 +10,27 @@ module SDL.UI.Core
 	var cm = SDL.Client.Configuration.ConfigurationManager;
 	var rm = SDL.Client.Resources.ResourceManager;
 
-	var pageNode: Element;
-	var pageNodes = SDL.Client.Xml.selectNodes(cm.configuration, "//configuration/pages/page[@url!='*' and @view]");
-	var path = window.location.pathname.toLowerCase();
-
-	for (var i = 0, len = pageNodes.length; i < len; i++)
-	{
-		var _pageNode = <Element>pageNodes[i];
-		if (_pageNode.getAttribute("url").toLowerCase() == path)
-		{
-			pageNode = _pageNode;
-			break;
-		}
-	}
-	if (!pageNode)
-	{
-		pageNode = <Element>SDL.Client.Xml.selectSingleNode(cm.configuration, "//configuration/pages/page[@url='*' and @view]")
-	}
-
+	var pageNode: Element = cm.getCurrentPageConfigurationNode();
 	if (pageNode)
 	{
 		var view = pageNode.getAttribute("view");
-		rm.load("SDL.UI.Core.Renderers.ViewRenderer", function ()
+		if (view)
 		{
-			var target: HTMLElement = document.getElementById("main-view-target") || document.body;
-			Renderers.ViewRenderer.renderView(view, target, null, function(view)
-				{
-					SDL.Client.Event.EventRegister.addEventHandler(SDL.Client.Event.EventRegister, "beforedispose", function()
-					{
-						Renderers.ViewRenderer.disposeView(view);
-					});
-				});
-
-			SDL.Client.Event.EventRegister.addEventListener("dispose", function ()
+			rm.load("SDL.UI.Core.Renderers.ViewRenderer", function ()
 			{
-				var undisposed: string[] = [];
-				SDL.jQuery.each(Renderers.ViewRenderer.getCreatedViewCounts(),
-							function (i, value)
-							{
-								if (value != 0)
-								{
-									undisposed.push(i + " (" + value + ")");
-								}
-							});
+				var target: HTMLElement = document.getElementById("main-view-target") || document.body;
+				Renderers.ViewRenderer.renderView(view, target, null, function(view)
+					{
+						SDL.Client.Event.EventRegister.addEventHandler(SDL.Client.Event.EventRegister, "beforedispose", function()
+						{
+							Renderers.ViewRenderer.disposeView(view);
+						});
+					});
 
-				if (Renderers.ControlRenderer != null)
+				SDL.Client.Event.EventRegister.addEventListener("dispose", function ()
 				{
-					SDL.jQuery.each(Renderers.ControlRenderer.getCreatedControlCounts(),
+					var undisposed: string[] = [];
+					SDL.jQuery.each(Renderers.ViewRenderer.getCreatedViewCounts(),
 								function (i, value)
 								{
 									if (value != 0)
@@ -64,14 +38,26 @@ module SDL.UI.Core
 										undisposed.push(i + " (" + value + ")");
 									}
 								});
-				}
 
-				if (undisposed.length)
-				{
-					alert("Some views/controls have been left undisposed:\n" + undisposed.join("\n"));
-				}
+					if (Renderers.ControlRenderer != null)
+					{
+						SDL.jQuery.each(Renderers.ControlRenderer.getCreatedControlCounts(),
+									function (i, value)
+									{
+										if (value != 0)
+										{
+											undisposed.push(i + " (" + value + ")");
+										}
+									});
+					}
+
+					if (undisposed.length)
+					{
+						alert("Some views/controls have been left undisposed:\n" + undisposed.join("\n"));
+					}
+				});
 			});
-		});
-		rm.load(view);	// this is to start loading view's resources while ViewRenderer is being loaded
+			rm.load(view);	// this is to start loading view's resources while ViewRenderer is being loaded
+		}
 	}
 }

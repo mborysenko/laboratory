@@ -25,7 +25,7 @@ declare module SDL.UI.Core.Knockout.ViewModels {
             [event: string]: KnockoutObservable<number>;
         };
     }
-    class ViewModelItem extends SDL.Client.Types.DisposableObject {
+    class ViewModelItem extends Client.Types.DisposableObject {
         public properties: IViewModelItemProperties;
         constructor(item: Object, properties: {
             [property: string]: IPropertyDef;

@@ -67,7 +67,7 @@ body,
   user-select: none;
   cursor: default;
   text-transform: uppercase;
-  font-family: Lucida Sans;
+  font-family: Arial;
   font-size: 19px;
   color: #878787;
 }
@@ -77,8 +77,8 @@ body,
 }
 .frame-application-loading-rotate {
   display: inline-block;
-  border-radius: 150px;
-  -moz-border-radius: 150px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
   border: 13px solid #666666;
   border-top-color: #CDCDCD;
   border-right-color: #CDCDCD;
@@ -271,7 +271,7 @@ ul.frame-navigation-top {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  position: absolute;
+  position: absolute !important;
   bottom: 0px;
   width: 100%;
 }
@@ -295,33 +295,12 @@ ul.frame-navigation-top {
   border: none;
   background-color: #5c636D;
 }
-.frame-navigation-middle-scroll {
-  position: relative;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  border: none;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.pc .frame-navigation-middle-scroll {
-  width: 300px;
-}
-.pc .frame-navigation-middle-scroll ul {
-  border: 0;
-  width: 244px;
-}
-.frame-navigation-middle-scroll li {
+.frame-navigation-middle li {
   display: block;
   padding: 0;
   margin: 0;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li,
 .frame-navigation-top li:only-child {
   display: table;
@@ -337,7 +316,7 @@ ul.frame-navigation-top {
   -webkit-box-sizing: content-box;
   border-top: 1px solid #5C636D;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li {
   width: 212px;
   border-bottom: 1px solid #353B46;
@@ -345,7 +324,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li:only-child {
   width: 226px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-icon,
+.frame-navigation-middle .frame-navigation-option-icon,
 .frame-navigation-top li:only-child .frame-navigation-option-icon {
   width: 16px;
   padding: 12px 9px 11px 0px;
@@ -354,7 +333,7 @@ ul.frame-navigation-top {
   -moz-box-sizing: content-box;
   line-height: 17px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-text,
+.frame-navigation-middle .frame-navigation-option-text,
 .frame-navigation-top li:only-child .frame-navigation-option-text {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -373,13 +352,16 @@ ul.frame-navigation-top {
 .frame-navigation-group-collapsed ul {
   height: 0;
 }
+.frame-navigation-group:only-child > div > .frame-navigation-option-right {
+  background-image: none;
+}
 .frame-navigation-group > div > .frame-navigation-option-right {
   background-position: -106px -43px;
 }
 .frame-navigation-group-collapsed > div > .frame-navigation-option-right {
   background-position: -120px -44px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option,
+.frame-navigation-middle .frame-navigation-option,
 .frame-navigation-top .frame-navigation-option:only-child {
   background-color: #474E58;
   border-right: 3px solid #5c636D;
@@ -393,7 +375,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li:only-child:hover {
   border-right: none;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li.frame-navigation-option-selected,
 .frame-navigation-group li:hover {
   padding-right: 17px;
@@ -402,7 +384,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li.frame-navigation-option-selected:only-child {
   padding-right: 3px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-external {
+.frame-navigation-middle .frame-navigation-option-external {
   background-position: -51px -44px;
 }
 .frame-navigation-option-icon {
@@ -451,8 +433,8 @@ ul.frame-navigation-top {
   background-position: -108px -30px;
 }
 .frame-navigation-group li.frame-navigation-option-login .frame-application-loading-rotate {
-  border-radius: 30px;
-  -moz-border-radius: 30px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
   border-width: 6px;
   width: 30px;
   height: 30px;
@@ -511,89 +493,4 @@ ul.frame-navigation-top {
   border-top-color: #5B8EDE;
   padding: 6px 7px;
   background-position: -79px -50px;
-}
-/* CUSTOM SCROLLBAR (SHOWN ONLY FOR PC) */
-.frame-navigation-scroll-wrapper {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 15px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow: hidden;
-}
-.pc .frame-navigation-scroll-wrapper {
-  display: block;
-}
-.frame-navigation-scroll-wrapper-hidden {
-  right: -20px;
-}
-/* semi-transparent background of the custom scrollbar */
-.frame-navigation-scroll-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background-color: #454B53;
-  opacity: 0.5;
-}
-/* up/down buttons */
-.frame-navigation-scroll-up,
-.frame-navigation-scroll-down {
-  position: absolute;
-  height: 16px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-repeat: no-repeat;
-  background-image: url("{PATH}/sprite.png{VERSION}");
-}
-.frame-navigation-scroll-up {
-  top: 0;
-  background-position: -134px -57px;
-}
-.frame-navigation-scroll-down {
-  bottom: 0;
-  background-position: -147px -58px;
-}
-/* draggable handle of the scrollbar */
-.frame-navigation-scroll-handle {
-  position: absolute;
-  right: 0;
-  left: 0;
-  height: 0;
-  margin: 0 3px;
-  padding: 0;
-  border: none;
-  border-radius: 4px;
-  background-color: #818B99;
-  overflow: hidden;
-}
-/* transparent area with native scroll bar (placed in front of the custom bar to do the actual scrolling) */
-.frame-navigation-scroll {
-  position: absolute;
-  right: 1px;
-  height: 100%;
-  width: 50px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  opacity: 0;
-}
-/* content that exceeds the scrollable area (causes the native scrollbar to appear) */
-.frame-navigation-scroll-content {
-  height: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  overflow: hidden;
 }

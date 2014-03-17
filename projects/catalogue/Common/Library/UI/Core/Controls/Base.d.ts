@@ -2,17 +2,13 @@
 /// <reference path="../../SDL.Client.Core/Types/Object.d.ts" />
 declare module SDL.UI.Core.Controls {
     interface IControl {
+        render(callback?: () => void, errorcallback?: (error: string) => void): void;
         update?: (options?: any) => void;
         getElement?: () => HTMLElement;
-        addEventListener?: (event: string, handler: any) => void;
-        removeEventListener?: (event: string, handler: any) => void;
-        dispose?: () => void;
-        getDisposed?: () => boolean;
     }
     interface IControlType {
-        new(element: Element, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void): IControl;
-        createElement?: (document: HTMLDocument, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void) => HTMLElement;
-        isAsynchronous?: boolean;
+        new(element: Element, options?: any, jQuery?: JQueryStatic): IControl;
+        createElement?: (document: HTMLDocument, options?: any, jQuery?: JQueryStatic) => HTMLElement;
     }
     interface IPluginMethodDefinition {
         method: string;

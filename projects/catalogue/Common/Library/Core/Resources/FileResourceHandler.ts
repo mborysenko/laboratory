@@ -9,10 +9,16 @@
 
 module SDL.Client.Resources
 {
+	export interface IResourceGroupDefinition
+	{
+		name: string;
+		files: string[];
+	}
+
 	export interface IPackageResourceDefinition extends IFileResourceDefinition
 	{
 		name: string;
-		resourceGroups?: {name: string; files: string[];}[];
+		resourceGroups?: IResourceGroupDefinition[];
 		unpacked?: boolean;
 		rendered?: boolean;
 	}
@@ -46,16 +52,16 @@ module SDL.Client.Resources
 		static enablePackaging: boolean;
 
 		// Collection of all loaded resource files
-		private static fileResources: {[index: string]: IFileResource;} = {};
+		/*private*/ static fileResources: {[index: string]: IFileResource;} = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		// Collection of all packages
-		private static packages: {[index: string]: IPackageResourceDefinition;} = {};
+		/*private*/ static packages: {[index: string]: IPackageResourceDefinition;} = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		// Index of all culture specific resources
-		private static cultureResources: {[index: string]: IFileResource;} = {};
+		/*private*/ static cultureResources: {[index: string]: IFileResource;} = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
-		private static callbacks: { [index: string]: JQueryCallback; } = {};
-		private static errorcallbacks: { [index: string]: JQueryCallback; } = {};
+		/*private*/ static callbacks: { [index: string]: JQueryCallback; } = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
+		/*private*/ static errorcallbacks: { [index: string]: JQueryCallback; } = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		_supports(url: string): boolean { return false; }
 		_render(file: IFileResource): void {}
@@ -163,14 +169,14 @@ module SDL.Client.Resources
 						if (errorcallback)
 						{
 							// Handle same file being requested multiple times - add another callback to the list 
-							FileResourceHandler.errorcallbacks[key].add(function(error)
+							FileResourceHandler.errorcallbacks[key].add(function()
 								{
 									errorcallback(fileResource);
 								});
 						}
 						else
 						{
-							FileResourceHandler.errorcallbacks[key].add(function(error)
+							FileResourceHandler.errorcallbacks[key].add(function(error: string)
 								{
 									throw Error(error);
 								});
@@ -275,7 +281,7 @@ module SDL.Client.Resources
 						}
 						else
 						{
-							ResourceLoader.load(file, FileResourceHandler.corePath, sync,
+							ResourceLoader.load({ url: fileResource.url, version: fileResource.version }, FileResourceHandler.corePath, sync,
 								(data: string, isShared: boolean) =>
 									{
 										fileResource.data = data;
@@ -469,7 +475,7 @@ module SDL.Client.Resources
 
 							var resourceFiles = FileResourceHandler.fileResources;
 
-							SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup) =>
+							SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
 								SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
 									{
 										var key = url.toLowerCase();
@@ -752,7 +758,7 @@ module SDL.Client.Resources
 				var calls: JQueryCallback[] = [];
 				var fileNumber = -1;
 
-				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup) =>
+				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
 					SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
 					{
 						++fileNumber;
@@ -839,7 +845,7 @@ module SDL.Client.Resources
 					delete resourceFile.data;
 				}
 
-				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: {name: string; files: string[];}) =>
+				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
 					SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
 					{
 						var key = url.toLowerCase();
@@ -866,7 +872,7 @@ module SDL.Client.Resources
 					}
 				};
 
-			SDL.jQuery.each(FileResourceHandler.cultureResources, (key, resource: IFileResource) =>
+			SDL.jQuery.each(FileResourceHandler.cultureResources, (key: string, resource: IFileResource) =>
 				{
 					var toRender = resource.rendered;
 					var toLoad = toRender || resource.loaded || resource.loading;

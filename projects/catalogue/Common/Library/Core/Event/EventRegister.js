@@ -97,6 +97,22 @@ SDL.Client.Event.EventRegisterClass.$constructor = function SDL$Client$Event$Eve
 		}
 	};
 
+	this.handleEvent = function SDL$Client$Event$EventRegisterClass$handleEvent(object, event)
+	{
+		if (registryIndex && !this.getDisposing())
+		{
+			var registryEntry = getFromRegistry(object);
+			if (registryEntry)
+			{
+				var listener = registryEntry.events[event.type];
+				if (listener)
+				{
+					listener(event);
+				}
+			}
+		}
+	};
+
 	// returns true while the window is still being loaded
     this.isLoading = function SDL$Client$Event$EventRegisterClass$isLoading()
 	{

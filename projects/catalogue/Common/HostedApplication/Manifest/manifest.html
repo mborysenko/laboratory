@@ -14,8 +14,7 @@
 
             parent.postMessage("sdl:" + JSON.stringify({
                 method: "SDL.Client.ApplicationHost.ApplicationManifestReceiver.registerApplication",
-                args: [x.responseText]
-            }), "*");
+                args: [x.responseText] }), "*");
         }
     };
     x.open("GET", "manifest.xml?" + location.hash.slice(3), true);

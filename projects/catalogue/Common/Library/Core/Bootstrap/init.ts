@@ -15,26 +15,11 @@ module SDL.Client
 	cm.initialize(initApplication,	// complete configuration is initialized -> load application's resources and initialize the page
 		function()	// non-library configuration is loaded -> initialize Application object, connect to Application Host
 		{
-			pageConfigurationElement: Element;
-			var pageNodes = Xml.selectNodes(cm.configuration, "//configuration/pages/page[@url!='*']");
-			var path = window.location.pathname.toLowerCase();
+			pageConfigurationElement = cm.getCurrentPageConfigurationNode();
 
-			for (var i = 0, len = pageNodes.length; i < len; i++)
-			{
-				var _pageNode = <Element>pageNodes[i];
-				if (_pageNode.getAttribute("url").toLowerCase() == path)
-				{
-					pageConfigurationElement = _pageNode;
-					break;
-				}
-			}
 			if (!pageConfigurationElement)
 			{
-				pageConfigurationElement = <Element>Xml.selectSingleNode(cm.configuration, "//configuration/pages/page[@url='*']");
-				if (!pageConfigurationElement)
-				{
-					throw Error("Unable to find configuration for page \"" + path + "\"");
-				}
+				throw Error("Unable to find configuration for page \"" + window.location.pathname + "\"");
 			}
 
 			if (cm.coreVersion)

@@ -76,9 +76,9 @@
 							<!-- /ko -->
 						</ul>
 					<!-- /ko -->
-					<div class="frame-navigation-middle" data-bind="css: { pc: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile }">
+					<div class="frame-navigation-middle" data-bind="control: {type: 'SDL.UI.Controls.Knockout.ScrollView', data: {overflowX: 'hidden', style: 'dark', overlay: true}}">
 						<div class="frame-navigation-middle-background"></div>
-						<div class="frame-navigation-middle-scroll" unselectable="on">
+						<div data-sdl-scrollview-child='true' unselectable="on">
 							<ul data-bind="foreach: navigationGroups">
 								<!-- ko if: $data.shownItems() > 0 -->
 									<li class="frame-navigation-group" data-bind="css: { 'frame-navigation-group-collapsed': $data != $root.expandedNavigationGroup() }">
@@ -132,18 +132,6 @@
 								<!-- /ko -->
 							</ul>
 						</div>
-
-						<!-- ko if: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile -->
-							<div class="frame-navigation-scroll-wrapper" data-bind="attr: {foo: $root.initCustomScroll($element)}">
-								<div class="frame-navigation-scroll-bar"></div>
-								<div class="frame-navigation-scroll-up"></div>
-								<div class="frame-navigation-scroll-handle"></div>
-								<div class="frame-navigation-scroll-down"></div>
-								<div class="frame-navigation-scroll">
-									<div class="frame-navigation-scroll-content"></div>
-								</div>
-							</div>
-						<!-- /ko -->
 					</div>
 				</div>
 			</div>

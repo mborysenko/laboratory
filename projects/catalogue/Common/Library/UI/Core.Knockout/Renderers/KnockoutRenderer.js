@@ -1,11 +1,11 @@
+/// <reference path="../../SDL.Client.UI.Core/Renderers/ViewRenderer.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
+/// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
 var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
             (function (Knockout) {
-                /// <reference path="../../SDL.Client.UI.Core/Renderers/ViewRenderer.d.ts" />
-                /// <reference path="../Libraries/knockout/knockout.d.ts" />
-                /// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
                 (function (Renderers) {
                     var KnockoutRenderer = (function () {
                         function KnockoutRenderer() {
@@ -14,9 +14,7 @@ var SDL;
                             if (templateContent && target) {
                                 var $target = SDL.jQuery(target);
                                 $target.html(templateContent);
-                                $target.children().each(function (index, child) {
-                                    return ko.applyBindings(options, child);
-                                });
+                                ko.applyBindingsToDescendants(options, target);
                             }
 
                             if (callback) {

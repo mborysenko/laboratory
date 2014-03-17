@@ -7,7 +7,9 @@ declare module SDL.Client.Application {
         applicationId: string;
         applicationDomain: string;
     }
-    var ApplicationFacade: {};
+    var ApplicationFacade: {
+        [method: string]: Function;
+    };
     var isApplicationFacadeSecure: boolean;
     module ApplicationFacadeStub {
         function callApplicationFacade(method: string, arguments: any[], caller: ICallingApplicationData): void;

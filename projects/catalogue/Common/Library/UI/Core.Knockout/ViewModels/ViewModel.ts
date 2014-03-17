@@ -1,5 +1,5 @@
-/// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Models\Models.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Models/Models.d.ts" />
 /// <reference path="ViewModelBase.ts" />
 /// <reference path="ViewModelItem.ts" />
 

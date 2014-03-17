@@ -27,8 +27,8 @@ module SDL.UI.Controls
 	eval(SDL.Client.Types.OO.enableCustomInheritance);
 	export class Tooltip extends SDL.UI.Core.Controls.ControlBase
 	{
-		private static tooltipTimer: number = 0;
-		private static shownTooltip: Tooltip = null;
+		/*private*/ static tooltipTimer: number = 0;	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
+		/*private*/ static shownTooltip: Tooltip = null;	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		private $: JQueryStatic;
 		private $element: JQuery;
@@ -40,6 +40,11 @@ module SDL.UI.Controls
 				movementTimer: 0
 			};
 		private shown: boolean = false;
+
+		constructor(element: HTMLElement, options?: ITooltipOptions, jQuery?: JQueryStatic)
+		{
+			super(element, options, jQuery);
+		}
 
 		$initialize(): void
 		{
@@ -66,9 +71,9 @@ module SDL.UI.Controls
 				$element.attr("tooltip", settings.content);
 			}
 
-			$element.mouseenter(e => this.onMouseEnter(e));
-			$element.mouseleave(() => this.onMouseLeave());
-			$element.mousemove(e => this.onMouseMove(e));
+			$element.mouseenter(this.getDelegate(this.onMouseEnter))
+				.mouseleave(this.getDelegate(this.onMouseLeave))
+				.mousemove(this.getDelegate(this.onMouseMove));
 
 			this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 		}
@@ -114,7 +119,7 @@ module SDL.UI.Controls
 				this.shown = false;
 				this.fireEvent("hide");
 				this.fireEvent("propertychange", { property: "shown", value: false});
-				this.$(".ui-tooltip").remove();
+				this.$(".sdl-tooltip").remove();
 			}
 		}
 
@@ -144,7 +149,7 @@ module SDL.UI.Controls
 					overflowElement = this.$element[0];
 				}
 
-				if (overflowElement.offsetWidth < overflowElement.scrollWidth)
+				if (overflowElement.offsetWidth < overflowElement.scrollWidth || overflowElement.offsetHeight < overflowElement.scrollHeight)
 				{
 					this.showTooltip();
 				}
@@ -183,7 +188,7 @@ module SDL.UI.Controls
 				var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || <HTMLElement>document.body.parentNode || document.body).scrollLeft;
 				var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || <HTMLElement>document.body.parentNode || document.body).scrollTop;
 
-				this.$(".ui-tooltip")
+				this.$(".sdl-tooltip")
 					.css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px")
 					.css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
 			}
@@ -200,6 +205,10 @@ module SDL.UI.Controls
 			var settings = this.settings;
             var x = 0, y = 0;
 			var content = $element.attr("tooltip");
+			if (content == null)
+			{
+				content = $element.text().replace("\n", "<br/>");
+			}
 
 			// from https://developer.mozilla.org/en-US/docs/Web/API/window.scrollY
 			var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || <HTMLElement>document.body.parentNode || document.body).scrollLeft;
@@ -226,11 +235,11 @@ module SDL.UI.Controls
 				Tooltip.shownTooltip.hideTooltip();
 			}
 
-			$element.append('<div class="ui-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
+			$element.append('<div class="sdl-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
 
 			if (settings.fitToScreen)
 			{
-				var $tooltip = this.$(".ui-tooltip");
+				var $tooltip = this.$(".sdl-tooltip");
 				var position = $tooltip.position();
 				var $window = this.$(window);
 				if (typeof position !== "undefined" && position !== null)
@@ -269,8 +278,14 @@ module SDL.UI.Controls
 		{
 			clearTimeout(this.mouse.movementTimer);
 		}
-		this.hideTooltip();
-		this.$ = this.$element = null;
+		if (this.$element)
+		{
+			this.$element.off("mouseenter", this.getDelegate(this.onMouseEnter))
+					.off("mouseleave", this.getDelegate(this.onMouseLeave))
+					.off("mousemove", this.getDelegate(this.onMouseMove));
+			this.hideTooltip();
+			this.$ = this.$element = null;
+		}
 	});
 
 	SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Tooltip", Tooltip);

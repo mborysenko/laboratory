@@ -14,6 +14,7 @@
 
 	<!-- Application resources -->
 	<include src="Application/_Config.xml" />
+	<include src="ApplicationLocalization/_Config.xml" />
 
 	<!-- ApplicationHost resources -->
 	<include src="ApplicationHost/_Config.xml" />
@@ -73,6 +74,7 @@
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Application"/>
+				<dependency name="SDL.Client.Application.Localization"/>
 				<dependency name="SDL.Client.ApplicationHost"/>
 				<dependency name="SDL.Client.Configuration.ConfigurationManager"/>
 				<dependency name="SDL.Client.CrossDomainMessaging"/>

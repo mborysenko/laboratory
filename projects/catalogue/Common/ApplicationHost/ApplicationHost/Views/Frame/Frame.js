@@ -1,3 +1,7 @@
+/// <reference path="../../ViewModels/Navigation.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.Core/Types/Object.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core.Knockout/ViewModels/ViewModelBase.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -9,10 +13,6 @@ var SDL;
     (function (Client) {
         (function (UI) {
             (function (ApplicationHost) {
-                /// <reference path="..\..\ViewModels\Navigation.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.Core\Types\Object.d.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core\Views\ViewBase.d.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\ViewModels\ViewModelBase.d.ts" />
                 (function (Views) {
                     var Navigation = SDL.Client.UI.ApplicationHost.ViewModels.Navigation;
 
@@ -50,7 +50,7 @@ var SDL;
                                         var group = model.navigationGroups[i];
                                         if (group.shownItems()) {
                                             if (groupsCount) {
-                                                model.expandedNavigationGroup(null);
+                                                model.expandedNavigationGroup(null); // more than 1 groups have items -> can collapse
                                                 return;
                                             }
                                             groupsCount++;
@@ -75,7 +75,7 @@ var SDL;
                                     if (targetDisplay.src != src) {
                                         var frame = SDL.jQuery(node).prev("div").find("iframe")[0];
                                         if (src != "about:blank") {
-                                            var urlChange = Client.Types.Url.makeRelativeUrl(targetDisplay.src, src);
+                                            var urlChange = SDL.Client.Types.Url.makeRelativeUrl(targetDisplay.src, src);
                                             if (urlChange && urlChange.charAt(0) != "#") {
                                                 // change is more than just a hash
                                                 targetDisplay.loaded(false);
@@ -93,7 +93,8 @@ var SDL;
                             };
 
                             model.animateLoadingFeedback = function (element) {
-                                if (element.style.animation == undefined && (element.style).webkitAnimation == undefined) {
+                                // IE9 does not support animation -> use javascript
+                                if (element.style.animation == undefined && element.style.webkitAnimation == undefined) {
                                     var position = 0;
                                     var step = 12;
                                     var interval = window.setInterval(function () {
@@ -108,87 +109,6 @@ var SDL;
                                         window.clearInterval(interval);
                                     });
                                 }
-                            };
-
-                            model.initCustomScroll = function (customScrollWrapper) {
-                                var barBtnHeight = 17;
-                                var $customScrollWrapper = SDL.jQuery(customScrollWrapper);
-                                var $navigationPane = $customScrollWrapper.parent(".frame-navigation-middle").parent(".frame-navigation-pane");
-                                var $realScrollArea = $customScrollWrapper.prev(".frame-navigation-middle-scroll");
-                                var realScrollContent = $realScrollArea.children("ul")[0];
-                                var customScrollHandle = $customScrollWrapper.children(".frame-navigation-scroll-handle")[0];
-                                var $customScrollArea = $customScrollWrapper.children(".frame-navigation-scroll");
-                                var customScrollArea = $customScrollArea[0];
-                                var customScrollContent = $customScrollArea.children(".frame-navigation-scroll-content")[0];
-                                var customScrollAreaOffsetHeight;
-                                var handleSpaceCorrection = 0;
-
-                                // handleSpaceCorrection stores the difference between the calculated size and the actual size
-                                var scrollShown = true;
-
-                                function adjustHeight() {
-                                    if (customScrollContent.offsetHeight != realScrollContent.offsetHeight || customScrollArea.offsetHeight != customScrollAreaOffsetHeight) {
-                                        customScrollAreaOffsetHeight = customScrollArea.offsetHeight;
-                                        if (customScrollContent.offsetHeight != realScrollContent.offsetHeight) {
-                                            customScrollContent.style.height = realScrollContent.offsetHeight + "px";
-                                        }
-
-                                        var ratio = customScrollAreaOffsetHeight / realScrollContent.offsetHeight;
-
-                                        if (ratio >= 1) {
-                                            if (scrollShown) {
-                                                scrollShown = false;
-                                                $customScrollWrapper.addClass("frame-navigation-scroll-wrapper-hidden");
-                                            }
-                                        } else {
-                                            if (!scrollShown) {
-                                                scrollShown = true;
-                                                $customScrollWrapper.removeClass("frame-navigation-scroll-wrapper-hidden");
-                                            }
-
-                                            var height = (customScrollAreaOffsetHeight - barBtnHeight * 2) * ratio;
-                                            if (height < 10) {
-                                                handleSpaceCorrection = 10 - height;
-                                                height = 10;
-                                            }
-
-                                            if (customScrollHandle.offsetHeight != height) {
-                                                customScrollHandle.style.height = height + "px";
-                                            }
-
-                                            onRealScroll();
-                                            onCustomScroll();
-                                        }
-                                    }
-                                }
-                                ;
-                                adjustHeight();
-                                _this.scrollHeightMonitorInterval = setInterval(adjustHeight, 100);
-
-                                function onCustomScroll() {
-                                    if (scrollShown) {
-                                        customScrollHandle.style.top = (customScrollArea.offsetHeight - barBtnHeight * 2 - handleSpaceCorrection) * customScrollArea.scrollTop / customScrollContent.offsetHeight + barBtnHeight + "px";
-                                        if ($realScrollArea.scrollTop() != $customScrollArea.scrollTop()) {
-                                            $realScrollArea.scrollTop($customScrollArea.scrollTop());
-                                        }
-                                    }
-                                }
-                                ;
-                                onCustomScroll();
-                                $customScrollArea.scroll(onCustomScroll);
-
-                                function onRealScroll() {
-                                    if (scrollShown) {
-                                        if ($customScrollArea.scrollTop() != $realScrollArea.scrollTop()) {
-                                            $customScrollArea.scrollTop($realScrollArea.scrollTop());
-                                        }
-                                    }
-                                }
-
-                                $realScrollArea.scroll(onRealScroll);
-                                $navigationPane.scroll(function () {
-                                    $navigationPane.scrollLeft(0);
-                                });
                             };
 
                             var getTranslation = function (translations, fallbackTranslations) {
@@ -374,12 +294,8 @@ var SDL;
                     Views.Frame = Frame;
 
                     Frame.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$Client$Frame$Views$Frame$disposeInterface() {
-                        if (this.scrollHeightMonitorInterval) {
-                            window.clearInterval(this.scrollHeightMonitorInterval);
-                            this.scrollHeightMonitorInterval = null;
-                        }
                         if (this.updateTitleBar) {
-                            (this.updateTitleBar).dispose();
+                            this.updateTitleBar.dispose();
                             this.updateTitleBar = null;
                         }
 

@@ -13,7 +13,8 @@ module SDL.Client.Resources.FileHandlers
 				var path: string;
 				var version: string;
 
-				return data.replace(/\{(PATH|ROOT|VERSION)\}(\/?)/g, function(substring: string, token: string, next: string)
+				return data.replace(/\{(PATH|ROOT|VERSION)\}(\/?)/g,
+					<(substring: string, ...args: any[]) => string>function(substring: string, token: string, next: string): string
 					{
 						switch (token)
 						{
@@ -56,7 +57,7 @@ module SDL.Client.Resources.FileHandlers
 									}
 									version = version ? "?" + version : "";
 								}
-							return version;
+								return version;
 						}
 					});
 			}

@@ -6,6 +6,7 @@
 			<resourceGroups>
 				<resourceGroup name="SDL.UI.Core"/>
 				<resourceGroup name="SDL.UI.Core.Init"/>
+				<resourceGroup name="SDL.UI.Core.Event.GlobalMouseEventTracker"/>
 			</resourceGroups>
 		</package>
 	</packages>

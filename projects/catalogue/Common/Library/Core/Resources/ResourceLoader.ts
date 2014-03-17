@@ -1,5 +1,5 @@
-/// <reference path="..\Application\Application.ts" />
-/// <reference path="..\Net\Ajax.d.ts" />
+/// <reference path="../Application/Application.ts" />
+/// <reference path="../Net/Ajax.d.ts" />
 /// <reference path="Resources.d.ts" />
 
 module SDL.Client.Resources

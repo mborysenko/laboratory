@@ -1,4 +1,4 @@
-/// <reference path="..\MarshallableObject.d.ts" />
+/// <reference path="../MarshallableObject.d.ts" />
 declare module SDL.Client.Models.Base 
 {
     export interface IContinuousIterationObjProperties extends IMarshallableObjectProperties
@@ -11,7 +11,7 @@ declare module SDL.Client.Models.Base
 	    itemsCount: number;
 	    itemsDoneCount: number;
 	    errorsCount: number;
-	    items: Array;
+	    items: any[];
 	    operation: any;
         operationId: string;
 	}    

@@ -1,4 +1,6 @@
-/*11156,793*/var __extends = this.__extends || function (d, b) {
+/*17613,7193,14214,2001,3172,364,3113,1013,35619,8937,11585,810,33211,11069*//// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -7,13 +9,2106 @@
 var SDL;
 (function (SDL) {
     (function (UI) {
-        /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+        (function (Controls) {
+            (function (ButtonPurpose) {
+                ButtonPurpose[ButtonPurpose["GENERAL"] = "general"] = "GENERAL";
+                ButtonPurpose[ButtonPurpose["CONFIRM"] = "confirm"] = "CONFIRM";
+                ButtonPurpose[ButtonPurpose["CRITICAL"] = "critical"] = "CRITICAL";
+                ButtonPurpose[ButtonPurpose["PROCEED"] = "proceed"] = "PROCEED";
+                ButtonPurpose[ButtonPurpose["TOGGLE"] = "toggle"] = "TOGGLE";
+                ButtonPurpose[ButtonPurpose["TOGGLE_IRREVERSIBLE"] = "toggle_irreversible"] = "TOGGLE_IRREVERSIBLE";
+            })(Controls.ButtonPurpose || (Controls.ButtonPurpose = {}));
+            var ButtonPurpose = Controls.ButtonPurpose;
+
+            (function (ButtonStyle) {
+                ButtonStyle[ButtonStyle["DEFAULT"] = "default"] = "DEFAULT";
+                ButtonStyle[ButtonStyle["ICON"] = "icon"] = "ICON";
+                ButtonStyle[ButtonStyle["ICON_ROUND"] = "round"] = "ICON_ROUND";
+            })(Controls.ButtonStyle || (Controls.ButtonStyle = {}));
+            var ButtonStyle = Controls.ButtonStyle;
+
+            (function (ButtonToggleState) {
+                ButtonToggleState[ButtonToggleState["OFF"] = "off"] = "OFF";
+                ButtonToggleState[ButtonToggleState["ON"] = "on"] = "ON";
+            })(Controls.ButtonToggleState || (Controls.ButtonToggleState = {}));
+            var ButtonToggleState = Controls.ButtonToggleState;
+
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var Button = (function (_super) {
+                __extends(Button, _super);
+                function Button(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                }
+                Button.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                    var $element = this.$element = this.$(p.element);
+
+                    p.options = this.$.extend({ purpose: ButtonPurpose.GENERAL, style: ButtonStyle.DEFAULT }, p.options);
+
+                    this.initialTabIndex = $element.attr("tabIndex");
+                    this.tabIndex = this.initialTabIndex || "0";
+                    if (p.options.disabled != null) {
+                        p.options.disabled = p.options.disabled.toString() == "true";
+                    } else {
+                        p.options.disabled = this.isDisabled();
+                    }
+
+                    this.updateDisabledState();
+                    this.updateIconMarkup();
+
+                    $element.on("mousedown", this.getDelegate(this.onMouseDown)).on("mouseup", this.getDelegate(this.onMouseUp)).on("mouseleave", this.getDelegate(this.onMouseLeave)).on("keydown", this.getDelegate(this.onKeyDown)).on("keyup", this.getDelegate(this.onKeyUp)).on("blur", this.getDelegate(this.onMouseLeave)).addClass(this.getPurposeClassName(p.options.purpose)).addClass("sdl-button-style-" + (p.options.style || ButtonStyle.DEFAULT));
+
+                    this.setStateStyle();
+                };
+
+                Button.prototype.update = function (options) {
+                    if (options) {
+                        var p = this.properties;
+                        var prevOptions = this.$.extend({}, p.options, { disabled: this.isDisabled() });
+
+                        this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                        options = p.options = this.$.extend(true, {}, prevOptions, p.options);
+
+                        var changedProperties = [];
+
+                        if (prevOptions.purpose != options.purpose) {
+                            this.$element.removeClass(this.getPurposeClassName(prevOptions.purpose)).addClass(this.getPurposeClassName(options.purpose));
+                            changedProperties.push("purpose");
+                        }
+
+                        if (prevOptions.style != options.style) {
+                            this.$element.removeClass("sdl-button-style-" + prevOptions.style).addClass("sdl-button-style-" + options.style);
+                            changedProperties.push("style");
+                        }
+
+                        if (options.iconClass && (options.iconClass.dark || options.iconClass.light)) {
+                            if (prevOptions.iconClass) {
+                                var changed = false;
+                                if (prevOptions.iconClass.dark != options.iconClass.dark) {
+                                    if (this.$icon) {
+                                        this.$icon.removeClass(options.iconClass.dark);
+                                        changed = true;
+                                    }
+                                }
+
+                                if (prevOptions.iconClass.light != options.iconClass.light) {
+                                    if (this.$icon) {
+                                        this.$icon.removeClass(options.iconClass.light);
+                                        changed = true;
+                                    }
+                                }
+
+                                if (changed) {
+                                    changedProperties.push("iconClass");
+                                }
+                            } else {
+                                changedProperties.push("iconClass");
+                            }
+                        }
+
+                        if (options.disabled != null) {
+                            options.disabled = options.disabled.toString() == "true";
+                            if (prevOptions.disabled == null || prevOptions.disabled != options.disabled) {
+                                this.updateDisabledState();
+                                changedProperties.push("disabled");
+                            }
+                        }
+
+                        this.updateIconMarkup();
+                        this.setStateStyle();
+
+                        for (var i = 0, len = changedProperties.length; i < len; i++) {
+                            this.fireEvent("propertychange", { property: changedProperties[i], value: options[changedProperties[i]] });
+                        }
+                    }
+                };
+
+                Button.prototype.isOn = function () {
+                    var options = this.properties.options;
+                    if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                        return options.state == ButtonToggleState.ON;
+                    }
+                };
+
+                Button.prototype.isOff = function () {
+                    var options = this.properties.options;
+                    if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                        return options.state != ButtonToggleState.ON;
+                    }
+                };
+
+                Button.prototype.toggleOn = function () {
+                    var options = this.properties.options;
+                    if (options.state != ButtonToggleState.ON) {
+                        options.state = ButtonToggleState.ON;
+                        if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                            this.setStateStyle();
+                            this.fireEvent("propertychange", { property: "state", value: ButtonToggleState.ON });
+                            this.fireEvent("click");
+                        }
+                    }
+                };
+
+                Button.prototype.toggleOff = function () {
+                    var options = this.properties.options;
+                    if (options.state == ButtonToggleState.ON) {
+                        options.state = ButtonToggleState.OFF;
+                        if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                            this.setStateStyle();
+                            this.fireEvent("propertychange", { property: "state", value: ButtonToggleState.OFF });
+                            this.fireEvent("click");
+                        }
+                    }
+                };
+
+                Button.prototype.disable = function () {
+                    if (!this.isDisabled()) {
+                        this.updateDisabledState();
+                        this.setStateStyle();
+                        this.fireEvent("propertychange", { property: "disabled", value: true });
+                    }
+                };
+
+                Button.prototype.enable = function () {
+                    if (this.isDisabled()) {
+                        this.updateDisabledState();
+                        this.setStateStyle();
+                        this.fireEvent("propertychange", { property: "disabled", value: false });
+                    }
+                };
+
+                Button.prototype.isDisabled = function () {
+                    return !!this.$element.attr("disabled");
+                };
+
+                Button.prototype.updateDisabledState = function () {
+                    var p = this.properties;
+                    if (p.options.disabled) {
+                        this.tabIndex = this.$element.attr("tabIndex") || "0";
+                        this.$element.attr("disabled", "true").removeAttr("tabIndex");
+                    } else {
+                        this.$element.removeAttr("disabled").attr("tabIndex", this.tabIndex);
+                    }
+                };
+
+                Button.prototype.onMouseDown = function (e) {
+                    if (e.which == 1) {
+                        this.onDown();
+                    }
+                };
+
+                Button.prototype.onMouseUp = function (e) {
+                    if (e.which == 1) {
+                        this.onUp();
+                    }
+                };
+
+                Button.prototype.onMouseLeave = function (e) {
+                    if (this.pressed) {
+                        this.pressed = false;
+                        this.setStateStyle();
+                    }
+                };
+
+                Button.prototype.onKeyDown = function (e) {
+                    if (e.which == 32 /* SPACE */ || e.which == 13 /* ENTER */) {
+                        this.onDown();
+                    }
+                };
+
+                Button.prototype.onKeyUp = function (e) {
+                    if (e.which == 32 /* SPACE */ || e.which == 13 /* ENTER */) {
+                        this.onUp();
+                    }
+                };
+
+                Button.prototype.onDown = function () {
+                    if (!this.pressed && !this.isDisabled()) {
+                        this.pressed = true;
+                        this.setStateStyle();
+                    }
+                };
+
+                Button.prototype.onUp = function () {
+                    if (this.pressed && !this.isDisabled()) {
+                        var options = this.properties.options;
+
+                        this.pressed = false;
+
+                        if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                            if (options.state != ButtonToggleState.ON) {
+                                this.toggleOn();
+                            } else {
+                                if (options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                                    this.setStateStyle();
+                                } else {
+                                    this.toggleOff();
+                                }
+                            }
+                        } else {
+                            this.setStateStyle();
+                            this.fireEvent("click");
+                        }
+                    }
+                };
+
+                Button.prototype.setStateStyle = function () {
+                    var options = this.properties.options;
+
+                    if (this.pressed) {
+                        this.$element.addClass("sdl-button-pressed");
+                    } else {
+                        this.$element.removeClass("sdl-button-pressed");
+                    }
+
+                    if (options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) {
+                        if (options.state == ButtonToggleState.ON) {
+                            this.$element.removeClass("sdl-button-toggle-off").addClass("sdl-button-toggle-on");
+                        } else {
+                            this.$element.removeClass("sdl-button-toggle-on").addClass("sdl-button-toggle-off");
+                        }
+                    } else {
+                        this.$element.removeClass("sdl-button-toggle-on").removeClass("sdl-button-toggle-off");
+                    }
+
+                    if (this.$icon && options.iconClass) {
+                        if (this.isDisabled() || (!this.pressed && (!options.purpose || options.purpose == ButtonPurpose.GENERAL || ((options.purpose == ButtonPurpose.TOGGLE || options.purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE) && options.state != ButtonToggleState.ON)))) {
+                            if (options.iconClass.light) {
+                                this.$icon.removeClass(options.iconClass.light);
+                            }
+                            if (options.iconClass.dark) {
+                                this.$icon.addClass(options.iconClass.dark);
+                            }
+                        } else {
+                            if (options.iconClass.dark) {
+                                this.$icon.removeClass(options.iconClass.dark);
+                            }
+                            if (options.iconClass.light) {
+                                this.$icon.addClass(options.iconClass.light);
+                            }
+                        }
+                    }
+                };
+
+                Button.prototype.updateIconMarkup = function () {
+                    var options = this.properties.options;
+                    if ((options.style == ButtonStyle.ICON || options.style == ButtonStyle.ICON_ROUND) || (options.iconClass && (options.iconClass.dark || options.iconClass.light))) {
+                        if (!this.$icon) {
+                            this.$icon = this.$("<span>&nbsp;</span>");
+                            this.$icon.prependTo(this.$element);
+                            this.$icon.addClass("sdl-button-image");
+                        }
+                    } else {
+                        this.removeIconMarkup();
+                    }
+                };
+
+                Button.prototype.removeIconMarkup = function () {
+                    if (this.$icon) {
+                        this.$icon.remove();
+                        this.$icon = null;
+                    }
+                };
+
+                Button.prototype.getPurposeClassName = function (purpose) {
+                    return "sdl-button-purpose-" + (purpose == ButtonPurpose.TOGGLE_IRREVERSIBLE ? ButtonPurpose.TOGGLE : (purpose || ButtonPurpose.GENERAL));
+                };
+                return Button;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.Button = Button;
+
+            Button.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Button$disposeInterface() {
+                var $element = this.$element;
+                var options = this.properties.options;
+
+                $element.off("mousedown", this.getDelegate(this.onMouseDown)).off("mouseup", this.getDelegate(this.onMouseUp)).off("mouseleave", this.getDelegate(this.onMouseLeave)).off("keydown", this.getDelegate(this.onKeyDown)).off("keyup", this.getDelegate(this.onKeyUp)).off("blur", this.getDelegate(this.onMouseLeave)).removeClass("sdl-button-pressed").removeClass(this.getPurposeClassName(options.purpose)).removeClass("sdl-button-style-" + (options.style || ButtonStyle.DEFAULT)).removeClass("sdl-button-toggle-on").removeClass("sdl-button-toggle-off");
+
+                if (!this.initialTabIndex) {
+                    $element.removeAttr("tabIndex");
+                } else {
+                    $element.attr("tabIndex", this.initialTabIndex);
+                }
+
+                this.removeIconMarkup();
+
+                this.$ = this.$element = null;
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Button", Button);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=Button.js.map
+.sdl-button-purpose-general:focus,
+.sdl-button-purpose-confirm:focus,
+.sdl-button-purpose-critical:focus,
+.sdl-button-purpose-proceed:focus,
+.sdl-button-purpose-toggle:focus {
+  outline: none;
+}
+.sdl-button-purpose-general::-moz-focus-inner,
+.sdl-button-purpose-confirm::-moz-focus-inner,
+.sdl-button-purpose-critical::-moz-focus-inner,
+.sdl-button-purpose-proceed::-moz-focus-inner,
+.sdl-button-purpose-toggle::-moz-focus-inner {
+  border: 0;
+}
+.sdl-button-purpose-general,
+.sdl-button-purpose-confirm,
+.sdl-button-purpose-critical,
+.sdl-button-purpose-proceed,
+.sdl-button-purpose-toggle {
+  border-width: 1px;
+  border-style: solid;
+  font-family: "Arial";
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 3px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 27px;
+  line-height: 25px;
+  padding: 0 9px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: inline-block;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: default;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.sdl-button-purpose-general,
+.sdl-button-purpose-toggle {
+  background-color: #e2e2e2;
+  color: #262c39;
+  border-color: #aaaaaa;
+  text-shadow: 0px 1px #ffffff;
+  box-shadow: inset 0 1px 0 0 #f4f4f4, inset 0 -1px 0 0 #d6d6d6;
+}
+.sdl-button-purpose-general:focus,
+.sdl-button-purpose-toggle:focus {
+  box-shadow: inset 0 1px 0 0 #f4f4f4, inset 0 -1px 0 0 #d6d6d6, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-general:hover,
+.sdl-button-toggle-off:hover {
+  background-color: #f4f4f4;
+  border-color: #454545;
+  box-shadow: inset 0 1px 0 0 #ffffff, inset 0 -1px 0 0 #cfcfcf;
+}
+.sdl-button-purpose-general:focus:hover,
+.sdl-button-purpose-toggle:focus:hover {
+  box-shadow: inset 0 1px 0 0 #ffffff, inset 0 -1px 0 0 #cfcfcf, 0 0 1px 1px #296acc;
+}
+.sdl-button-toggle-on:hover {
+  background-color: #878787;
+  border-color: #454545;
+  box-shadow: inset 0 1px 0 0 #aaaaaa, inset 0 -1px 0 0 #545454;
+}
+.sdl-button-toggle-on:focus:hover {
+  box-shadow: inset 0 1px 0 0 #aaaaaa, inset 0 -1px 0 0 #545454, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-general.sdl-button-pressed,
+.sdl-button-purpose-toggle.sdl-button-pressed,
+.sdl-button-toggle-on {
+  background-color: #767676;
+  color: #ffffff;
+  border-color: #aaaaaa;
+  text-shadow: 0px 1px #262c39;
+  box-shadow: inset 0 1px 0 0 #454545, inset 0 -1px 0 0 #545454;
+}
+.sdl-button-purpose-general.sdl-button-pressed:focus,
+.sdl-button-purpose-toggle.sdl-button-pressed:focus,
+.sdl-button-toggle-on:focus {
+  box-shadow: inset 0 1px 0 0 #454545, inset 0 -1px 0 0 #545454, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-confirm {
+  background-color: #489536;
+  color: #ffffff;
+  border-color: #244d1e;
+  text-shadow: 0px 1px #244d1e;
+  box-shadow: inset 0 1px 0 0 #a3c898, inset 0 -1px 0 0 #467f3a;
+}
+.sdl-button-purpose-confirm:focus {
+  box-shadow: inset 0 1px 0 0 #a3c898, inset 0 -1px 0 0 #467f3a, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-confirm:hover {
+  background-color: #7bab6c;
+}
+.sdl-button-purpose-confirm.sdl-button-pressed {
+  background-color: #3b752f;
+  box-shadow: inset 0 1px 0 0 #2b5d24, inset 0 -1px 0 0 #2b5d24;
+}
+.sdl-button-purpose-confirm.sdl-button-pressed:focus {
+  box-shadow: inset 0 1px 0 0 #2b5d24, inset 0 -1px 0 0 #2b5d24, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-critical {
+  background-color: #e4481d;
+  color: #ffffff;
+  border-color: #942c08;
+  text-shadow: 0px 1px #942c08;
+  box-shadow: inset 0 1px 0 0 #f89c7c, inset 0 -1px 0 0 #cf421c;
+}
+.sdl-button-purpose-critical:focus {
+  box-shadow: inset 0 1px 0 0 #f89c7c, inset 0 -1px 0 0 #cf421c, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-critical:hover {
+  background-color: #ea6c4f;
+}
+.sdl-button-purpose-critical.sdl-button-pressed {
+  background-color: #d1410a;
+  box-shadow: inset 0 1px 0 0 #bd3500, inset 0 -1px 0 0 #bd3500;
+}
+.sdl-button-purpose-critical.sdl-button-pressed:focus {
+  box-shadow: inset 0 1px 0 0 #bd3500, inset 0 -1px 0 0 #bd3500, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-proceed {
+  background-color: #296acc;
+  color: #ffffff;
+  border-color: #0d3274;
+  text-shadow: 0px 1px #103a81;
+  box-shadow: inset 0 1px 0 0 #5b8ee1, inset 0 -1px 0 0 #1e56ac;
+}
+.sdl-button-purpose-proceed:focus {
+  box-shadow: inset 0 1px 0 0 #5b8ee1, inset 0 -1px 0 0 #1e56ac, 0 0 1px 1px #296acc;
+}
+.sdl-button-purpose-proceed:hover {
+  background-color: #3880f0;
+}
+.sdl-button-purpose-proceed.sdl-button-pressed {
+  background-color: #1958b9;
+  box-shadow: inset 0 1px 0 0 #0744a9, inset 0 -1px 0 0 #0744a9;
+}
+.sdl-button-purpose-proceed.sdl-button-pressed:focus {
+  box-shadow: inset 0 1px 0 0 #0744a9, inset 0 -1px 0 0 #0744a9, 0 0 1px 1px #296acc;
+}
+.sdl-button-style-icon {
+  width: 30px;
+  padding-right: 0;
+  text-overflow: clip;
+}
+.sdl-button-style-round {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  padding: 0;
+  text-overflow: clip;
+}
+.sdl-button-purpose-general[disabled],
+.sdl-button-purpose-confirm[disabled],
+.sdl-button-purpose-critical[disabled],
+.sdl-button-purpose-proceed[disabled],
+.sdl-button-purpose-toggle[disabled] {
+  background-color: #f4f4f4 !important;
+  color: #aaaaaa !important;
+  border-color: #aaaaaa !important;
+  text-shadow: 0px 1px #ffffff !important;
+  box-shadow: inset 0 1px 0 0 #ffffff, inset 0 -1px 0 0 #d1d1d1 !important;
+}
+.sdl-button-purpose-general[disabled]:focus,
+.sdl-button-purpose-confirm[disabled]:focus,
+.sdl-button-purpose-critical[disabled]:focus,
+.sdl-button-purpose-proceed[disabled]:focus,
+.sdl-button-purpose-toggle[disabled]:focus {
+  box-shadow: inset 0 1px 0 0 #ffffff, inset 0 -1px 0 0 #d1d1d1, 0 0 1px 1px #296acc !important;
+}
+.sdl-button-image {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0 6px 0 -3px;
+  position: relative;
+  top: 4px;
+}
+.sdl-button-style-icon > .sdl-button-image {
+  margin-right: 6px;
+}
+.sdl-button-style-round > .sdl-button-image {
+  width: 12px;
+  height: 12px;
+  margin: 0 4px;
+  top: 4px;
+}
+@-moz-document url-prefix() {
+  button.sdl-button-purpose-general,
+  button.sdl-button-purpose-confirm,
+  button.sdl-button-purpose-critical,
+  button.sdl-button-purpose-proceed,
+  button.sdl-button-purpose-toggle {
+    padding: 0 7px;
+  }
+  button.sdl-button-style-icon {
+    padding: 0;
+  }
+  button.sdl-button-style-icon > .sdl-button-image {
+    margin: 0 4px;
+  }
+  button.sdl-button-style-round > .sdl-button-image {
+    margin: 0 2px;
+  }
+}
+.sdl-button-purpose-general > .sdl-button-image,
+.sdl-button-purpose-toggle > .sdl-button-image {
+  opacity: .75;
+}
+.sdl-button-purpose-general.sdl-button-pressed > .sdl-button-image,
+.sdl-button-purpose-toggle.sdl-button-pressed > .sdl-button-image,
+.sdl-button-purpose-toggle.sdl-button-toggle-on > .sdl-button-image,
+.sdl-button-purpose-general:hover > .sdl-button-image,
+.sdl-button-purpose-toggle:hover > .sdl-button-image {
+  opacity: 1;
+}
+.sdl-button-purpose-general[disabled] > .sdl-button-image,
+.sdl-button-purpose-toggle[disabled] > .sdl-button-image,
+.sdl-button-purpose-confirm[disabled] > .sdl-button-image,
+.sdl-button-purpose-critical[disabled] > .sdl-button-image,
+.sdl-button-purpose-proceed[disabled] > .sdl-button-image {
+  opacity: .5 !important;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            (function (CalloutPosition) {
+                CalloutPosition[CalloutPosition["ABOVE"] = "above"] = "ABOVE";
+                CalloutPosition[CalloutPosition["BELOW"] = "below"] = "BELOW";
+                CalloutPosition[CalloutPosition["LEFT"] = "left"] = "LEFT";
+                CalloutPosition[CalloutPosition["RIGHT"] = "right"] = "RIGHT";
+            })(Controls.CalloutPosition || (Controls.CalloutPosition = {}));
+            var CalloutPosition = Controls.CalloutPosition;
+
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var Callout = (function (_super) {
+                __extends(Callout, _super);
+                function Callout(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                }
+                Callout.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                    var $element = this.$element = this.$(p.element);
+
+                    p.options = SDL.jQuery.extend({}, p.options);
+
+                    $element.addClass("sdl-callout");
+                    if (p.options.visible != null && p.options.visible.toString() == "false") {
+                        this.hide();
+                    } else {
+                        this.show();
+                    }
+
+                    this.setPosition();
+                };
+
+                Callout.prototype.update = function (options) {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                    var p = this.properties;
+                    if (p.options.visible != null) {
+                        if (p.options.visible.toString() == "false") {
+                            this.hide();
+                        } else {
+                            this.show();
+                        }
+                    }
+
+                    this.setPosition();
+                };
+
+                Callout.prototype.show = function (duration, easing, callback) {
+                    this.$element.show(duration, easing, callback);
+                    this.properties.options.visible = true;
+                };
+
+                Callout.prototype.hide = function (duration, easing, callback) {
+                    this.$element.hide(duration, easing, callback);
+                    this.properties.options.visible = false;
+                };
+
+                Callout.prototype.setPosition = function () {
+                    var p = this.properties;
+                    var options = p.options;
+                    if (options.visible) {
+                        var body = p.element.ownerDocument.body;
+                        var targetElement = options.targetElement || body;
+                        var targetPosition = SDL.jQuery(targetElement).offset();
+
+                        // from https://developer.mozilla.org/en-US/docs/Web/API/window.scrollY
+                        var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
+                        var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+                        var posLeft;
+                        var posAbove;
+                        var posRight;
+                        var posBelow;
+
+                        if (options.targetCoordinates) {
+                            posLeft = targetPosition.left + (options.targetCoordinates.x || 0) - windowScrollX;
+                            posAbove = targetPosition.top + (options.targetCoordinates.y || 0) - windowScrollY;
+                            posRight = posLeft;
+                            posBelow = posAbove;
+                        } else {
+                            var targetOffsetWidth = targetElement.offsetWidth;
+                            var targetOffsetHeight = targetElement.offsetHeight;
+
+                            posLeft = Math.max(0, Math.min(body.clientWidth, targetPosition.left - windowScrollX));
+                            posAbove = Math.max(0, Math.min(body.clientHeight, targetPosition.top - windowScrollY));
+                            posRight = Math.max(0, Math.min(body.clientWidth, targetPosition.left + targetOffsetWidth - windowScrollX));
+                            posBelow = Math.max(0, Math.min(body.clientHeight, targetPosition.top + targetOffsetHeight - windowScrollY));
+                        }
+
+                        var calloutWidth = p.element.offsetWidth;
+                        var calloutHeight = p.element.offsetHeight;
+                        var pointerSize = 10;
+                        var pointerMinDistanceFromEdge = 20 + 10;
+                        var preferedPositions = options.preferedPosition && (SDL.Client.Type.isArray(options.preferedPosition)) ? (options.preferedPosition.length ? options.preferedPosition : [CalloutPosition.BELOW]) : [options.preferedPosition || CalloutPosition.BELOW];
+
+                        var position;
+
+                        for (var i = 0; !position && i < preferedPositions.length; i++) {
+                            switch (preferedPositions[i]) {
+                                case CalloutPosition.ABOVE:
+                                    if (calloutHeight + pointerSize < posAbove && posRight >= pointerMinDistanceFromEdge && posLeft <= body.clientWidth) {
+                                        position = CalloutPosition.ABOVE;
+                                    }
+                                    break;
+                                case CalloutPosition.BELOW:
+                                    if (calloutHeight + pointerSize < body.clientHeight - posBelow && posRight >= pointerMinDistanceFromEdge && posLeft <= body.clientWidth) {
+                                        position = CalloutPosition.BELOW;
+                                    }
+                                    break;
+                                case CalloutPosition.LEFT:
+                                    if (calloutWidth + pointerSize < posLeft && posAbove >= pointerMinDistanceFromEdge && posBelow <= body.clientHeight) {
+                                        position = CalloutPosition.LEFT;
+                                    }
+                                    break;
+                                case CalloutPosition.RIGHT:
+                                    if (calloutWidth + pointerSize < body.clientWidth - posRight && posAbove >= pointerMinDistanceFromEdge && posBelow <= body.clientHeight) {
+                                        position = CalloutPosition.RIGHT;
+                                    }
+                                    break;
+                            }
+                        }
+
+                        if (!position) {
+                            var diffVertical;
+                            if (posAbove < body.clientHeight - posBelow) {
+                                diffVertical = (body.clientHeight - posBelow) - (calloutHeight + pointerSize);
+                                if (diffVertical >= 0) {
+                                    position = CalloutPosition.BELOW;
+                                }
+                            } else {
+                                diffVertical = posAbove - (calloutHeight + pointerSize);
+                                if (diffVertical >= 0) {
+                                    position = CalloutPosition.ABOVE;
+                                }
+                            }
+
+                            var diffHorizontal;
+                            if (posLeft < body.clientWidth - posRight) {
+                                diffHorizontal = (body.clientWidth - posRight) - (calloutWidth + pointerSize);
+                                if (diffHorizontal >= 0 && diffVertical < diffHorizontal) {
+                                    position = CalloutPosition.RIGHT;
+                                }
+                            } else {
+                                diffHorizontal = posLeft - (calloutWidth + pointerSize);
+                                if (diffHorizontal >= 0 && diffVertical < diffHorizontal) {
+                                    position = CalloutPosition.LEFT;
+                                }
+                            }
+
+                            if (!position) {
+                                switch (preferedPositions[0]) {
+                                    case CalloutPosition.ABOVE:
+                                        posAbove = calloutHeight + pointerSize;
+                                        position = CalloutPosition.ABOVE;
+                                        break;
+                                    case CalloutPosition.BELOW:
+                                        posBelow = body.clientHeight - (calloutHeight + pointerSize);
+                                        position = CalloutPosition.BELOW;
+                                        break;
+                                    case CalloutPosition.LEFT:
+                                        posLeft = calloutWidth + pointerSize;
+                                        position = CalloutPosition.LEFT;
+                                        break;
+                                    case CalloutPosition.RIGHT:
+                                        posRight = body.clientWidth - (calloutWidth + pointerSize);
+                                        position = CalloutPosition.RIGHT;
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (!this.pointer) {
+                            this.pointer = SDL.jQuery("<div></div>").appendTo(this.$element)[0];
+                        }
+                        this.pointer.className = "sdl-callout-pointer-" + position;
+
+                        var x;
+                        var y;
+                        var xPointer;
+                        var yPointer;
+
+                        switch (position) {
+                            case CalloutPosition.ABOVE:
+                                xPointer = ((posRight + posLeft) >> 1) - pointerSize; // division by 2
+                                yPointer = posAbove - pointerSize - 1;
+
+                                x = Math.max(0, Math.min(body.clientWidth - calloutWidth, (posRight + posLeft - calloutWidth) >> 1)); // division by 2
+                                y = posAbove - (calloutHeight + pointerSize);
+                                break;
+                            case CalloutPosition.BELOW:
+                                xPointer = ((posRight + posLeft) >> 1) - pointerSize;
+                                yPointer = posBelow + 1;
+
+                                x = Math.max(0, Math.min(body.clientWidth - calloutWidth, (posRight + posLeft - calloutWidth) >> 1)); // division by 2
+                                y = posBelow + pointerSize;
+                                break;
+                            case CalloutPosition.LEFT:
+                                xPointer = posLeft - pointerSize - 1;
+                                yPointer = ((posBelow + posAbove) >> 1) - pointerSize - 1;
+
+                                x = posLeft - (calloutWidth + pointerSize);
+                                y = Math.max(0, Math.min(body.clientHeight - calloutHeight, (posBelow + posAbove - calloutHeight) >> 1)); // division by 2
+                                break;
+                            case CalloutPosition.RIGHT:
+                                xPointer = posRight + 1;
+                                yPointer = ((posBelow + posAbove) >> 1) - pointerSize;
+
+                                x = posRight + pointerSize;
+                                y = Math.max(0, Math.min(body.clientHeight - calloutHeight, (posBelow + posAbove - calloutHeight) >> 1)); // division by 2
+                                break;
+                        }
+
+                        p.element.style.left = x + "px";
+                        p.element.style.top = y + "px";
+                        this.pointer.style.left = xPointer + "px";
+                        this.pointer.style.top = yPointer + "px";
+                    }
+                };
+
+                Callout.prototype.cleanUp = function () {
+                    var $element = this.$element;
+                    var options = this.properties.options;
+
+                    $element.removeClass("sdl-callout");
+
+                    if (this.pointer) {
+                        this.properties.element.removeChild(this.pointer);
+                        this.pointer = null;
+                    }
+
+                    this.$ = this.$element = null;
+                };
+                return Callout;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.Callout = Callout;
+
+            Callout.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Callout$disposeInterface() {
+                this.cleanUp();
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Callout", Callout);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=Callout.js.map
+.sdl-callout {
+  position: fixed;
+  border: 1px solid #454b53;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 3px 3px rgba(69, 75, 83, 0.25);
+  box-shadow: 0 0 3px 3px rgba(69, 75, 83, 0.25);
+  min-width: 370px;
+  min-height: 72px;
+  background-color: white;
+  z-index: 100;
+}
+.sdl-callout-pointer-above,
+.sdl-callout-pointer-below,
+.sdl-callout-pointer-right,
+.sdl-callout-pointer-left,
+.sdl-callout-pointer-above:after,
+.sdl-callout-pointer-below:after,
+.sdl-callout-pointer-right:after,
+.sdl-callout-pointer-left:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent;
+  pointer-events: none;
+}
+.sdl-callout-pointer-above,
+.sdl-callout-pointer-below,
+.sdl-callout-pointer-right,
+.sdl-callout-pointer-left {
+  position: fixed;
+}
+.sdl-callout-pointer-above:after,
+.sdl-callout-pointer-below:after,
+.sdl-callout-pointer-right:after,
+.sdl-callout-pointer-left:after {
+  content: "";
+  position: absolute;
+}
+.sdl-callout-pointer-above {
+  border-bottom: 0 none;
+  border-top-color: #454b53;
+}
+.sdl-callout-pointer-above:after {
+  border-bottom: 0 none;
+  border-top-color: white;
+  bottom: 1.4px;
+  left: -10px;
+}
+.sdl-callout-pointer-below {
+  border-top: 0 none;
+  border-bottom-color: #454b53;
+}
+.sdl-callout-pointer-below:after {
+  border-top: 0 none;
+  border-bottom-color: white;
+  top: 1.4px;
+  left: -10px;
+}
+.sdl-callout-pointer-left {
+  border-right: 0 none;
+  border-left-color: #454b53;
+}
+.sdl-callout-pointer-left:after {
+  border-right: 0 none;
+  border-left-color: white;
+  right: 1.4px;
+  top: -10px;
+}
+.sdl-callout-pointer-right {
+  border-left: 0 none;
+  border-right-color: #454b53;
+}
+.sdl-callout-pointer-right:after {
+  border-left: 0 none;
+  border-right-color: white;
+  left: 1.4px;
+  top: -10px;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var Dialog = (function (_super) {
+                __extends(Dialog, _super);
+                function Dialog(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                }
+                Dialog.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                    var $element = this.$element = this.$(p.element);
+
+                    $element.addClass("sdl-dialog");
+                    if (p.options.visible != null && p.options.visible.toString() == "false") {
+                        this.hide();
+                    } else {
+                        this.show();
+                    }
+                };
+
+                Dialog.prototype.update = function (options) {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                    var p = this.properties;
+                    if (p.options.visible != null) {
+                        if (p.options.visible.toString() == "false") {
+                            this.hide();
+                        } else {
+                            this.show();
+                        }
+                    }
+                };
+
+                Dialog.prototype.show = function (duration, easing, callback) {
+                    this.$element.removeClass("sdl-dialog-hidden").show(duration, easing, callback);
+                };
+
+                Dialog.prototype.hide = function (duration, easing, callback) {
+                    this.$element.addClass("sdl-dialog-hidden").hide(duration, easing, callback);
+                };
+
+                Dialog.prototype.cleanUp = function () {
+                    var $element = this.$element;
+                    var options = this.properties.options;
+
+                    this.$ = this.$element = null;
+                };
+                return Dialog;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.Dialog = Dialog;
+
+            Dialog.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Dialog$disposeInterface() {
+                this.cleanUp();
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Dialog", Dialog);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=Dialog.js.map
+.sdl-dialog {
+  position: absolute;
+  visibility: hidden;
+  border: 1px solid #454b53;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 3px 3px rgba(69, 75, 83, 0.25);
+  box-shadow: 0 0 3px 3px rgba(69, 75, 83, 0.25);
+  width: 450px;
+  min-height: 160px;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+/// <reference path="../Button/Button.jQuery.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            (function (MessageType) {
+                MessageType[MessageType["INFO"] = "info"] = "INFO";
+                MessageType[MessageType["QUESTION"] = "question"] = "QUESTION";
+                MessageType[MessageType["WARNING"] = "warning"] = "WARNING";
+                MessageType[MessageType["ERROR"] = "error"] = "ERROR";
+                MessageType[MessageType["PROGRESS"] = "progress"] = "PROGRESS";
+                MessageType[MessageType["GOAL"] = "goal"] = "GOAL";
+            })(Controls.MessageType || (Controls.MessageType = {}));
+            var MessageType = Controls.MessageType;
+
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var Message = (function (_super) {
+                __extends(Message, _super);
+                function Message(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                }
+                Message.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                    var $element = this.$element = this.$(p.element);
+
+                    if (p.options.title) {
+                        this.$title = $element.prepend("<div class='sdl-message-title'>Title</div>");
+                    }
+
+                    $element.addClass("sdl-message");
+                };
+
+                Message.prototype.update = function (options) {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                    var p = this.properties;
+                };
+
+                Message.prototype.cleanUp = function () {
+                    var $element = this.$element;
+                    var options = this.properties.options;
+
+                    this.$ = this.$element = this.$title = null;
+                };
+                return Message;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.Message = Message;
+
+            Message.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Message$disposeInterface() {
+                this.cleanUp();
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Message", Message);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=Message.js.map
+.sdl-message {
+  display: block;
+  margin: 0;
+  padding: 20px 20px 20px 72px;
+  font-family: Arial;
+  font-size: 12px;
+  color: #1F2C39;
+}
+.sdl-message > * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.sdl-message:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 32px;
+  height: 32px;
+  background-image: url("{PATH}icons.png{VERSION}");
+  background-repeat: no-repeat;
+}
+.sdl-message-goal:before {
+  background-position: -32px 0;
+}
+.sdl-message-error:before {
+  background-position: -64px 0;
+}
+.sdl-message-progress:before {
+  background-position: -96px 0;
+}
+.sdl-message-question:before {
+  background-position: -128px 0;
+}
+.sdl-message-warning:before {
+  background-position: -160px 0;
+}
+.sdl-message-title {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+.sdl-message-actions {
+  min-height: 48px;
+  clear: both;
+  background-color: #FAFAFA;
+  border: none;
+  border-top: 1px solid #AAA;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+/// <reference path="../Tooltip/Tooltip.jQuery.ts" />
+/// <reference path="../ScrollView/ScrollView.jQuery.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var Tabs = (function (_super) {
+                __extends(Tabs, _super);
+                function Tabs(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                    this.flyoutButtonMinWidth = 40;
+                    this.flyoutButtonShown = false;
+                    this.flyoutMenuShown = false;
+                }
+                Tabs.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                    var $element = this.$element = this.$(p.element);
+                    this.$pages = this.$();
+
+                    p.options = this.$.extend({}, p.options);
+
+                    this.initialTabIndex = $element.attr("tabIndex");
+                    $element.attr("tabIndex", this.initialTabIndex || "0").addClass("sdl-tabs-container").on("keydown", this.getDelegate(this.onKeyDown));
+
+                    this.monitoringCount = 0;
+                    this.recalculate();
+                    this.setSelectedIndex(p.options.selectedIndex || 0);
+
+                    $element.mousedown(this.getDelegate(this.onMouseDown)).scroll(this.cancelScroll);
+                    if ($element.is("body")) {
+                        SDL.jQuery($element[0].ownerDocument).scroll(this.cancelScroll);
+                    }
+                    this.monitoringInterval = window.setInterval(this.getDelegate(this.recalculate), 100);
+                };
+
+                Tabs.prototype.update = function (options) {
+                    this.processDescendants();
+
+                    if (options) {
+                        this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                        var changedProperties = [];
+
+                        var selectedIndex = this.getSelectedIndex();
+                        if (options.selectedIndex != null && options.selectedIndex >= 0 && options.selectedIndex < this.$pages.length) {
+                            if (options.selectedIndex != selectedIndex) {
+                                this.setSelectedIndex(options.selectedIndex);
+                                changedProperties.push("selectedIndex");
+                            }
+                        } else if (selectedIndex < 0) {
+                            this.selectFirst();
+                            changedProperties.push("selectedIndex");
+                        }
+
+                        for (var i = 0, len = changedProperties.length; i < len; i++) {
+                            this.fireEvent("propertychange", { property: changedProperties[i], value: options[changedProperties[i]] });
+                        }
+                    }
+
+                    this.recalculate();
+                };
+
+                Tabs.prototype.selectNext = function () {
+                    var oldPage = this.$element.children(".sdl-tabs-page-selected");
+                    if (oldPage.length) {
+                        var next = oldPage;
+                        do {
+                            next = next.next();
+                        } while(next.length && (next.attr("data-sdl-tabs-no-page") == "true" || !next[0].offsetWidth));
+
+                        this.updateSelection(next, oldPage);
+                    } else {
+                        this.selectFirst();
+                    }
+                };
+
+                Tabs.prototype.selectPrevious = function () {
+                    var oldPage = this.$element.children(".sdl-tabs-page-selected");
+                    if (oldPage.length) {
+                        var prev = oldPage;
+                        do {
+                            prev = prev.prev();
+                        } while(prev.length && (prev.attr("data-sdl-tabs-no-page") == "true" || !prev[0].offsetWidth));
+
+                        this.updateSelection(prev, oldPage);
+                    } else {
+                        this.selectFirst();
+                    }
+                };
+
+                Tabs.prototype.selectFirst = function () {
+                    this.setSelectedIndex(0);
+                };
+
+                Tabs.prototype.selectLast = function () {
+                    this.updateSelection(this.$element.children(":not([data-sdl-tabs-no-page=true])").last());
+                };
+
+                Tabs.prototype.setSelectedIndex = function (index) {
+                    this.updateSelection(this.$element.children(":not([data-sdl-tabs-no-page=true])").eq(index));
+                };
+
+                Tabs.prototype.setSelection = function (page) {
+                    if (page) {
+                        this.updateSelection(page.first());
+                    }
+                };
+
+                Tabs.prototype.setSelectedElement = function (page) {
+                    return this.setSelection(this.$(page));
+                };
+
+                Tabs.prototype.getSelectedIndex = function () {
+                    return this.$element.children(":not([data-sdl-tabs-no-page=true])").index(this.getSelection());
+                };
+
+                Tabs.prototype.getSelection = function () {
+                    return this.$element.children(".sdl-tabs-page-selected");
+                };
+
+                Tabs.prototype.getSelectedElement = function () {
+                    return this.getSelection()[0];
+                };
+
+                Tabs.prototype.updateFlyoutButton = function (show, flyoutButtonWidth) {
+                    if (show) {
+                        if (!this.flyoutButtonShown) {
+                            this.$element.addClass("sdl-tabs-container-overflown");
+                            this.flyoutButtonShown = true;
+                        }
+                        this.flyoutPointerPosition = (flyoutButtonWidth || this.flyoutButtonMinWidth) / 2;
+                        if (this.flyoutMenuShown) {
+                            this.flyoutMenu.firstElementChild.style.right = this.flyoutPointerPosition + "px";
+                        }
+                    } else if (this.flyoutButtonShown) {
+                        this.$element.removeClass("sdl-tabs-container-overflown sdl-tabs-container-overflown-pressed");
+                        this.flyoutButtonShown = this.flyoutMenuShown = false;
+                    }
+                };
+
+                Tabs.prototype.updateFlyoutMenuList = function () {
+                    if (this.flyoutMenuShown) {
+                        var scrollElement = this.flyoutMenu.lastElementChild;
+                        var listElement = scrollElement.firstElementChild;
+                        var listElements;
+                        var populated = this.flyoutMenuPopulated;
+                        if (!populated) {
+                            this.flyoutMenuPopulated = true;
+                        } else {
+                            listElements = listElement.children;
+                        }
+
+                        this.$pages.each(function (index, element) {
+                            if (element.offsetWidth) {
+                                var titleElement = element.firstElementChild;
+                                var labelElement;
+                                if (titleElement.getAttribute("data-sdl-tabs-switch-label")) {
+                                    labelElement = titleElement;
+                                    titleElement = titleElement.nextElementSibling;
+                                }
+                                var title = titleElement ? titleElement.textContent : "";
+                                var selected = element.className.indexOf("sdl-tabs-page-selected") != -1;
+                                var flyoutMenuIconStyle = labelElement && labelElement.getAttribute(selected ? "data-sdl-tabs-menu-icon-class-bright" : "data-sdl-tabs-menu-icon-class-dark");
+
+                                if (!populated) {
+                                    SDL.jQuery("<div" + (selected ? " class='sdl-tabs-page-selected'" : "") + "><div" + (flyoutMenuIconStyle ? " class='" + flyoutMenuIconStyle + "'" : "") + "></div></div>").append(SDL.jQuery("<span></span>").text(title)).attr("data-sdl-tabs-page-index", index).appendTo(listElement);
+                                } else {
+                                    var item = listElements[index];
+                                    if (item.lastElementChild.textContent != title) {
+                                        item.lastElementChild.textContent = title;
+                                    }
+                                    if (selected) {
+                                        if (item.className.indexOf("sdl-tabs-page-selected") < 0) {
+                                            SDL.jQuery(item).addClass("sdl-tabs-page-selected");
+                                            item.firstElementChild.className = flyoutMenuIconStyle || "";
+                                        }
+                                    } else if (item.className.indexOf("sdl-tabs-page-selected") != -1) {
+                                        SDL.jQuery(item).removeClass("sdl-tabs-page-selected");
+                                        item.firstElementChild.className = flyoutMenuIconStyle || "";
+                                    }
+                                }
+                            }
+                        });
+                    }
+                };
+
+                Tabs.prototype.invalidateFlyoutMenu = function () {
+                    if (this.flyoutMenu) {
+                        this.flyoutMenuPopulated = false;
+                        this.flyoutMenu.lastElementChild.firstElementChild.textContent = ""; // remove items from the flyout menu list
+                        this.updateFlyoutMenuList();
+                    }
+                };
+
+                Tabs.prototype.setFlyoutMenuListDimensions = function () {
+                    if (this.flyoutMenuShown) {
+                        var scrollElement = this.flyoutMenu.lastElementChild;
+                        var listElement = scrollElement.firstElementChild;
+                        var listElements = listElement.children;
+
+                        scrollElement.style.maxHeight = (this.properties.element.offsetHeight - 135) + "px"; // 135: height of tab switch (101) + margins (2 * 10) + paddings (2 * 6) + borders (2 * 1)
+                        scrollElement.style.height = (listElements.length * 36) + "px";
+
+                        var scrollWidth = 0;
+                        for (var i = 0, len = listElements.length; i < len; i++) {
+                            scrollWidth = Math.max(scrollWidth, listElements[i].scrollWidth);
+                        }
+                        scrollElement.style.width = scrollWidth + "px";
+                    }
+                };
+
+                Tabs.prototype.scrollToFlyoutMenuSelection = function () {
+                    if (this.flyoutMenuShown) {
+                        var listElement = this.flyoutMenu.lastElementChild.firstElementChild;
+                        var selected = SDL.jQuery(".sdl-tabs-page-selected", listElement)[0];
+                        if (selected) {
+                            var top = selected.offsetTop;
+                            if (listElement.scrollTop > top) {
+                                listElement.scrollTop = top;
+                            } else if (listElement.scrollTop < (top - listElement.clientHeight + 36)) {
+                                listElement.scrollTop = (top - listElement.clientHeight + 36);
+                            }
+                        }
+                    }
+                };
+
+                Tabs.prototype.updateFlyoutMenu = function (show) {
+                    var _this = this;
+                    if (this.flyoutButtonShown) {
+                        if (show) {
+                            if (!this.flyoutMenuShown) {
+                                if (!this.flyoutMenu) {
+                                    this.flyoutMenu = SDL.jQuery("<div class='sdl-tabs-flyout-menu' data-sdl-tabs-no-page='true' tabIndex='0'><div></div><div><div data-sdl-scrollview-child='true'></div></div></div>").appendTo(this.$element)[0];
+                                    this.flyoutScrollView = SDL.jQuery(this.flyoutMenu.lastElementChild).scrollView({ overflowX: "hidden" });
+                                    SDL.jQuery(this.flyoutMenu).blur(this.getDelegate(this.onFlyoutMenuBlur));
+                                }
+                                this.flyoutMenu.firstElementChild.style.right = this.flyoutPointerPosition + "px"; // position pointer element centrally
+                                this.flyoutMenuShown = true;
+                                this.updateFlyoutMenuList();
+                                this.$element.addClass("sdl-tabs-container-overflown-pressed");
+                                this.setFlyoutMenuListDimensions();
+                                this.scrollToFlyoutMenuSelection();
+                                setTimeout(function () {
+                                    if (_this.flyoutMenuShown) {
+                                        _this.flyoutMenu.focus();
+                                    }
+                                }, 500);
+                            }
+                        } else if (this.flyoutMenuShown) {
+                            this.flyoutMenuShown = false;
+                            this.$element.removeClass("sdl-tabs-container-overflown-pressed");
+                        }
+                    }
+                };
+
+                Tabs.prototype.processHidden = function () {
+                    var changed = false;
+                    var lastShownPage;
+                    SDL.jQuery.each(this.properties.element.children, function (index, child) {
+                        if (!child.offsetWidth) {
+                            if (child.getAttribute("data-sdl-tabs-no-page") != "true" && child.className.indexOf("sdl-tabs-page-hidden") < 0) {
+                                SDL.jQuery(child).addClass("sdl-tabs-page-hidden");
+                                changed = true;
+                            }
+                        } else {
+                            if (child.getAttribute("data-sdl-tabs-no-page") != "true") {
+                                lastShownPage = child;
+                                if (child.className.indexOf("sdl-tabs-page-hidden") >= 0) {
+                                    SDL.jQuery(child).removeClass("sdl-tabs-page-hidden");
+                                    changed = true;
+                                }
+                            } else {
+                                lastShownPage = null;
+                            }
+                        }
+                    });
+
+                    if (!lastShownPage != !this.$lastShownPage || lastShownPage && lastShownPage != this.$lastShownPage[0]) {
+                        if (this.$lastShownPage) {
+                            this.$lastShownPage.removeClass("sdl-tabs-page-last");
+                        }
+
+                        if (lastShownPage) {
+                            this.$lastShownPage = SDL.jQuery(lastShownPage).addClass("sdl-tabs-page-last");
+                        } else {
+                            this.$lastShownPage = null;
+                        }
+                    }
+                    return changed;
+                };
+
+                Tabs.prototype.processDescendants = function () {
+                    var $children = this.$element.children(":not([data-sdl-tabs-no-page=true])");
+                    var $addedPages = $children.not(this.$pages);
+                    var $removedPages = this.$pages.not($children);
+
+                    this.$pages = $children;
+                    var changed = this.processHidden();
+
+                    if ($addedPages.length || $removedPages.length) {
+                        $removedPages.removeClass("sdl-tabs-page-selected").children(":first-child, :first-child[data-sdl-tabs-switch-label] + *").tooltip().dispose();
+                        $addedPages.children(":first-child, :first-child[data-sdl-tabs-switch-label] + *").tooltip({ showIfNoOverflow: false, trackMouse: true, relativeTo: "mouse", showWhenCursorStationary: true });
+                        changed = true;
+                    } else {
+                        for (var i = 0, len = $children.length - 1; i < len; i++) {
+                            if ($children[i] != this.$pages[i]) {
+                                changed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    return changed;
+                };
+
+                Tabs.prototype.recalculate = function () {
+                    var element = this.properties.element;
+                    if (element.offsetHeight && element.offsetWidth) {
+                        var tab = element.firstElementChild;
+                        var availableWidth = element.clientWidth;
+
+                        if (this.clientWidth != availableWidth || this.clientHeight != element.clientHeight) {
+                            this.updateFlyoutMenu(false);
+                            this.clientWidth = availableWidth;
+                            this.clientHeight = element.clientHeight;
+                        }
+
+                        var remainingWidth = availableWidth;
+                        while (tab) {
+                            if (tab != this.flyoutMenu) {
+                                remainingWidth -= (tab.offsetWidth || 0);
+                                if (remainingWidth < 0) {
+                                    break;
+                                }
+                            }
+                            tab = tab.nextElementSibling;
+                        }
+
+                        if (remainingWidth >= 0) {
+                            if (this.$leftOffScreenTabs) {
+                                this.$leftOffScreenTabs.removeClass("sdl-tabs-tab-left-off-screen");
+                                this.$leftOffScreenTabs = null;
+                            }
+                            if (this.$firstOffScreenTab) {
+                                this.$firstOffScreenTab.removeClass("sdl-tabs-tab-first-off-screen");
+                                this.$firstOffScreenTab = null;
+                            }
+                            this.updateFlyoutButton(false);
+                        } else {
+                            availableWidth -= (this.flyoutButtonMinWidth - 1); // width_of_flyout_button - border
+
+                            // ensure selected tab is in screen
+                            var rightAlignedTab = this.getSelectedElement();
+
+                            if (rightAlignedTab && !rightAlignedTab.offsetWidth) {
+                                rightAlignedTab = null;
+                            }
+
+                            if (rightAlignedTab && rightAlignedTab.offsetWidth) {
+                                if (rightAlignedTab.offsetTop == 0 && (rightAlignedTab.offsetLeft + rightAlignedTab.offsetWidth <= availableWidth)) {
+                                    // selected tab is in screen -> keep currently last in-screen tab right-aligned
+                                    tab = rightAlignedTab;
+                                    remainingWidth = availableWidth - tab.offsetLeft;
+                                    rightAlignedTab = null;
+                                }
+                            } else {
+                                // no selected tab or it is hidden -> keep currently last in-screen tab right-aligned
+                                tab = element.firstElementChild;
+                                remainingWidth = availableWidth;
+                                rightAlignedTab = null;
+                            }
+
+                            if (!rightAlignedTab) {
+                                do {
+                                    while (tab && (!tab.offsetWidth || tab == this.flyoutMenu)) {
+                                        tab = tab.nextElementSibling; // skip hidden tabs
+                                    }
+
+                                    if (!tab) {
+                                        break;
+                                    } else {
+                                        remainingWidth -= tab.offsetWidth;
+                                        if (remainingWidth >= 0) {
+                                            rightAlignedTab = tab;
+                                            tab = tab.nextElementSibling;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                } while(1);
+                            }
+
+                            //else
+                            //{
+                            // if selection is off-screen, then show it right-aligned
+                            //}
+                            // determine what leftmost tabs will not fit the available width if the selected tab is right-aligned
+                            availableWidth -= rightAlignedTab.offsetWidth;
+                            tab = rightAlignedTab.previousElementSibling;
+                            if (availableWidth > 0) {
+                                remainingWidth = availableWidth;
+                                while (tab) {
+                                    if (tab != this.flyoutMenu) {
+                                        remainingWidth -= (tab.offsetWidth || 0);
+                                        if (remainingWidth < 0) {
+                                            break;
+                                        } else {
+                                            availableWidth = remainingWidth;
+                                        }
+                                    }
+                                    tab = tab.previousElementSibling;
+                                }
+                            }
+
+                            var leftOffScreenTabs = tab ? [] : null;
+                            while (tab) {
+                                if (tab != this.flyoutMenu) {
+                                    leftOffScreenTabs.push(tab);
+                                }
+                                tab = tab.previousElementSibling;
+                            }
+
+                            // select following sibling tab that will be the first off-screen on the right
+                            tab = rightAlignedTab.nextElementSibling;
+
+                            var firstOffScreenTab;
+                            remainingWidth = availableWidth;
+                            while (tab && !firstOffScreenTab) {
+                                if (tab != this.flyoutMenu) {
+                                    remainingWidth -= (tab.offsetWidth || 0);
+                                    if (remainingWidth < 0) {
+                                        firstOffScreenTab = tab;
+                                    } else {
+                                        availableWidth = remainingWidth;
+                                    }
+                                }
+                                tab = tab.nextElementSibling;
+                            }
+                            ;
+
+                            if (leftOffScreenTabs && leftOffScreenTabs.length) {
+                                var $leftOffScreenTabs = SDL.jQuery(leftOffScreenTabs);
+                                if (this.$leftOffScreenTabs) {
+                                    this.$leftOffScreenTabs.not(leftOffScreenTabs).removeClass("sdl-tabs-tab-left-off-screen");
+                                    $leftOffScreenTabs.not(this.$leftOffScreenTabs).addClass("sdl-tabs-tab-left-off-screen");
+                                } else {
+                                    $leftOffScreenTabs.addClass("sdl-tabs-tab-left-off-screen");
+                                }
+                                this.$leftOffScreenTabs = $leftOffScreenTabs;
+                            } else if (this.$leftOffScreenTabs) {
+                                this.$leftOffScreenTabs.removeClass("sdl-tabs-tab-left-off-screen");
+                                this.$leftOffScreenTabs = null;
+                            }
+
+                            if (!this.$firstOffScreenTab != !firstOffScreenTab || firstOffScreenTab && firstOffScreenTab != this.$firstOffScreenTab[0]) {
+                                if (this.$firstOffScreenTab) {
+                                    this.$firstOffScreenTab.removeClass("sdl-tabs-tab-first-off-screen");
+                                }
+
+                                if (firstOffScreenTab) {
+                                    this.$firstOffScreenTab = SDL.jQuery(firstOffScreenTab).addClass("sdl-tabs-tab-first-off-screen");
+                                } else {
+                                    this.$firstOffScreenTab = null;
+                                }
+                            }
+
+                            this.updateFlyoutButton(true, availableWidth + this.flyoutButtonMinWidth);
+                        }
+
+                        if (this.monitoringCount == 0) {
+                            if (this.processDescendants()) {
+                                this.invalidateFlyoutMenu();
+                            } else {
+                                this.updateFlyoutMenuList();
+                            }
+                        }
+
+                        if (++this.monitoringCount == 10) {
+                            this.monitoringCount = 0; // will process descendants next time
+                        }
+                    }
+                };
+
+                Tabs.prototype.onMouseDown = function (e) {
+                    if (e.which == 1) {
+                        if (e.target == this.properties.element) {
+                            this.updateFlyoutMenu(true);
+                        } else if (this.flyoutMenu && SDL.jQuery.contains(this.flyoutMenu, e.target)) {
+                            var index = (e.target.hasAttribute("data-sdl-tabs-page-index") ? e.target.getAttribute("data-sdl-tabs-page-index") : e.target.parentElement.getAttribute("data-sdl-tabs-page-index"));
+                            if (index != null) {
+                                this.setSelectedIndex(index);
+                                this.updateFlyoutMenu(false);
+                            }
+                        } else {
+                            this.updateSelection(this.$(e.target).closest(this.$element.children(":not([data-sdl-tabs-no-page=true])")));
+                        }
+                    }
+                };
+
+                Tabs.prototype.onFlyoutMenuBlur = function (e) {
+                    var _this = this;
+                    if (!document.activeElement || !SDL.jQuery.contains(this.flyoutMenu, document.activeElement)) {
+                        this.updateFlyoutMenu(false);
+                    } else {
+                        setTimeout(function () {
+                            if (_this.flyoutMenuShown) {
+                                _this.flyoutMenu.focus();
+                            }
+                        }, 100);
+                    }
+                };
+
+                Tabs.prototype.onKeyDown = function (e) {
+                    if (!e.ctrlKey && !e.shiftKey) {
+                        var handled = false;
+                        switch (e.which) {
+                            case 37 /* LEFT */:
+                                this.selectPrevious();
+                                handled = true;
+                                break;
+                            case 39 /* RIGHT */:
+                                this.selectNext();
+                                handled = true;
+                                break;
+                            case 36 /* HOME */:
+                                this.selectFirst();
+                                handled = true;
+                                break;
+                            case 35 /* END */:
+                                this.selectLast();
+                                handled = true;
+                                break;
+                            case 38 /* UP */:
+                                if (this.flyoutMenuShown) {
+                                    this.selectPrevious();
+                                    handled = true;
+                                }
+                                break;
+                            case 40 /* DOWN */:
+                                if (this.flyoutMenuShown) {
+                                    this.selectNext();
+                                    handled = true;
+                                }
+                                break;
+                            case 27 /* ESCAPE */:
+                            case 13 /* ENTER */:
+                                if (this.flyoutMenuShown) {
+                                    this.updateFlyoutMenu(false);
+                                }
+                                break;
+                        }
+
+                        if (handled) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.updateFlyoutMenuList();
+                            this.scrollToFlyoutMenuSelection();
+                        }
+                    }
+                };
+
+                Tabs.prototype.cancelScroll = function (e) {
+                    var element = e.target;
+                    if (element.nodeType == 9) {
+                        var html = element.documentElement;
+                        html.scrollLeft = html.scrollTop = 0;
+
+                        element = element.body;
+                    }
+                    element.scrollLeft = element.scrollTop = 0;
+                };
+
+                Tabs.prototype.updateSelection = function (newPage, oldPage) {
+                    if (newPage.length && !newPage.attr("data-sdl-tabs-no-page") && newPage[0] != this.flyoutMenu && newPage.parent().is(this.$element) && newPage[0].offsetWidth) {
+                        if (!oldPage) {
+                            oldPage = this.$element.children(".sdl-tabs-page-selected");
+                        }
+
+                        if (newPage[0] != oldPage[0]) {
+                            oldPage.removeClass("sdl-tabs-page-selected");
+                            newPage.addClass("sdl-tabs-page-selected");
+
+                            this.updateFlyoutMenuList();
+
+                            var $children = this.$element.children(":not([data-sdl-tabs-no-page=true])");
+                            var newIndex = $children.index(newPage[0]);
+                            this.fireEvent("selectionchange", {
+                                oldIndex: $children.index(oldPage[0]),
+                                index: newIndex });
+                            this.fireEvent("propertychange", { property: "selectedIndex", value: newIndex });
+                        }
+                    }
+                };
+
+                Tabs.prototype.cleanUp = function () {
+                    var $element = this.$element;
+                    var options = this.properties.options;
+
+                    window.clearInterval(this.monitoringInterval);
+
+                    $element.removeClass("sdl-tabs-container sdl-tabs-container-overflown sdl-tabs-container-overflown-pressed").off("scroll", this.cancelScroll);
+                    if ($element.is("body")) {
+                        SDL.jQuery($element[0].ownerDocument).off("scroll", this.cancelScroll);
+                    }
+
+                    this.$pages.removeClass("sdl-tabs-page-selected sdl-tabs-page-hidden").children(":first-child, :first-child[data-sdl-tabs-switch-label] + *").tooltip().dispose();
+                    if (this.$firstOffScreenTab) {
+                        this.$firstOffScreenTab.removeClass("sdl-tabs-tab-first-off-screen");
+                        this.$firstOffScreenTab = null;
+                    }
+
+                    if (this.$lastShownPage) {
+                        this.$lastShownPage.removeClass("sdl-tabs-page-last");
+                        this.$lastShownPage = null;
+                    }
+
+                    if (this.$leftOffScreenTabs) {
+                        this.$leftOffScreenTabs.removeClass("sdl-tabs-tab-left-off-screen");
+                        this.$leftOffScreenTabs = null;
+                    }
+
+                    if (this.flyoutMenu) {
+                        SDL.jQuery(this.flyoutMenu).off("blur", this.removeDelegate(this.onFlyoutMenuBlur));
+                        this.flyoutScrollView.dispose();
+                        $element[0].removeChild(this.flyoutMenu);
+                        this.flyoutMenu = this.flyoutScrollView = null;
+                    }
+
+                    var mouseDownDelegate = this.removeDelegate(this.onMouseDown);
+                    if (mouseDownDelegate) {
+                        this.$element.off("mousedown", mouseDownDelegate);
+                    }
+
+                    var keyDownDelegate = this.removeDelegate(this.onKeyDown);
+                    if (keyDownDelegate) {
+                        this.$element.off("keydown", keyDownDelegate);
+                    }
+
+                    if (!this.initialTabIndex) {
+                        $element.removeAttr("tabIndex");
+                    } else {
+                        $element.attr("tabIndex", this.initialTabIndex);
+                    }
+
+                    this.$ = this.$element = this.$pages = null;
+                };
+                return Tabs;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.Tabs = Tabs;
+
+            Tabs.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Tabs$disposeInterface() {
+                this.cleanUp();
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Tabs", Tabs);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=Tabs.js.map
+.sdl-tabs-container {
+  position: relative;
+  min-height: 204px;
+  min-width: 341px;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.sdl-tabs-container > * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+.sdl-tabs-container:focus {
+  outline: none;
+}
+.sdl-tabs-container > :not(.sdl-tabs-flyout-menu) {
+  float: left;
+  border: none;
+}
+.sdl-tabs-container > :not(.sdl-tabs-flyout-menu),
+.sdl-tabs-container:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 101px;
+  margin: 0 0 1000px 0;
+  padding: 0;
+  border-bottom: solid 1px #cccccc;
+  box-shadow: inset 0 -2px 0 0 rgba(170, 170, 170, 0.15);
+  overflow: hidden;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container:after {
+  border-right: solid 1px #cccccc;
+  border-top: solid 1px #cccccc;
+}
+.sdl-tabs-container:after {
+  content: "";
+  display: block;
+  box-shadow: inset 2px -2px 0 0 rgba(170, 170, 170, 0.15);
+  border-top-right-radius: 3px;
+  background: url("{PATH}/pattern.png") #f8f8f8;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) {
+  width: 151px;
+  padding: 14px 9px;
+  background-color: #f8f8f8;
+}
+.sdl-tabs-container > [data-sdl-tabs-no-page=true] + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > :first-child:not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > .sdl-tabs-tab-left-off-screen + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > [data-sdl-tabs-no-page=true] + .sdl-tabs-page-hidden + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > [data-sdl-tabs-no-page=true] + .sdl-tabs-page-hidden + .sdl-tabs-page-hidden + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > .sdl-tabs-page-hidden:first-child + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > .sdl-tabs-page-hidden:first-child + .sdl-tabs-page-hidden + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > .sdl-tabs-tab-left-off-screen + .sdl-tabs-page-hidden + :not([data-sdl-tabs-no-page=true]),
+.sdl-tabs-container > .sdl-tabs-tab-left-off-screen + .sdl-tabs-page-hidden + .sdl-tabs-page-hidden + :not([data-sdl-tabs-no-page=true]) {
+  border-top-left-radius: 3px;
+  border-left: solid 1px #cccccc;
+}
+.sdl-tabs-container > .sdl-tabs-page-selected {
+  background-color: #ffffff !important;
+  border-bottom: none;
+  box-shadow: none;
+  padding-top: 0;
+}
+.sdl-tabs-container > .sdl-tabs-page-selected:before {
+  content: "";
+  height: 4px;
+  display: block;
+  margin: 0 -9px 10px;
+  padding: 0;
+}
+.sdl-tabs-container:focus > .sdl-tabs-page-selected:before,
+.sdl-tabs-container > .sdl-tabs-page-selected:focus:before {
+  background-color: #94b5e5;
+}
+.sdl-tabs-container > .sdl-tabs-page-last {
+  margin-right: -3px;
+  box-shadow: inset 0 -2px 0 0 rgba(170, 170, 170, 0.15), 2px 0 rgba(170, 170, 170, 0.15);
+  border-top-right-radius: 3px;
+}
+.sdl-tabs-container > .sdl-tabs-page-selected.sdl-tabs-page-last {
+  box-shadow: 2px 0 rgba(170, 170, 170, 0.15);
+}
+.sdl-tabs-container-overflown > .sdl-tabs-page-last {
+  margin-right: 0;
+  border-top-right-radius: 0;
+  box-shadow: inset 0 -2px 0 0 rgba(170, 170, 170, 0.15);
+}
+.sdl-tabs-container-overflown > .sdl-tabs-page-selected.sdl-tabs-page-last {
+  box-shadow: none;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child,
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] + * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Verdana;
+  text-shadow: 0 1px white;
+  cursor: default;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] {
+  font-size: 22px;
+  font-weight: bold;
+  color: #454b53;
+  white-space: nowrap;
+  height: 32px;
+  line-height: 32px;
+  vertical-align: top;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label=icon] {
+  width: 32px;
+  margin-left: 50.5px;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child:not([data-sdl-tabs-switch-label]),
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] + * {
+  font-size: 13px;
+  font-weight: normal;
+  color: #454b53;
+  max-height: 34px;
+  line-height: 17px;
+  vertical-align: bottom;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child:not([data-sdl-tabs-switch-label]) {
+  top: 22.5px;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] + * {
+  top: 10px;
+}
+.sdl-tabs-container-overflown > .sdl-tabs-tab-left-off-screen,
+.sdl-tabs-container-overflown > .sdl-tabs-tab-first-off-screen,
+.sdl-tabs-container-overflown > .sdl-tabs-tab-first-off-screen ~ :not(.sdl-tabs-flyout-menu) {
+  margin: -1px 0 0 0 !important;
+  height: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] ~ :nth-child(n + 3),
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child:not([data-sdl-tabs-switch-label]) ~ :nth-child(n + 2) {
+  display: none;
+}
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child[data-sdl-tabs-switch-label] + * + *,
+.sdl-tabs-container > :not([data-sdl-tabs-no-page=true]) > :first-child:not([data-sdl-tabs-switch-label]) + * {
+  position: absolute;
+  top: 101px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 101px;
+  overflow: auto;
+  background-color: #ffffff;
+  border: solid 1px #cccccc;
+  border-top: none;
+  margin: 0;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  display: block;
+}
+.sdl-tabs-container > .sdl-tabs-page-selected > :first-child[data-sdl-tabs-switch-label] + * + *,
+.sdl-tabs-container > .sdl-tabs-page-selected > :first-child:not([data-sdl-tabs-switch-label]) + * {
+  display: block !important;
+}
+.sdl-tabs-container-overflown:after {
+  content: ". . .";
+  font-family: 'Times New Roman';
+  word-spacing: -10px;
+  text-align: center;
+  box-shadow: inset -2px -2px 0 0 rgba(170, 170, 170, 0.15), -1px 0 0 0px #cccccc;
+  font-size: 40px;
+  font-weight: bold;
+  color: #454b53;
+  text-shadow: 0 2px white;
+  line-height: 81px;
+  background: #f8f8f8;
+}
+.sdl-tabs-container-overflown-pressed:after {
+  background-color: #767676;
+  box-shadow: inset 0 -2px 0 0 #585858;
+  color: white;
+  text-shadow: 0 2px #585858;
+}
+.sdl-tabs-flyout-menu {
+  display: none;
+}
+.sdl-tabs-container-overflown-pressed > .sdl-tabs-flyout-menu {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: block;
+  position: absolute;
+  top: 111px;
+  right: 4px;
+  border: 1px solid #454b53;
+  border-radius: 3px;
+  padding: 6px 1px;
+  background-color: #fafafa;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+.sdl-tabs-container-overflown-pressed > .sdl-tabs-flyout-menu:focus {
+  outline: none;
+}
+.sdl-tabs-flyout-menu > :first-child,
+.sdl-tabs-flyout-menu > :first-child:after {
+  content: "";
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-style: solid;
+  border-top: none;
+  border-left-width: 6px;
+  border-right-width: 6px;
+  border-bottom-width: 10px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.sdl-tabs-flyout-menu > :first-child {
+  right: 10px;
+  margin-right: -10px;
+  top: -10px;
+  border-bottom-color: #454b53;
+}
+.sdl-tabs-flyout-menu > :first-child:after {
+  left: -6px;
+  top: 1.5px;
+  border-bottom-color: #fafafa;
+}
+.sdl-tabs-flyout-menu > :last-child {
+  min-width: 151px;
+  max-width: 334px;
+  min-height: 36px;
+}
+.sdl-tabs-flyout-menu > :last-child > :first-child > div {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #262c39;
+  font-family: Verdana;
+  font-size: 13px;
+  text-shadow: 0 1px white;
+  padding: 0 2px 0 0;
+  cursor: default;
+}
+.sdl-tabs-flyout-menu > :last-child > :first-child > div.sdl-tabs-page-selected {
+  background-color: #bed2f0;
+  text-shadow: none;
+}
+.sdl-tabs-flyout-menu > :last-child > :first-child > div > div:first-child {
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
         (function (Controls) {
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Tooltip = (function (_super) {
                 __extends(Tooltip, _super);
-                function Tooltip() {
-                    _super.apply(this, arguments);
+                function Tooltip(element, options, jQuery) {
+                    _super.call(this, element, options, jQuery);
                     this.mouse = {
                         x: 0,
                         y: 0,
@@ -23,7 +2118,6 @@ var SDL;
                     this.shown = false;
                 }
                 Tooltip.prototype.$initialize = function () {
-                    var _this = this;
                     var p = this.properties;
                     this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
                     var $element = this.$element = this.$(p.element);
@@ -41,19 +2135,12 @@ var SDL;
                         content: null
                     }, p.options);
 
+                    // set the content, either from the settings or from the 'tooltip' attribute
                     if (settings.content !== null) {
                         $element.attr("tooltip", settings.content);
                     }
 
-                    $element.mouseenter(function (e) {
-                        return _this.onMouseEnter(e);
-                    });
-                    $element.mouseleave(function () {
-                        return _this.onMouseLeave();
-                    });
-                    $element.mousemove(function (e) {
-                        return _this.onMouseMove(e);
-                    });
+                    $element.mouseenter(this.getDelegate(this.onMouseEnter)).mouseleave(this.getDelegate(this.onMouseLeave)).mousemove(this.getDelegate(this.onMouseMove));
 
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
                 };
@@ -63,6 +2150,7 @@ var SDL;
 
                     this.settings = this.$.extend(this.settings, this.properties.options);
 
+                    // set the content, either from the settings or from the 'tooltip' attribute
                     if (this.settings.content !== null) {
                         this.$element.attr("tooltip", this.settings.content);
                     }
@@ -93,7 +2181,7 @@ var SDL;
                         this.shown = false;
                         this.fireEvent("hide");
                         this.fireEvent("propertychange", { property: "shown", value: false });
-                        this.$(".ui-tooltip").remove();
+                        this.$(".sdl-tooltip").remove();
                     }
                 };
 
@@ -116,7 +2204,7 @@ var SDL;
                             overflowElement = this.$element[0];
                         }
 
-                        if (overflowElement.offsetWidth < overflowElement.scrollWidth) {
+                        if (overflowElement.offsetWidth < overflowElement.scrollWidth || overflowElement.offsetHeight < overflowElement.scrollHeight) {
                             this.showTooltip();
                         }
                     }
@@ -150,7 +2238,7 @@ var SDL;
                         var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
                         var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-                        this.$(".ui-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
+                        this.$(".sdl-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
                     }
 
                     this.mouse.movementTimer = setTimeout(function () {
@@ -166,6 +2254,9 @@ var SDL;
                     var settings = this.settings;
                     var x = 0, y = 0;
                     var content = $element.attr("tooltip");
+                    if (content == null) {
+                        content = $element.text().replace("\n", "<br/>");
+                    }
 
                     // from https://developer.mozilla.org/en-US/docs/Web/API/window.scrollY
                     var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
@@ -190,10 +2281,10 @@ var SDL;
                         Tooltip.shownTooltip.hideTooltip();
                     }
 
-                    $element.append('<div class="ui-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
+                    $element.append('<div class="sdl-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
 
                     if (settings.fitToScreen) {
-                        var $tooltip = this.$(".ui-tooltip");
+                        var $tooltip = this.$(".sdl-tooltip");
                         var position = $tooltip.position();
                         var $window = this.$(window);
                         if (typeof position !== "undefined" && position !== null) {
@@ -230,8 +2321,11 @@ var SDL;
                 if (this.mouse.movementTimer) {
                     clearTimeout(this.mouse.movementTimer);
                 }
-                this.hideTooltip();
-                this.$ = this.$element = null;
+                if (this.$element) {
+                    this.$element.off("mouseenter", this.getDelegate(this.onMouseEnter)).off("mouseleave", this.getDelegate(this.onMouseLeave)).off("mousemove", this.getDelegate(this.onMouseMove));
+                    this.hideTooltip();
+                    this.$ = this.$element = null;
+                }
             });
 
             SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Tooltip", Tooltip);
@@ -248,7 +2342,7 @@ var SDL;
 	-ms-user-select: none;
 	user-select: none;
 }
-body .ui-tooltip
+body .sdl-tooltip
 {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -274,4 +2368,904 @@ body .ui-tooltip
 	max-width: 300px;
 	padding: 8px;
 	white-space: normal;
+	z-index: 100;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Utils/Dom.d.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var ScrollView = (function (_super) {
+                __extends(ScrollView, _super);
+                function ScrollView(element, options, jQuery) {
+                    _super.call(this, element, options || {}, jQuery);
+                    this.secondaryScrollBars = {};
+                    this.childCreated = false;
+                    this.scrollBarChildBottom = 0;
+                    this.scrollBarChildRight = 0;
+                    this.scrollButtonSize = 18;
+                }
+                ScrollView.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    if (!SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile) {
+                        var p = this.properties;
+                        this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
+                        var $element = this.$element = this.$(p.element);
+
+                        var options = p.options = this.$.extend({
+                            overflowX: "auto",
+                            overflowY: "auto",
+                            overlay: false
+                        }, p.options);
+
+                        var scrollTop = p.element.scrollTop;
+                        var scrollLeft = p.element.scrollLeft;
+                        var isBody = $element.is("body");
+                        var parent;
+                        if (isBody) {
+                            parent = $element.parent()[0];
+                            scrollTop = scrollTop || parent.scrollTop || 0; // documentElement rather than body is scrolled in FF and IE
+                            scrollLeft = scrollLeft || parent.scrollLeft || 0; // documentElement rather than body is scrolled in FF and IE
+                        }
+
+                        var $scrollChild = ($element[0].nodeType == 9) ? $element.children("body").attr("data-sdl-scrollview-child", "true") : $element.children("[data-sdl-scrollview-child=true]");
+
+                        var scrollChild = $scrollChild[0];
+                        if (!scrollChild) {
+                            $scrollChild = $element.wrapInner("<div data-sdl-scrollview-child='true'></div>").children();
+                            scrollChild = $scrollChild[0];
+                            this.childCreated = true;
+                        } else {
+                            this.initChildStyleRight = scrollChild.style.right;
+                            this.initChildStyleBottom = scrollChild.style.bottom;
+                        }
+                        this.$scrollChild = $scrollChild;
+
+                        if (!options.overflowX || options.overflowX != "hidden") {
+                            $element.addClass("sdl-scrollview-X-scroll");
+                        }
+
+                        if (!options.overflowY || options.overflowY != "hidden") {
+                            $element.addClass("sdl-scrollview-Y-scroll");
+                        }
+
+                        if (options.style && options.style == "dark" && !$element.hasClass("sdl-scrollview-style-dark")) {
+                            $element.addClass("sdl-scrollview-style-dark");
+                            this.styleApplied = true;
+                        }
+
+                        options.overlay = (options.overlay + "") == "true";
+                        if (options.overlay) {
+                            $element.addClass("sdl-scrollview-overlay");
+                            this.overlayApplied = true;
+                        }
+
+                        if (SDL.jQuery.browser.msie) {
+                            this.scrollButtonSize = 32;
+                        }
+
+                        $element.addClass("sdl-scrollview");
+
+                        scrollChild.scrollTop = scrollTop;
+                        scrollChild.scrollLeft = scrollLeft;
+                        p.element.scrollTop = p.element.scrollLeft = 0;
+                        if (isBody) {
+                            parent.scrollTop = parent.scrollLeft = 0;
+                            SDL.jQuery($element[0].ownerDocument).scroll(this.cancelScroll);
+                        }
+                        $element.scroll(this.cancelScroll);
+
+                        this.recalculate();
+
+                        // there's no event to detect when size of the element has changed -> using interval
+                        this.monitoringInterval = window.setInterval(this.getDelegate(this.recalculate), 150);
+
+                        this.onScrollChild();
+                        $scrollChild.scroll(this.getDelegate(this.onScrollChild));
+                    }
+                };
+
+                ScrollView.prototype.update = function (options) {
+                    if (options && !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile) {
+                        this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                        var $element = this.$element;
+
+                        options = this.properties.options;
+                        if (options.overflowX) {
+                            if (options.overflowX == "hidden") {
+                                $element.removeClass("sdl-scrollview-X-scroll");
+                            } else {
+                                $element.addClass("sdl-scrollview-X-scroll");
+                            }
+                        }
+
+                        if (options.overflowY) {
+                            if (options.overflowY == "hidden") {
+                                $element.removeClass("sdl-scrollview-Y-scroll");
+                            } else {
+                                $element.addClass("sdl-scrollview-Y-scroll");
+                            }
+                        }
+
+                        if (options.style) {
+                            if (options.style == "dark") {
+                                if (!this.$element.hasClass("sdl-scrollview-style-dark")) {
+                                    $element.addClass("sdl-scrollview-style-dark");
+                                    this.styleApplied = true;
+                                }
+                            } else {
+                                $element.removeClass("sdl-scrollview-style-dark");
+                                this.styleApplied = false;
+                            }
+                        }
+
+                        options.overlay = (options.overlay + "") == "true";
+                        if (options.overlay) {
+                            if (!this.$element.hasClass("sdl-scrollview-overlay")) {
+                                $element.addClass("sdl-scrollview-overlay");
+                                this.overlayApplied = true;
+                            }
+                        } else {
+                            $element.removeClass("sdl-scrollview-overlay");
+                            this.overlayApplied = false;
+                        }
+
+                        this.recalculate();
+                    }
+                };
+
+                ScrollView.prototype.getSecondaryScrollBar = function (direction) {
+                    var scrollBar = this.secondaryScrollBars["$" + direction];
+                    if (!scrollBar) {
+                        scrollBar = this.secondaryScrollBars["$" + direction] = SDL.jQuery("<div class='sdl-scrollview-" + direction + "-scroll-wrapper'><div></div><div></div><div></div><div><div></div></div></div>").appendTo(this.$element).children(":last-child");
+
+                        /*
+                        <div>						<!--	sdl-scrollview-[X|Y]-scroll-wrapper		-->
+                        <div></div>				<!--	sdl-scrollview-scroll-[up|left]			-->
+                        <div></div>				<!--	sdl-scrollview-scroll-[down|right]		-->
+                        <div></div>				<!--	sdl-scrollview-scroll-handle			-->
+                        <div>					<!--	sdl-scrollview-secondary-scroll			-->
+                        <div></div>			<!--	sdl-scrollview-secondary-scroll-content	-->
+                        </div>
+                        </div>
+                        */
+                        scrollBar.scroll(this.getDelegate(direction == "X" ? this.onSecondaryScrollX : this.onSecondaryScrollY)).mousemove(this.getDelegate(direction == "X" ? this.onScrollWrapperMouseMoveX : this.onScrollWrapperMouseMoveY)).mousedown(this.getDelegate(direction == "X" ? this.onScrollWrapperMouseDownX : this.onScrollWrapperMouseDownY)).mouseup(this.getDelegate(direction == "X" ? this.onScrollWrapperMouseUpX : this.onScrollWrapperMouseUpY)).mouseleave(this.getDelegate(direction == "X" ? this.onScrollWrapperMouseLeaveX : this.onScrollWrapperMouseLeaveY));
+
+                        if (this.secondaryScrollBars.$X && this.secondaryScrollBars.$Y) {
+                            this.$corner = SDL.jQuery("<div class='sdl-scrollview-corner'></div>").appendTo(this.$element);
+                        }
+
+                        return scrollBar;
+                    } else {
+                        return scrollBar;
+                    }
+                };
+
+                ScrollView.prototype.updateScrollBars = function () {
+                    var scrollChild = this.$scrollChild[0];
+                    if (scrollChild.offsetHeight && scrollChild.offsetWidth) {
+                        var overlay = this.$element.hasClass("sdl-scrollview-overlay");
+                        var changed;
+
+                        var scrollBarSizeX = this.scrollXEnabled ? (scrollChild.offsetHeight - this.scrollContentYClientHeight) : 0;
+                        var scrollBarChildBottom = (overlay || !scrollBarSizeX || this.scrollXHidden) ? -scrollBarSizeX : (15 - scrollBarSizeX);
+                        if (this.scrollBarChildBottom != scrollBarChildBottom) {
+                            this.scrollBarChildBottom = scrollBarChildBottom;
+                            scrollChild.style.bottom = scrollBarChildBottom + "px";
+                            changed = true;
+                        }
+
+                        var scrollBarSizeY = this.scrollYEnabled ? (scrollChild.offsetWidth - this.scrollContentXClientWidth) : 0;
+                        var scrollBarChildRight = (overlay || !scrollBarSizeY || this.scrollYHidden) ? -scrollBarSizeY : (15 - scrollBarSizeY);
+                        if (this.scrollBarChildRight != scrollBarChildRight) {
+                            this.scrollBarChildRight = scrollBarChildRight;
+                            scrollChild.style.right = scrollBarChildRight + "px";
+                            changed = true;
+                        }
+
+                        if (changed) {
+                            var newScrollBarSizeX = this.scrollXEnabled ? (scrollChild.offsetHeight - scrollChild.clientHeight) : 0;
+                            if (newScrollBarSizeX < scrollBarSizeX) {
+                                this.scrollBarChildBottom = (overlay || !newScrollBarSizeX || this.scrollXHidden) ? -newScrollBarSizeX : (15 - newScrollBarSizeX);
+                            }
+
+                            var newScrollBarSizeY = this.scrollYEnabled ? (scrollChild.offsetWidth - scrollChild.clientWidth) : 0;
+                            if (newScrollBarSizeY < scrollBarSizeY) {
+                                this.scrollBarChildRight = (overlay || !newScrollBarSizeY || this.scrollYHidden) ? -newScrollBarSizeY : (15 - newScrollBarSizeY);
+                            }
+                        }
+                    }
+                };
+
+                ScrollView.prototype.recalculate = function () {
+                    var scrollChild = this.$scrollChild[0];
+                    if (scrollChild.offsetHeight && scrollChild.offsetWidth) {
+                        this.scrollXEnabled = this.$element.hasClass("sdl-scrollview-X-scroll");
+                        this.scrollYEnabled = this.$element.hasClass("sdl-scrollview-Y-scroll");
+
+                        var scrollBar;
+                        var secondaryContent;
+                        var scrollHandle;
+                        var xUpdate = false;
+                        var yUpdate = false;
+
+                        if (this.scrollXEnabled) {
+                            scrollBar = this.getSecondaryScrollBar("X")[0];
+
+                            if (scrollBar.scrollLeft == 0 && this.scrollBarHandleXLeftPosition != this.scrollButtonSize) {
+                                this.scrollBarHandleXLeftPosition = this.scrollButtonSize;
+                                scrollBar.previousSibling.style.left = this.scrollButtonSize + "px";
+                            }
+
+                            secondaryContent = scrollBar.firstChild;
+
+                            if (this.scrollContentXWidth != scrollChild.scrollWidth || this.scrollContentXClientWidth != scrollChild.clientWidth || scrollBar.offsetWidth != this.scrollBarXWidth) {
+                                xUpdate = true;
+                                this.scrollBarXWidth = scrollBar.offsetWidth;
+                                this.scrollContentXWidth = scrollChild.scrollWidth;
+                                this.scrollContentXClientWidth = scrollChild.clientWidth;
+
+                                if (this.scrollContentXClientWidth >= (scrollChild.scrollWidth - 1)) {
+                                    if (!this.scrollXHidden) {
+                                        this.scrollXHidden = true;
+                                        this.$element.addClass("sdl-scrollview-X-scroll-hidden");
+                                    }
+                                } else {
+                                    if (this.scrollXHidden) {
+                                        this.scrollXHidden = false;
+                                        this.$element.removeClass("sdl-scrollview-X-scroll-hidden");
+                                    }
+
+                                    this.secondaryToMainRatioX = this.scrollBarXWidth / this.scrollContentXClientWidth;
+                                    var contentWidth = Math.round(scrollChild.scrollWidth * this.secondaryToMainRatioX);
+                                    if (secondaryContent.offsetWidth != contentWidth) {
+                                        secondaryContent.style.width = contentWidth + "px";
+                                    }
+
+                                    this.scrollHandleLeftPositionCoefficientX = (this.scrollBarXWidth - this.scrollButtonSize * 2) / contentWidth;
+                                    var handleWidth = Math.round(this.scrollHandleLeftPositionCoefficientX * this.scrollBarXWidth);
+                                    var handleSpaceCorrectionX;
+                                    if (handleWidth < 10) {
+                                        handleSpaceCorrectionX = 10 - handleWidth;
+                                        handleWidth = 10;
+                                        this.scrollHandleLeftPositionCoefficientX -= (handleSpaceCorrectionX / contentWidth);
+                                    } else {
+                                        handleSpaceCorrectionX = 0;
+                                    }
+
+                                    scrollHandle = scrollBar.previousSibling;
+                                    if (scrollHandle.offsetWidth != handleWidth) {
+                                        this.scrollBarHandleXSize = handleWidth;
+                                        scrollHandle.style.width = handleWidth + "px";
+                                    }
+                                }
+                            }
+                        } else if (this.scrollYEnabled) {
+                            this.scrollContentXWidth = undefined;
+                            this.scrollContentXClientWidth = scrollChild.clientWidth;
+                        }
+
+                        if (this.scrollYEnabled) {
+                            scrollBar = this.getSecondaryScrollBar("Y")[0];
+                            secondaryContent = scrollBar.firstChild;
+
+                            if (scrollBar.scrollTop == 0 && this.scrollBarHandleYTopPosition != this.scrollButtonSize) {
+                                this.scrollBarHandleYTopPosition = this.scrollButtonSize;
+                                scrollBar.previousSibling.style.top = this.scrollButtonSize + "px";
+                            }
+
+                            if (this.scrollContentYHeight != scrollChild.scrollHeight || this.scrollContentYClientHeight != scrollChild.clientHeight || scrollBar.offsetHeight != this.scrollBarYHeight) {
+                                yUpdate = true;
+                                this.scrollBarYHeight = scrollBar.offsetHeight;
+                                this.scrollContentYHeight = scrollChild.scrollHeight;
+                                this.scrollContentYClientHeight = scrollChild.clientHeight;
+
+                                if (this.scrollContentYClientHeight >= (scrollChild.scrollHeight - 1)) {
+                                    if (!this.scrollYHidden) {
+                                        this.scrollYHidden = true;
+                                        this.$element.addClass("sdl-scrollview-Y-scroll-hidden");
+                                    }
+                                } else {
+                                    if (this.scrollYHidden) {
+                                        this.scrollYHidden = false;
+                                        this.$element.removeClass("sdl-scrollview-Y-scroll-hidden");
+                                    }
+
+                                    this.secondaryToMainRatioY = this.scrollBarYHeight / this.scrollContentYClientHeight;
+                                    var contentHeight = Math.round(scrollChild.scrollHeight * this.secondaryToMainRatioY);
+                                    if (secondaryContent.offsetHeight != contentHeight) {
+                                        secondaryContent.style.height = contentHeight + "px";
+                                    }
+
+                                    this.scrollHandleTopPositionCoefficientY = (this.scrollBarYHeight - this.scrollButtonSize * 2) / contentHeight;
+                                    var handleHeight = Math.round(this.scrollHandleTopPositionCoefficientY * this.scrollBarYHeight);
+                                    var handleSpaceCorrectionY;
+                                    if (handleHeight < 10) {
+                                        handleSpaceCorrectionY = 10 - handleHeight;
+                                        handleHeight = 10;
+                                        this.scrollHandleTopPositionCoefficientY -= (handleSpaceCorrectionY / contentHeight);
+                                    } else {
+                                        handleSpaceCorrectionY = 0;
+                                    }
+
+                                    scrollHandle = scrollBar.previousSibling;
+                                    if (scrollHandle.offsetHeight != handleHeight) {
+                                        this.scrollBarHandleYSize = handleHeight;
+                                        scrollHandle.style.height = handleHeight + "px";
+                                    }
+                                }
+                            }
+                        } else if (this.scrollXEnabled) {
+                            this.scrollContentYHeight = undefined;
+                            this.scrollContentYClientHeight = scrollChild.clientHeight;
+                        }
+
+                        this.updateScrollBars();
+
+                        if (xUpdate || yUpdate) {
+                            this.onScrollChild();
+                            if (xUpdate) {
+                                this.onSecondaryScrollX();
+                            }
+                            if (yUpdate) {
+                                this.onSecondaryScrollY();
+                            }
+                        }
+                    }
+                };
+
+                ScrollView.prototype.cancelScroll = function (e) {
+                    var element = e.target;
+                    if (element.nodeType == 9) {
+                        var html = element.documentElement;
+                        html.scrollLeft = html.scrollTop = 0;
+
+                        element = element.body;
+                    }
+                    element.scrollLeft = element.scrollTop = 0;
+                };
+
+                ScrollView.prototype.onScrollChild = function () {
+                    var scrollChild = this.$scrollChild[0];
+                    var $scrollBar;
+
+                    if (this.scrollXEnabled) {
+                        $scrollBar = this.getSecondaryScrollBar("X");
+                        var newSecondatryScrollLeft = Math.round(scrollChild.scrollLeft * this.secondaryToMainRatioX);
+                        if ($scrollBar.scrollLeft() != newSecondatryScrollLeft) {
+                            $scrollBar.scrollLeft(newSecondatryScrollLeft);
+                        }
+                    }
+
+                    if (this.scrollYEnabled) {
+                        $scrollBar = this.getSecondaryScrollBar("Y");
+                        var newSecondatryScrollTop = Math.round(scrollChild.scrollTop * this.secondaryToMainRatioY);
+                        if ($scrollBar.scrollTop() != newSecondatryScrollTop) {
+                            $scrollBar.scrollTop(newSecondatryScrollTop);
+                        }
+                    }
+                };
+
+                ScrollView.prototype.onSecondaryScrollX = function () {
+                    if (this.scrollXEnabled) {
+                        var scrollBar = this.getSecondaryScrollBar("X")[0];
+
+                        // updating scroll handle position
+                        this.scrollBarHandleXLeftPosition = scrollBar.scrollLeft * this.scrollHandleLeftPositionCoefficientX + this.scrollButtonSize;
+                        scrollBar.previousSibling.style.left = this.scrollBarHandleXLeftPosition + "px";
+
+                        var newScrollLeft = Math.round(scrollBar.scrollLeft / this.secondaryToMainRatioX);
+                        if (this.$scrollChild.scrollLeft() != newScrollLeft) {
+                            this.$scrollChild.scrollLeft(newScrollLeft);
+                        }
+                    }
+                };
+
+                ScrollView.prototype.onSecondaryScrollY = function () {
+                    if (this.scrollYEnabled) {
+                        var scrollBar = this.getSecondaryScrollBar("Y")[0];
+
+                        // updating scroll handle position
+                        this.scrollBarHandleYTopPosition = scrollBar.scrollTop * this.scrollHandleTopPositionCoefficientY + this.scrollButtonSize;
+                        scrollBar.previousSibling.style.top = this.scrollBarHandleYTopPosition + "px";
+
+                        var newScrollTop = Math.round(scrollBar.scrollTop / this.secondaryToMainRatioY);
+                        if (this.$scrollChild.scrollTop() != newScrollTop) {
+                            this.$scrollChild.scrollTop(newScrollTop);
+                        }
+                    }
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseMoveX = function (e) {
+                    var left = e.offsetX || e.originalEvent.layerX || 0;
+                    var scrollBarWrapper = this.getSecondaryScrollBar("X").parent();
+
+                    if (left < this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("hover-left").removeClass("hover-right hover-handle");
+                    } else if (left > this.scrollBarXWidth - this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("hover-right").removeClass("hover-left hover-handle");
+                    } else if (left > this.scrollBarHandleXLeftPosition && left < this.scrollBarHandleXLeftPosition + this.scrollBarHandleXSize) {
+                        scrollBarWrapper.addClass("hover-handle").removeClass("hover-left hover-right");
+                    } else {
+                        scrollBarWrapper.removeClass("hover-left hover-right hover-handle");
+                    }
+
+                    if (SDL.jQuery.browser.msie) {
+                        scrollBarWrapper.removeClass("pressed-left pressed-right pressed-handle");
+                    }
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseLeaveX = function (e) {
+                    this.getSecondaryScrollBar("X").parent().removeClass("hover-left hover-right hover-handle pressed-left pressed-right pressed-handle");
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseDownX = function (e) {
+                    var left = e.offsetX || e.originalEvent.layerX || 0;
+                    var scrollBarWrapper = this.getSecondaryScrollBar("X").parent();
+
+                    if (left < this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("pressed-left");
+                    } else if (left > this.scrollBarXWidth - this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("pressed-right");
+                    } else if (left > this.scrollBarHandleXLeftPosition && left < this.scrollBarHandleXLeftPosition + this.scrollBarHandleXSize) {
+                        scrollBarWrapper.addClass("pressed-handle");
+                    }
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseUpX = function (e) {
+                    this.getSecondaryScrollBar("X").parent().removeClass("pressed-left pressed-right pressed-handle");
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseMoveY = function (e) {
+                    var top = e.offsetY || e.originalEvent.layerY || 0;
+                    var scrollBarWrapper = this.getSecondaryScrollBar("Y").parent();
+
+                    if (top < this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("hover-up").removeClass("hover-down hover-handle");
+                    } else if (top > this.scrollBarYHeight - this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("hover-down").removeClass("hover-up hover-handle");
+                    } else if (top > this.scrollBarHandleYTopPosition && top < this.scrollBarHandleYTopPosition + this.scrollBarHandleYSize) {
+                        scrollBarWrapper.addClass("hover-handle").removeClass("hover-up hover-down");
+                    } else {
+                        scrollBarWrapper.removeClass("hover-up hover-down hover-handle");
+                    }
+
+                    if (SDL.jQuery.browser.msie) {
+                        scrollBarWrapper.removeClass("pressed-up pressed-down pressed-handle");
+                    }
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseLeaveY = function (e) {
+                    this.getSecondaryScrollBar("Y").parent().removeClass("hover-up hover-down hover-handle pressed-up pressed-down pressed-handle");
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseDownY = function (e) {
+                    var top = e.offsetY || e.originalEvent.layerY || 0;
+                    var scrollBarWrapper = this.getSecondaryScrollBar("Y").parent();
+
+                    if (top < this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("pressed-up");
+                    } else if (top > this.scrollBarYHeight - this.scrollButtonSize) {
+                        scrollBarWrapper.addClass("pressed-down");
+                    } else if (top > this.scrollBarHandleYTopPosition && top < this.scrollBarHandleYTopPosition + this.scrollBarHandleYSize) {
+                        scrollBarWrapper.addClass("pressed-handle");
+                    }
+                };
+
+                ScrollView.prototype.onScrollWrapperMouseUpY = function (e) {
+                    this.getSecondaryScrollBar("Y").parent().removeClass("pressed-up pressed-down pressed-handle");
+                };
+
+                ScrollView.prototype.cleanUp = function () {
+                    if (!SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile) {
+                        window.clearInterval(this.monitoringInterval);
+
+                        var $element = this.$element;
+                        var isBody = $element.is("body");
+                        var scrollChild = this.$scrollChild[0];
+                        var scrollTop = scrollChild.scrollTop;
+                        var scrollLeft = scrollChild.scrollLeft;
+
+                        // remove event handlers
+                        this.$scrollChild.off("scroll", this.removeDelegate(this.onScrollChild));
+                        if (isBody) {
+                            SDL.jQuery($element[0].ownerDocument).off("scroll", this.cancelScroll);
+                        }
+                        $element.off("scroll", this.cancelScroll);
+
+                        // remove child elements
+                        if (this.secondaryScrollBars.$X) {
+                            this.secondaryScrollBars.$X.off("scroll", this.removeDelegate(this.onSecondaryScrollX)).off("mousemove", this.removeDelegate(this.onScrollWrapperMouseMoveX)).off("mousedown", this.removeDelegate(this.onScrollWrapperMouseDownX)).off("mouseup", this.removeDelegate(this.onScrollWrapperMouseUpX)).off("mouseleave", this.removeDelegate(this.onScrollWrapperMouseLeaveX)).parent().remove();
+                            this.secondaryScrollBars.$X = null;
+                        }
+
+                        if (this.secondaryScrollBars.$Y) {
+                            this.secondaryScrollBars.$Y.off("scroll", this.removeDelegate(this.onSecondaryScrollY)).off("mousemove", this.removeDelegate(this.onScrollWrapperMouseMoveY)).off("mousedown", this.removeDelegate(this.onScrollWrapperMouseDownY)).off("mouseup", this.removeDelegate(this.onScrollWrapperMouseUpY)).off("mouseleave", this.removeDelegate(this.onScrollWrapperMouseLeaveY)).parent().remove();
+                            this.secondaryScrollBars.$Y = null;
+                        }
+
+                        if (this.$corner) {
+                            this.$corner.remove();
+                        }
+
+                        if (this.childCreated) {
+                            this.$element.unwrapInner();
+                        } else {
+                            scrollChild.style.bottom = this.initChildStyleBottom;
+                            scrollChild.style.right = this.initChildStyleRight;
+                        }
+
+                        // restore styles
+                        $element.removeClass("sdl-scrollview sdl-scrollview-X-scroll sdl-scrollview-X-scroll-hidden sdl-scrollview-Y-scroll sdl-scrollview-Y-scroll-hidden sdl-scrollview");
+
+                        if (this.styleApplied) {
+                            $element.removeClass("sdl-scrollview-style-dark");
+                        }
+
+                        if (this.overlayApplied) {
+                            $element.removeClass("sdl-scrollview-overlay");
+                        }
+
+                        // keep scroll position
+                        var $scrollElement = isBody ? $element.parent().addBack() : $element;
+                        if (scrollTop) {
+                            $scrollElement.scrollTop(scrollTop);
+                        }
+
+                        if (scrollLeft) {
+                            $scrollElement.scrollLeft(scrollLeft);
+                        }
+
+                        this.$ = this.$element = this.$scrollChild = this.$corner = null;
+                    }
+                };
+                return ScrollView;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.ScrollView = ScrollView;
+
+            ScrollView.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function disposeInterface() {
+                this.cleanUp();
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.ScrollView", ScrollView);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+//# sourceMappingURL=ScrollView.js.map
+.sdl-scrollview {
+  position: relative;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+body.sdl-scrollview {
+  margin: 0 !important;
+}
+.sdl-scrollview > [data-sdl-scrollview-child=true] {
+  position: absolute;
+  top: 0 !important;
+  left: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  border: none !important;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden !important;
+  right: 0;
+  bottom: 0;
+}
+.sdl-scrollview-X-scroll > [data-sdl-scrollview-child=true] {
+  bottom: -17px;
+  overflow-x: scroll !important;
+}
+.sdl-scrollview-Y-scroll > [data-sdl-scrollview-child=true] {
+  right: -17px;
+  overflow-y: scroll !important;
+}
+/* styling chrome's scrollbar to increase with zooming and be invisible */
+.sdl-scrollview-X-scroll > [data-sdl-scrollview-child=true]::-webkit-scrollbar,
+.sdl-scrollview-Y-scroll > [data-sdl-scrollview-child=true]::-webkit-scrollbar {
+  width: 17px !important;
+  height: 17px !important;
+}
+/* semi-transparent corner shown when both scrollbars are present */
+.sdl-scrollview-corner {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 15px !important;
+  height: 15px !important;
+  background: #eeeeee !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+  display: none !important;
+  padding: 0 !important;
+}
+.sdl-scrollview-overlay > .sdl-scrollview-corner {
+  background: #dddddd !important;
+  opacity: 0.5 !important;
+}
+.sdl-scrollview-X-scroll.sdl-scrollview-Y-scroll:not(.sdl-scrollview-X-scroll-hidden):not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-corner {
+  display: block !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-corner {
+  background: #3c434b !important;
+}
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-corner {
+  background: #454b53 !important;
+}
+/*	scrollbars */
+.sdl-scrollview-X-scroll-wrapper,
+.sdl-scrollview-Y-scroll-wrapper {
+  display: block !important;
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+}
+.sdl-scrollview-X-scroll-wrapper {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: -15px !important;
+  top: auto !important;
+  height: 15px !important;
+  width: auto !important;
+}
+.sdl-scrollview-Y-scroll:not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-X-scroll-wrapper {
+  right: 15px !important;
+}
+.sdl-scrollview-X-scroll:not(.sdl-scrollview-X-scroll-hidden) > .sdl-scrollview-X-scroll-wrapper {
+  bottom: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper {
+  top: 0 !important;
+  left: auto !important;
+  height: auto !important;
+  bottom: 0 !important;
+  right: -15px !important;
+  width: 15px !important;
+}
+.sdl-scrollview-X-scroll:not(.sdl-scrollview-X-scroll-hidden) > .sdl-scrollview-Y-scroll-wrapper {
+  bottom: 15px !important;
+}
+.sdl-scrollview-Y-scroll:not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-Y-scroll-wrapper {
+  right: 0 !important;
+}
+/* semi-transparent background of the custom scrollbar */
+.sdl-scrollview-X-scroll-wrapper:before,
+.sdl-scrollview-Y-scroll-wrapper:before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: #eeeeee !important;
+  z-index: inherit  !important;
+}
+.sdl-scrollview-overlay > .sdl-scrollview-X-scroll-wrapper:before,
+.sdl-scrollview-overlay > .sdl-scrollview-Y-scroll-wrapper:before {
+  background: #dddddd !important;
+  opacity: 0.5 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper:before,
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper:before {
+  background: #3c434b !important;
+}
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-Y-scroll-wrapper:before,
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-X-scroll-wrapper:before {
+  background: #454b53 !important;
+}
+/* up/down buttons */
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1),
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  position: absolute !important;
+  height: 17px !important;
+  width: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-repeat: no-repeat !important;
+  background-image: url("{PATH}/sprite.png{VERSION}");
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  left: 0 !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  right: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  top: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  bottom: 0 !important;
+}
+/* DEFAULT/BRIGHT BUTTONS*/
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  background-position: 0 -48px;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  background-position: 0 -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  background-position: 0 0;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  background-position: 0 -16px;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-left > :nth-child(1) {
+  background-position: -16px -48px;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-right > :nth-child(2) {
+  background-position: -16px -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper.hover-up > :nth-child(1) {
+  background-position: -16px 0;
+}
+.sdl-scrollview-Y-scroll-wrapper.hover-down > :nth-child(2) {
+  background-position: -16px -16px;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-left > :nth-child(1) {
+  background-position: -32px -48px;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-right > :nth-child(2) {
+  background-position: -32px -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper.pressed-up > :nth-child(1) {
+  background-position: -32px 0;
+}
+.sdl-scrollview-Y-scroll-wrapper.pressed-down > :nth-child(2) {
+  background-position: -32px -16px;
+}
+/* DARK BUTTONS*/
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  background-position: -32px -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  background-position: -32px -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  background-position: -32px 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  background-position: -32px -16px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-left > :nth-child(1) {
+  background-position: -16px -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-right > :nth-child(2) {
+  background-position: -16px -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-up > :nth-child(1) {
+  background-position: -16px 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-down > :nth-child(2) {
+  background-position: -16px -16px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-left > :nth-child(1) {
+  background-position: 0 -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-right > :nth-child(2) {
+  background-position: 0 -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-up > :nth-child(1) {
+  background-position: 0 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-down > :nth-child(2) {
+  background-position: 0 -16px;
+}
+/* 'draggable' handle of the scrollbar */
+.sdl-scrollview-X-scroll-wrapper > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  position: absolute !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #c2c7ce !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-handle > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper.hover-handle > :nth-child(3) {
+  background: #adb6be !important;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-handle > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper.pressed-handle > :nth-child(3) {
+  background: #818b99 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  background: #818b99 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-handle > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-handle > :nth-child(3) {
+  background: #adb6be !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-handle > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-handle > :nth-child(3) {
+  background: #c2c7ce !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(3) {
+  width: 0;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: 3px 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  height: 0;
+  right: 0 !important;
+  left: 0 !important;
+  margin: 0 3px !important;
+}
+/* transparent area with native scroll bar (placed in front of the custom bar to do the actual scrolling) */
+.sdl-scrollview-X-scroll-wrapper > :last-child,
+.sdl-scrollview-Y-scroll-wrapper > :last-child {
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  opacity: 0 !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :last-child {
+  bottom: 1px !important;
+  height: 50px !important;
+  width: 100% !important;
+  overflow-x: scroll !important;
+  overflow-y: hidden !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :last-child {
+  right: 1px !important;
+  height: 100% !important;
+  width: 50px !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+}
+/* styling chrome's scrollbar to increase with zooming */
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar {
+  width: 17px !important;
+  height: 17px !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-button {
+  width: 17px !important;
+  height: 18px !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-button {
+  width: 18px !important;
+  height: 17px !important;
+}
+/* useful for debugging */
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-button,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-button,
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-thumb,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-thumb {
+  background: #CCC !important;
+}
+/* content that exceeds the scrollable area (causes the native scrollbar to appear) */
+.sdl-scrollview-X-scroll-wrapper > :last-child > :first-child,
+.sdl-scrollview-Y-scroll-wrapper > :last-child > :first-child {
+  height: 1px;
+  width: 1px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }

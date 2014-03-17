@@ -1,7 +1,7 @@
-/// <reference path="..\MarshallableObject.d.ts" />
+/// <reference path="../MarshallableObject.d.ts" />
 declare module SDL.Client.Models.Base
 { 
-    export interface IXmlBasedObjectProperties
+    export interface IXmlBasedObjectProperties extends IMarshallableObjectProperties
     {
         xml: string;
         xmlDocument: Document;

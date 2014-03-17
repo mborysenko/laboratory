@@ -1,11 +1,140 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
   </appSettings>
   <!-- SDL.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
   <!-- Controls -->
+  <include src="Button/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Button">
+          <files>
+            <file name="Button/Button.js" />
+            <file name="Button/Button.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Button">
+          <files>
+            <file name="Button/Button.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.Button" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Callout/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Callout">
+          <files>
+            <file name="Callout/Callout.js" />
+            <file name="Callout/Callout.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Callout">
+          <files>
+            <file name="Callout/Callout.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.Callout" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Dialog/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Dialog">
+          <files>
+            <file name="Dialog/Dialog.js" />
+            <file name="Dialog/Dialog.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Dialog">
+          <files>
+            <file name="Dialog/Dialog.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.Dialog" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Message/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Message">
+          <files>
+            <file name="Message/Message.js" />
+            <file name="Message/Message.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.JQuery.Button" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Message">
+          <files>
+            <file name="Message/Message.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.Message" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Tabs/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Tabs">
+          <files>
+            <file name="Tabs/Tabs.js" />
+            <file name="Tabs/Tabs.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.UI.Controls.JQuery.Tooltip" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Tabs">
+          <files>
+            <file name="Tabs/Tabs.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.Tabs" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="Tooltip/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
@@ -31,18 +160,57 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="ScrollView/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.ScrollView">
+          <files>
+            <file name="ScrollView/ScrollView.js" />
+            <file name="ScrollView/ScrollView.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.UI.Core.Utils.Dom" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.ScrollView">
+          <files>
+            <file name="ScrollView/ScrollView.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Controls.ScrollView" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <!-- Packages -->
   <include src="packages.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <packages>
         <package name="SDL.UI.Controls" src="Packages/SDL.UI.Controls.txt">
           <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.Button" />
+            <resourceGroup name="SDL.UI.Controls.Callout" />
+            <resourceGroup name="SDL.UI.Controls.Dialog" />
+            <resourceGroup name="SDL.UI.Controls.Message" />
+            <resourceGroup name="SDL.UI.Controls.Tabs" />
             <resourceGroup name="SDL.UI.Controls.Tooltip" />
+            <resourceGroup name="SDL.UI.Controls.ScrollView" />
           </resourceGroups>
         </package>
         <package name="SDL.UI.Controls.JQuery" src="Packages/SDL.UI.Controls.JQuery.js">
           <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.JQuery.Button" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Callout" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Dialog" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Message" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Tabs" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Tooltip" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.ScrollView" />
           </resourceGroups>
         </package>
       </packages>

@@ -1,3 +1,8 @@
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Models/Models.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/DisposableObject.d.ts" />
+/// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -9,12 +14,8 @@ var SDL;
     (function (UI) {
         (function (Core) {
             (function (Knockout) {
-                /// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Models\Models.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Types\DisposableObject.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Event\EventRegister.d.ts" />
-                /// <reference path="..\Libraries\knockout\knockout.d.ts" />
                 (function (ViewModels) {
+                    
                     ;
 
                     ;
@@ -28,8 +29,8 @@ var SDL;
                             var p = this.properties;
 
                             p.item = SDL.Client.Type.isString(item) ? SDL.Client.Models.getItem(item) : item;
-                            p.properties = properties || {};
-                            p.methods = methods || {};
+                            p.properties = properties || {}; // i.e. {title: {getter: "getTitle", setter: "setTitle", events: ["load", "change"]}, content: {events: ["load", "change"]}}
+                            p.methods = methods || {}; // i.e. {load: {method: "load"}, reload: {method: "load", args: [true]}}
                             p.observables = {};
                         }
                         ViewModelItem.prototype.$initialize = function () {
@@ -65,7 +66,7 @@ var SDL;
                                             }
 
                                             if (!p.item[getter]) {
-                                                SDL.Client.Diagnostics.Assert.raiseError("Unable to determine a getter for property '" + property + "' of item " + (((p.item)).getId ? ("'" + ((p.item)).getId() + "'") : (((p.item)).getTypeName ? ((p.item)).getTypeName() : "")) + ".");
+                                                SDL.Client.Diagnostics.Assert.raiseError("Unable to determine a getter for property '" + property + "' of item " + ((p.item).getId ? ("'" + (p.item).getId() + "'") : ((p.item).getTypeName ? (p.item).getTypeName() : "")) + ".");
                                             }
                                         }
 
@@ -94,7 +95,7 @@ var SDL;
                             return function () {
                                 if (events) {
                                     for (var i = 0, len = events.length; i < len; i++) {
-                                        p.observables[events[i]]();
+                                        p.observables[events[i]](); // access an observable, to get this reader triggered when that observable changes
                                     }
                                 }
                                 return p.item[getter]();
@@ -152,7 +153,7 @@ var SDL;
                         ViewModelItem.prototype._checkMethod = function (methodName) {
                             var item = this.properties.item;
                             if (!item[methodName]) {
-                                SDL.Client.Diagnostics.Assert.raiseError("Method '" + methodName + "' is not defined on item " + ((item).getId ? ("'" + (item).getId() + "'") : ((item).getTypeName ? (item).getTypeName() : "")) + ".");
+                                SDL.Client.Diagnostics.Assert.raiseError("Method '" + methodName + "' is not defined on item " + (item.getId ? ("'" + item.getId() + "'") : (item.getTypeName ? item.getTypeName() : "")) + ".");
                             }
                         };
 
@@ -162,11 +163,11 @@ var SDL;
                             var event = evt.type;
 
                             if (event == "marshal") {
-                                p.item = ((evt.target)).getMarshalObject();
+                                p.item = evt.target.getMarshalObject();
                             }
 
                             if (event in p.observables) {
-                                p.observables[event](p.observables[event]() + 1);
+                                p.observables[event](p.observables[event]() + 1); // trigger a change in ko.observable, for dependent properties to get an update
                             }
                         };
                         return ViewModelItem;

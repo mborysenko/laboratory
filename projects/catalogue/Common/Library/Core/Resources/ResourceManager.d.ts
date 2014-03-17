@@ -5,7 +5,7 @@
 declare module SDL.Client.Resources {
     interface IResourceGroupOptions {
         name: string;
-        files?: Resources.IFileResourceDefinition[];
+        files?: IFileResourceDefinition[];
         dependencies?: string[];
         extensions?: string[];
         loading?: boolean;
@@ -19,8 +19,8 @@ declare module SDL.Client.Resources {
     interface IResourceManager {
         setMode(mode: ResourceManagerMode): void;
         newResourceGroup(options: IResourceGroupOptions): void;
-        getTemplateResource(templateId: string): Resources.IFileResource;
-        resolveResources(resourceGroupName: string): Resources.IResolvedResourceGroupResult[];
+        getTemplateResource(templateId: string): IFileResource;
+        resolveResources(resourceGroupName: string): IResolvedResourceGroupResult[];
         load(resourceGroupName: string, callback?: () => void, errorcallback?: (error: string) => void): void;
         readConfiguration(): void;
         storeFileData(url: string, data: string, isShared?: boolean): void;

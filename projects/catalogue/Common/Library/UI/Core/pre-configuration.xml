@@ -14,6 +14,7 @@
 	<include src="Utils/_Config.xml"/>
 	<include src="Views/_Config.xml"/>
 	<include src="Renderers/_Config.xml"/>
+	<include src="Styles/_Config.xml"/>
 
 	<include src="packages.xml"/>
 
@@ -25,6 +26,7 @@
 				<dependency name="SDL.UI.Core.Renderers"/>
 				<dependency name="SDL.UI.Core.Utils"/>
 				<dependency name="SDL.UI.Core.View"/>
+				<dependency name="SDL.UI.Core.Styles.Common"/>
 			</dependencies>
 		</resourceGroup>
 	</resourceGroups>

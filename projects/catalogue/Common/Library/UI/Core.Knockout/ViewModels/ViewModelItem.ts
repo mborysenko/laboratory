@@ -1,8 +1,8 @@
-/// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Models\Models.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Types\DisposableObject.d.ts" />
-/// <reference path="..\..\SDL.Client.Core\Event\EventRegister.d.ts" />
-/// <reference path="..\Libraries\knockout\knockout.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Models/Models.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/DisposableObject.d.ts" />
+/// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
 
 module SDL.UI.Core.Knockout.ViewModels
 {
@@ -85,12 +85,12 @@ module SDL.UI.Core.Knockout.ViewModels
 						if (!getter)
 						{
 							getter = "get" + upProperty;
-							if (!p.item[getter])
+							if (!(<any>p.item)[getter])
 							{
 								getter = "is" + upProperty;
 							}
 
-							if (!p.item[getter])
+							if (!(<any>p.item)[getter])
 							{
 								SDL.Client.Diagnostics.Assert.raiseError("Unable to determine a getter for property '" + property + "' of item " +
 									((<SDL.Client.Models.IIdentifiableObject>(p.item)).getId
@@ -105,7 +105,7 @@ module SDL.UI.Core.Knockout.ViewModels
 						if (!setter)
 						{
 							var s = "set" + upProperty;
-							if (p.item[s])
+							if ((<any>p.item)[s])
 							{
 								setter = s;
 							}
@@ -120,7 +120,7 @@ module SDL.UI.Core.Knockout.ViewModels
 						options.write = this._createPropertyWriter(setter);
 					}
 
-					this[property] = ko.computed(options);
+					(<any>this)[property] = ko.computed(options);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ module SDL.UI.Core.Knockout.ViewModels
 							p.observables[events[i]]();	// access an observable, to get this reader triggered when that observable changes
 						}
 					}
-					return p.item[getter]();
+					return (<any>p.item)[getter]();
 				};
 		}
 
@@ -146,7 +146,7 @@ module SDL.UI.Core.Knockout.ViewModels
 			var p = this.properties;
 			return function(value)
 				{
-					p.item[setter](value);
+					(<any>p.item)[setter](value);
 				};
 		}
 
@@ -173,7 +173,7 @@ module SDL.UI.Core.Knockout.ViewModels
 			{
 				for (var method in methods)
 				{
-					this[method] = this._createMethod(method, methods[method]);
+					(<any>this)[method] = this._createMethod(method, methods[method]);
 				}
 			}
 		}
@@ -199,7 +199,7 @@ module SDL.UI.Core.Knockout.ViewModels
 
 				return function()
 					{
-						return p.item[method].apply(p.item, methodEntry.args || arguments);
+						return (<any>p.item)[method].apply(p.item, methodEntry.args || arguments);
 					};
 			}
 		}
@@ -207,7 +207,7 @@ module SDL.UI.Core.Knockout.ViewModels
 		private _checkMethod(methodName: string)
 		{
 			var item = this.properties.item;
-			if (!item[methodName])
+			if (!(<any>item)[methodName])
 			{
 				SDL.Client.Diagnostics.Assert.raiseError("Method '" + methodName + "' is not defined on item " +
 					((<SDL.Client.Models.IIdentifiableObject>item).getId

@@ -4,6 +4,11 @@
 
 module SDL.UI.Core.Controls
 {
+	export interface JQueryControl extends JQuery
+	{
+		dispose(): JQuery;
+	}
+
 	export function createJQueryPlugin(jQuery: JQueryStatic, control: IControlType, name: string, methods?: IPluginMethodDefinition[]): void
 	{
 		jQuery.fn[name] = function SDL$UI$Core$ControlBase$widget(options: any)
@@ -15,11 +20,12 @@ module SDL.UI.Core.Controls
 			{
 				var element = <Element>this;
 				var attrName = getInstanceAttributeName(control);
-				var instance: IControl = element[attrName];
-				if (!instance || (instance.getDisposed && instance.getDisposed()))
+				var instance: IControl = (<any>element)[attrName];
+				if (!instance || ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && (<SDL.Client.Types.IDisposableObject><any>instance).getDisposed()))
 				{
 					// create a control instance
-					instance = element[attrName] = new control(element, options, jQuery);
+					instance = (<any>element)[attrName] = new control(element, options, jQuery);
+					instance.render();
 				}
 				else if (options && instance.update)
 				{
@@ -35,7 +41,7 @@ module SDL.UI.Core.Controls
 			{
 				jQuery.each(methods, (i: number, methodDefinition: IPluginMethodDefinition) =>
 					{
-						if (methodDefinition && methodDefinition.method)
+						if (methodDefinition && methodDefinition.method && methodDefinition.method != "dispose")
 						{
 							jQueryObject[methodDefinition.method] = function()
 								{
@@ -43,7 +49,7 @@ module SDL.UI.Core.Controls
 									for (var i = 0, len = this.length; i < len; i++)
 									{
 										var instance: IControlBase = <any>jQueryObject[i];
-										var result = instance[implementation].apply(instance, arguments);
+										var result = (<any>instance)[implementation].apply(instance, arguments);
 										if (methodDefinition.returnsValue)
 										{
 											return result;
@@ -53,16 +59,16 @@ module SDL.UI.Core.Controls
 								};
 						}
 					});
-
-				jQueryObject["dispose"] = function()
-				{
-					for (var i = 0, len = this.length; i < len; i++)
-					{
-						SDL.UI.Core.Renderers.ControlRenderer.disposeControl(<any>jQueryObject[i]);
-					}
-					return jQueryObject.end();
-				};
 			}
+
+			jQueryObject["dispose"] = function()
+			{
+				for (var i = 0, len = this.length; i < len; i++)
+				{
+					SDL.UI.Core.Renderers.ControlRenderer.disposeControl(<any>jQueryObject[i]);
+				}
+				return jQueryObject.end();
+			};
 
 			return jQueryObject;
 		};

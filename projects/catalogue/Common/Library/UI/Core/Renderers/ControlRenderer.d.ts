@@ -7,12 +7,16 @@
 /// <reference path="../Controls/ControlBase.d.ts" />
 declare module SDL.UI.Core.Renderers {
     class ControlRenderer {
-        private static types;
-        private static createdControls;
-        static renderControl(type: string, element: HTMLElement, settings: any, callback?: (control: Core.Controls.IControl) => void, errorcallback?: (error: string) => void): void;
-        static onControlCreated(control: Core.Controls.IControlBase): void;
-        static disposeControl(control: Core.Controls.IControl): void;
-        static onControlDisposed(control: Core.Controls.IControlBase): void;
+        static types: {
+            [index: string]: Controls.IControlType;
+        };
+        static createdControls: {
+            [type: string]: Controls.IControl[];
+        };
+        static renderControl(type: string, element: HTMLElement, settings: any, callback?: (control: Controls.IControl) => void, errorcallback?: (error: string) => void): void;
+        static onControlCreated(control: Controls.IControlBase): void;
+        static disposeControl(control: Controls.IControl): void;
+        static onControlDisposed(control: Controls.IControlBase): void;
         static getCreatedControlCounts(): {
             [type: string]: number;
         };

@@ -1,3 +1,5 @@
+/// <reference path="../Types/Types.d.ts" />
+/// <reference path="../Types/ObjectWithEvents.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,10 +8,8 @@ var __extends = this.__extends || function (d, b) {
 };
 var SDL;
 (function (SDL) {
-    /// <reference path="../Types/Types.d.ts" />
-    /// <reference path="../Types/ObjectWithEvents.ts" />
     (function (Client) {
-        eval(Client.Types.OO.enableCustomInheritance);
+        eval(SDL.Client.Types.OO.enableCustomInheritance);
         var LocalizationClass = (function (_super) {
             __extends(LocalizationClass, _super);
             function LocalizationClass() {
@@ -26,7 +26,7 @@ var SDL;
                 return this._culture;
             };
             return LocalizationClass;
-        })(Client.Types.ObjectWithEvents);
+        })(SDL.Client.Types.ObjectWithEvents);
         Client.LocalizationClass = LocalizationClass;
         SDL.Client.Types.OO.createInterface("SDL.Client.LocalizationClass", LocalizationClass);
     })(SDL.Client || (SDL.Client = {}));
@@ -37,7 +37,7 @@ var SDL;
 (function (SDL) {
     (function (Client) {
         // has to be in a separate module definition, otherwise creating an instance of the interface fails
-        Client.Localization = new Client.LocalizationClass();
+        Client.Localization = new SDL.Client.LocalizationClass();
     })(SDL.Client || (SDL.Client = {}));
     var Client = SDL.Client;
 })(SDL || (SDL = {}));

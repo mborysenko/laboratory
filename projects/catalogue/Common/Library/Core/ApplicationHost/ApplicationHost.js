@@ -1,3 +1,18 @@
+/// <reference path="../Types/Types.d.ts" />
+/// <reference path="../Application/Application.ts" />
+/// <reference path="../Application/ApplicationFacade.ts" />
+/// <reference path="../ConfigurationManager/ConfigurationManager.ts" />
+/// <reference path="../CrossDomainMessaging/CrossDomainMessaging.ts" />
+/// <reference path="../Types/Object.d.ts" />
+/// <reference path="../Xml/Xml.ts" />
+/// <reference path="../Types/Url.ts" />
+/// <reference path="../Types/Array.d.ts" />
+/// <reference path="../Resources/ResourceManager.ts" />
+/// <reference path="../Resources/FileResourceHandler.ts" />
+/// <reference path="../Resources/FileHandlers/CssFileHandler.ts" />
+/// <reference path="../Event/EventRegister.d.ts" />
+/// <reference path="../Event/Event.d.ts" />
+/// <reference path="ApplicationManifestReceiver.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7,23 +22,8 @@ var __extends = this.__extends || function (d, b) {
 var SDL;
 (function (SDL) {
     (function (Client) {
-        /// <reference path="../Types/Types.d.ts" />
-        /// <reference path="../Application/Application.ts"
-        /// <reference path="../ApplicationFacade.ts"
-        /// <reference path="../ConfigurationManager/ConfigurationManager.ts" />
-        /// <reference path="../CrossDomainMessaging/CrossDomainMessaging.ts" />
-        /// <reference path="../Types/Object.d.ts" />
-        /// <reference path="../Xml/Xml.ts" />
-        /// <reference path="../Types/Url.ts" />
-        /// <reference path="../Types/Array.d.ts" />
-        /// <reference path="../Resources/ResourceManager.ts" />
-        /// <reference path="../Resources/FileResourceHandler.ts" />
-        /// <reference path="../Resources/FileHandlers/CssFileHandler.ts" />
-        /// <reference path="../Event/EventRegister.d.ts" />
-        /// <reference path="../Event/Event.d.ts" />
-        /// <reference path="ApplicationManifestReceiver.ts" />
-        (function (ApplicationHost) {
-            var Url = Client.Types.Url;
+        (function (_ApplicationHost) {
+            var Url = SDL.Client.Types.Url;
 
             ;
 
@@ -45,36 +45,46 @@ var SDL;
 
             ;
 
-            eval(Client.Types.OO.enableCustomInheritance);
+            ;
+
+            var CaptureDomEvents = {
+                mouseup: "mouseup",
+                mousemove: "mousemove"
+            };
+
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
             var ApplicationHostClass = (function (_super) {
                 __extends(ApplicationHostClass, _super);
                 function ApplicationHostClass() {
                     _super.apply(this, arguments);
                     this.applications = [];
                     this.applicationsIndex = {};
-                    this.selfTargetDisplay = {};
+                    this.selfTargetDisplay = { id: "display-self" };
                     this.initialized = false;
                     this.libraryVersions = [];
                     this.initCallbacks = [];
                     this.applicationManifestsCount = 0;
                     this.applicationManifests = [];
+                    this.domEventsTargetDisplays = {};
                 }
                 ApplicationHostClass.prototype.applicationEntryPointLoaded = function (libraryVersion, eventHandler) {
                     var targetDisplay = this.getCallerTargetDisplay(true);
                     if (targetDisplay) {
                         if (eventHandler) {
-                            (eventHandler).reoccuring = true;
+                            eventHandler.reoccuring = true;
                             targetDisplay.eventHandler = eventHandler;
                         } else {
+                            this._stopCaptureDomEvents(targetDisplay);
                             targetDisplay.eventHandler = null;
                         }
 
                         return {
                             applicationHostUrl: window.location.href.replace(/#.*$/, ""),
-                            applicationHostCorePath: Client.Types.Url.getAbsoluteUrl(Client.Configuration.ConfigurationManager.corePath),
+                            applicationHostCorePath: SDL.Client.Types.Url.getAbsoluteUrl(SDL.Client.Configuration.ConfigurationManager.corePath),
                             applicationSuiteId: targetDisplay.application.id,
+                            version: SDL.Client.Configuration.ConfigurationManager.version,
                             libraryVersionSupported: !libraryVersion || this.libraryVersions.indexOf(libraryVersion) != -1,
-                            culture: Client.Localization.getCulture(),
+                            culture: SDL.Client.Localization.getCulture(),
                             activeApplicationEntryPointId: this.activeApplicationEntryPointId,
                             activeApplicationId: this.activeApplicationId
                         };
@@ -94,7 +104,7 @@ var SDL;
                             throw Error("Unable to determine valid origin domains for application facade \"" + applicationEntryPointId + "\" (application suite \"" + application.id + "\"). Deferred domain \"" + applicationEntryPoint.domain.id + "\" has not been uninitialized.");
                         }
 
-                        if (!Client.Types.Array.contains(applicationEntryPoint.domain.validDomains, targetDisplay.loadedDomain, Url.isSameDomain)) {
+                        if (!SDL.Client.Types.Array.contains(applicationEntryPoint.domain.validDomains, targetDisplay.loadedDomain, Url.isSameDomain)) {
                             throw Error("Application facade \"" + applicationEntryPointId + "\" (application suite \"" + application.id + "\") exposed from an unexpected domain: " + targetDisplay.loadedDomain);
                         }
 
@@ -112,17 +122,51 @@ var SDL;
                 ApplicationHostClass.prototype.applicationEntryPointUnloaded = function () {
                     var targetDisplay = this.getCallerTargetDisplay(true, false, true);
                     if (targetDisplay) {
+                        this._stopCaptureDomEvents(targetDisplay);
                         targetDisplay.eventHandler = null;
                         targetDisplay.loadedDomain = null;
-                        (targetDisplay).exposedApplicationFacade = null;
+                        targetDisplay.exposedApplicationFacade = null;
                         this.fireEvent("targetdisplayunload", { targetDisplay: targetDisplay });
                     }
                 };
 
                 ApplicationHostClass.prototype.setCulture = function (culture) {
                     if (this.getCallerTargetDisplay(true, true)) {
-                        Client.Localization.setCulture(culture);
+                        SDL.Client.Localization.setCulture(culture);
                     }
+                };
+
+                ApplicationHostClass.prototype.startCaptureDomEvents = function (events) {
+                    var _this = this;
+                    if (events && events.length) {
+                        var targetDisplay = this.getCallerTargetDisplay(true, false, true);
+                        if (targetDisplay) {
+                            var targetDisplayId = targetDisplay.id;
+                            var targetDisplayEvents = this.domEventsTargetDisplays[targetDisplayId];
+                            if (!targetDisplayEvents) {
+                                targetDisplayEvents = this.domEventsTargetDisplays[targetDisplayId] = [];
+                            }
+                            SDL.jQuery.each(events, function (i, event) {
+                                if ((event in CaptureDomEvents) && targetDisplayEvents.indexOf(event) == -1) {
+                                    targetDisplayEvents.push(event);
+                                    var listening = false;
+                                    SDL.jQuery.each(_this.domEventsTargetDisplays, function (id, events) {
+                                        if (id != targetDisplayId && events.indexOf(event) != -1) {
+                                            listening = true;
+                                            return false;
+                                        }
+                                    });
+                                    if (!listening) {
+                                        _this.addCaptureDomEventListener(event);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+
+                ApplicationHostClass.prototype.stopCaptureDomEvents = function (events) {
+                    this._stopCaptureDomEvents(this.getCallerTargetDisplay(true, false, true), events);
                 };
 
                 ApplicationHostClass.prototype.setActiveApplicationEntryPoint = function (applicationEntryPointId, applicationSuiteId) {
@@ -138,6 +182,7 @@ var SDL;
 
                         applicationSuiteId = applicationEntryPointId ? applicationSuiteId || targetDisplay.application.id : null;
                         if (applicationEntryPointId != this.activeApplicationEntryPointId || applicationSuiteId != this.activeApplicationId) {
+                            this.activeApplicationEntryPoint = applicationEntryPoint;
                             this.activeApplicationEntryPointId = applicationEntryPointId;
                             this.activeApplicationId = applicationSuiteId;
 
@@ -173,12 +218,12 @@ var SDL;
                                     url = Url.combinePath(applicationEntryPoint.baseUrl, url);
                                 }
                             } else {
-                                if (allowedDomains && !Client.Types.Array.contains(allowedDomains, applicationEntryPoint.url, Url.isSameDomain)) {
+                                if (allowedDomains && !SDL.Client.Types.Array.contains(allowedDomains, applicationEntryPoint.url, Url.isSameDomain)) {
                                     throw Error("Unable to set URL for application entry point '" + applicationEntryPointId + "' (application suite \"" + applicationSuiteId + "\"). Target application entry point domain is untrusted: " + Url.getDomain(applicationEntryPoint.url) + ". Trusted domains are: " + allowedDomains.join(", "));
                                 }
 
                                 url = Url.combinePath(applicationEntryPoint.baseUrl, url);
-                                if (domain && !Client.Types.Array.contains(applicationEntryPoint.domain.validDomains, Url.getDomain(url), Url.isSameDomain)) {
+                                if (domain && !SDL.Client.Types.Array.contains(applicationEntryPoint.domain.validDomains, Url.getDomain(url), Url.isSameDomain)) {
                                     throw Error("Unable to set URL for application entry point '" + applicationEntryPointId + "' (application suite \"" + applicationSuiteId + "\"). New URL has an invalid domain: " + domain + ". Allowed domains are: " + applicationEntryPoint.domain.validDomains.join(", "));
                                 }
                             }
@@ -190,8 +235,7 @@ var SDL;
                                 this.fireEvent("applicationentrypointurlchange", {
                                     applicationEntryPointId: applicationEntryPointId,
                                     applicationId: applicationSuiteId,
-                                    url: url
-                                });
+                                    url: url });
                             }
                         }
                     }
@@ -212,17 +256,18 @@ var SDL;
 
                         var facadeTargetDisplay = applicationEntryPoint.targetDisplay;
                         var invocation = function () {
-                            if (allowedDomains && !Client.Types.Array.contains(allowedDomains, applicationEntryPoint.url, Url.isSameDomain)) {
+                            if (allowedDomains && !SDL.Client.Types.Array.contains(allowedDomains, applicationEntryPoint.url, Url.isSameDomain)) {
                                 throw Error("Unable to call application facade '" + applicationEntryPointId + "' (application suite \"" + (applicationSuiteId || targetDisplay.application.id) + "\"). Target application domain is untrusted: " + Url.getDomain(applicationEntryPoint.url));
                             }
 
-                            Client.CrossDomainMessaging.call(facadeTargetDisplay.frame.contentWindow, "SDL.Client.Application.ApplicationFacadeStub.callApplicationFacade", [method, args, callerData], callback);
+                            SDL.Client.CrossDomainMessaging.call(facadeTargetDisplay.frame.contentWindow, "SDL.Client.Application.ApplicationFacadeStub.callApplicationFacade", [method, args, callerData], callback);
                         };
 
                         if (facadeTargetDisplay.exposedApplicationFacade == applicationEntryPointId) {
                             // application loaded and facade exposed
                             invocation();
                         } else {
+                            // facade not exposed
                             if (!facadeTargetDisplay.delayedFacadeInvocations[applicationEntryPointId]) {
                                 facadeTargetDisplay.delayedFacadeInvocations[applicationEntryPointId] = [invocation];
                             } else {
@@ -233,8 +278,7 @@ var SDL;
                                 // targetDisplay of the requested application entry point is not used -> load the entry point
                                 this.fireEvent("applicationfacaderequest", {
                                     applicationEntryPointId: applicationEntryPointId,
-                                    applicationId: facadeTargetDisplay.application.id
-                                });
+                                    applicationId: facadeTargetDisplay.application.id });
                             }
                         }
                     }
@@ -290,8 +334,7 @@ var SDL;
                                                         _this.fireEvent("applicationentrypointurlchange", {
                                                             applicationEntryPointId: entryPoint.id,
                                                             applicationId: application.id,
-                                                            url: entryPoint.url
-                                                        });
+                                                            url: entryPoint.url });
                                                     }
                                                 }
                                             });
@@ -311,8 +354,7 @@ var SDL;
                             this.fireEvent("applicationsuiteinitialize", {
                                 applicationId: application.id,
                                 includeApplicationEntryPointIds: includeApplicationEntryPointIds,
-                                excludeApplicationEntryPointIds: excludeApplicationEntryPointIds
-                            });
+                                excludeApplicationEntryPointIds: excludeApplicationEntryPointIds });
                         }
                         return;
                     }
@@ -336,29 +378,85 @@ var SDL;
                     }
                 };
 
+                ApplicationHostClass.prototype.storeApplicationData = function (key, data) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._storeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key, data);
+                    }
+                };
+
+                ApplicationHostClass.prototype.storeApplicationSessionData = function (key, data) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._storeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key, data);
+                    }
+                };
+
+                ApplicationHostClass.prototype.getApplicationData = function (key) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        return this._getApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+                    }
+                };
+
+                ApplicationHostClass.prototype.getApplicationSessionData = function (key) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        return this._getApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+                    }
+                };
+
+                ApplicationHostClass.prototype.clearApplicationData = function () {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._removeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain);
+                    }
+                };
+
+                ApplicationHostClass.prototype.clearApplicationSessionData = function () {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._removeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain);
+                    }
+                };
+
+                ApplicationHostClass.prototype.removeApplicationData = function (key) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._removeApplicationData(localStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+                    }
+                };
+
+                ApplicationHostClass.prototype.removeApplicationSessionData = function (key) {
+                    var targetDisplay = this.getCallerTargetDisplay(true);
+                    if (targetDisplay) {
+                        this._removeApplicationData(sessionStorage, targetDisplay.application, targetDisplay.loadedDomain, key);
+                    }
+                };
+
                 ApplicationHostClass.prototype.resolveCommonLibraryResources = function (resourceGroupName) {
-                    return Client.Resources.ResourceManager.resolveResources(resourceGroupName);
+                    return SDL.Client.Resources.ResourceManager.resolveResources(resourceGroupName);
                 };
 
                 ApplicationHostClass.prototype.getCommonLibraryResources = function (files, version, onFileLoad, onFailure) {
                     var count = files && files.length;
                     if (count) {
                         if (onFileLoad) {
-                            (onFileLoad).reoccuring = true;
+                            onFileLoad.reoccuring = true;
                         }
 
                         SDL.jQuery.each(files, function (i, file) {
                             if (file.url) {
                                 var url = file.url;
-                                if (version && version != Client.Configuration.ConfigurationManager.coreVersion) {
+                                if (version && version != SDL.Client.Configuration.ConfigurationManager.coreVersion) {
                                     url = url.replace(/^~(\/|$)/i, "~/" + version + "$1");
                                 }
                                 file.url = Url.normalize(url);
                             }
 
                             if (!file.url || file.url.indexOf("~/") != 0) {
-                                if (onFileLoad && (onFileLoad).retire) {
-                                    (onFileLoad).retire();
+                                if (onFileLoad && onFileLoad.retire) {
+                                    onFileLoad.retire();
                                     onFileLoad = null;
                                 }
 
@@ -369,30 +467,30 @@ var SDL;
                                 return;
                             }
 
-                            Client.Resources.FileResourceHandler.load(file, onFileLoad || onFailure ? function (file) {
+                            SDL.Client.Resources.FileResourceHandler.load(file, onFileLoad || onFailure ? function (file) {
                                 if (onFileLoad) {
                                     var url = file.url;
                                     var data = file.data;
-                                    if (Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
-                                        data = Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
+                                    if (SDL.Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
+                                        data = SDL.Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
                                     }
                                     onFileLoad({ url: url, data: data });
                                 }
 
                                 if (--count == 0) {
-                                    if (onFileLoad && (onFileLoad).retire) {
-                                        (onFileLoad).retire();
+                                    if (onFileLoad && onFileLoad.retire) {
+                                        onFileLoad.retire();
                                         onFileLoad = null;
                                     }
 
-                                    if (onFailure && (onFailure).retire) {
-                                        (onFailure).retire();
+                                    if (onFailure && onFailure.retire) {
+                                        onFailure.retire();
                                         onFailure = null;
                                     }
                                 }
                             } : null, onFileLoad || onFailure ? function (file) {
-                                if (onFileLoad && (onFileLoad).retire) {
-                                    (onFileLoad).retire();
+                                if (onFileLoad && onFileLoad.retire) {
+                                    onFileLoad.retire();
                                     onFileLoad = null;
                                 }
 
@@ -403,13 +501,13 @@ var SDL;
                             } : null);
                         });
                     } else {
-                        if (onFileLoad && (onFileLoad).retire) {
-                            (onFileLoad).retire();
+                        if (onFileLoad && onFileLoad.retire) {
+                            onFileLoad.retire();
                             onFileLoad = null;
                         }
 
-                        if (onFailure && (onFailure).retire) {
-                            (onFailure).retire();
+                        if (onFailure && onFailure.retire) {
+                            onFailure.retire();
                             onFailure = null;
                         }
                     }
@@ -418,7 +516,7 @@ var SDL;
                 ApplicationHostClass.prototype.getCommonLibraryResource = function (file, version, onSuccess, onFailure) {
                     if (file.url) {
                         var url = file.url;
-                        if (version && version != Client.Configuration.ConfigurationManager.coreVersion) {
+                        if (version && version != SDL.Client.Configuration.ConfigurationManager.coreVersion) {
                             url = url.replace(/^~(\/|$)/i, "~/" + version + "$1");
                         }
                         file.url = Url.normalize(url);
@@ -431,27 +529,27 @@ var SDL;
                             onFailure = null;
                         }
 
-                        if (onSuccess && (onSuccess).retire) {
-                            (onSuccess).retire();
+                        if (onSuccess && onSuccess.retire) {
+                            onSuccess.retire();
                             onSuccess = null;
                         }
                         return;
                     }
 
-                    Client.Resources.FileResourceHandler.load(file, onSuccess || onFailure ? function (file) {
+                    SDL.Client.Resources.FileResourceHandler.load(file, onSuccess || onFailure ? function (file) {
                         if (onSuccess) {
                             var url = file.url;
                             var data = file.data;
-                            if (Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
-                                data = Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
+                            if (SDL.Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
+                                data = SDL.Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
                             }
 
                             //onSuccess.reoccuring = false; // is false by default
                             onSuccess(data);
                             onSuccess = null;
                         }
-                        if (onFailure && (onFailure).retire) {
-                            (onFailure).retire();
+                        if (onFailure && onFailure.retire) {
+                            onFailure.retire();
                             onFailure = null;
                         }
                     } : null, onSuccess || onFailure ? function (file) {
@@ -460,8 +558,8 @@ var SDL;
                             onFailure(file && file.error);
                             onFailure = null;
                         }
-                        if (onSuccess && (onSuccess).retire) {
-                            (onSuccess).retire();
+                        if (onSuccess && onSuccess.retire) {
+                            onSuccess.retire();
                             onSuccess = null;
                         }
                     } : null);
@@ -475,7 +573,7 @@ var SDL;
 
                         if (this.initialized === false) {
                             this.initialized = undefined;
-                            Client.CrossDomainMessaging.addTrustedDomain("*");
+                            SDL.Client.CrossDomainMessaging.addTrustedDomain("*");
                             this.loadApplicationManifests();
                         }
                     } else if (callback) {
@@ -484,9 +582,9 @@ var SDL;
                 };
 
                 ApplicationHostClass.prototype.registerApplication = function (applicationEntries) {
-                    var sourceDomain = (arguments.callee).caller.caller.sourceDomain;
+                    var sourceDomain = arguments.callee.caller.caller.sourceDomain;
                     if (this.initialized === undefined && this.applicationManifestsCount > 0) {
-                        var sourceWindow = (arguments.callee).caller.caller.sourceWindow;
+                        var sourceWindow = arguments.callee.caller.caller.sourceWindow;
 
                         for (var i = 0, len = this.applicationManifests.length; i < len; i++) {
                             var applicationManifestEntry = this.applicationManifests[i];
@@ -503,14 +601,14 @@ var SDL;
                                         window.console.error("Call to 'registerApplication' from an unexpected domain: " + sourceDomain + ". Expected: " + applicationManifestEntry.domain);
                                     }
                                 } else {
-                                    var manifestDoc = Client.Xml.getNewXmlDocument(applicationEntries);
-                                    if (Client.Xml.hasParseError(manifestDoc)) {
+                                    var manifestDoc = SDL.Client.Xml.getNewXmlDocument(applicationEntries);
+                                    if (SDL.Client.Xml.hasParseError(manifestDoc)) {
                                         error = true;
                                         if (window.console) {
-                                            window.console.error("Invalid xml loaded: " + applicationManifestEntry.url + "\n" + Client.Xml.getParseError(manifestDoc));
+                                            window.console.error("Invalid xml loaded: " + applicationManifestEntry.url + "\n" + SDL.Client.Xml.getParseError(manifestDoc));
                                         }
                                     } else {
-                                        var appId = Client.Xml.getInnerText(manifestDoc, "/configuration/applicationSuite/@id");
+                                        var appId = SDL.Client.Xml.getInnerText(manifestDoc, "/configuration/applicationSuite/@id");
                                         if (applicationManifestEntry.id != appId) {
                                             error = true;
                                             if (window.console) {
@@ -525,7 +623,7 @@ var SDL;
                                 document.body.removeChild(iframe);
 
                                 if (!error) {
-                                    var importedNode = Client.Xml.importNode(Client.Configuration.ConfigurationManager.configuration.ownerDocument, manifestDoc.documentElement, true);
+                                    var importedNode = SDL.Client.Xml.importNode(SDL.Client.Configuration.ConfigurationManager.configuration.ownerDocument, manifestDoc.documentElement, true);
                                     applicationManifestEntry.xmlElement.appendChild(importedNode);
                                 }
 
@@ -552,8 +650,9 @@ var SDL;
                     var sourceDomain;
 
                     // (callee = this function).(caller = ApplicationHost's function).(caller = ApplicationHostFacade's function).(caller = CrossDomainMessaging's function)
-                    var caller = (arguments.callee).caller;
+                    var caller = arguments.callee.caller;
                     if (!caller || !caller.caller || !caller.caller.caller || !caller.caller.caller.sourceWindow) {
+                        // called locally
                         if (allowSelfTargetDisplay) {
                             return this.selfTargetDisplay;
                         }
@@ -590,7 +689,7 @@ var SDL;
                                         for (var k = 0, lenk = targetDisplay.domains.length; k < lenk; k++) {
                                             var domain = targetDisplay.domains[k];
                                             if (domain.initialized) {
-                                                if (Client.Types.Array.contains(domain.validDomains, sourceDomain, Url.isSameDomain)) {
+                                                if (SDL.Client.Types.Array.contains(domain.validDomains, sourceDomain, Url.isSameDomain)) {
                                                     validDomain = true;
                                                     break;
                                                 }
@@ -638,21 +737,21 @@ var SDL;
                 // -------------------- Initialization --------------------
                 ApplicationHostClass.prototype.loadApplicationManifests = function () {
                     var _this = this;
-                    var nodes = Client.Xml.selectNodes(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference[@url != '' and not(configuration/applicationSuite)]");
+                    var nodes = SDL.Client.Xml.selectNodes(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference[@url != '' and not(configuration/applicationSuite)]");
                     var externalReferencesCount = nodes.length;
                     if (externalReferencesCount) {
                         this.applicationManifestsCount = externalReferencesCount;
 
-                        var allReferencesCount = Client.Xml.selectNodes(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference").length;
+                        var allReferencesCount = SDL.Client.Xml.selectNodes(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference").length;
 
-                        var maxAge = (Client.Xml.getInnerText(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/manifestCacheMaxAge") | 0) || 3600;
+                        var maxAge = (SDL.Client.Xml.getInnerText(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/manifestCacheMaxAge") | 0) || 3600;
                         var reloadParameter = ((new Date().getTime() - 1380000000000) / (maxAge * 1000) | 0).toString();
 
-                        var manifestTimeout = (Client.Xml.getInnerText(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/manifestLoadTimeout") | 0) || 5;
+                        var manifestTimeout = (SDL.Client.Xml.getInnerText(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/manifestLoadTimeout") | 0) || 5;
 
-                        Client.CrossDomainMessaging.addAllowedHandlerBase(ApplicationHost.ApplicationManifestReceiver);
+                        SDL.Client.CrossDomainMessaging.addAllowedHandlerBase(SDL.Client.ApplicationHost.ApplicationManifestReceiver);
                         SDL.jQuery.each(nodes, function (i, xmlElement) {
-                            var baseUrlNodes = Client.Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
+                            var baseUrlNodes = SDL.Client.Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
                             var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
                             var url = Url.getAbsoluteUrl(Url.combinePath(baseUrl, xmlElement.getAttribute("url")));
@@ -720,26 +819,26 @@ var SDL;
                         _this.publishEvent(e.type, e.data);
                     });
 
-                    if (Client.Configuration.ConfigurationManager.coreVersion) {
-                        this.libraryVersions.push(Client.Configuration.ConfigurationManager.coreVersion);
+                    if (SDL.Client.Configuration.ConfigurationManager.coreVersion) {
+                        this.libraryVersions.push(SDL.Client.Configuration.ConfigurationManager.coreVersion);
                     }
 
-                    var nodes = Client.Xml.selectNodes(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/libraryVersions/version");
+                    var nodes = SDL.Client.Xml.selectNodes(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/libraryVersions/version");
                     var len = nodes.length;
                     for (var i = 0; i < len; i++) {
-                        var version = Client.Xml.getInnerText(nodes[i]);
+                        var version = SDL.Client.Xml.getInnerText(nodes[i]);
                         if (this.libraryVersions.indexOf(version) == -1) {
                             this.libraryVersions.push(version);
                         }
                     }
 
-                    nodes = Client.Xml.selectNodes(Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference[.//configuration/applicationSuite]");
+                    nodes = SDL.Client.Xml.selectNodes(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/applicationHost/applicationReferences/applicationReference[.//configuration/applicationSuite]");
                     len = nodes.length;
                     if (len) {
                         for (var i = 0; i < len; i++) {
                             var applicationReferenceNode = nodes[i];
 
-                            var baseUrlNodes = Client.Xml.selectNodes(applicationReferenceNode, "ancestor::configuration/@baseUrl");
+                            var baseUrlNodes = SDL.Client.Xml.selectNodes(applicationReferenceNode, "ancestor::configuration/@baseUrl");
                             var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
                             var appId = applicationReferenceNode.getAttribute("id");
@@ -748,20 +847,19 @@ var SDL;
                             }
 
                             var manifestUrl = Url.getAbsoluteUrl(Url.combinePath(baseUrl, applicationReferenceNode.getAttribute("url")));
-                            var applicationDomain = Url.getDomain(manifestUrl);
 
-                            var applicationSuiteNode = Client.Xml.selectSingleNode(applicationReferenceNode, ".//configuration/applicationSuite");
+                            var applicationSuiteNode = SDL.Client.Xml.selectSingleNode(applicationReferenceNode, ".//configuration/applicationSuite");
                             var authenticationUrl = applicationSuiteNode.getAttribute("authenticationUrl");
 
                             var domains = {};
-                            var domainNodes = Client.Xml.selectNodes(applicationSuiteNode, "applicationDomains/applicationDomain[@id != '']");
+                            var domainNodes = SDL.Client.Xml.selectNodes(applicationSuiteNode, "applicationDomains/applicationDomain[@id != '']");
                             for (var j = 0, lenj = domainNodes.length; j < lenj; j++) {
                                 var domainNode = domainNodes[j];
-                                var domainUrl = Url.combinePath(applicationDomain, domainNode.getAttribute("domain"));
+                                var domainUrl = Url.combinePath(manifestUrl, domainNode.getAttribute("domain"));
 
-                                var altDomainNodes = Client.Xml.selectNodes(domainNode, "alternativeDomain");
+                                var altDomainNodes = SDL.Client.Xml.selectNodes(domainNode, "alternativeDomain");
                                 var validDomains = [domainUrl].concat(SDL.jQuery.map(altDomainNodes, function (altDomainsNode) {
-                                    return Url.combinePath(applicationDomain, Client.Xml.getInnerText(altDomainsNode));
+                                    return Url.combinePath(manifestUrl, SDL.Client.Xml.getInnerText(altDomainsNode));
                                 }));
 
                                 var domainId = domainNode.getAttribute("id");
@@ -774,7 +872,7 @@ var SDL;
 
                                 domains[domainId] = {
                                     id: domainId,
-                                    baseUrl: applicationDomain,
+                                    baseUrl: manifestUrl,
                                     domain: domainUrl,
                                     deferred: deferred,
                                     initialized: !deferred,
@@ -801,12 +899,13 @@ var SDL;
 
                             if (authenticationUrl) {
                                 application.authenticationTargetDisplay = {
+                                    id: "display-" + SDL.Client.Types.Object.getNextId(),
                                     application: application,
                                     frame: null
                                 };
                                 application.authenticated = false;
                             }
-                            application.entryPointGroups = SDL.jQuery.map(Client.Xml.selectNodes(applicationSuiteNode, "applicationEntryPointGroups/applicationEntryPointGroup"), function (element) {
+                            application.entryPointGroups = SDL.jQuery.map(SDL.Client.Xml.selectNodes(applicationSuiteNode, "applicationEntryPointGroups/applicationEntryPointGroup"), function (element) {
                                 var group = _this.buildApplicationEntryPointGroup(element, domains, application);
                                 application.entryPointGroupsIndex[group.id] = group;
                                 return group;
@@ -826,12 +925,12 @@ var SDL;
 
                 ApplicationHostClass.prototype.buildApplicationEntryPointGroup = function (entryPointGroupNode, domains, parentApplication) {
                     var _this = this;
-                    var id = entryPointGroupNode.getAttribute("id") || "__group-" + Client.Types.Object.getNextId();
+                    var id = entryPointGroupNode.getAttribute("id") || "__group-" + SDL.Client.Types.Object.getNextId();
                     return {
                         id: id,
                         title: entryPointGroupNode.getAttribute("title"),
                         translations: this.buildNameTranslations(entryPointGroupNode),
-                        entryPoints: SDL.jQuery.map(Client.Xml.selectNodes(entryPointGroupNode, "applicationEntryPoints/applicationEntryPoint"), function (element) {
+                        entryPoints: SDL.jQuery.map(SDL.Client.Xml.selectNodes(entryPointGroupNode, "applicationEntryPoints/applicationEntryPoint"), function (element) {
                             return _this.buildApplicationEntryPoint(element, domains, parentApplication);
                         }),
                         application: parentApplication
@@ -859,6 +958,7 @@ var SDL;
                     var targetDisplay = parentApplication.targetDisplaysIndex[targetDisplayName];
                     if (!targetDisplay) {
                         targetDisplay = parentApplication.targetDisplaysIndex[targetDisplayName] = {
+                            id: "display-" + SDL.Client.Types.Object.getNextId(),
                             name: targetDisplayName,
                             application: parentApplication,
                             entryPoints: [],
@@ -904,17 +1004,17 @@ var SDL;
 
                 ApplicationHostClass.prototype.buildNameTranslations = function (parent) {
                     var translations = {};
-                    var translationNodes = Client.Xml.selectNodes(parent, "translations/title[@lang]");
+                    var translationNodes = SDL.Client.Xml.selectNodes(parent, "translations/title[@lang]");
                     for (var i = 0, len = translationNodes.length; i < len; i++) {
                         var translationNode = translationNodes[i];
-                        translations[translationNode.getAttribute("lang")] = Client.Xml.getInnerText(translationNode);
+                        translations[translationNode.getAttribute("lang")] = SDL.Client.Xml.getInnerText(translationNode);
                     }
                     return translations;
                 };
 
                 ApplicationHostClass.prototype.saveApplicationEntryPointSessionData = function (applicationEntryPoint, property) {
                     if (!this.applicationsSessionData) {
-                        this.applicationsSessionData = Client.Types.Object.deserialize(sessionStorage["applicationsData"] || "{}");
+                        this.applicationsSessionData = SDL.Client.Types.Object.deserialize(sessionStorage["appHost-applications"] || "{}");
                     }
 
                     var applicationSuiteId = applicationEntryPoint.application.id;
@@ -934,12 +1034,12 @@ var SDL;
                         entryPointData.baseUrl = baseUrl;
                     }
                     entryPointData[property] = applicationEntryPoint[property];
-                    sessionStorage["applicationsData"] = Client.Types.Object.serialize(this.applicationsSessionData);
+                    sessionStorage["appHost-applications"] = SDL.Client.Types.Object.serialize(this.applicationsSessionData);
                 };
 
                 ApplicationHostClass.prototype.getApplicationEntryPointSessionData = function (applicationSuiteId, applicationEntryPointId, baseUrl, property) {
                     if (!this.applicationsSessionData) {
-                        this.applicationsSessionData = Client.Types.Object.deserialize(sessionStorage["applicationsData"] || "{}");
+                        this.applicationsSessionData = SDL.Client.Types.Object.deserialize(sessionStorage["appHost-applications"] || "{}");
                     }
                     var applicationData = this.applicationsSessionData[applicationSuiteId];
                     if (applicationData) {
@@ -949,11 +1049,153 @@ var SDL;
                         }
                     }
                 };
+
+                ApplicationHostClass.prototype._getRawApplicationStorageData = function (storage, application) {
+                    var rawAppStorageData = storage["appHost-appData-" + application.id];
+                    if (rawAppStorageData) {
+                        return JSON.parse(rawAppStorageData);
+                    }
+                };
+
+                ApplicationHostClass.prototype._storeApplicationData = function (storage, application, applicationEntryPointDomain, key, data) {
+                    if (application) {
+                        var manifestDomain = SDL.Client.Types.Url.getDomain(application.manifestUrl);
+                        var appStorageData = this._getRawApplicationStorageData(storage, application) || {};
+                        var appStorageManifestDomainData = appStorageData[manifestDomain] || (appStorageData[manifestDomain] = {});
+                        var appStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain] || (appStorageManifestDomainData[applicationEntryPointDomain] = {});
+                        appStorageEntryPointDomainData[key] = data;
+                        storage["appHost-appData-" + application.id] = JSON.stringify(appStorageData);
+                    }
+                };
+
+                ApplicationHostClass.prototype._getApplicationData = function (storage, application, applicationEntryPointDomain, key) {
+                    var appStorageData = this._getRawApplicationStorageData(storage, application);
+                    if (appStorageData) {
+                        var appStorageManifestDomainData = appStorageData[SDL.Client.Types.Url.getDomain(application.manifestUrl)];
+                        if (appStorageManifestDomainData) {
+                            var appStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain];
+                            if (appStorageEntryPointDomainData) {
+                                return appStorageEntryPointDomainData[key];
+                            }
+                        }
+                    }
+                };
+
+                ApplicationHostClass.prototype._removeApplicationData = function (storage, application, applicationEntryPointDomain, key) {
+                    var appStorageData = this._getRawApplicationStorageData(storage, application);
+                    if (appStorageData) {
+                        var appStorageManifestDomainData = appStorageData[SDL.Client.Types.Url.getDomain(application.manifestUrl)];
+                        if (appStorageManifestDomainData) {
+                            var appStorageEntryPointDomainData = appStorageManifestDomainData[applicationEntryPointDomain];
+                            if (appStorageEntryPointDomainData) {
+                                if (key) {
+                                    delete appStorageEntryPointDomainData[key];
+                                } else {
+                                    delete appStorageManifestDomainData[applicationEntryPointDomain];
+                                }
+                                storage["appHost-appData-" + application.id] = JSON.stringify(appStorageData);
+                            }
+                        }
+                    }
+                };
+
+                ApplicationHostClass.prototype._stopCaptureDomEvents = function (targetDisplay, events) {
+                    var _this = this;
+                    if (!events || events.length) {
+                        if (targetDisplay) {
+                            var targetDisplayId = targetDisplay.id;
+                            var targetDisplayEvents = this.domEventsTargetDisplays[targetDisplayId];
+                            if (targetDisplayEvents) {
+                                var newEvents = events ? [] : null;
+
+                                SDL.jQuery.each(targetDisplayEvents, function (i, event) {
+                                    if (!events || events.indexOf(event) != -1) {
+                                        var listening = false;
+                                        SDL.jQuery.each(_this.domEventsTargetDisplays, function (id, events) {
+                                            if (id != targetDisplayId && events.indexOf(event) != -1) {
+                                                listening = true;
+                                                return false;
+                                            }
+                                        });
+
+                                        if (!listening) {
+                                            _this.removeCaptureDomEventListener(event);
+                                        }
+                                    } else {
+                                        newEvents.push(event);
+                                    }
+                                });
+
+                                if (!events || !newEvents.length) {
+                                    delete this.domEventsTargetDisplays[targetDisplayId];
+                                } else {
+                                    this.domEventsTargetDisplays[targetDisplayId] = newEvents;
+                                }
+                            }
+                        }
+                    }
+                };
+
+                ApplicationHostClass.prototype.addCaptureDomEventListener = function (event) {
+                    switch (event) {
+                        case "mouseup":
+                        case "mousemove":
+                            SDL.Client.Event.EventRegister.addEventHandler(document, event, this.getDelegate(this.handleCaptureDomEvent));
+                            break;
+                    }
+                };
+
+                ApplicationHostClass.prototype.removeCaptureDomEventListener = function (event) {
+                    switch (event) {
+                        case "mouseup":
+                        case "mousemove":
+                            SDL.Client.Event.EventRegister.removeEventHandler(document, event, this.getDelegate(this.handleCaptureDomEvent));
+                            break;
+                    }
+                };
+
+                ApplicationHostClass.prototype.handleCaptureDomEvent = function (e) {
+                    if (this.activeApplicationId && (e.type in CaptureDomEvents)) {
+                        var application = this.applicationsIndex[this.activeApplicationId];
+                        var targetDisplay;
+                        if (application.authenticationUrl && !application.authenticated) {
+                            targetDisplay = application.authenticationTargetDisplay;
+                        } else if (this.activeApplicationEntryPoint) {
+                            targetDisplay = this.activeApplicationEntryPoint.targetDisplay;
+                        }
+
+                        if (targetDisplay && targetDisplay.eventHandler) {
+                            var events = this.domEventsTargetDisplays[targetDisplay.id];
+                            if (events && events.indexOf(e.type) != -1) {
+                                switch (e.type) {
+                                    case "mouseup":
+                                    case "mousemove":
+                                        targetDisplay.eventHandler({
+                                            type: "domevent", data: {
+                                                type: e.type,
+                                                metaKey: e.metaKey,
+                                                altKey: e.altKey,
+                                                ctrlKey: e.ctrlKey,
+                                                shiftKey: e.shiftKey,
+                                                screenX: e.screenX,
+                                                screenY: e.screenY,
+                                                button: e.button
+                                            } });
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                };
                 return ApplicationHostClass;
-            })(Client.Types.ObjectWithEvents);
+            })(SDL.Client.Types.ObjectWithEvents);
+
             SDL.Client.Types.OO.createInterface("SDL.Client.ApplicationHost.ApplicationHostClass", ApplicationHostClass);
-            ApplicationHost.ApplicationHost = new SDL.Client.ApplicationHost["ApplicationHostClass"]();
-            ApplicationHost.ApplicationHost.initialize();
+
+            // using [new SDL.Client.ApplicationHost["ApplicationHostClass"]()] instead of [new ApplicationHostClass()]
+            // because [new ApplicationHostClass()] would refer to a closure, not the interface defined in the line above
+            _ApplicationHost.ApplicationHost = new SDL.Client.ApplicationHost["ApplicationHostClass"]();
+            _ApplicationHost.ApplicationHost.initialize();
         })(Client.ApplicationHost || (Client.ApplicationHost = {}));
         var ApplicationHost = Client.ApplicationHost;
     })(SDL.Client || (SDL.Client = {}));

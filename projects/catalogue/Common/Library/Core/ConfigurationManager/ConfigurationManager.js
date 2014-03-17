@@ -1,9 +1,9 @@
+/// <reference path="../Application/Application.ts" />
+/// <reference path="../Types/Url2.ts" />
+/// <reference path="../Xml/Xml.Base.ts" />
 var SDL;
 (function (SDL) {
     (function (Client) {
-        /// <reference path="../Application/Application.ts" />
-        /// <reference path="../Types/Url2.ts" />
-        /// <reference path="../Xml/Xml.Base.ts" />
         (function (Configuration) {
             ;
 
@@ -39,9 +39,9 @@ var SDL;
                         if (this.isInitialized === false) {
                             this.isInitialized = undefined;
 
-                            if (!Client.Application.isInitialized) {
+                            if (!SDL.Client.Application.isInitialized) {
                                 this.coreConfigurationToLoad = [];
-                                Client.Application.addInitializeCallback(function () {
+                                SDL.Client.Application.addInitializeCallback(function () {
                                     return _this.loadPostponedCoreConfiguration();
                                 });
                             }
@@ -51,14 +51,14 @@ var SDL;
                             }
 
                             if (Configuration.settingsFile.charAt(0) != "/") {
-                                Configuration.settingsFile = Client.Types.Url.combinePath(window.location.pathname, Configuration.settingsFile);
+                                Configuration.settingsFile = SDL.Client.Types.Url.combinePath(window.location.pathname, Configuration.settingsFile); // making sure the path starts with "/"
                             }
 
                             this.configurationFiles[Configuration.settingsFile.toLowerCase()] = { url: Configuration.settingsFile };
 
                             this.loadingCounter = 1;
 
-                            xhr(Configuration.settingsVersion ? Client.Types.Url.combinePath(Configuration.settingsFile, "?" + Configuration.settingsVersion) : Configuration.settingsFile, function (result) {
+                            xhr(Configuration.settingsVersion ? SDL.Client.Types.Url.combinePath(Configuration.settingsFile, "?" + Configuration.settingsVersion) : Configuration.settingsFile, function (result) {
                                 return _this.processConfigurationFile(result, Configuration.settingsFile);
                             });
                         }
@@ -68,7 +68,44 @@ var SDL;
                 };
 
                 ConfigurationManagerClass.prototype.getAppSetting = function (name) {
-                    return Client.Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name + "']/@value");
+                    return SDL.Client.Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name + "']/@value");
+                };
+
+                ConfigurationManagerClass.prototype.getCurrentPageConfigurationNode = function () {
+                    if (!this.currentPageConfigurationNode) {
+                        var pageNodes = SDL.Client.Xml.selectNodes(this.configuration, "//configuration/pages/page[@url and @view]");
+                        if (pageNodes) {
+                            var path = window.location.pathname;
+
+                            for (var i = 0, len = pageNodes.length; i < len; i++) {
+                                var pageNode = pageNodes[i];
+                                var url = pageNode.getAttribute("url");
+                                if (!SDL.Client.Types.Url.isAbsoluteUrl(url)) {
+                                    var baseUrl = pageNode.parentNode.getAttribute("baseUrl");
+                                    if (baseUrl) {
+                                        url = SDL.Client.Types.Url.combinePath(baseUrl, url);
+                                    }
+
+                                    if (!SDL.Client.Types.Url.isAbsoluteUrl(url)) {
+                                        var baseUrlNodes = SDL.Client.Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
+                                        if (baseUrlNodes.length) {
+                                            url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+                                        }
+                                    }
+                                }
+
+                                // create a regular expression to process '*' as <anything>.
+                                // if need '*', then use '\*'.
+                                // if need \<anything>, use %5C for '\' => %5C*
+                                var regExp = new RegExp("^" + url.replace(/([\(\)\{\}\[\]\^\$\?\:\.\|\+]|\\(?!\*))/g, "\\$1").replace(/\*/g, ".*").replace(/\\\.\*/g, "\\*") + "$", "i");
+
+                                if (regExp.test(path)) {
+                                    return this.currentPageConfigurationNode = pageNode;
+                                }
+                            }
+                        }
+                    }
+                    return this.currentPageConfigurationNode;
                 };
 
                 ConfigurationManagerClass.prototype.callbacks = function () {
@@ -90,11 +127,17 @@ var SDL;
                 };
 
                 ConfigurationManagerClass.prototype.processConfigurationFile = function (xmlString, baseUrl, parentElement) {
-                    this.configurationFiles[(baseUrl.indexOf("~/") == 0 ? Client.Types.Url.combinePath(this.corePath, baseUrl.slice(2)) : baseUrl).toLowerCase()].data = xmlString;
+                    /*
+                    ConfigurationManager.corePath is set to a configured value when the corresponding 'corePath' setting is found in a configuration file.
+                    ConfigurationManager.corePath is used to resolve urls that start with ~/. ~/ makes sense only if 'corePath' has already been set.
+                    processConfigurationFile(...) method is called when a configuration file is loaded.
+                    Therefore this is an impossible situation that the url of a loaded file starts with ~/ while ConfigurationManager.corePath is undefined.
+                    */
+                    this.configurationFiles[(baseUrl.indexOf("~/") == 0 ? SDL.Client.Types.Url.combinePath(this.corePath, baseUrl.slice(2)) : baseUrl).toLowerCase()].data = xmlString;
 
-                    var document = Client.Xml.getNewXmlDocument(xmlString);
-                    if (Client.Xml.hasParseError(document)) {
-                        throw Error("Invalid xml loaded: " + baseUrl + "\n" + Client.Xml.getParseError(document));
+                    var document = SDL.Client.Xml.getNewXmlDocument(xmlString);
+                    if (SDL.Client.Xml.hasParseError(document)) {
+                        throw Error("Invalid xml loaded: " + baseUrl + "\n" + SDL.Client.Xml.getParseError(document));
                     }
 
                     var data = document.documentElement;
@@ -104,22 +147,26 @@ var SDL;
                     }
 
                     if (!this.corePath) {
-                        var corePath = Client.Xml.getInnerText(data, "//configuration/appSettings/setting[@name='corePath']/@value");
+                        var corePath = SDL.Client.Xml.getInnerText(data, "//configuration/appSettings/setting[@name='corePath']/@value");
                         if (corePath != null) {
                             if (!corePath) {
                                 corePath = "/";
                             } else if (corePath.slice(-1) != "/") {
                                 corePath += "/";
                             }
-                            this.corePath = Client.Types.Url.combinePath(baseUrl, corePath);
+                            this.corePath = SDL.Client.Types.Url.combinePath(baseUrl, corePath);
                         }
                     }
 
                     if (this.coreVersion == null) {
-                        this.coreVersion = Client.Xml.getInnerText(data, "//configuration/appSettings/setting[@name='coreVersion']/@value");
+                        this.coreVersion = SDL.Client.Xml.getInnerText(data, "//configuration/appSettings/setting[@name='coreVersion']/@value");
                     }
 
-                    var includeNodes = Client.Xml.selectNodes(data, "//configuration/include[not(configuration)]");
+                    if (this.version == null) {
+                        this.version = SDL.Client.Xml.getInnerText(data, "//configuration/appSettings/setting[@name='version']/@value");
+                    }
+
+                    var includeNodes = SDL.Client.Xml.selectNodes(data, "//configuration/include[not(configuration)]");
 
                     if (parentElement) {
                         parentElement.appendChild(data);
@@ -141,7 +188,7 @@ var SDL;
 
                     if (!this.nonCoreInitialized && this.loadingCounter == (this.coreConfigurationToLoad ? this.coreConfigurationToLoad.length : 0)) {
                         this.nonCoreInitialized = true;
-                        this.isApplicationHost = !!Client.Xml.selectSingleNode(this.configuration, "//configuration/applicationHost");
+                        this.isApplicationHost = !!SDL.Client.Xml.selectSingleNode(this.configuration, "//configuration/applicationHost");
                         this.nonCoreCallbacks();
                     }
 
@@ -166,7 +213,7 @@ var SDL;
                         url = node.getAttribute("src");
                     }
 
-                    this.loadConfigurationFile(url, Client.Types.Url.combinePath(this.corePath, url.slice(2)), node);
+                    this.loadConfigurationFile(url, SDL.Client.Types.Url.combinePath(this.corePath, url.slice(2)), node);
                 };
 
                 ConfigurationManagerClass.prototype.loadIncludedConfigurationFile = function (node, baseUrl) {
@@ -179,7 +226,7 @@ var SDL;
                             this.loadCoreConfigurationFile(url, node);
                         }
                     } else {
-                        url = Client.Types.Url.combinePath(baseUrl, url);
+                        url = SDL.Client.Types.Url.combinePath(baseUrl, url);
                         if (url.indexOf("~/") == 0) {
                             this.loadCoreConfigurationFile(url, node);
                         } else {
@@ -199,12 +246,12 @@ var SDL;
                     this.configurationFiles[resolvedUrl.toLowerCase()] = { url: url };
 
                     var version;
-                    var appVersionNodes = Client.Xml.selectNodes(node, "ancestor::configuration/appSettings/setting[@name='version' and @value]");
+                    var appVersionNodes = SDL.Client.Xml.selectNodes(node, "ancestor::configuration/appSettings/setting[@name='version' and @value]");
 
                     if (appVersionNodes.length) {
                         var appVersionNode = appVersionNodes[appVersionNodes.length - 1];
                         if (url.indexOf("~/") == 0) {
-                            version = Client.Xml.getInnerText(appVersionNode, "../../appSettings/setting[@name='coreVersion']/@value");
+                            version = SDL.Client.Xml.getInnerText(appVersionNode, "../../appSettings/setting[@name='coreVersion']/@value");
                         }
                         if (!version) {
                             version = appVersionNode.getAttribute("value");
@@ -214,12 +261,12 @@ var SDL;
                     var modification = node.getAttribute("modification");
                     version = (version && modification) ? (version + "." + modification) : (version || modification);
 
-                    if (Client.Application.isHosted && Client.Application.useHostedLibraryResources && url.indexOf("~/") == 0) {
-                        Client.Application.ApplicationHost.getCommonLibraryResource({ url: url, version: version }, Client.Application.libraryVersion, function (result) {
+                    if (SDL.Client.Application.isHosted && SDL.Client.Application.useHostedLibraryResources && url.indexOf("~/") == 0) {
+                        SDL.Client.Application.ApplicationHost.getCommonLibraryResource({ url: url, version: version }, SDL.Client.Application.libraryVersion, function (result) {
                             return _this.processConfigurationFile(result, url, node);
                         });
                     } else {
-                        xhr(version ? Client.Types.Url.combinePath(resolvedUrl, "?" + version) : resolvedUrl, function (result) {
+                        xhr(version ? SDL.Client.Types.Url.combinePath(resolvedUrl, "?" + version) : resolvedUrl, function (result) {
                             return _this.processConfigurationFile(result, url, node);
                         });
                     }

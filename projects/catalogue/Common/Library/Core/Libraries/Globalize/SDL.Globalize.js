@@ -23,7 +23,7 @@ var SDL;
             var _this = this;
             _super.call(this);
 
-            this._globalize = (window).Globalize;
+            this._globalize = window.Globalize;
 
             Object.defineProperty(this, "cultures", {
                 get: function () {
@@ -63,10 +63,10 @@ var SDL;
             });
         }
         GlobalizeClass.prototype.initializeNoConflict = function () {
-            var _globalize = (window).Globalize;
+            var _globalize = window.Globalize;
 
             if (_globalize != this._globalize) {
-                (window).Globalize = this._globalize;
+                window.Globalize = this._globalize;
                 this._globalize = _globalize;
             }
 
@@ -75,8 +75,8 @@ var SDL;
             }
         };
 
-        GlobalizeClass.prototype.TranslateDate = function (date) {
-            var date = new Date(Date.parse(date));
+        GlobalizeClass.prototype.TranslateDate = function (value) {
+            var date = new Date(Date.parse(value));
             return this.format(date, "d") + " " + this.format(date, "t");
         };
 
@@ -95,7 +95,7 @@ var SDL;
                 if (!culture) {
                     return;
                 } else if (SDL.Client.Type.isString(culture) && SDL.Client.Localization.getCulture() != culture) {
-                    SDL.Client.Localization.setCulture(culture);
+                    SDL.Client.Localization.setCulture(culture); // this will trigger the function call again, can exit now
                     return;
                 }
             }
@@ -129,6 +129,7 @@ var SDL;
 
             this.cultures[cultureName] = SDL.jQuery.extend(true, {}, base, info, { messages: null }, { messages: SDL.jQuery.extend({}, prevMessages, info.messages) });
 
+            // Make the standard calendar the current culture if it's a new culture
             if (isNew) {
                 this.cultures[cultureName].calendar = this.cultures[cultureName].calendars.standard;
             }
@@ -213,7 +214,7 @@ var SDL;
                     if (!skipCount) {
                         return names;
                     } else {
-                        return this.findClosestCulture((names).name, skipCount);
+                        return this.findClosestCulture(names.name, skipCount);
                     }
                 }
             }
@@ -232,7 +233,7 @@ var SDL;
                     throw "SDL.Globalize is not initialized.";
 
                 if (!cultureSelector && parameters && !SDL.Client.Type.isArray(parameters)) {
-                    cultureSelector = (parameters);
+                    cultureSelector = parameters;
                     parameters = null;
                 }
 

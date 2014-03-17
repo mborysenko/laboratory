@@ -7,6 +7,7 @@
 **/
 declare module SDL.Client.Application {
     interface IApplicationHost {
+        version: string;
         libraryVersionSupported: boolean;
         activeApplicationEntryPointId: string;
         activeApplicationId: string;
@@ -17,9 +18,11 @@ declare module SDL.Client.Application {
         exposeApplicationFacadeUnsecure(applicationEntryPointId: string): void;
         applicationEntryPointUnloaded(): void;
         setCulture(culture: string): void;
-        resolveCommonLibraryResources(resourceGroupName: string, callback: (resources: Client.Resources.IResolvedResourceGroupResult[]) => void): void;
-        getCommonLibraryResources(files: Client.Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
-        getCommonLibraryResource(file: Client.Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
+        startCaptureDomEvents(events: string[]): void;
+        stopCaptureDomEvents(events?: string[]): void;
+        resolveCommonLibraryResources(resourceGroupName: string, callback: (resources: Resources.IResolvedResourceGroupResult[]) => void): void;
+        getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
+        getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
         setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void;
         setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
         setApplicationEntryPointUrlUnsecure(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
@@ -29,18 +32,31 @@ declare module SDL.Client.Application {
             [id: string]: IApplicationDomain;
         }): void;
         resetApplicationSuite(): void;
+        storeApplicationData(key: string, data: any): void;
+        storeApplicationSessionData(key: string, data: any): void;
+        getApplicationData(key: string, callback: (data: any) => void): void;
+        getApplicationSessionData(key: string, callback: (data: any) => void): void;
+        clearApplicationData(): void;
+        clearApplicationSessionData(): void;
+        removeApplicationData(key: string): void;
+        removeApplicationSessionData(key: string): void;
         addEventListener(event: string, handler: Function): void;
         removeEventListener(event: string, handler: Function): void;
         fireEvent(event: string, eventData?: any): void;
+        isSupported(method: string): boolean;
     }
     interface IApplicationHostData {
         applicationHostUrl: string;
         applicationHostCorePath: string;
         applicationSuiteId: string;
+        version: string;
         libraryVersionSupported: boolean;
         culture: string;
         activeApplicationEntryPointId: string;
         activeApplicationId: string;
+        supportedMethods?: {
+            [method: string]: boolean;
+        };
     }
     interface IApplicationDomain {
         domain: string;
@@ -52,20 +68,24 @@ declare module SDL.Client.Application {
         context?: string;
     }
     class ApplicationHostProxyClass implements IApplicationHost {
+        public version: string;
         public libraryVersionSupported: boolean;
         public activeApplicationEntryPointId: string;
         public activeApplicationId: string;
         public culture: string;
         public isTrusted: boolean;
         private handlers;
+        private supportedMethods;
         public setCulture(culture: string): void;
         public applicationEntryPointLoaded(coreVersion?: string, callback?: (data: IApplicationHostData) => void): void;
+        public startCaptureDomEvents(events: string[]): void;
+        public stopCaptureDomEvents(events?: string[]): void;
         public exposeApplicationFacade(applicationEntryPointId: string): void;
         public exposeApplicationFacadeUnsecure(applicationEntryPointId: string): void;
         public applicationEntryPointUnloaded(): void;
-        public resolveCommonLibraryResources(resourceGroupName: string, callback: (file: Client.Resources.IResolvedResourceGroupResult[]) => void): void;
-        public getCommonLibraryResources(files: Client.Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
-        public getCommonLibraryResource(file: Client.Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
+        public resolveCommonLibraryResources(resourceGroupName: string, callback: (file: Resources.IResolvedResourceGroupResult[]) => void): void;
+        public getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
+        public getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
         public setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void;
         public setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
         public setApplicationEntryPointUrlUnsecure(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
@@ -75,9 +95,18 @@ declare module SDL.Client.Application {
             [id: string]: IApplicationDomain;
         }): void;
         public resetApplicationSuite(): void;
+        public storeApplicationData(key: string, data: any): void;
+        public storeApplicationSessionData(key: string, data: any): void;
+        public getApplicationData(key: string, callback: (data: any) => void): void;
+        public getApplicationSessionData(key: string, callback: (data: any) => void): void;
+        public clearApplicationData(): void;
+        public clearApplicationSessionData(): void;
+        public removeApplicationData(key: string): void;
+        public removeApplicationSessionData(key: string): void;
         public addEventListener(event: string, handler: Function): void;
         public removeEventListener(event: string, handler: Function): void;
         public fireEvent(eventType: string, eventData?: any): void;
+        public isSupported(method: string): boolean;
         private call(method, args?, callback?);
         private onHostEvent(e);
         private getWithLocalDomain(domains);

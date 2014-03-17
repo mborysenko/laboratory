@@ -5,6 +5,7 @@ declare module SDL.Client.Event
 		addEventHandler(object: Object, event: string, handler: Function, useCapture?: boolean): void;
 		removeEventHandler(object: Object, event: string, handler: Function, useCapture?: boolean): void;
 		removeAllEventHandlers(object: Object, event?: string): void;
+		handleEvent(object: Object, event: any): void;
 		isLoading(): boolean;
 		isUnloading(): boolean;
 	}

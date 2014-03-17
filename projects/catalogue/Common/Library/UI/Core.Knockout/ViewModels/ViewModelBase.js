@@ -1,3 +1,8 @@
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/DisposableObject.d.ts" />
+/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
+/// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
+/// <reference path="../Libraries/knockout/knockout.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -9,11 +14,6 @@ var SDL;
     (function (UI) {
         (function (Core) {
             (function (Knockout) {
-                /// <reference path="..\..\SDL.Client.Core\Types\Types.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Types\DisposableObject.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Libraries\Globalize\SDL.Globalize.d.ts" />
-                /// <reference path="..\..\SDL.Client.Core\Event\EventRegister.d.ts" />
-                /// <reference path="..\Libraries\knockout\knockout.d.ts" />
                 (function (ViewModels) {
                     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
@@ -29,7 +29,7 @@ var SDL;
                             this.culture = culture;
                         }
                         ViewModelBase.prototype.localize = function (resource, parameters) {
-                            culture();
+                            culture(); // this adds a dependency on the culture
                             return SDL.Globalize.localize(resource, parameters);
                         };
 

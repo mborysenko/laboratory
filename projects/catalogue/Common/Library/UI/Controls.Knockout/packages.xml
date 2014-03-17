@@ -4,7 +4,14 @@
 	<packages>
 		<package name="SDL.UI.Controls.Knockout">
 			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Button"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Callout"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Dialog"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Message"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Tabs"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Tooltip"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.ScrollView"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.LineGraph"/>
 			</resourceGroups>
 		</package>
 	</packages>

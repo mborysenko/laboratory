@@ -9,21 +9,24 @@ module SDL.Client.Configuration
 
 	export interface IConfigurationManager
 	{
-		configuration: Node;
+		configuration: Element;
 		configurationFiles: {[resolvedUrl: string]: {url: string; data?: string;}};
 		corePath: string;
+		version: string;
 		coreVersion: string;
 		initialize(callback?: () => void, nonCoreInitCallback?: () => void): void;
 		isInitialized: boolean;
 		getAppSetting(name: string): string;
+		getCurrentPageConfigurationNode(): Element;
 		isApplicationHost: boolean;
 	};
 
 	class ConfigurationManagerClass implements IConfigurationManager
 	{
-		public configuration: Node;
+		public configuration: Element;
 		public corePath: string;
 		public coreVersion: string;
+		public version: string;
 		public configurationFiles: {[resolvedUrl: string]: {url: string; data?: string;}} = {};
 		public isApplicationHost: boolean;
 		public isInitialized: boolean = false;
@@ -33,6 +36,7 @@ module SDL.Client.Configuration
 		private nonCoreInitCallbacks: {(): void;}[];
 		private loadingCounter: number = 0;
 		private coreConfigurationToLoad: Element[] = [];
+		private currentPageConfigurationNode: Element;
 
 		initialize(callback?: () => void, nonCoreInitCallback?: () => void): void
 		{
@@ -105,6 +109,55 @@ module SDL.Client.Configuration
 			return Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name +  "']/@value");
 		}
 
+		public getCurrentPageConfigurationNode(): Element
+		{
+			if (!this.currentPageConfigurationNode)
+			{
+				var pageNodes = <Element[]>SDL.Client.Xml.selectNodes(this.configuration, "//configuration/pages/page[@url and @view]");
+				if (pageNodes)
+				{
+					var path = window.location.pathname;
+
+					for (var i = 0, len = pageNodes.length; i < len; i++)
+					{
+						var pageNode: Element = pageNodes[i];
+						var url = pageNode.getAttribute("url");
+						if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
+						{
+							var baseUrl = (<Element>pageNode.parentNode).getAttribute("baseUrl");
+							if (baseUrl)
+							{
+								url = SDL.Client.Types.Url.combinePath(baseUrl, url);
+							}
+
+							if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
+							{
+								var baseUrlNodes =  Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
+								if (baseUrlNodes.length)
+								{
+									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+								}
+							}
+						}
+
+						// create a regular expression to process '*' as <anything>.
+						// if need '*', then use '\*'.
+						// if need \<anything>, use %5C for '\' => %5C*
+						var regExp = new RegExp("^" +
+											url.replace(/([\(\)\{\}\[\]\^\$\?\:\.\|\+]|\\(?!\*))/g, "\\$1")	// Escaping all characters except '*' and '\' before '*'.
+												.replace(/\*/g, ".*").replace(/\\\.\*/g, "\\*")				// Replacing '*' with '.*', except when after '\'
+											+ "$", "i");
+
+						if (regExp.test(path))
+						{
+							return this.currentPageConfigurationNode = pageNode;
+						}
+					}
+				}
+			}
+			return this.currentPageConfigurationNode;
+		}
+
 		private callbacks()
 		{
 			if (this.initCallbacks)
@@ -131,6 +184,12 @@ module SDL.Client.Configuration
 
 		private processConfigurationFile(xmlString: string, baseUrl: string, parentElement?: Element)
 		{
+/*
+    ConfigurationManager.corePath is set to a configured value when the corresponding 'corePath' setting is found in a configuration file.
+	ConfigurationManager.corePath is used to resolve urls that start with ~/. ~/ makes sense only if 'corePath' has already been set.
+    processConfigurationFile(...) method is called when a configuration file is loaded.
+	Therefore this is an impossible situation that the url of a loaded file starts with ~/ while ConfigurationManager.corePath is undefined.
+*/
 			this.configurationFiles[(baseUrl.indexOf("~/") == 0 ? Types.Url.combinePath(this.corePath, baseUrl.slice(2)) : baseUrl).toLowerCase()].data = xmlString;
 
 			var document: Document = Xml.getNewXmlDocument(xmlString);
@@ -166,6 +225,11 @@ module SDL.Client.Configuration
 			if (this.coreVersion == null)
 			{
 				this.coreVersion = Xml.getInnerText(data, "//configuration/appSettings/setting[@name='coreVersion']/@value");
+			}
+
+			if (this.version == null)
+			{
+				this.version = Xml.getInnerText(data, "//configuration/appSettings/setting[@name='version']/@value");
 			}
 
 			var includeNodes = <Element[]>Xml.selectNodes(data, "//configuration/include[not(configuration)]");	// do not load if configuration is already included (merged)

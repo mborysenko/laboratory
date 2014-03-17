@@ -4,15 +4,21 @@
 /// <reference path="../Renderers/ControlRenderer.d.ts" />
 /// <reference path="Base.d.ts" />
 declare module SDL.UI.Core.Controls {
-    interface IControlBase extends Controls.IControl, SDL.Client.Types.IObjectWithEvents {
+    interface IControlBase extends IControl, Client.Types.IObjectWithEvents {
         getJQuery?: () => JQueryStatic;
     }
-    class ControlBase extends SDL.Client.Types.ObjectWithEvents implements IControlBase {
-        constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void);
+    interface IControlBaseProperties extends Client.Types.IObjectWithEventsProperties {
+        element: HTMLElement;
+        options?: any;
+        jQuery?: JQueryStatic;
+    }
+    class ControlBase extends Client.Types.ObjectWithEvents implements IControlBase {
+        public properties: IControlBaseProperties;
+        constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic);
         public update(options?: any): void;
         public $initialize(): void;
-        public render(): void;
-        public setRendered(): void;
+        public render(callback?: () => void, errorcallback?: (error: string) => void): void;
+        public setRendered(callback?: () => void): void;
         public getElement(): HTMLElement;
         public getJQuery(): JQueryStatic;
         public dispose(): void;

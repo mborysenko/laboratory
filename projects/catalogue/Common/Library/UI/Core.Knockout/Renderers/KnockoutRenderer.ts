@@ -12,7 +12,7 @@ module SDL.UI.Core.Knockout.Renderers
 			{
 				var $target = SDL.jQuery(target);
 				$target.html(templateContent);
-				$target.children().each((index, child) => ko.applyBindings(options, child));
+				ko.applyBindingsToDescendants(options, target);
 			}
 
 			if (callback)

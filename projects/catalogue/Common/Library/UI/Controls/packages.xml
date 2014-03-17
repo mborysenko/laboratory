@@ -4,13 +4,25 @@
 	<packages>
 		<package name="SDL.UI.Controls">
 			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.Button"/>
+				<resourceGroup name="SDL.UI.Controls.Callout"/>
+				<resourceGroup name="SDL.UI.Controls.Dialog"/>
+				<resourceGroup name="SDL.UI.Controls.Message"/>
+				<resourceGroup name="SDL.UI.Controls.Tabs"/>
 				<resourceGroup name="SDL.UI.Controls.Tooltip"/>
+				<resourceGroup name="SDL.UI.Controls.ScrollView"/>
 			</resourceGroups>
 		</package>
 
 		<package name="SDL.UI.Controls.JQuery">
 			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Button"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Callout"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Dialog"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Message"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Tabs"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Tooltip"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.ScrollView"/>
 			</resourceGroups>
 		</package>
 	</packages>

@@ -18,6 +18,13 @@
 				<dependency name="SDL.Client.Types.Base"/>
 			</dependencies>
 		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Event.GlobalMouseEventTracker">
+			<files>
+				<file name="GlobalMouseEventTracker.js"/>
+			</files>
+			<dependencies/>
+		</resourceGroup>
 	</resourceGroups>
 
 </configuration>

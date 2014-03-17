@@ -2,13 +2,15 @@
 /// <reference path="../../SDL.Client.UI.Core/Views/ViewBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Controls/Base.d.ts" />
 /// <reference path="../Libraries/knockout/knockout.d.ts" />
+/// <reference path="../Utils/knockout.ts" />
+/// <reference path="KnockoutBindingHandlers.ts" />
 
 module SDL.UI.Core.Knockout.BindingHandlers
 {
 	export interface IViewKnockoutBinding
 	{
 		type?: string;
- 		handler?: string;
+		handler?: string;
 		controlsDescendantBindings?: boolean;	// by default it's true
 		data?: any;
 	}
@@ -50,6 +52,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 					if (!handler)
 					{
 						$e.data("view-update", true);
+						Knockout.Utils.unwrapRecursive(value.data);	// this is to make sure observables are evaluated, otherwise ko will not notify us when they change
 					}
 					else if (handler.update)
 					{
@@ -68,10 +71,9 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			var $e = SDL.jQuery(element);
 			if ($e.data("view-create"))
 			{
-				var value = <IViewKnockoutBinding>ko.toJS(valueAccessor()) || "";
-
-                var type = value.type || ""+value;
-				var handlerName = value.handler;
+				var value = <IViewKnockoutBinding>ko.unwrap(valueAccessor()) || "";
+				var type = <string>ko.unwrap(value.type) || ""+value;
+				var handlerName = <string>ko.unwrap(value.handler);
 				var handler: KnockoutBindingHandler;
 
 				if (handlerName)
@@ -101,6 +103,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 					// otherwise use the type to find the ko binding
 					handler = <KnockoutBindingHandler>ko.bindingHandlers[type];
 				}
+
 				if (handler)
 				{
 					var dataValueAccessor = ViewKnockoutBindingHandler.getDataValueAccessor(valueAccessor);
@@ -124,7 +127,11 @@ module SDL.UI.Core.Knockout.BindingHandlers
 					if (type)
 					{
 						// no handler is found, just create the view
-						SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element, value.data, ViewKnockoutBindingHandler.addViewDisposalCallback);
+						SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element,
+							BindingHandlers.areKnockoutObservableSettingsEnabled(type)
+								? value.data									// view itself will unwrap KnockoutObservables
+								: Knockout.Utils.unwrapRecursive(value.data),	// unwrap observables for the view
+							ViewKnockoutBindingHandler.addViewDisposalCallback);
 					}
 				}
 			}

@@ -1,4 +1,6 @@
 /// <reference path="../Types/Types.d.ts" />
+/// <reference path="../Application/Application.d.ts" />
+/// <reference path="../Application/ApplicationFacade.d.ts" />
 /// <reference path="../ConfigurationManager/ConfigurationManager.d.ts" />
 /// <reference path="../CrossDomainMessaging/CrossDomainMessaging.d.ts" />
 /// <reference path="../Types/Object.d.ts" />
@@ -12,7 +14,7 @@
 /// <reference path="../Event/Event.d.ts" />
 /// <reference path="ApplicationManifestReceiver.d.ts" />
 declare module SDL.Client.ApplicationHost {
-    interface IApplicationHost extends Client.Types.IObjectWithEvents {
+    interface IApplicationHost extends Types.IObjectWithEvents {
         applications: IApplication[];
         applicationsIndex: {
             [id: string]: IApplication;
@@ -22,20 +24,30 @@ declare module SDL.Client.ApplicationHost {
         applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: {
             type: string;
             data: any;
-        }) => void): Client.Application.IApplicationHostData;
+        }) => void): Application.IApplicationHostData;
         exposeApplicationFacade(applicationEntryPointId: string): void;
         applicationEntryPointUnloaded(): void;
         setCulture(culture: string): void;
+        startCaptureDomEvents(events: string[]): void;
+        stopCaptureDomEvents(events?: string[]): void;
         setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void;
         setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string, allowedDomains?: string[]): void;
         callApplicationFacade(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string, allowedDomains?: string[]): void;
         initializeApplicationSuite(includeApplicationEntryPointIds?: string[], excludeApplicationEntryPointIds?: string[], domainDefinitions?: {
-            [id: string]: Client.Application.IApplicationDomain;
+            [id: string]: Application.IApplicationDomain;
         }): void;
         resetApplicationSuite(): void;
-        resolveCommonLibraryResources(resourceGroupName: string): Client.Resources.IResolvedResourceGroupResult[];
-        getCommonLibraryResources(files: Client.Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Client.Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
-        getCommonLibraryResource(file: Client.Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
+        storeApplicationData(key: string, data: any): void;
+        storeApplicationSessionData(key: string, data: any): void;
+        getApplicationData(key: string): any;
+        getApplicationSessionData(key: string): any;
+        clearApplicationData(): void;
+        clearApplicationSessionData(): void;
+        removeApplicationData(key: string): void;
+        removeApplicationSessionData(key: string): void;
+        resolveCommonLibraryResources(resourceGroupName: string): Resources.IResolvedResourceGroupResult[];
+        getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void): void;
+        getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void): void;
     }
     interface IApplication {
         id: string;
@@ -64,21 +76,20 @@ declare module SDL.Client.ApplicationHost {
         initialized: boolean;
         validDomains: string[];
     }
+    interface ITranslations {
+        [lang: string]: string;
+    }
     interface IApplicationEntryPointGroup {
         id: string;
         title: string;
-        translations?: {
-            [lang: string]: string;
-        };
+        translations?: ITranslations;
         entryPoints: IApplicationEntryPoint[];
         application: IApplication;
     }
     interface IApplicationEntryPoint {
         id: string;
         title: string;
-        translations: {
-            [lang: string]: string;
-        };
+        translations: ITranslations;
         domain: IApplicationDomain;
         baseUrl: string;
         url: string;
@@ -93,6 +104,7 @@ declare module SDL.Client.ApplicationHost {
         application: IApplication;
     }
     interface ITargetDisplay {
+        id: string;
         application?: IApplication;
         frame?: HTMLIFrameElement;
         loadedDomain?: string;

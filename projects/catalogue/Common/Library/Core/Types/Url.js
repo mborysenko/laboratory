@@ -7,20 +7,20 @@ var SDL;
                 function makeRelativeUrl(base, url) {
                     if (!url || url == base) {
                         url = "";
-                    } else if (!Url.getDomain(url) || (Url.getDomain(base) && Url.isSameDomain(base, url))) {
-                        var urlParts = Url.parseUrl(url);
+                    } else if (!SDL.Client.Types.Url.getDomain(url) || (SDL.Client.Types.Url.getDomain(base) && SDL.Client.Types.Url.isSameDomain(base, url))) {
+                        var urlParts = SDL.Client.Types.Url.parseUrl(url);
 
-                        if (urlParts[Url.UrlParts.PATH].charAt(0) == "/") {
-                            var baseParts = Url.parseUrl(base);
+                        if (urlParts[4 /* PATH */].charAt(0) == "/") {
+                            var baseParts = SDL.Client.Types.Url.parseUrl(base);
                             url = "";
 
-                            if (baseParts[Url.UrlParts.PATH] == urlParts[Url.UrlParts.PATH]) {
-                                if (urlParts[Url.UrlParts.FILE] != baseParts[Url.UrlParts.FILE] || !urlParts[Url.UrlParts.SEARCH] && (baseParts[Url.UrlParts.SEARCH] || (!urlParts[Url.UrlParts.HASH] && baseParts[Url.UrlParts.HASH]))) {
-                                    url = urlParts[Url.UrlParts.FILE] || "./";
+                            if (baseParts[4 /* PATH */] == urlParts[4 /* PATH */]) {
+                                if (urlParts[5 /* FILE */] != baseParts[5 /* FILE */] || !urlParts[6 /* SEARCH */] && (baseParts[6 /* SEARCH */] || (!urlParts[7 /* HASH */] && baseParts[7 /* HASH */]))) {
+                                    url = urlParts[5 /* FILE */] || "./";
                                 }
                             } else {
-                                var baseDirs = baseParts[Url.UrlParts.PATH].split("/");
-                                var urlDirs = urlParts[Url.UrlParts.PATH].split("/");
+                                var baseDirs = baseParts[4 /* PATH */].split("/");
+                                var urlDirs = urlParts[4 /* PATH */].split("/");
                                 var i = 0;
                                 while (i < baseDirs.length && i < urlDirs.length && baseDirs[i] == urlDirs[i]) {
                                     i++;
@@ -34,15 +34,15 @@ var SDL;
                                     url += (urlDirs[i] + "/");
                                     i++;
                                 }
-                                url += (urlParts[Url.UrlParts.FILE] || (url ? "" : "./"));
+                                url += (urlParts[5 /* FILE */] || (url ? "" : "./"));
                             }
 
-                            if (url || (urlParts[Url.UrlParts.SEARCH] != baseParts[Url.UrlParts.SEARCH]) || (!urlParts[Url.UrlParts.HASH] && baseParts[Url.UrlParts.HASH])) {
-                                url += urlParts[Url.UrlParts.SEARCH];
+                            if (url || (urlParts[6 /* SEARCH */] != baseParts[6 /* SEARCH */]) || (!urlParts[7 /* HASH */] && baseParts[7 /* HASH */])) {
+                                url += urlParts[6 /* SEARCH */];
                             }
 
-                            if (url || (urlParts[Url.UrlParts.HASH] != baseParts[Url.UrlParts.HASH])) {
-                                url += urlParts[Url.UrlParts.HASH];
+                            if (url || (urlParts[7 /* HASH */] != baseParts[7 /* HASH */])) {
+                                url += urlParts[7 /* HASH */];
                             }
                         }
                     }
@@ -66,9 +66,9 @@ var SDL;
 
                 function getUrlParameter(url, parameterName) {
                     var m = SDL.Client.Types.Url.parseUrl(url);
-                    var params = m[SDL.Client.Types.Url.UrlParts.SEARCH];
+                    var params = m[6 /* SEARCH */];
                     if (params) {
-                        m = params.match(new RegExp("(\\?|&)\\s*" + (Client.Types).RegExp.escape(parameterName) + "\\s*=([^&]+)(&|$)"));
+                        m = params.match(new RegExp("(\\?|&)\\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\\s*=([^&]+)(&|$)"));
                         if (m) {
                             return decodeURIComponent(m[2]);
                         }
@@ -79,9 +79,9 @@ var SDL;
 
                 function getHashParameter(url, parameterName) {
                     var m = SDL.Client.Types.Url.parseUrl(url);
-                    var params = m[SDL.Client.Types.Url.UrlParts.HASH];
+                    var params = m[7 /* HASH */];
                     if (params) {
-                        m = params.match(new RegExp("(#|&)\s*" + (Client.Types).RegExp.escape(parameterName) + "\s*=([^&]+)(&|$)"));
+                        m = params.match(new RegExp("(#|&)\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\s*=([^&]+)(&|$)"));
                         if (m) {
                             return decodeURIComponent(m[2]);
                         }
@@ -93,12 +93,12 @@ var SDL;
                 function setHashParameter(url, parameterName, value) {
                     var prevValue;
                     var parts = SDL.Client.Types.Url.parseUrl(url);
-                    var hash = parts[SDL.Client.Types.Url.UrlParts.HASH];
+                    var hash = parts[7 /* HASH */];
                     var paramMatch;
                     var paramRegExp;
 
                     if (hash) {
-                        paramRegExp = new RegExp("(#|&)(\s*" + (Client.Types).RegExp.escape(parameterName) + "\s*=)([^&]*)(&|$)");
+                        paramRegExp = new RegExp("(#|&)(\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\s*=)([^&]*)(&|$)");
                         paramMatch = hash.match(paramRegExp);
                         if (paramMatch) {
                             prevValue = decodeURIComponent(paramMatch[3]);
@@ -125,7 +125,7 @@ var SDL;
                             }
                         }
 
-                        url = parts[SDL.Client.Types.Url.UrlParts.DOMAIN] + parts[SDL.Client.Types.Url.UrlParts.PATH] + parts[SDL.Client.Types.Url.UrlParts.FILE] + parts[SDL.Client.Types.Url.UrlParts.SEARCH] + hash;
+                        url = parts[3 /* DOMAIN */] + parts[4 /* PATH */] + parts[5 /* FILE */] + parts[6 /* SEARCH */] + hash;
                     }
                     return url;
                 }

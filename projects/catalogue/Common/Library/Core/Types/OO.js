@@ -13,19 +13,21 @@ SDL.Client.Types.OO.Inheritable = function SDL$Client$Types$OO$Inheritable()
 SDL.Client.Types.OO.createInterface = function SDL$Client$Types$OO$createInterface(interfaceName, implementation)
 {
 	SDL.Client.Type.registerNamespace(interfaceName);
-	result = SDL.Client.Types.OO._generateConstructor(interfaceName || "");
+
+	var iface = SDL.Client.Types.OO._generateInterfaceConstructor(interfaceName || "");
+	iface.interfaceName = interfaceName;
 
 	if (implementation)
 	{
-		SDL.jQuery.extend(result, implementation);		// copy all static members to the new constructor
-		result.prototype = implementation.prototype;	// including 'prototype'
-		result.$constructor = implementation;			// copy the provided class constructor to $constructor method
+		SDL.jQuery.extend(iface, implementation);		// copy all static members to the new constructor
+		iface.prototype = implementation.prototype;	// including 'prototype'
+		iface.$constructor = implementation;			// copy the provided class constructor to $constructor method
 	}
 
-	return result;
+	return iface;
 };
 
-SDL.Client.Types.OO._generateConstructor = function SDL$Client$Types$OO$_generateConstructor()
+SDL.Client.Types.OO._generateInterfaceConstructor = function SDL$Client$Types$OO$_generateInterfaceConstructor()
 {
 	if (arguments[0])
 	{
@@ -185,7 +187,7 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 		{
 			if (!(object instanceof iface))
 			{
-				// not called with 'new' -> call $constructor
+				// not called with 'new' -> call $execute
 				return this.executeBase(interfaceName, object, args);
 			}
 
@@ -222,6 +224,7 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 
 		if (iface.$constructor)
 		{
+			iface.$constructor.implementingInterface = interfaceName;
 			iface.$constructor.apply(object, args || []);
 		}
 
@@ -257,7 +260,15 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 
 			if (!constructor)
 			{
-				SDL.Client.Diagnostics.Assert.raiseError("Unable to inherit from \"" + interfaceName + "\": constructor is not defined.");
+				SDL.Client.Diagnostics.Assert.raiseError("Unable to add interface to '" +
+					(arguments.callee.caller && arguments.callee.caller.implementingInterface || object.interfaces.type) +
+					"': '" + interfaceName + "' constructor is not defined.");
+			}
+			else if (constructor.interfaceName != interfaceName)
+			{
+				SDL.Client.Diagnostics.Assert.raiseError("Unable to add interface to '" +
+					(arguments.callee.caller && arguments.callee.caller.implementingInterface || object.interfaces.type) +
+					"': '" + interfaceName + "' must be created using SDL.Client.Types.OO.createInterface('" + interfaceName + "').");
 			}
 			else
 			{
@@ -299,7 +310,6 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 					// these properties are already added
 					break;
 				case "upgradedToType":
-				case "$constructor":
 					// these properties should not be inherited
 					break;
 				default:
@@ -395,7 +405,6 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 								// these properties are already added
 								break;
 							case "upgradedToType":
-							case "$constructor":
 								// these properties should not be inherited
 								break;
 							default:
@@ -489,7 +498,7 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 			var delegate;
 			for (var i = 0; i < delegates.length; i++)
 			{
-				if (delegate.method == method)
+				if (delegates[i].method == method)
 				{
 					delegate = delegates[i].delegate;
 					SDL.Client.Types.Array.removeAt(delegates, i);
@@ -518,13 +527,12 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 	var callBase = SDL.Client.Types.OO.nonInheritable(function SDL$Client$Types$OO$callBase(interfaceName, methodName, args)
 	{
 		var interfaces = this.interfaces;
+		var callingInterface = arguments.callee.caller && arguments.callee.caller.implementingInterface || interfaces.type;
 
 		if (!interfaces[interfaceName])
 		{
-			SDL.Client.Diagnostics.Assert.raiseError("Current object doesn't implement interface '" + interfaceName + "'");
+			SDL.Client.Diagnostics.Assert.raiseError("Unable to call base from '" + callingInterface + "': object doesn't implement interface '" + interfaceName + "'");
 		}
-
-		var callingInterface = arguments.callee.caller && arguments.callee.caller.implementingInterface || interfaces.type;
 
 		var interfaceUpgradedToType = interfaces[interfaceName].upgradedToType;
 		if (interfaceUpgradedToType && callingInterface != interfaceUpgradedToType)
@@ -534,7 +542,7 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 				interfaceName = interfaceUpgradedToType;
 				if (!interfaces[interfaceName])
 				{
-					SDL.Client.Diagnostics.Assert.raiseError("Current object doesn't implement interface '" + interfaceName + "'");
+					SDL.Client.Diagnostics.Assert.raiseError("Unable to call base from '" + callingInterface + "': object doesn't implement interface '" + interfaceName + "'");
 				}
 				interfaceUpgradedToType = interfaces[interfaceName].upgradedToType;
 			} while (interfaceUpgradedToType && callingInterface != interfaceUpgradedToType);
@@ -543,15 +551,15 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 		var method = interfaces[interfaceName][methodName];
 		if (!method)
 		{
-			SDL.Client.Diagnostics.Assert.raiseError("Interface '" + interfaceName + "' doesn't implement method '" + methodName + "'");
+			SDL.Client.Diagnostics.Assert.raiseError("Unable to call base from '" + callingInterface + "': base interface '" + interfaceName + "' doesn't implement method '" + methodName + "'");
 		}
 		if (method.noninheritable)
 		{
-			SDL.Client.Diagnostics.Assert.raiseError("Unable to execute a non-inheritable method with callBase('" + interfaceName + "', '" + methodName + "').");
+			SDL.Client.Diagnostics.Assert.raiseError("Unable to call base from '" + callingInterface + "': unable to execute a non-inheritable method with callBase('" + interfaceName + "', '" + methodName + "').");
 		}
 		if (!method.implementingInterface)
 		{
-			SDL.Client.Diagnostics.Assert.raiseError("Unable to execute a method that was not inherited: callBase('" + interfaceName + "', '" + methodName + "').");
+			SDL.Client.Diagnostics.Assert.raiseError("Unable to call base from '" + callingInterface + "': unable to execute a method that was not inherited: callBase('" + interfaceName + "', '" + methodName + "').");
 		}
 		return interfaces[interfaceName][methodName].apply(this, args || []);
 	});

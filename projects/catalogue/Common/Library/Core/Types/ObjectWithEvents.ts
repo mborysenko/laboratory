@@ -11,6 +11,12 @@ if (SDL.jQuery.inArray("data", (<any>SDL.jQuery).event.props) == -1)
 
 module SDL.Client.Types
 {
+	export interface IObjectWithEventsProperties extends IDisposableObjectProperties
+	{
+		handlers: {[event: string]: {fnc: Function}[];};
+		timeouts: {[event: string]: any;};
+	}
+
     export interface IObjectWithEvents extends IDisposableObject
     {
         addEventListener(event: string, handler: any) : void;
@@ -32,6 +38,8 @@ module SDL.Client.Types
 	eval(SDL.Client.Types.OO.enableCustomInheritance);
     export class ObjectWithEvents extends DisposableObject implements IObjectWithEvents
     {
+		properties: IObjectWithEventsProperties;
+
 		constructor()
 			{
 				super();

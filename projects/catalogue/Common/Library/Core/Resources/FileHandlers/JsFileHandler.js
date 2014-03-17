@@ -1,3 +1,5 @@
+/// <reference path="../../Libraries/jQuery/SDL.jQuery.ts" />
+/// <reference path="../FileResourceHandler.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -8,8 +10,6 @@ var SDL;
 (function (SDL) {
     (function (Client) {
         (function (Resources) {
-            /// <reference path="../../Libraries/jQuery/SDL.jQuery.ts" />
-            /// <reference path="../FileResourceHandler.ts" />
             (function (FileHandlers) {
                 var JsFileHandler = (function (_super) {
                     __extends(JsFileHandler, _super);
@@ -17,7 +17,7 @@ var SDL;
                         _super.apply(this, arguments);
                     }
                     JsFileHandler.prototype.addSourceUrl = function (file) {
-                        return file.data + "\n//@ sourceURL=" + ((file.url.indexOf("~/") == 0) ? Client.Types.Url.combinePath(file.isShared ? Client.Application.applicationHostCorePath : Client.Types.Url.getAbsoluteUrl(Client.Configuration.ConfigurationManager.corePath), file.url.slice(2)) : Client.Types.Url.getAbsoluteUrl(file.url));
+                        return file.data + "\n//@ sourceURL=" + ((file.url.indexOf("~/") == 0) ? SDL.Client.Types.Url.combinePath(file.isShared ? SDL.Client.Application.applicationHostCorePath : SDL.Client.Types.Url.getAbsoluteUrl(SDL.Client.Configuration.ConfigurationManager.corePath), file.url.slice(2)) : SDL.Client.Types.Url.getAbsoluteUrl(file.url));
                     };
 
                     JsFileHandler.prototype._supports = function (ext) {
@@ -35,9 +35,9 @@ var SDL;
                         }
                     };
                     return JsFileHandler;
-                })(Resources.FileResourceHandler);
+                })(SDL.Client.Resources.FileResourceHandler);
                 FileHandlers.JsFileHandler = JsFileHandler;
-                Resources.FileResourceHandler.registeredResourceHandlers.push(new JsFileHandler());
+                SDL.Client.Resources.FileResourceHandler.registeredResourceHandlers.push(new JsFileHandler());
             })(Resources.FileHandlers || (Resources.FileHandlers = {}));
             var FileHandlers = Resources.FileHandlers;
         })(Client.Resources || (Client.Resources = {}));

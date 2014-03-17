@@ -3,8 +3,8 @@
 /// <reference path="ViewModelBase.d.ts" />
 /// <reference path="ViewModelItem.d.ts" />
 declare module SDL.UI.Core.Knockout.ViewModels {
-    class ViewModel extends ViewModels.ViewModelBase {
-        public item: ViewModels.ViewModelItem;
-        constructor(item: ViewModels.ViewModelItem);
+    class ViewModel extends ViewModelBase {
+        public item: ViewModelItem;
+        constructor(item: ViewModelItem);
     }
 }

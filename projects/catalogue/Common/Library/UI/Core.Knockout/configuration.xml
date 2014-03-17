@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
   </appSettings>
   <!-- SDL.Client.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
@@ -13,6 +13,7 @@
             <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout">
               <files>
                 <file name="Libraries/knockout/knockout.debug.js" />
+                <file name="Libraries/knockout/knockout-deferred-updates.min.debug.js" />
               </files>
             </resourceGroup>
           </resourceGroups>
@@ -49,6 +50,7 @@
         <resourceGroup name="SDL.UI.Core.Knockout.Utils">
           <files>
             <file name="Utils/Dom.js" />
+            <file name="Utils/knockout.js" />
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
@@ -127,6 +129,7 @@
           <dependencies>
             <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
             <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
+            <dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler">
@@ -136,7 +139,13 @@
           <dependencies>
             <dependency name="SDL.UI.Core.Renderers.ViewRenderer" />
             <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
+            <dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common" />
           </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Common">
+          <files>
+            <file name="BindingHandlers/KnockoutBindingHandlers.js" />
+          </files>
         </resourceGroup>
       </resourceGroups>
     </configuration>
@@ -152,6 +161,7 @@
             <resourceGroup name="SDL.UI.Core.Knockout.Renderers" />
             <resourceGroup name="SDL.UI.Core.Knockout.ViewModels.Base" />
             <resourceGroup name="SDL.UI.Core.Knockout.ViewModels" />
+            <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Common" />
             <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler" />
             <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler" />
           </resourceGroups>

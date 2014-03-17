@@ -5,7 +5,7 @@ var SDL;
             /// <reference path="ApplicationHost.ts" />
             (function (ApplicationManifestReceiver) {
                 function registerApplication(applicationEntries) {
-                    ApplicationHost.ApplicationHost.registerApplication(applicationEntries);
+                    SDL.Client.ApplicationHost.ApplicationHost.registerApplication(applicationEntries);
                 }
                 ApplicationManifestReceiver.registerApplication = registerApplication;
             })(ApplicationHost.ApplicationManifestReceiver || (ApplicationHost.ApplicationManifestReceiver = {}));

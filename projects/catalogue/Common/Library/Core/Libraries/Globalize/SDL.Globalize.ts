@@ -9,10 +9,16 @@
 // load this module before globalize.js
 module SDL
 {
+	export interface GlobalizeCultures
+	{
+		[index: string]: GlobalizeCulture;
+	}
+
 	export interface SDLGlobalizeStatic extends GlobalizeStatic 
 	{
 		findClosestCulture(cultureSelector: string, skipCount?: number): GlobalizeCulture;
 		localize(key: string, parameters?: string[], cultureSelector?: string): string;
+		localize(key: string, parameters?: any, cultureSelector?: string): string;
 	};
 
 	eval(Client.Types.OO.enableCustomInheritance);
@@ -83,9 +89,9 @@ module SDL
 			}
 		}
 
-		public TranslateDate(date: string): string
+		public TranslateDate(value: string): string
 		{
-			var date = new Date(Date.parse(date));
+			var date = new Date(Date.parse(value));
 			return this.format(date, "d") + " " + this.format(date, "t");
 		}
 
@@ -226,7 +232,7 @@ module SDL
 					for (i = 0; i < l; i++)
 					{
 						lang = prioritized[i].lang;
-						match = cultures[lang];
+						match = (<GlobalizeCultures>cultures)[lang];
 						if (match && (!skipCount || !skipCount--))	// !skipCount-- makes sure we decrease the count after a match has been found
 						{
 							return match;
@@ -246,7 +252,7 @@ module SDL
 							}
 							// strip off the last part. e.g. en-US => en
 							lang = lang.substr(0, index);
-							match = cultures[lang];
+							match = (<GlobalizeCultures>cultures)[lang];
 							if (match && (!skipCount || !skipCount--))	// !skipCount-- makes sure we decrease the count after a match has been found
 							{
 								return match;
@@ -281,7 +287,7 @@ module SDL
 					}
 				}
 			}
-			return !skipCount ? this._globalize.cultures["default"] : null;
+			return !skipCount ? (<GlobalizeCultures>this._globalize.cultures)["default"] : null;
 		}
 
 		public format(value: any, format: string, cultureSelector?: string): string

@@ -15,6 +15,7 @@
 				<dependency name="SDL.Client.UI.ApplicationHost.ViewModels"/>
 				<dependency name="SDL.UI.Core.Views.ViewBase"/>
 				<dependency name="SDL.UI.Core.Knockout.Renderers"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
 				<dependency name="SDL.Client.Libraries.SDL.Globalize"/>
 			</dependencies>
 		</resourceGroup>

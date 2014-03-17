@@ -18,6 +18,7 @@
 				<dependency name="SDL.Client.Types.ObjectWithEvents"/>
 				<dependency name="SDL.Client.Event.EventRegister"/>
 				<dependency name="SDL.UI.Core.Renderers.ViewRenderer"/>
+				<dependency name="SDL.UI.Core.Styles.Common"/>
 			</dependencies>
 		</resourceGroup>
 	</resourceGroups>

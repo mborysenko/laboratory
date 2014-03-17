@@ -30,9 +30,7 @@ declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
         navigationGroup?: INavigationGroup;
         targetDisplay: INavigationItemTargetDisplay;
         type: string;
-        translations?: {
-            [lang: string]: string;
-        };
+        translations?: Client.ApplicationHost.ITranslations;
         external?: boolean;
         contextual: KnockoutObservable<boolean>;
         hidden: KnockoutObservable<boolean>;
@@ -45,9 +43,7 @@ declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
         navigationItems: INavigationItem[];
         applications: Client.ApplicationHost.IApplication[];
         authenticationTargetDisplay?: KnockoutObservable<IAuthenticationTargetDisplay>;
-        translations?: {
-            [lang: string]: string;
-        };
+        translations?: Client.ApplicationHost.ITranslations;
         shownItems: KnockoutObservable<number>;
         applicationId?: string;
     }

@@ -14,9 +14,9 @@ module SDL.UI.Core.Renderers
 
 	export class ViewRenderer
 	{
-		private static templateRenderers: {[type: string]: ITemplateRenderer; } = {};
-		private static types: {[index: string]: Function;} = {};
-		private static createdViews: {[type: string]: any[]; } = {};
+		/*private*/ static templateRenderers: {[type: string]: ITemplateRenderer; } = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
+		/*private*/ static types: {[index: string]: Function;} = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
+		/*private*/ static createdViews: {[type: string]: any[]; } = {};	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
 		static registerTemplateRenderer(type:string, renderer: ITemplateRenderer): void
 		{

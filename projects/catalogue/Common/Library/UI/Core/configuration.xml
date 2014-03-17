@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
   </appSettings>
   <!-- SDL.Client core configuration -->
   <include src="../../Core/configuration.xml" />
@@ -62,6 +62,12 @@
           <dependencies>
             <dependency name="SDL.Client.Types.Base" />
           </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Event.GlobalMouseEventTracker">
+          <files>
+            <file name="Event/GlobalMouseEventTracker.js" />
+          </files>
+          <dependencies />
         </resourceGroup>
       </resourceGroups>
     </configuration>
@@ -126,6 +132,7 @@
             <dependency name="SDL.Client.Types.ObjectWithEvents" />
             <dependency name="SDL.Client.Event.EventRegister" />
             <dependency name="SDL.UI.Core.Renderers.ViewRenderer" />
+            <dependency name="SDL.UI.Core.Styles.Common" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -163,10 +170,23 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="Styles/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Styles.Common">
+          <files>
+            <file name="Styles/normalize.css" />
+            <file name="Styles/global.css" />
+            <file name="Styles/typography.css" />
+          </files>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="packages.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <packages>
-        <package name="SDL.UI.Core" src="Packages/SDL.UI.Core.js">
+        <package name="SDL.UI.Core" src="Packages/SDL.UI.Core.txt">
           <resourceGroups>
             <resourceGroup name="SDL.UI.Core.Renderers.ControlRenderer" />
             <resourceGroup name="SDL.UI.Core.Controls.ControlBase" />
@@ -175,8 +195,10 @@
             <resourceGroup name="SDL.UI.Core.Utils.Css" />
             <resourceGroup name="SDL.UI.Core.Utils.Dom" />
             <resourceGroup name="SDL.UI.Core.Utils.Event" />
+            <resourceGroup name="SDL.UI.Core.Styles.Common" />
             <resourceGroup name="SDL.UI.Core.Views.ViewBase" />
             <resourceGroup name="SDL.UI.Core.Init" />
+            <resourceGroup name="SDL.UI.Core.Event.GlobalMouseEventTracker" />
           </resourceGroups>
         </package>
       </packages>
@@ -190,6 +212,7 @@
         <dependency name="SDL.UI.Core.Renderers" />
         <dependency name="SDL.UI.Core.Utils" />
         <dependency name="SDL.UI.Core.View" />
+        <dependency name="SDL.UI.Core.Styles.Common" />
       </dependencies>
     </resourceGroup>
   </resourceGroups>

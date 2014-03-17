@@ -1,14 +1,14 @@
+/// <reference path="../../SDL.Client.Core/Libraries/jQuery/SDL.jQuery.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Array.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/OO.d.ts" />
+/// <reference path="../../SDL.Client.Core/Diagnostics/Assert.d.ts" />
+/// <reference path="../../SDL.Client.Core/Resources/ResourceManager.d.ts" />
+/// <reference path="../Controls/ControlBase.ts" />
 var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
-            /// <reference path="../../SDL.Client.Core/Libraries/jQuery/SDL.jQuery.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/Array.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/OO.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Diagnostics/Assert.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Resources/ResourceManager.d.ts" />
-            /// <reference path="../Controls/ControlBase.ts" />
             (function (Renderers) {
                 var ControlRenderer = (function () {
                     function ControlRenderer() {
@@ -27,35 +27,19 @@ var SDL;
 
                                 if (!element) {
                                     if (ctor.createElement) {
-                                        element = ctor.createElement(document, settings, SDL.jQuery, callback ? (function () {
-                                            return callback(control);
-                                        }) : null, errorcallback);
+                                        element = ctor.createElement(document, settings, SDL.jQuery);
                                     } else {
                                         element = document.createElement("div");
                                     }
                                 }
 
                                 // Instantiate the control
-                                var control;
-                                if (ctor.isAsynchronous) {
-                                    var callbackInvoked = false;
-                                    var _callback = callback ? function () {
-                                        callbackInvoked = true;
-                                        if (control) {
-                                            callback(control);
-                                            callback = null;
-                                        }
-                                    } : null;
-                                    control = new ctor(element, settings, SDL.jQuery, _callback, errorcallback);
-                                    if (callback && callbackInvoked) {
-                                        callback(control);
-                                    }
-                                } else {
-                                    control = new ctor(element, settings, SDL.jQuery);
-                                    if (callback) {
-                                        callback(control);
-                                    }
-                                }
+                                var control = new ctor(element, settings, SDL.jQuery);
+
+                                // Render control
+                                control.render(callback ? function () {
+                                    callback(control);
+                                } : null, errorcallback);
                             }
                         });
                     };

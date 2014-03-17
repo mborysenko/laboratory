@@ -11,18 +11,24 @@ module SDL.UI.Core.Controls
 		getJQuery?: () => JQueryStatic;
 	}
 
+	export interface IControlBaseProperties extends SDL.Client.Types.IObjectWithEventsProperties
+	{
+		element: HTMLElement;
+		options?: any;
+		jQuery?: JQueryStatic;
+	}
+
 	eval(SDL.Client.Types.OO.enableCustomInheritance);
 	export class ControlBase extends SDL.Client.Types.ObjectWithEvents implements IControlBase
 	{
-		constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void)
+		public properties: IControlBaseProperties;
+		constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic)
 		{
 			super();
 			var p = this.properties;
 			p.element = element;
 			p.options = options;
 			p.jQuery = jQuery;
-			p.callback = callback;
-			p.errorcallback = errorcallback;
 		}
 
 		public update(options?: any): void
@@ -34,25 +40,21 @@ module SDL.UI.Core.Controls
 		public $initialize(): void
 		{			
 			var controlType: IControlType = SDL.Client.Type.resolveNamespace(this.getTypeName());
-			this.properties.element[getInstanceAttributeName(controlType)] = this;
+			(<any>this.properties.element)[getInstanceAttributeName(controlType)] = this;
 			Renderers.ControlRenderer.onControlCreated(this);
-			this.render();
 		}
 
-		public render(): void
+		public render(callback?: () => void, errorcallback?: (error: string) => void): void
 		{
-			this.setRendered();
+			this.setRendered(callback);
 			// override in subclasses
 		}
 
-		public setRendered(): void
+		public setRendered(callback?: () => void): void
 		{
-			var p = this.properties;
-			p.errorcallback = null;
-			if (p.callback)
+			if (callback)
 			{
-				p.callback();
-				p.callback = null;
+				callback();
 			}
 		}
 

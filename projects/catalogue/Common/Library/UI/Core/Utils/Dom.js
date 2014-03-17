@@ -29,6 +29,23 @@
 			.on("selectstart", function(e) { return $(e.target).is("input:text"); });
 	};
 
+	$.fn.unwrapInner = function()
+	{
+		$.each(this, function(index, element)
+			{
+				var child = element.firstChild;
+				if (child)
+				{
+					while (child.firstChild)
+					{
+						element.insertBefore(child.firstChild, child);
+					}
+					element.removeChild(child);
+				}
+			});
+		return this;
+	};
+
 	$.uniqueId = function SDL$Client$Types$Object$uniqueId()
 	{
 		return SDL.Client.Types.Object.getUniqueId(this[0]);

@@ -5,7 +5,7 @@ module SDL.Client.Xml
 	/**
 	* Defines several common namespaces in use throughout the system.
 	*/
-	export var Namespaces =
+	export var Namespaces: {[prefix: string]: string} =
 	{
 		xsl: "http://www.w3.org/1999/XSL/Transform",
 		xlink: "http://www.w3.org/1999/xlink",

@@ -2,6 +2,7 @@
 /// <reference path="../../SDL.Client.UI.Core/Controls/Base.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Renderers/ControlRenderer.d.ts" />
 /// <reference path="../Libraries/knockout/knockout.d.ts" />
+/// <reference path="../Utils/knockout.ts" />
 
 module SDL.UI.Core.Knockout.Controls
 {
@@ -34,68 +35,73 @@ module SDL.UI.Core.Knockout.Controls
 		{
 			var values: any = valueAccessor();
 			var attrName = Core.Controls.getInstanceAttributeName(this.control);
-			var instance: Core.Controls.IControl = element[attrName];
-			if (!instance || instance.getDisposed())
+			var instance: Core.Controls.IControl = (<any>element)[attrName];
+			if (!instance || ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && (<SDL.Client.Types.IDisposableObject><any>instance).getDisposed()))
 			{
 				// create a control instance
-				element[attrName] = instance = new this.control(element, ko.toJS(values), ko.unwrap(allBindingsAccessor().jQuery));
+				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindingsAccessor().jQuery));
+				instance.render();
 				ko.utils.domNodeDisposal.addDisposeCallback(element,
 					() => Core.Renderers.ControlRenderer.disposeControl(instance));
 
-				this.addEventHandlers(instance, values);
+				this.addEventHandlers(instance, values, bindingContext['$data']);
 			}
 			else
 			{
 				this.removeEventHandlers(instance);
-				this.addEventHandlers(instance, values);
+				this.addEventHandlers(instance, values, bindingContext['$data']);
 
 				if (instance.update)
 				{
 					// Call update on the existing instance
-					instance.update(ko.toJS(values));
+					instance.update(Knockout.Utils.unwrapRecursive(values));
 				}
 			}
 		}
 
-		private addEventHandlers(instance: Core.Controls.IControl, values: any)
+		private addEventHandlers(instance: Core.Controls.IControl, values: any, viewModel: any)
 		{
-			var events: {[event: string]: any;} = instance[KnockoutBindingHandler.eventHandlersAttributeName] = {};
-			instance.addEventListener("propertychange", events["propertychange"] = function(e)
-				{
-					if (values && ko.isObservable(values[e.data.property]))
-					{
-						values[e.data.property](e.data.value);
-					}
-				});
-
-			if (this.events)
+			if ((<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener)
 			{
-				SDL.jQuery.each(this.events, (i: number, event: Core.Controls.IPluginEventDefinition) =>
+				var events = (<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = <{[event: string]: any;}>{};
+
+				(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener("propertychange", events["propertychange"] = function(e: any)
 					{
-						if (values && SDL.Client.Type.isFunction(values[event.event]))
+						if (values && ko.isWriteableObservable(values[e.data.property]))
 						{
-							var eventName = event.originalEvent || event.event;
-							if (eventName != "propertychange")
-							{
-								instance.addEventListener(eventName, events[eventName] = function(e)
-								{
-									values[event.event](e.data);
-								});
-							}
+							values[e.data.property](e.data.value);
 						}
 					});
+
+				if (this.events)
+				{
+					SDL.jQuery.each(this.events, (i: number, event: Core.Controls.IPluginEventDefinition) =>
+						{
+							if (values && SDL.Client.Type.isFunction(values[event.event]))
+							{
+								var eventName = event.originalEvent || event.event;
+								if (eventName != "propertychange")
+								{
+									(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener(eventName, events[eventName] = function(e: any)
+									{
+										values[event.event].apply(viewModel, [viewModel, e, instance]);
+									});
+								}
+							}
+						});
+				}
 			}
 		}
 
 		private removeEventHandlers(instance: Core.Controls.IControl)
 		{
-			if (instance[KnockoutBindingHandler.eventHandlersAttributeName])
+			if ((<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName])
 			{
-				SDL.jQuery.each(instance[KnockoutBindingHandler.eventHandlersAttributeName], (event: string, handler: any) =>
+				SDL.jQuery.each((<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName], (event: string, handler: any) =>
 				{
-					instance.removeEventListener(event, handler);
+					(<SDL.Client.Types.IObjectWithEvents><any>instance).removeEventListener(event, handler);
 				});
-				instance[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+				(<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = null;
 			}
 		}
 	}

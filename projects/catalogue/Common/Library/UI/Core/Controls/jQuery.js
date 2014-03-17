@@ -1,10 +1,10 @@
+/// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
+/// <reference path="../Renderers/ControlRenderer.ts" />
+/// <reference path="Base.ts" />
 var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
-            /// <reference path="../../SDL.Client.Core/Libraries/jQuery/jQuery.d.ts" />
-            /// <reference path="../Renderers/ControlRenderer.ts" />
-            /// <reference path="Base.ts" />
             (function (Controls) {
                 function createJQueryPlugin(jQuery, control, name, methods) {
                     jQuery.fn[name] = function SDL$UI$Core$ControlBase$widget(options) {
@@ -13,11 +13,12 @@ var SDL;
 
                         jQueryObject.each(function () {
                             var element = this;
-                            var attrName = Controls.getInstanceAttributeName(control);
+                            var attrName = SDL.UI.Core.Controls.getInstanceAttributeName(control);
                             var instance = element[attrName];
                             if (!instance || (instance.getDisposed && instance.getDisposed())) {
                                 // create a control instance
                                 instance = element[attrName] = new control(element, options, jQuery);
+                                instance.render();
                             } else if (options && instance.update) {
                                 // Call update on the existing instance
                                 instance.update(options);
@@ -29,7 +30,7 @@ var SDL;
 
                         if (methods) {
                             jQuery.each(methods, function (i, methodDefinition) {
-                                if (methodDefinition && methodDefinition.method) {
+                                if (methodDefinition && methodDefinition.method && methodDefinition.method != "dispose") {
                                     jQueryObject[methodDefinition.method] = function () {
                                         var implementation = methodDefinition.implementation || methodDefinition.method;
                                         for (var i = 0, len = this.length; i < len; i++) {
@@ -43,14 +44,14 @@ var SDL;
                                     };
                                 }
                             });
-
-                            jQueryObject["dispose"] = function () {
-                                for (var i = 0, len = this.length; i < len; i++) {
-                                    SDL.UI.Core.Renderers.ControlRenderer.disposeControl(jQueryObject[i]);
-                                }
-                                return jQueryObject.end();
-                            };
                         }
+
+                        jQueryObject["dispose"] = function () {
+                            for (var i = 0, len = this.length; i < len; i++) {
+                                SDL.UI.Core.Renderers.ControlRenderer.disposeControl(jQueryObject[i]);
+                            }
+                            return jQueryObject.end();
+                        };
 
                         return jQueryObject;
                     };

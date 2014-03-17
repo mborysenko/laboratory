@@ -5,6 +5,7 @@
 		<resourceGroup name="SDL.UI.Core.Knockout.Utils">
 			<files>
 				<file name="Dom.js"/>
+				<file name="knockout.js"/>
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>

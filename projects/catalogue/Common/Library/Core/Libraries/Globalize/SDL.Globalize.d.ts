@@ -6,15 +6,19 @@
 /// <reference path="../../Event/EventRegister.d.ts" />
 /// <reference path="../../Resources/FileResourceHandler.d.ts" />
 declare module SDL {
+    interface GlobalizeCultures {
+        [index: string]: GlobalizeCulture;
+    }
     interface SDLGlobalizeStatic extends GlobalizeStatic {
         findClosestCulture(cultureSelector: string, skipCount?: number): GlobalizeCulture;
         localize(key: string, parameters?: string[], cultureSelector?: string): string;
+        localize(key: string, parameters?: any, cultureSelector?: string): string;
     }
-    class GlobalizeClass extends SDL.Client.Types.ObjectWithEvents implements SDLGlobalizeStatic {
+    class GlobalizeClass extends Client.Types.ObjectWithEvents implements SDLGlobalizeStatic {
         private _globalize;
         constructor();
         public initializeNoConflict(): void;
-        public TranslateDate(date: string): string;
+        public TranslateDate(value: string): string;
         public cultures: GlobalizeCultures;
         public cultureSelector: string;
         public init(cultureSelector: string): GlobalizeStatic;

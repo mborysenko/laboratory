@@ -1,4 +1,4 @@
-/// <reference path="..\Exception\Exception.d.ts" />
+/// <reference path="../Exception/Exception.d.ts" />
 
 declare module SDL.Client.MessageCenter 
 {

@@ -1,7 +1,7 @@
-/// <reference path="..\..\ViewModels\Navigation.ts" />
-/// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.Core\Types\Object.d.ts" />
-/// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core\Views\ViewBase.d.ts" />
-/// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\ViewModels\ViewModelBase.d.ts" />
+/// <reference path="../../ViewModels/Navigation.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.Core/Types/Object.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core.Knockout/ViewModels/ViewModelBase.d.ts" />
 
 module SDL.Client.UI.ApplicationHost.Views
 {
@@ -40,7 +40,6 @@ module SDL.Client.UI.ApplicationHost.Views
 	eval(SDL.Client.Types.OO.enableCustomInheritance);
     export class Frame extends SDL.UI.Core.Views.ViewBase
 	{
-		private scrollHeightMonitorInterval: number;
 		private model: IFrameViewModel;
 		private initialized: KnockoutObservable<boolean> = ko.observable(false);
 		private updateTitleBar: KnockoutComputed<void>;
@@ -50,7 +49,7 @@ module SDL.Client.UI.ApplicationHost.Views
 			var model: IFrameViewModel = this.model = <any>new SDL.UI.Core.Knockout.ViewModels.ViewModelBase();
 
 			model.initialized = this.initialized;
-			model.visitedNavigationGroups = ko.observableArray([]);
+			model.visitedNavigationGroups = ko.observableArray<Navigation.INavigationGroup>([]);
 			model.toggleNavigationPane = function()
 			{
 				model.navigationPaneShown(!model.navigationPaneShown());
@@ -162,100 +161,7 @@ module SDL.Client.UI.ApplicationHost.Views
 				}
 			}
 
-			model.initCustomScroll = (customScrollWrapper: HTMLElement) =>
-			{
-				var barBtnHeight = 17;
-				var $customScrollWrapper = SDL.jQuery(customScrollWrapper);
-				var $navigationPane = $customScrollWrapper.parent(".frame-navigation-middle").parent(".frame-navigation-pane");
-				var $realScrollArea = $customScrollWrapper.prev(".frame-navigation-middle-scroll");
-				var realScrollContent = $realScrollArea.children("ul")[0];
-				var customScrollHandle = $customScrollWrapper.children(".frame-navigation-scroll-handle")[0];	
-				var $customScrollArea = $customScrollWrapper.children(".frame-navigation-scroll");
-				var customScrollArea = $customScrollArea[0];
-				var customScrollContent = $customScrollArea.children(".frame-navigation-scroll-content")[0];
-				var customScrollAreaOffsetHeight;
-				var handleSpaceCorrection = 0;		// actual size of the scroll bar handle can't be smaller than a certain minimum,
-													// handleSpaceCorrection stores the difference between the calculated size and the actual size
-				var scrollShown = true;
-
-				function adjustHeight()
-				{
-					if (customScrollContent.offsetHeight != realScrollContent.offsetHeight || customScrollArea.offsetHeight != customScrollAreaOffsetHeight)
-					{
-						customScrollAreaOffsetHeight = customScrollArea.offsetHeight;
-						if (customScrollContent.offsetHeight != realScrollContent.offsetHeight)
-						{
-							customScrollContent.style.height = realScrollContent.offsetHeight + "px";
-						}
-
-						var ratio = customScrollAreaOffsetHeight / realScrollContent.offsetHeight;
-
-						if (ratio >= 1)
-						{
-							if (scrollShown)
-							{
-								scrollShown = false;
-								$customScrollWrapper.addClass("frame-navigation-scroll-wrapper-hidden");
-							}
-						}
-						else
-						{
-							if (!scrollShown)
-							{
-								scrollShown = true;
-								$customScrollWrapper.removeClass("frame-navigation-scroll-wrapper-hidden");
-							}
-
-							var height = (customScrollAreaOffsetHeight - barBtnHeight * 2) * ratio;
-							if (height < 10)
-							{
-								handleSpaceCorrection = 10 - height;
-								height = 10;
-							}
-
-							if (customScrollHandle.offsetHeight != height)
-							{
-								customScrollHandle.style.height = height + "px";
-							}
-
-							onRealScroll();
-							onCustomScroll();
-						}
-					}
-				};
-				adjustHeight();
-				this.scrollHeightMonitorInterval = setInterval(adjustHeight, 100);
-					
-				function onCustomScroll()
-				{
-					if (scrollShown)
-					{
-						customScrollHandle.style.top = (customScrollArea.offsetHeight - barBtnHeight * 2 - handleSpaceCorrection) * customScrollArea.scrollTop / customScrollContent.offsetHeight + barBtnHeight + "px";
-						if ($realScrollArea.scrollTop() != $customScrollArea.scrollTop())
-						{
-							$realScrollArea.scrollTop($customScrollArea.scrollTop());
-						}
-					}
-				};
-				onCustomScroll();
-				$customScrollArea.scroll(onCustomScroll);
-
-				function onRealScroll()
-				{
-					if (scrollShown)
-					{
-						if ($customScrollArea.scrollTop() != $realScrollArea.scrollTop())
-						{
-							$customScrollArea.scrollTop($realScrollArea.scrollTop());
-						}
-					}
-				}
-
-				$realScrollArea.scroll(onRealScroll);
-				$navigationPane.scroll(function() { $navigationPane.scrollLeft(0); });
-			};
-
-			var getTranslation = function(translations: {[lang: string]: string;}, fallbackTranslations: {[lang: string]: string;})
+			var getTranslation = function(translations: SDL.Client.ApplicationHost.ITranslations, fallbackTranslations: SDL.Client.ApplicationHost.ITranslations)
 			{
 				if (translations || fallbackTranslations)
 				{
@@ -493,14 +399,9 @@ module SDL.Client.UI.ApplicationHost.Views
 
 	Frame.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$Client$Frame$Views$Frame$disposeInterface()
 	{
-		if (this.scrollHeightMonitorInterval)
-		{
-			window.clearInterval(this.scrollHeightMonitorInterval);
-			this.scrollHeightMonitorInterval = null;
-		}
 		if (this.updateTitleBar)
 		{
-			(<KnockoutComputed>this.updateTitleBar).dispose();
+			(<KnockoutComputed<void>>this.updateTitleBar).dispose();
 			this.updateTitleBar = null;
 		}
 

@@ -11,7 +11,7 @@ module SDL.Client.Application
 		applicationDomain: string;
 	}
 
-	export var ApplicationFacade = {};
+	export var ApplicationFacade: {[method: string]: Function} = {};
 	export var isApplicationFacadeSecure: boolean = undefined;
 
 	export module ApplicationFacadeStub

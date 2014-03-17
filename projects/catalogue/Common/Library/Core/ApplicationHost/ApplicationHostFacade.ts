@@ -1,9 +1,11 @@
 /// <reference path="ApplicationHost.ts" />
 module SDL.Client.ApplicationHost.ApplicationHostFacade
 {
+	var supportedMethods: {[method: string]: boolean} = {};
+
 	export function applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: Client.Event.Event) => void): Application.IApplicationHostData
 	{
-		return ApplicationHost.applicationEntryPointLoaded(libraryVersion, eventHandler);
+		return SDL.jQuery.extend({supportedMethods: supportedMethods}, ApplicationHost.applicationEntryPointLoaded(libraryVersion, eventHandler));
 	}
 
 	export function exposeApplicationFacade(applicationEntryPointId: string): void
@@ -19,6 +21,16 @@ module SDL.Client.ApplicationHost.ApplicationHostFacade
 	export function setCulture(culture: string): void
 	{
 		return ApplicationHost.setCulture(culture);
+	}
+
+	export function startCaptureDomEvents(events: string[]): void
+	{
+		return ApplicationHost.startCaptureDomEvents(events);
+	}
+
+	export function stopCaptureDomEvents(events?: string[]): void
+	{
+		return ApplicationHost.stopCaptureDomEvents(events);
 	}
 
 	export function setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void
@@ -46,6 +58,46 @@ module SDL.Client.ApplicationHost.ApplicationHostFacade
 		return ApplicationHost.resetApplicationSuite();
 	}
 
+	export function storeApplicationData(key: string, data: any): void
+	{
+		return ApplicationHost.storeApplicationData(key, data);
+	}
+
+	export function storeApplicationSessionData(key: string, data: any): void
+	{
+		return ApplicationHost.storeApplicationSessionData(key, data);
+	}
+
+	export function getApplicationData(key: string): any
+	{
+		return ApplicationHost.getApplicationData(key);
+	}
+
+	export function getApplicationSessionData(key: string): any
+	{
+		return ApplicationHost.getApplicationSessionData(key);
+	}
+
+	export function clearApplicationData(): void
+	{
+		return ApplicationHost.clearApplicationData();
+	}
+
+	export function clearApplicationSessionData(): void
+	{
+		return ApplicationHost.clearApplicationSessionData();
+	}
+
+	export function removeApplicationData(key: string): void
+	{
+		return ApplicationHost.removeApplicationData(key);
+	}
+
+	export function removeApplicationSessionData(key: string): void
+	{
+		return ApplicationHost.removeApplicationSessionData(key);
+	}
+
 	export function resolveCommonLibraryResources(resourceGroupName: string): Resources.IResolvedResourceGroupResult[]
 	{
 		return ApplicationHost.resolveCommonLibraryResources(resourceGroupName);
@@ -62,4 +114,9 @@ module SDL.Client.ApplicationHost.ApplicationHostFacade
 	}
 
 	CrossDomainMessaging.addAllowedHandlerBase(ApplicationHostFacade);
+
+	for (var method in ApplicationHostFacade)
+	{
+		supportedMethods[method] = true;
+	}
 }

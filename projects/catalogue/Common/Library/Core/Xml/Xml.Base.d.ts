@@ -6,10 +6,7 @@ declare module SDL.Client.Xml {
     * Defines several common namespaces in use throughout the system.
     */
     var Namespaces: {
-        xsl: string;
-        xlink: string;
-        models: string;
-        apphost: string;
+        [prefix: string]: string;
     };
     function progIDs(): {
         domDocument: string;

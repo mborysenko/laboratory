@@ -4,20 +4,16 @@ module SDL.UI.Core.Controls
 {
 	export interface IControl
 	{
-		//constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void);
+		//constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic);
+		render(callback?: () => void, errorcallback?: (error: string) => void): void;
 		update?: (options?: any) => void;
 		getElement?: () => HTMLElement;
-		addEventListener?: (event: string, handler: any) => void;
-        removeEventListener?: (event: string, handler: any) => void;
-		dispose?: () => void;
-		getDisposed?: () => boolean;
 	}
 
 	export interface IControlType
 	{
-		new(element: Element, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void): IControl;
-		createElement?: (document: HTMLDocument, options?: any, jQuery?: JQueryStatic, callback?: () => void, errorcallback?: (error: string) => void) => HTMLElement;
-		isAsynchronous?: boolean;
+		new(element: Element, options?: any, jQuery?: JQueryStatic): IControl;
+		createElement?: (document: HTMLDocument, options?: any, jQuery?: JQueryStatic) => HTMLElement;
 	}
 
 	export interface IPluginMethodDefinition

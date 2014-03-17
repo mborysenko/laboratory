@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
     <setting name="debug" value="false" />
     <setting name="corePath" value="../" />
-    <setting name="coreVersion" value="1.1.0.81" />
-    <!--<setting name="culture" value="nl-NL"/>-->
+    <setting name="coreVersion" value="1.1.0.269" />
   </appSettings>
   <pages>
-    <page url="*" resource="SDL.Client.UI.ApplicationHost.Views.Frame.Init" view="SDL.Client.UI.ApplicationHost.Views.Frame" title="SDL">
+    <page url="/*" resource="SDL.Client.UI.ApplicationHost.Views.Frame.Init" view="SDL.Client.UI.ApplicationHost.Views.Frame" title="SDL">
       <preloadPackages>
         <package name="SDL.Client.UI.ApplicationHost" url="Packages/SDL.Client.UI.ApplicationHost.txt" />
-        <package name="SDL.UI.Core" url="~/Library/UI/Core/Packages/SDL.UI.Core.js" />
+        <package name="SDL.UI.Core" url="~/Library/UI/Core/Packages/SDL.UI.Core.txt" />
         <package name="SDL.UI.Core.Knockout" url="~/Library/UI/Core.Knockout/Packages/SDL.UI.Core.Knockout.js" />
+        <package name="SDL.UI.Core.Knockout" url="~/Library/UI/Controls/Packages/SDL.UI.Controls.txt" />
+        <package name="SDL.UI.Core.Knockout" url="~/Library/UI/Controls.Knockout/Packages/SDL.UI.Controls.Knockout.txt" />
       </preloadPackages>
     </page>
   </pages>
@@ -45,6 +46,7 @@
                         <dependency name="SDL.Client.UI.ApplicationHost.ViewModels" />
                         <dependency name="SDL.UI.Core.Views.ViewBase" />
                         <dependency name="SDL.UI.Core.Knockout.Renderers" />
+                        <dependency name="SDL.UI.Core.Knockout.BindingHandlers" />
                         <dependency name="SDL.Client.Libraries.SDL.Globalize" />
                       </dependencies>
                     </resourceGroup>

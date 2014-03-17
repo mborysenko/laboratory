@@ -1,13 +1,13 @@
+/// <reference path="../../SDL.Client.Core/Libraries/jQuery/SDL.jQuery.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/Array.d.ts" />
+/// <reference path="../../SDL.Client.Core/Types/OO.d.ts" />
+/// <reference path="../../SDL.Client.Core/Diagnostics/Assert.d.ts" />
+/// <reference path="../../SDL.Client.Core/Resources/ResourceManager.d.ts" />
 var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Core) {
-            /// <reference path="../../SDL.Client.Core/Libraries/jQuery/SDL.jQuery.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/Array.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Types/OO.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Diagnostics/Assert.d.ts" />
-            /// <reference path="../../SDL.Client.Core/Resources/ResourceManager.d.ts" />
             (function (Renderers) {
                 ;
 

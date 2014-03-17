@@ -1,17 +1,17 @@
-/*62730,26795,14920,379,8435*/var SDL;
+/*62949,21190,12757,379,7882*//// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
+var SDL;
 (function (SDL) {
     (function (Client) {
         (function (UI) {
             (function (ApplicationHost) {
                 (function (ViewModels) {
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\ApplicationHost\ApplicationHost.d.ts" />
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\Types\Url.d.ts" />
-                    /// <reference path="..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\Libraries\knockout\knockout.d.ts" />
                     (function (Navigation) {
                         var Url = SDL.Client.Types.Url;
                         var AppHost = SDL.Client.ApplicationHost;
 
-                        Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
+                        SDL.Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
 
                         ;
 
@@ -62,7 +62,8 @@
                                 var newSrc = Url.getHashParameter(window.location.href, "url") || "";
 
                                 if (newAppId != prevAppId || newEntryId != prevEntryId || newSrc != prevSrc) {
-                                    var newNavItem = getNavigationItemById(newEntryId, newAppId);
+                                    var newNavItem = getNavigationItemById(newEntryId, newAppId) || (newAppId ? getNavigationItemById(null, newAppId) : null);
+
                                     if (newNavItem && !newNavItem.external && !newNavItem.hidden()) {
                                         if (newNavItem.applicationEntryPoint) {
                                             if (ignoreErrors) {
@@ -170,10 +171,10 @@
                         ;
 
                         function initializeNavigationViewModel() {
-                            var navigationNode = Client.Xml.selectSingleNode(Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
+                            var navigationNode = SDL.Client.Xml.selectSingleNode(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
                             if (navigationNode) {
                                 // navigation is defined in configuration
-                                var navigationGroupNodes = Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
+                                var navigationGroupNodes = SDL.Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
                                 Navigation.navigationGroups = SDL.jQuery.map(navigationGroupNodes, function (navigationGroupNode, index) {
                                     var applicationEntryPointGroupId = navigationGroupNode.getAttribute("applicationEntryPointGroupId");
                                     if (applicationEntryPointGroupId) {
@@ -274,7 +275,7 @@
                                         newHref = Url.setHashParameter(newHref, "entry", navItem.id);
                                         newHref = Url.setHashParameter(newHref, "group", null);
 
-                                        navItem.src();
+                                        navItem.src(); // this is to trigger computed to recalculate when src() changes
                                         if (appEntryPoint.url && appEntryPoint.url != appEntryPoint.baseUrl) {
                                             newHref = Url.setHashParameter(newHref, "url", Url.makeRelativeUrl(appEntryPoint.baseUrl, appEntryPoint.url));
                                         } else {
@@ -301,7 +302,7 @@
 
                                 if (window.location.href != newHref) {
                                     if (newHref.indexOf("#") == -1) {
-                                        newHref += "#";
+                                        newHref += "#"; // making sure there's a hash parameter, otherwise the whole window will refresh
                                     }
                                     window.location.href = newHref;
                                 }
@@ -365,7 +366,7 @@
 
                         function buildNavigationGroup(navigationGroupNode, isFirstGroup) {
                             var groupApplicationId = navigationGroupNode.getAttribute("applicationSuiteId");
-                            var navigationItemNodes = Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
+                            var navigationItemNodes = SDL.Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
                             var navigationGroup = {
                                 id: navigationGroupNode.getAttribute("id"),
                                 title: navigationGroupNode.getAttribute("title"),
@@ -505,7 +506,7 @@
                                 var icon = navigationItemNode.getAttribute("icon");
                                 if (icon) {
                                     if (icon.charAt(0) != "/" && icon.indexOf("~/") == -1) {
-                                        var baseUrlNodes = Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
+                                        var baseUrlNodes = SDL.Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
                                         var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
                                         icon = Url.combinePath(baseUrl, icon);
                                     }
@@ -602,10 +603,10 @@
 
                         function buildNameTranslations(parent) {
                             var translations = {};
-                            var translationNodes = Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
+                            var translationNodes = SDL.Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
                             for (var i = 0, len = translationNodes.length; i < len; i++) {
                                 var translationNode = translationNodes[i];
-                                translations[translationNode.getAttribute("lang")] = Client.Xml.getInnerText(translationNode);
+                                translations[translationNode.getAttribute("lang")] = SDL.Client.Xml.getInnerText(translationNode);
                             }
                             return translations;
                         }
@@ -928,7 +929,7 @@
                                 authenticationTargetDisplay.targetDisplay.frame = null;
                                 setTimeout(function () {
                                     return authenticationTargetDisplay.disposed(true);
-                                }, 1);
+                                }, 1); // Chrome crashes without the timeout
                             }
                         }
                         ;
@@ -946,6 +947,10 @@
     var Client = SDL.Client;
 })(SDL || (SDL = {}));
 //# sourceMappingURL=Navigation.js.map
+/// <reference path="../../ViewModels/Navigation.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.Core/Types/Object.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../../../SDL.Client/SDL.Client.UI.Core.Knockout/ViewModels/ViewModelBase.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -957,10 +962,6 @@ var SDL;
     (function (Client) {
         (function (UI) {
             (function (ApplicationHost) {
-                /// <reference path="..\..\ViewModels\Navigation.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.Core\Types\Object.d.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core\Views\ViewBase.d.ts" />
-                /// <reference path="..\..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\ViewModels\ViewModelBase.d.ts" />
                 (function (Views) {
                     var Navigation = SDL.Client.UI.ApplicationHost.ViewModels.Navigation;
 
@@ -998,7 +999,7 @@ var SDL;
                                         var group = model.navigationGroups[i];
                                         if (group.shownItems()) {
                                             if (groupsCount) {
-                                                model.expandedNavigationGroup(null);
+                                                model.expandedNavigationGroup(null); // more than 1 groups have items -> can collapse
                                                 return;
                                             }
                                             groupsCount++;
@@ -1023,7 +1024,7 @@ var SDL;
                                     if (targetDisplay.src != src) {
                                         var frame = SDL.jQuery(node).prev("div").find("iframe")[0];
                                         if (src != "about:blank") {
-                                            var urlChange = Client.Types.Url.makeRelativeUrl(targetDisplay.src, src);
+                                            var urlChange = SDL.Client.Types.Url.makeRelativeUrl(targetDisplay.src, src);
                                             if (urlChange && urlChange.charAt(0) != "#") {
                                                 // change is more than just a hash
                                                 targetDisplay.loaded(false);
@@ -1041,7 +1042,8 @@ var SDL;
                             };
 
                             model.animateLoadingFeedback = function (element) {
-                                if (element.style.animation == undefined && (element.style).webkitAnimation == undefined) {
+                                // IE9 does not support animation -> use javascript
+                                if (element.style.animation == undefined && element.style.webkitAnimation == undefined) {
                                     var position = 0;
                                     var step = 12;
                                     var interval = window.setInterval(function () {
@@ -1056,87 +1058,6 @@ var SDL;
                                         window.clearInterval(interval);
                                     });
                                 }
-                            };
-
-                            model.initCustomScroll = function (customScrollWrapper) {
-                                var barBtnHeight = 17;
-                                var $customScrollWrapper = SDL.jQuery(customScrollWrapper);
-                                var $navigationPane = $customScrollWrapper.parent(".frame-navigation-middle").parent(".frame-navigation-pane");
-                                var $realScrollArea = $customScrollWrapper.prev(".frame-navigation-middle-scroll");
-                                var realScrollContent = $realScrollArea.children("ul")[0];
-                                var customScrollHandle = $customScrollWrapper.children(".frame-navigation-scroll-handle")[0];
-                                var $customScrollArea = $customScrollWrapper.children(".frame-navigation-scroll");
-                                var customScrollArea = $customScrollArea[0];
-                                var customScrollContent = $customScrollArea.children(".frame-navigation-scroll-content")[0];
-                                var customScrollAreaOffsetHeight;
-                                var handleSpaceCorrection = 0;
-
-                                // handleSpaceCorrection stores the difference between the calculated size and the actual size
-                                var scrollShown = true;
-
-                                function adjustHeight() {
-                                    if (customScrollContent.offsetHeight != realScrollContent.offsetHeight || customScrollArea.offsetHeight != customScrollAreaOffsetHeight) {
-                                        customScrollAreaOffsetHeight = customScrollArea.offsetHeight;
-                                        if (customScrollContent.offsetHeight != realScrollContent.offsetHeight) {
-                                            customScrollContent.style.height = realScrollContent.offsetHeight + "px";
-                                        }
-
-                                        var ratio = customScrollAreaOffsetHeight / realScrollContent.offsetHeight;
-
-                                        if (ratio >= 1) {
-                                            if (scrollShown) {
-                                                scrollShown = false;
-                                                $customScrollWrapper.addClass("frame-navigation-scroll-wrapper-hidden");
-                                            }
-                                        } else {
-                                            if (!scrollShown) {
-                                                scrollShown = true;
-                                                $customScrollWrapper.removeClass("frame-navigation-scroll-wrapper-hidden");
-                                            }
-
-                                            var height = (customScrollAreaOffsetHeight - barBtnHeight * 2) * ratio;
-                                            if (height < 10) {
-                                                handleSpaceCorrection = 10 - height;
-                                                height = 10;
-                                            }
-
-                                            if (customScrollHandle.offsetHeight != height) {
-                                                customScrollHandle.style.height = height + "px";
-                                            }
-
-                                            onRealScroll();
-                                            onCustomScroll();
-                                        }
-                                    }
-                                }
-                                ;
-                                adjustHeight();
-                                _this.scrollHeightMonitorInterval = setInterval(adjustHeight, 100);
-
-                                function onCustomScroll() {
-                                    if (scrollShown) {
-                                        customScrollHandle.style.top = (customScrollArea.offsetHeight - barBtnHeight * 2 - handleSpaceCorrection) * customScrollArea.scrollTop / customScrollContent.offsetHeight + barBtnHeight + "px";
-                                        if ($realScrollArea.scrollTop() != $customScrollArea.scrollTop()) {
-                                            $realScrollArea.scrollTop($customScrollArea.scrollTop());
-                                        }
-                                    }
-                                }
-                                ;
-                                onCustomScroll();
-                                $customScrollArea.scroll(onCustomScroll);
-
-                                function onRealScroll() {
-                                    if (scrollShown) {
-                                        if ($customScrollArea.scrollTop() != $realScrollArea.scrollTop()) {
-                                            $customScrollArea.scrollTop($realScrollArea.scrollTop());
-                                        }
-                                    }
-                                }
-
-                                $realScrollArea.scroll(onRealScroll);
-                                $navigationPane.scroll(function () {
-                                    $navigationPane.scrollLeft(0);
-                                });
                             };
 
                             var getTranslation = function (translations, fallbackTranslations) {
@@ -1322,12 +1243,8 @@ var SDL;
                     Views.Frame = Frame;
 
                     Frame.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$Client$Frame$Views$Frame$disposeInterface() {
-                        if (this.scrollHeightMonitorInterval) {
-                            window.clearInterval(this.scrollHeightMonitorInterval);
-                            this.scrollHeightMonitorInterval = null;
-                        }
                         if (this.updateTitleBar) {
-                            (this.updateTitleBar).dispose();
+                            this.updateTitleBar.dispose();
                             this.updateTitleBar = null;
                         }
 
@@ -1437,7 +1354,7 @@ body,
   user-select: none;
   cursor: default;
   text-transform: uppercase;
-  font-family: Lucida Sans;
+  font-family: Arial;
   font-size: 19px;
   color: #878787;
 }
@@ -1447,8 +1364,8 @@ body,
 }
 .frame-application-loading-rotate {
   display: inline-block;
-  border-radius: 150px;
-  -moz-border-radius: 150px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
   border: 13px solid #666666;
   border-top-color: #CDCDCD;
   border-right-color: #CDCDCD;
@@ -1643,7 +1560,7 @@ ul.frame-navigation-top {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  position: absolute;
+  position: absolute !important;
   bottom: 0px;
   width: 100%;
 }
@@ -1667,33 +1584,12 @@ ul.frame-navigation-top {
   border: none;
   background-color: #5c636D;
 }
-.frame-navigation-middle-scroll {
-  position: relative;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  border: none;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.pc .frame-navigation-middle-scroll {
-  width: 300px;
-}
-.pc .frame-navigation-middle-scroll ul {
-  border: 0;
-  width: 244px;
-}
-.frame-navigation-middle-scroll li {
+.frame-navigation-middle li {
   display: block;
   padding: 0;
   margin: 0;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li,
 .frame-navigation-top li:only-child {
   display: table;
@@ -1710,7 +1606,7 @@ ul.frame-navigation-top {
   -webkit-box-sizing: content-box;
   border-top: 1px solid #5C636D;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li {
   width: 212px;
   border-bottom: 1px solid #353B46;
@@ -1718,7 +1614,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li:only-child {
   width: 226px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-icon,
+.frame-navigation-middle .frame-navigation-option-icon,
 .frame-navigation-top li:only-child .frame-navigation-option-icon {
   width: 16px;
   padding: 12px 9px 11px 0px;
@@ -1727,7 +1623,7 @@ ul.frame-navigation-top {
   -moz-box-sizing: content-box;
   line-height: 17px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-text,
+.frame-navigation-middle .frame-navigation-option-text,
 .frame-navigation-top li:only-child .frame-navigation-option-text {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1746,13 +1642,16 @@ ul.frame-navigation-top {
 .frame-navigation-group-collapsed ul {
   height: 0;
 }
+.frame-navigation-group:only-child > div > .frame-navigation-option-right {
+  background-image: none;
+}
 .frame-navigation-group > div > .frame-navigation-option-right {
   background-position: -106px -43px;
 }
 .frame-navigation-group-collapsed > div > .frame-navigation-option-right {
   background-position: -120px -44px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option,
+.frame-navigation-middle .frame-navigation-option,
 .frame-navigation-top .frame-navigation-option:only-child {
   background-color: #474E58;
   border-right: 3px solid #5c636D;
@@ -1766,7 +1665,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li:only-child:hover {
   border-right: none;
 }
-.frame-navigation-middle-scroll li div,
+.frame-navigation-middle li div,
 .frame-navigation-group li.frame-navigation-option-selected,
 .frame-navigation-group li:hover {
   padding-right: 17px;
@@ -1775,7 +1674,7 @@ ul.frame-navigation-top {
 .frame-navigation-top li.frame-navigation-option-selected:only-child {
   padding-right: 3px;
 }
-.frame-navigation-middle-scroll .frame-navigation-option-external {
+.frame-navigation-middle .frame-navigation-option-external {
   background-position: -51px -44px;
 }
 .frame-navigation-option-icon {
@@ -1824,8 +1723,8 @@ ul.frame-navigation-top {
   background-position: -108px -30px;
 }
 .frame-navigation-group li.frame-navigation-option-login .frame-application-loading-rotate {
-  border-radius: 30px;
-  -moz-border-radius: 30px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
   border-width: 6px;
   width: 30px;
   height: 30px;
@@ -1884,91 +1783,6 @@ ul.frame-navigation-top {
   border-top-color: #5B8EDE;
   padding: 6px 7px;
   background-position: -79px -50px;
-}
-/* CUSTOM SCROLLBAR (SHOWN ONLY FOR PC) */
-.frame-navigation-scroll-wrapper {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 15px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow: hidden;
-}
-.pc .frame-navigation-scroll-wrapper {
-  display: block;
-}
-.frame-navigation-scroll-wrapper-hidden {
-  right: -20px;
-}
-/* semi-transparent background of the custom scrollbar */
-.frame-navigation-scroll-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background-color: #454B53;
-  opacity: 0.5;
-}
-/* up/down buttons */
-.frame-navigation-scroll-up,
-.frame-navigation-scroll-down {
-  position: absolute;
-  height: 16px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-repeat: no-repeat;
-  background-image: url("{PATH}/sprite.png{VERSION}");
-}
-.frame-navigation-scroll-up {
-  top: 0;
-  background-position: -134px -57px;
-}
-.frame-navigation-scroll-down {
-  bottom: 0;
-  background-position: -147px -58px;
-}
-/* draggable handle of the scrollbar */
-.frame-navigation-scroll-handle {
-  position: absolute;
-  right: 0;
-  left: 0;
-  height: 0;
-  margin: 0 3px;
-  padding: 0;
-  border: none;
-  border-radius: 4px;
-  background-color: #818B99;
-  overflow: hidden;
-}
-/* transparent area with native scroll bar (placed in front of the custom bar to do the actual scrolling) */
-.frame-navigation-scroll {
-  position: absolute;
-  right: 1px;
-  height: 100%;
-  width: 50px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  opacity: 0;
-}
-/* content that exceeds the scrollable area (causes the native scrollbar to appear) */
-.frame-navigation-scroll-content {
-  height: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  overflow: hidden;
 }
 SDL.Globalize.addCultureInfo( "default", {
     messages: {
@@ -2060,9 +1874,9 @@ SDL.Globalize.addCultureInfo( "default", {
 							<!-- /ko -->
 						</ul>
 					<!-- /ko -->
-					<div class="frame-navigation-middle" data-bind="css: { pc: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile }">
+					<div class="frame-navigation-middle" data-bind="control: {type: 'SDL.UI.Controls.Knockout.ScrollView', data: {overflowX: 'hidden', style: 'dark', overlay: true}}">
 						<div class="frame-navigation-middle-background"></div>
-						<div class="frame-navigation-middle-scroll" unselectable="on">
+						<div data-sdl-scrollview-child='true' unselectable="on">
 							<ul data-bind="foreach: navigationGroups">
 								<!-- ko if: $data.shownItems() > 0 -->
 									<li class="frame-navigation-group" data-bind="css: { 'frame-navigation-group-collapsed': $data != $root.expandedNavigationGroup() }">
@@ -2116,18 +1930,6 @@ SDL.Globalize.addCultureInfo( "default", {
 								<!-- /ko -->
 							</ul>
 						</div>
-
-						<!-- ko if: !SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile -->
-							<div class="frame-navigation-scroll-wrapper" data-bind="attr: {foo: $root.initCustomScroll($element)}">
-								<div class="frame-navigation-scroll-bar"></div>
-								<div class="frame-navigation-scroll-up"></div>
-								<div class="frame-navigation-scroll-handle"></div>
-								<div class="frame-navigation-scroll-down"></div>
-								<div class="frame-navigation-scroll">
-									<div class="frame-navigation-scroll-content"></div>
-								</div>
-							</div>
-						<!-- /ko -->
 					</div>
 				</div>
 			</div>

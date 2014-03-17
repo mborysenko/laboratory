@@ -5,7 +5,7 @@
 	-ms-user-select: none;
 	user-select: none;
 }
-body .ui-tooltip
+body .sdl-tooltip
 {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -31,4 +31,5 @@ body .ui-tooltip
 	max-width: 300px;
 	padding: 8px;
 	white-space: normal;
+	z-index: 100;
 }

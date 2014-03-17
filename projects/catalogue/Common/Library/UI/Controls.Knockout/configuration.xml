@@ -1,13 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.81" />
+    <setting name="version" value="1.1.0.269" />
   </appSettings>
   <!-- SDL.UI.Controls configuration -->
   <include src="../Controls/configuration.xml" />
   <!-- SDL.UI.Core.Knockout configuration -->
   <include src="../Core.Knockout/configuration.xml" />
+  <!-- SDL.UI.Client.UI.Libraries configuration -->
+  <include src="../Libraries/configuration.xml" />
   <!-- Controls -->
+  <include src="Button/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Button">
+          <files>
+            <file name="Button/Button.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Button" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Callout/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Callout">
+          <files>
+            <file name="Callout/Callout.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Callout" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Dialog/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Dialog">
+          <files>
+            <file name="Dialog/Dialog.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Dialog" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Message/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Message">
+          <files>
+            <file name="Message/Message.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Message" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Tabs/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.Tabs">
+          <files>
+            <file name="Tabs/Tabs.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.Tabs" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="Tooltip/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
@@ -23,13 +100,54 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="ScrollView/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.ScrollView">
+          <files>
+            <file name="ScrollView/ScrollView.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
+            <dependency name="SDL.UI.Controls.ScrollView" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="LineGraph/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Knockout.LineGraph">
+          <files>
+            <file name="LineGraph/LineGraph.css" />
+            <file name="LineGraph/app.js" />
+            <file name="LineGraph/LineGraphKo.js" />
+            <file name="LineGraph/LineGraph.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.Globalize" />
+            <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
+            <dependency name="SDL.UI.Libraries.D3" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <!-- Packages -->
   <include src="packages.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <packages>
-        <package name="SDL.UI.Controls.Knockout" src="Packages/SDL.UI.Controls.Knockout.js">
+        <package name="SDL.UI.Controls.Knockout" src="Packages/SDL.UI.Controls.Knockout.txt">
           <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.Knockout.Button" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.Callout" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.Dialog" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.Message" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.Tabs" />
             <resourceGroup name="SDL.UI.Controls.Knockout.Tooltip" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.ScrollView" />
+            <resourceGroup name="SDL.UI.Controls.Knockout.LineGraph" />
           </resourceGroups>
         </package>
       </packages>

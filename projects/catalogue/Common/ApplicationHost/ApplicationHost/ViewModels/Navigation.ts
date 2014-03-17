@@ -1,6 +1,6 @@
-/// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\ApplicationHost\ApplicationHost.d.ts" />
-/// <reference path="..\..\..\..\SDL.Client\SDL.Client.Core\Types\Url.d.ts" />
-/// <reference path="..\..\..\..\SDL.Client\SDL.Client.UI.Core.Knockout\Libraries\knockout\knockout.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
 
 module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 {
@@ -44,7 +44,7 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		navigationGroup?: INavigationGroup;
 		targetDisplay: INavigationItemTargetDisplay;
 		type: string;
-		translations?: {[lang: string]: string;};
+		translations?: AppHost.ITranslations;
 		external?: boolean;
 		contextual: KnockoutObservable<boolean>;
 		hidden: KnockoutObservable<boolean>;
@@ -59,7 +59,7 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		navigationItems: INavigationItem[];
 		applications: AppHost.IApplication[];
 		authenticationTargetDisplay?: KnockoutObservable<IAuthenticationTargetDisplay>;
-		translations?: {[lang: string]: string;};
+		translations?: AppHost.ITranslations;
 		shownItems: KnockoutObservable<number>;
 		applicationId?: string;
 	};
@@ -110,7 +110,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 
 			if (newAppId != prevAppId || newEntryId != prevEntryId || newSrc != prevSrc)
 			{
-				var newNavItem = getNavigationItemById(newEntryId, newAppId);
+				var newNavItem = getNavigationItemById(newEntryId, newAppId) || (newAppId ? getNavigationItemById(null, newAppId) : null);
+
 				if (newNavItem && !newNavItem.external && !newNavItem.hidden())
 				{
 					if (newNavItem.applicationEntryPoint)
@@ -775,9 +776,9 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		}
 	};
 
-	function buildNameTranslations(parent: Element): {[lang: string]: string;}
+	function buildNameTranslations(parent: Element): AppHost.ITranslations
 	{
-		var translations = {};
+		var translations = <AppHost.ITranslations>{};
 		var translationNodes = Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
 		for (var i = 0, len = translationNodes.length; i < len; i++)
 		{

@@ -9,7 +9,7 @@ SDL.Client.Net.WebRequest = function SDL$Client$Net$WebRequest()
 	this.httpVerb;
 	this.invokeCalled;
 	this.responseText;
-	this.requestContentType;
+	this.requestHeaders;
 	this.responseContentType;
 	this.hasError;
 	this.statusCode;
@@ -56,10 +56,18 @@ SDL.Client.Net.WebRequest.prototype =
 
 			if (!this.hasError)
 			{
-				if (this.requestContentType)
+				var isSetContentType = false;
+				if (this.requestHeaders)
 				{
-					this.xmlHttp.setRequestHeader("Content-Type", this.requestContentType);
+					for (var header in this.requestHeaders)
+					{
+						isSetContentType = isSetContentType || (header.toLowerCase() == "content-type");
+						this.xmlHttp.setRequestHeader(header, this.requestHeaders[header]);
+					}
+				}
 
+				if (isSetContentType)
+				{
 					if (this.xmlHttp.sendAsBinary)
 					{
 						// .send() adds "; charset=UTF-8" to Content-Type header in FF, .sendAsBinary() doesn't
@@ -128,7 +136,7 @@ SDL.Client.Net.WebRequest.prototype =
 	}
 };
 
-SDL.Client.Net.callWebMethod = function SDL$Client$Net$callWebMethod(url, body, httpVerb, contentType, sync, onSuccess, onFailure, onPartialLoad)
+SDL.Client.Net.callWebMethod = function SDL$Client$Net$callWebMethod(url, body, httpVerb, requestHeaders, sync, onSuccess, onFailure, onPartialLoad)
 {
 	if (typeof SDL != "undefined")	// sometimes breaks (in IE9) after iframe has been unloaded
 	{
@@ -156,7 +164,7 @@ SDL.Client.Net.callWebMethod = function SDL$Client$Net$callWebMethod(url, body, 
 		request.url = url;
 		request.body = body || "";
 		request.httpVerb = httpVerb;
-		request.requestContentType = contentType;
+		request.requestHeaders = requestHeaders;
 		request.synchronous = sync;
 		request.onComplete = SDL$Client$Net$callWebMethod$onComplete;
 		request.onPartialLoad = onPartialLoad;
@@ -173,12 +181,24 @@ SDL.Client.Net.getRequest = function SDL$Client$Net$getRequest(url, onSuccess, o
 
 SDL.Client.Net.putRequest = function SDL$Client$Net$putRequest(url, body, mimeType, onSuccess, onFailure, onPartialLoad)
 {
-	return this.callWebMethod(url, body, "PUT", mimeType, false, onSuccess, onFailure, onPartialLoad);
+	var headers;
+	if (mimeType)
+	{
+		headers = {"Content-Type": mimeType};
+	}
+
+	return this.callWebMethod(url, body, "PUT", headers, false, onSuccess, onFailure, onPartialLoad);
 };
 
 SDL.Client.Net.postRequest = function SDL$Client$Net$postRequest(url, body, mimeType, onSuccess, onFailure, onPartialLoad)
 {
-	return this.callWebMethod(url, body, "POST", mimeType, false, onSuccess, onFailure, onPartialLoad);
+	var headers;
+	if (mimeType)
+	{
+		headers = {"Content-Type": mimeType};
+	}
+
+	return this.callWebMethod(url, body, "POST", headers, false, onSuccess, onFailure, onPartialLoad);
 };
 
 SDL.Client.Net.deleteRequest = function SDL$Client$Net$deleteRequest(url, onSuccess, onFailure, onPartialLoad)

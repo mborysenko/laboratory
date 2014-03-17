@@ -1,3 +1,4 @@
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7,13 +8,12 @@ var __extends = this.__extends || function (d, b) {
 var SDL;
 (function (SDL) {
     (function (UI) {
-        /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
         (function (Controls) {
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Tooltip = (function (_super) {
                 __extends(Tooltip, _super);
-                function Tooltip() {
-                    _super.apply(this, arguments);
+                function Tooltip(element, options, jQuery) {
+                    _super.call(this, element, options, jQuery);
                     this.mouse = {
                         x: 0,
                         y: 0,
@@ -23,9 +23,8 @@ var SDL;
                     this.shown = false;
                 }
                 Tooltip.prototype.$initialize = function () {
-                    var _this = this;
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || jQuery;
+                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
                     var $element = this.$element = this.$(p.element);
 
                     var settings = this.settings = this.$.extend({
@@ -41,19 +40,12 @@ var SDL;
                         content: null
                     }, p.options);
 
+                    // set the content, either from the settings or from the 'tooltip' attribute
                     if (settings.content !== null) {
                         $element.attr("tooltip", settings.content);
                     }
 
-                    $element.mouseenter(function (e) {
-                        return _this.onMouseEnter(e);
-                    });
-                    $element.mouseleave(function () {
-                        return _this.onMouseLeave();
-                    });
-                    $element.mousemove(function (e) {
-                        return _this.onMouseMove(e);
-                    });
+                    $element.mouseenter(this.getDelegate(this.onMouseEnter)).mouseleave(this.getDelegate(this.onMouseLeave)).mousemove(this.getDelegate(this.onMouseMove));
 
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
                 };
@@ -63,6 +55,7 @@ var SDL;
 
                     this.settings = this.$.extend(this.settings, this.properties.options);
 
+                    // set the content, either from the settings or from the 'tooltip' attribute
                     if (this.settings.content !== null) {
                         this.$element.attr("tooltip", this.settings.content);
                     }
@@ -93,7 +86,7 @@ var SDL;
                         this.shown = false;
                         this.fireEvent("hide");
                         this.fireEvent("propertychange", { property: "shown", value: false });
-                        this.$(".ui-tooltip").remove();
+                        this.$(".sdl-tooltip").remove();
                     }
                 };
 
@@ -116,7 +109,7 @@ var SDL;
                             overflowElement = this.$element[0];
                         }
 
-                        if (overflowElement.offsetWidth < overflowElement.scrollWidth) {
+                        if (overflowElement.offsetWidth < overflowElement.scrollWidth || overflowElement.offsetHeight < overflowElement.scrollHeight) {
                             this.showTooltip();
                         }
                     }
@@ -150,7 +143,7 @@ var SDL;
                         var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
                         var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-                        this.$(".ui-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
+                        this.$(".sdl-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
                     }
 
                     this.mouse.movementTimer = setTimeout(function () {
@@ -166,6 +159,9 @@ var SDL;
                     var settings = this.settings;
                     var x = 0, y = 0;
                     var content = $element.attr("tooltip");
+                    if (content == null) {
+                        content = $element.text().replace("\n", "<br/>");
+                    }
 
                     // from https://developer.mozilla.org/en-US/docs/Web/API/window.scrollY
                     var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
@@ -190,10 +186,10 @@ var SDL;
                         Tooltip.shownTooltip.hideTooltip();
                     }
 
-                    $element.append('<div class="ui-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
+                    $element.append('<div class="sdl-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
 
                     if (settings.fitToScreen) {
-                        var $tooltip = this.$(".ui-tooltip");
+                        var $tooltip = this.$(".sdl-tooltip");
                         var position = $tooltip.position();
                         var $window = this.$(window);
                         if (typeof position !== "undefined" && position !== null) {
@@ -230,8 +226,11 @@ var SDL;
                 if (this.mouse.movementTimer) {
                     clearTimeout(this.mouse.movementTimer);
                 }
-                this.hideTooltip();
-                this.$ = this.$element = null;
+                if (this.$element) {
+                    this.$element.off("mouseenter", this.getDelegate(this.onMouseEnter)).off("mouseleave", this.getDelegate(this.onMouseLeave)).off("mousemove", this.getDelegate(this.onMouseMove));
+                    this.hideTooltip();
+                    this.$ = this.$element = null;
+                }
             });
 
             SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Tooltip", Tooltip);

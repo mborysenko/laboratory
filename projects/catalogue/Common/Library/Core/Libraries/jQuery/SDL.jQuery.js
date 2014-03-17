@@ -4,15 +4,14 @@ var SDL;
     SDL.jQuery;
 })(SDL || (SDL = {}));
 
-SDL.jQuery = jQuery.noConflict(true);
+SDL.jQuery = SDL.jQuery || jQuery.noConflict(true);
 
 (function ($) {
     if (!$.browser) {
         function uaMatch(ua) {
             ua = ua.toLowerCase();
 
-            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || (ua.indexOf("trident\/") > -1 && [null, "msie", (/(\brv\:([\w.]+))/.exec(ua) || [])[2]]);
-            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
+            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || (ua.indexOf("trident\/") > -1 && [null, "msie", (/(\brv\:([\w.]+))/.exec(ua) || [])[2]]) || ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
 
             return {
                 browser: match[1] || "",
@@ -29,6 +28,7 @@ SDL.jQuery = jQuery.noConflict(true);
             browser.version = matched.version;
         }
 
+        // Chrome is Webkit, but Webkit is also Safari.
         if (browser.chrome) {
             browser.webkit = true;
         } else if (browser.webkit) {

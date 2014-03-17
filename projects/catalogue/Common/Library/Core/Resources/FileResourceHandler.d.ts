@@ -7,16 +7,17 @@
 /// <reference path="../ConfigurationManager/ConfigurationManager.d.ts" />
 /// <reference path="ResourceLoader.d.ts" />
 declare module SDL.Client.Resources {
-    interface IPackageResourceDefinition extends Resources.IFileResourceDefinition {
+    interface IResourceGroupDefinition {
         name: string;
-        resourceGroups?: {
-            name: string;
-            files: string[];
-        }[];
+        files: string[];
+    }
+    interface IPackageResourceDefinition extends IFileResourceDefinition {
+        name: string;
+        resourceGroups?: IResourceGroupDefinition[];
         unpacked?: boolean;
         rendered?: boolean;
     }
-    interface IFileResource extends Resources.IFileResourceDefinition {
+    interface IFileResource extends IFileResourceDefinition {
         parentPackages?: IPackageResourceDefinition[];
         context?: Object;
         loading?: boolean;
@@ -36,18 +37,28 @@ declare module SDL.Client.Resources {
         };
         static corePath: string;
         static enablePackaging: boolean;
-        private static fileResources;
-        private static packages;
-        private static cultureResources;
-        private static callbacks;
-        private static errorcallbacks;
+        static fileResources: {
+            [index: string]: IFileResource;
+        };
+        static packages: {
+            [index: string]: IPackageResourceDefinition;
+        };
+        static cultureResources: {
+            [index: string]: IFileResource;
+        };
+        static callbacks: {
+            [index: string]: JQueryCallback;
+        };
+        static errorcallbacks: {
+            [index: string]: JQueryCallback;
+        };
         public _supports(url: string): boolean;
         public _render(file: IFileResource): void;
         public supports(url: string): boolean;
         public render(url: string): void;
-        static loadIfNotRendered(file: Resources.IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
-        static load(file: Resources.IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
-        static renderWhenLoaded(file: Resources.IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
+        static loadIfNotRendered(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
+        static load(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
+        static renderWhenLoaded(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
         static getTemplateResource(templateId: string): IFileResource;
         static registerPackage(resourcesPackage: IPackageResourceDefinition): void;
         static storeFileData(url: string, data: string, isShared?: boolean): IFileResource;

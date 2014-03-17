@@ -1,3 +1,5 @@
+/// <reference path="../../Libraries/jQuery/SDL.jQuery.ts" />
+/// <reference path="../FileResourceHandler.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -8,8 +10,6 @@ var SDL;
 (function (SDL) {
     (function (Client) {
         (function (Resources) {
-            /// <reference path="../../Libraries/jQuery/SDL.jQuery.ts" />
-            /// <reference path="../FileResourceHandler.ts" />
             (function (FileHandlers) {
                 var HtmlFileHandler = (function (_super) {
                     __extends(HtmlFileHandler, _super);
@@ -24,11 +24,11 @@ var SDL;
                         var templ = SDL.jQuery(file.data);
                         file.type = templ.attr("type");
                         file.template = templ.html();
-                        Resources.FileResourceHandler.templates[templ.attr("id")] = file;
+                        SDL.Client.Resources.FileResourceHandler.templates[templ.attr("id")] = file;
                     };
                     return HtmlFileHandler;
-                })(Resources.FileResourceHandler);
-                Resources.FileResourceHandler.registeredResourceHandlers.push(new HtmlFileHandler());
+                })(SDL.Client.Resources.FileResourceHandler);
+                SDL.Client.Resources.FileResourceHandler.registeredResourceHandlers.push(new HtmlFileHandler());
             })(Resources.FileHandlers || (Resources.FileHandlers = {}));
             var FileHandlers = Resources.FileHandlers;
         })(Client.Resources || (Client.Resources = {}));

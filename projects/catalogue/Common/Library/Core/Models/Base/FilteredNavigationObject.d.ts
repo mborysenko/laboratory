@@ -1,6 +1,6 @@
 ///<reference path="../IdentifiableObject.d.ts"/>
-///<reference Path="ListProvider.d.ts"/>
-///<reference Path="ListFilter.d.ts"/>
+///<reference path="ListProvider.d.ts"/>
+///<reference path="ListFilter.d.ts"/>
 
 declare module SDL.Client.Models.Base
 {

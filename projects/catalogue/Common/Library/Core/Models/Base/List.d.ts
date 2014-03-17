@@ -1,7 +1,7 @@
 ///<reference path="ListProvider.d.ts"/>
-///<reference Path="ListFilter.d.ts"/>
-///<reference Path="../UpdatableListObject.d.ts"/>
-///<reference Path="FilteredNavigationObject.d.ts"/>
+///<reference path="ListFilter.d.ts"/>
+///<reference path="../UpdatableListObject.d.ts"/>
+///<reference path="FilteredNavigationObject.d.ts"/>
 declare module SDL.Client.Models.Base
 {
     export interface IListProperties extends ILoadableObjectProperties, IFilterNavigationProperties

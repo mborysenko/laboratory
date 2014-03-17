@@ -9,15 +9,21 @@ declare module SDL.UI.Core.Renderers {
         render(templateContent: string, target: HTMLElement, options: any, callback?: () => void): void;
     }
     class ViewRenderer {
-        private static templateRenderers;
-        private static types;
-        private static createdViews;
+        static templateRenderers: {
+            [type: string]: ITemplateRenderer;
+        };
+        static types: {
+            [index: string]: Function;
+        };
+        static createdViews: {
+            [type: string]: any[];
+        };
         static registerTemplateRenderer(type: string, renderer: ITemplateRenderer): void;
         static getTemplateRenderer(type: string): ITemplateRenderer;
         static renderView(type: string, element: HTMLElement, settings?: any, callback?: (view: any) => void, errorcallback?: (error: string) => void): void;
-        static onViewCreated(view: SDL.Client.Types.OO.IInheritable): void;
+        static onViewCreated(view: Client.Types.OO.IInheritable): void;
         static disposeView(view: any): void;
-        static onViewDisposed(view: SDL.Client.Types.OO.IInheritable): void;
+        static onViewDisposed(view: Client.Types.OO.IInheritable): void;
         static getCreatedViewCounts(): {
             [type: string]: number;
         };
