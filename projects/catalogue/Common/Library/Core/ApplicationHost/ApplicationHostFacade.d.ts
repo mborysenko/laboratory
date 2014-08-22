@@ -13,6 +13,7 @@ declare module SDL.Client.ApplicationHost.ApplicationHostFacade {
         [id: string]: Application.IApplicationDomain;
     }): void;
     function resetApplicationSuite(): void;
+    function updateTargetDisplayUrl(url: string, caller?: ICallerSignature): void;
     function storeApplicationData(key: string, data: any): void;
     function storeApplicationSessionData(key: string, data: any): void;
     function getApplicationData(key: string): any;
@@ -27,4 +28,6 @@ declare module SDL.Client.ApplicationHost.ApplicationHostFacade {
         data: string;
     }) => void, onFailure: (error: string) => void): void;
     function getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure: (error: string) => void): void;
+    function triggerAnalyticsEvent(event: string, object: any): void;
+    function _expose(): void;
 }

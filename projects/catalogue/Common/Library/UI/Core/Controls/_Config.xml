@@ -5,13 +5,14 @@
 		<resourceGroup name="SDL.UI.Core.Controls">
 			<dependencies>
 				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.FocusableControlBase"/>
 			</dependencies>
 		</resourceGroup>
-		
+
 		<resourceGroup name="SDL.UI.Core.Controls.ControlBase">
 			<files>
 				<file name="Base.js"/>
-				<file name="jQuery.js"/>
 				<file name="ControlBase.js"/>
 			</files>
 			<dependencies>
@@ -21,6 +22,25 @@
 				<dependency name="SDL.UI.Core.Renderers.ControlRenderer"/>
 			</dependencies>
 		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Controls.JQuery">
+			<files>
+				<file name="jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Controls.FocusableControlBase">
+			<files>
+				<file name="FocusableControlBase.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+			</dependencies>
+		</resourceGroup>
+
 	</resourceGroups>
 
 </configuration>

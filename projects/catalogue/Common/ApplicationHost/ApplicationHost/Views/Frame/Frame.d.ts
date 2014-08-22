@@ -11,6 +11,8 @@ declare module SDL.Client.UI.ApplicationHost.Views {
         currentNavigationGroup: KnockoutObservable<ViewModels.Navigation.INavigationGroup>;
         navigationPaneShown: KnockoutObservable<boolean>;
         navigationPaneToggleShown: KnockoutComputed<boolean>;
+        isTargetDisplayOut: (targetDisplay: ViewModels.Navigation.ITargetDisplay) => boolean;
+        isTargetDisplaySlideAnimated: (targetDisplay: ViewModels.Navigation.ITargetDisplay, element: HTMLDivElement) => boolean;
         expandedNavigationGroup: KnockoutObservable<ViewModels.Navigation.INavigationGroup>;
         navigationItemTargetDisplays: ViewModels.Navigation.INavigationItemTargetDisplay[];
         authenticationTargetDisplays: ViewModels.Navigation.IAuthenticationTargetDisplay[];

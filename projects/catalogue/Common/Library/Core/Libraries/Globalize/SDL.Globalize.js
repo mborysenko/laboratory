@@ -54,12 +54,19 @@ var SDL;
             });
 
             SDL.Client.Event.EventRegister.addEventHandler(SDL.Client.Localization, "culturechange", function (e) {
-                if (_this._globalize) {
-                    _this.culture(e.data.culture);
-                }
-                SDL.Client.Resources.FileResourceHandler.updateCultureResources(function () {
+                if (SDL.Client.Resources && SDL.Client.Resources.FileResourceHandler) {
+                    SDL.Client.Resources.FileResourceHandler.updateCultureResources(function () {
+                        if (_this._globalize) {
+                            _this.culture(e.data.culture);
+                        }
+                        _this.fireEvent("culturechange", { culture: e.data.culture });
+                    });
+                } else {
+                    if (_this._globalize) {
+                        _this.culture(e.data.culture);
+                    }
                     _this.fireEvent("culturechange", { culture: e.data.culture });
-                });
+                }
             });
         }
         GlobalizeClass.prototype.initializeNoConflict = function () {
@@ -129,8 +136,8 @@ var SDL;
 
             this.cultures[cultureName] = SDL.jQuery.extend(true, {}, base, info, { messages: null }, { messages: SDL.jQuery.extend({}, prevMessages, info.messages) });
 
-            // Make the standard calendar the current culture if it's a new culture
-            if (isNew) {
+            // Make the standard calendar the current culture
+            if (info && info.calendars && info.calendars.standard) {
                 this.cultures[cultureName].calendar = this.cultures[cultureName].calendars.standard;
             }
         };

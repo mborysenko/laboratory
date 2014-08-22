@@ -19,7 +19,9 @@ declare module SDL.Client.Models.Base
 		setChanged(changeEventData?: any): void;
 		isChanged(): boolean;
 		canSave(): boolean;
+		collectData(): void;
 		save(): boolean;
+		validate(): boolean;
 		isSaving(): boolean;
 		properties: IEditableItemProperties;
 		_setSaving(): void;

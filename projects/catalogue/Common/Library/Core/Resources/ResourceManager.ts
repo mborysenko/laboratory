@@ -91,7 +91,7 @@ module SDL.Client.Resources
 
 		readConfiguration():void
 			{
-				var config = Configuration.ConfigurationManager.configuration;
+				var config: Element = Configuration.ConfigurationManager.configuration;
 
 				FileResourceHandler.corePath = Configuration.ConfigurationManager.corePath;
 				FileResourceHandler.enablePackaging = Configuration.ConfigurationManager.getAppSetting("debug") != "true";
@@ -109,88 +109,328 @@ module SDL.Client.Resources
 				}
 				Configuration.ConfigurationManager.configurationFiles = null;
 
-				SDL.jQuery.each(Xml.selectNodes(config, "//resourceGroups[parent::configuration and resourceGroup]"), (index: number, resourceGroupsElement: Element) =>
+				// traversing xml rather than using xpath, for performance optimization
+				var extensions: {[group: string]: string[];} = {};		// collections populated by extensions configuration
+				var dependencies: {[group: string]: string[];} = {};	// collections populated by extensions configuration
+				var packageResourcesToRegister: IPackageResourceDefinition[] = [];
+
+				var processConfigurationElement = (configuration: Element, baseUrl: string, version: string, locales: {[locale: string]: boolean;}) =>
 				{
-					var appVersionNodes =  Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-					var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+					baseUrl = configuration.getAttribute("baseUrl") || baseUrl;
 
-					var baseUrlNodes =  Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/@baseUrl");
-					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
-
-					SDL.jQuery.each(Xml.selectNodes(resourceGroupsElement, "resourceGroup"), (index: number, resourceGroupElement: Element) =>
+					var childNode: Element = <Element>configuration.firstChild;
+					while (childNode)
 					{
-						var name = resourceGroupElement.getAttribute("name");
-						var resourceGroup: IResourceGroupOptions = { name: name, files: [], dependencies: [], extensions: [] };
-					
-						SDL.jQuery.each(Xml.selectNodes(resourceGroupElement, "files/file[@name]"), (index: number, fileElement: Element) =>
+						if (childNode.nodeType == 1 && !childNode.namespaceURI)
+						{
+							switch (Xml.getLocalName(childNode))
+							{
+								case "appSettings":
+									version = getVersionSetting(childNode);
+									break;
+								case "locales":
+									locales = getSupportedLocales(childNode);
+									break;
+							}
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+
+					childNode = <Element>configuration.firstChild;
+					while (childNode)
+					{
+						if (childNode.nodeType == 1 && !childNode.namespaceURI)
+						{
+							switch (Xml.getLocalName(childNode))
+							{
+								case "appSettings":
+									break;
+								case "resourceGroups":
+									processResourceGroupsElement(childNode, baseUrl, version, locales);
+									break;
+								case "extensions":
+									processExtensionsElement(childNode);
+									break;
+								case "packages":
+									processPackagesElement(childNode, baseUrl, version);
+									break;
+								case "configuration":
+									processConfigurationElement(childNode, baseUrl, version, locales);
+									break;
+								case "include":
+									processIncludedConfiguration(childNode, baseUrl, version, locales);
+									break;
+									
+							}
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+				};
+
+				var processIncludedConfiguration = (node: Element, baseUrl: string, appVersion: string, locales: {[locale: string]: boolean;}) =>
+				{
+					var childNode: Element = <Element>node.firstChild;
+					while (childNode)
+					{
+						if (childNode.nodeType == 1 && !childNode.namespaceURI)
+						{
+							switch (Xml.getLocalName(childNode))
+							{
+								case "configuration":
+									processConfigurationElement(childNode, baseUrl, appVersion, locales);
+									break;
+								case "include":
+									processIncludedConfiguration(childNode, baseUrl, appVersion, locales);
+									break;
+							}
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+				};
+
+				var getVersionSetting = (settings: Node) =>
+				{
+					var childNode: Element = <Element>settings.firstChild;
+					while (childNode)
+					{
+						if (childNode.nodeType == 1 &&
+							Xml.getLocalName(childNode) == "setting" && childNode.getAttribute("name") == "version" &&
+							!childNode.namespaceURI)
+						{
+							return childNode.getAttribute("value");
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+				};
+
+				var getSupportedLocales = (settings: Node) =>
+				{
+					var childNode: Element = <Element>settings.firstChild;
+					var locales: {[locale: string]: boolean;} = {};
+					while (childNode)
+					{
+						if (childNode.nodeType == 1 && !childNode.namespaceURI && Xml.getLocalName(childNode) == "locale")
+						{
+							locales[Xml.getInnerText(childNode).trim().toLowerCase()] = true;
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+					return locales;
+				};
+
+				var processResourceGroupsElement = (resourceGroups: Element, baseUrl: string, appVersion: string, locales: {[locale: string]: boolean;}) =>
+				{
+					var resourceGroup: Element = <Element>resourceGroups.firstChild;
+					while (resourceGroup)
+					{
+						if (resourceGroup.nodeType == 1 && Xml.getLocalName(resourceGroup) == "resourceGroup" && !resourceGroup.namespaceURI)
+						{
+							processResourceGroupElement(resourceGroup, baseUrl, appVersion, locales);
+						}
+						resourceGroup = <Element>resourceGroup.nextSibling;
+					}
+				};
+
+				var processResourceGroupElement = (resourceGroupElement: Element, baseUrl: string, appVersion: string, locales: {[locale: string]: boolean;}) =>
+				{
+					var name: string = resourceGroupElement.getAttribute("name");
+					var resourceGroup: IResourceGroupOptions = { name: name, files: [],
+																dependencies: dependencies[name] || (dependencies[name] = []),
+																extensions: extensions[name] || (extensions[name] = []) };
+					var childNode: Element = <Element>resourceGroupElement.firstChild;
+					while (childNode)
+					{
+						if (childNode.nodeType == 1 && !childNode.namespaceURI)
+						{
+							switch (Xml.getLocalName(childNode))
+							{
+								case "files":
+									processResourceGroupFilesElement(childNode, resourceGroup, baseUrl, appVersion, locales);
+									break;
+								case "dependencies":
+									processResourceGroupDependenciesElement(childNode, resourceGroup);
+									break;
+							}
+						}
+						childNode = <Element>childNode.nextSibling;
+					}
+					this.newResourceGroup(resourceGroup);
+				};
+
+				var processResourceGroupFilesElement = (resourceGroupFilesElement: Element,
+														resourceGroup: IResourceGroupOptions,
+														baseUrl: string,
+														appVersion: string,
+														locales: {[locale: string]: boolean;}) =>
+				{
+					var fileElement: Element = <Element>resourceGroupFilesElement.firstChild;
+					while (fileElement)
+					{
+						if (fileElement.nodeType == 1 && Xml.getLocalName(fileElement) == "file" && !fileElement.namespaceURI)
 						{
 							var modification = fileElement.getAttribute("modification");
 							var url = fileElement.getAttribute("name");
 							var file = {
 								url: url.indexOf("~/") == 0 ? url : Types.Url.combinePath(baseUrl, url),
-								version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification)
+								version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
+								locales: locales
 							};
 							resourceGroup.files.push(file);
-						});
+						}
+						fileElement = <Element>fileElement.nextSibling;
+					}
+				};
 
-						SDL.jQuery.each(Xml.selectNodes(resourceGroupElement, "dependencies/dependency/@name"), (index: number, dependency: Attr) =>
-						{
-							resourceGroup.dependencies.push((<Attr>dependency).value);
-						});
-
-						SDL.jQuery.each(Xml.selectNodes(config,
-								"//configuration/extensions/resourceExtension[@for = \"" + name + "\"]/insert[@position = 'before']/@name"),
-							(index: number, dependency: Attr) =>
-						{
-							resourceGroup.dependencies.push((<Attr>dependency).value);
-						});
-
-						SDL.jQuery.each(Xml.selectNodes(config,
-								"//configuration/extensions/resourceExtension[@for = \"" + name + "\"]/insert[not(@position) or @position = 'after']/@name"),
-							(index: number, extension: Attr) =>
-						{
-							resourceGroup.extensions.push((<Attr>extension).value);
-						});
-
-						this.newResourceGroup(resourceGroup);
-					});
-				});
-
-				SDL.jQuery.each(Xml.selectNodes(config, "//packages[parent::configuration and package]"), (index: number, packagesNode: Element) =>
+				var processResourceGroupDependenciesElement = (resourceGroupDependenciesElement: Element,
+																resourceGroup: IResourceGroupOptions) =>
 				{
-					var appVersionNodes =  Xml.selectNodes(packagesNode, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-					var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
-
-					var baseUrlNodes =  Xml.selectNodes(packagesNode, "ancestor::configuration/@baseUrl");
-					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
-
-					SDL.jQuery.each(Xml.selectNodes(packagesNode, "package"), (index: number, packageElement: Element) =>
+					var dependencyElement: Element = <Element>resourceGroupDependenciesElement.firstChild;
+					while (dependencyElement)
 					{
-						var url = packageElement.getAttribute("src");
-						var modification = packageElement.getAttribute("modification");
-
-						var resourcesPackage:IPackageResourceDefinition = {
-							name: packageElement.getAttribute("name"),
-							url: url.indexOf("~/") == 0 ? url : Types.Url.combinePath(baseUrl, url),
-							version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
-							resourceGroups: []};
-
-						SDL.jQuery.each(Xml.selectNodes(packageElement, ".//resourceGroups/resourceGroup"), (index: number, groupElement: Element) =>
+						if (dependencyElement.nodeType == 1 && Xml.getLocalName(dependencyElement) == "dependency" && !dependencyElement.namespaceURI)
 						{
-							var groupName = groupElement.getAttribute("name");
-							var files: string[] = [];
-							resourcesPackage.resourceGroups.push({name: groupName, files: files});
-							SDL.jQuery.each(this.registeredResources[groupName].files, (index: number, file: IFileResourceDefinition) => 
-								{
-									if (file.url.indexOf("{CULTURE}") == -1)	// culture files are not included in packages
+							resourceGroup.dependencies.push(dependencyElement.getAttribute("name"));
+						}
+						dependencyElement = <Element>dependencyElement.nextSibling;
+					}
+				}
+
+				var processExtensionsElement = (extensions: Element) =>
+				{
+					var resourceExtension: Element = <Element>extensions.firstChild;
+					while (resourceExtension)
+					{
+						if (resourceExtension.nodeType == 1 && Xml.getLocalName(resourceExtension) == "resourceExtension" && !resourceExtension.namespaceURI)
+						{
+							processResourceExtensionElement(resourceExtension);
+						}
+						resourceExtension = <Element>resourceExtension.nextSibling;
+					}
+				};
+
+				var processResourceExtensionElement = (resourceExtension: Element) =>
+				{
+					var forResource = resourceExtension.getAttribute("for");
+					var extension: Element = <Element>resourceExtension.firstChild;
+					while (extension)
+					{
+						if (extension.nodeType == 1 && !extension.namespaceURI)
+						{
+							switch (Xml.getLocalName(extension))
+							{
+								case "insert":
+									var extensionName = extension.getAttribute("name");
+									switch (extension.getAttribute("position"))
 									{
-										files.push(file.url);
+										case "before":
+											if (!dependencies[forResource])
+											{
+												dependencies[forResource] = [extensionName];
+											}
+											else
+											{
+												dependencies[forResource].push(extensionName);
+											}
+											break;
+										//case "after":
+										//case null:
+										default:
+											if (!extensions[forResource])
+											{
+												extensions[forResource] = [extensionName];
+											}
+											else
+											{
+												extensions[forResource].push(extensionName);
+											}
+											break;
 									}
-								});
-						});
-						FileResourceHandler.registerPackage(resourcesPackage);
-					});
-				});
+									break;
+							}
+						}
+						extension = <Element>extension.nextSibling;
+					}
+				};
+
+				var processPackagesElement = (packages: Element, baseUrl: string, appVersion: string) =>
+				{
+					var packageElement: Element = <Element>packages.firstChild;
+					while (packageElement)
+					{
+						if (packageElement.nodeType == 1 && Xml.getLocalName(packageElement) == "package" && !packageElement.namespaceURI)
+						{
+							processPackageElement(packageElement, baseUrl,appVersion);
+						}
+						packageElement = <Element>packageElement.nextSibling;
+					}
+				};
+
+				var processPackageElement = (packageElement: Element, baseUrl: string, appVersion: string) =>
+				{
+					var url = packageElement.getAttribute("src");
+					var modification = packageElement.getAttribute("modification");
+
+					var resourcesPackage: IPackageResourceDefinition = {
+						name: packageElement.getAttribute("name"),
+						url: url.indexOf("~/") == 0 ? url : Types.Url.combinePath(baseUrl, url),
+						version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
+						resourceGroups: []};
+
+					var packageResourceGroupsElement: Element = <Element>packageElement.firstChild;
+					while (packageResourceGroupsElement)
+					{
+						if (packageResourceGroupsElement.nodeType == 1 && Xml.getLocalName(packageResourceGroupsElement) == "resourceGroups" && !packageResourceGroupsElement.namespaceURI)
+						{
+							processPackageResourceGroupsElement(packageResourceGroupsElement, resourcesPackage);
+						}
+						packageResourceGroupsElement = <Element>packageResourceGroupsElement.nextSibling;
+					}
+					packageResourcesToRegister.push(resourcesPackage);
+				}
+
+				var processPackageResourceGroupsElement = (resourceGroupsElement: Element, resourcesPackage: IPackageResourceDefinition) =>
+				{
+					var packageResourceGroup: Element = <Element>resourceGroupsElement.firstChild;
+					while (packageResourceGroup)
+					{
+						if (packageResourceGroup.nodeType == 1 && Xml.getLocalName(packageResourceGroup) == "resourceGroup" && !packageResourceGroup.namespaceURI)
+						{
+							resourcesPackage.resourceGroups.push({name: packageResourceGroup.getAttribute("name"), files: []});
+						}
+						packageResourceGroup = <Element>packageResourceGroup.nextSibling;
+					}
+				}
+
+				processConfigurationElement(config, "", "", null);
+
+				// process and register collected packages
+				for (var i = 0, len = packageResourcesToRegister.length; i < len; i++)
+				{
+					var packageResource = packageResourcesToRegister[i];
+					var resourceGroups = packageResource.resourceGroups;
+					for (var j = 0, lenj = resourceGroups.length; j < lenj; j++)
+					{
+						var resourceGroup = resourceGroups[j];
+						var resources = this.registeredResources[resourceGroup.name];
+						if (resources)
+						{
+							for (var k = 0, lenk = resources.files.length; k < lenk; k++)
+							{
+								var url = resources.files[k].url;
+								if (url.indexOf("{CULTURE}") == -1)	// culture files are not included in packages
+								{
+									resourceGroup.files.push(url);
+								}
+							}
+						}
+						else
+						{
+							throw Error("Unknown resource group name '" + resourceGroup.name + "' encountered in package '" + packageResource.name + "'.");
+						}
+					}
+
+					FileResourceHandler.registerPackage(packageResource);
+				}
 			}
 
 		storeFileData(url: string, data: string, isShared?: boolean): void
@@ -203,40 +443,54 @@ module SDL.Client.Resources
 			FileResourceHandler.registerPackageRendered(packageName, url, data);
 		}
 
-		private _resolve(resourceGroupName: string, resources?: string[]): string[]
+		private _resolve(resourceGroupName: string, resources?: string[], callstack?: string[]): string[]
 			{
 				if (!resources)
 				{
 					resources = [];
 				}
 
-				var resourceSettings = this.registeredResources[resourceGroupName];
-				if (!resourceSettings)
+				if (!callstack)
 				{
-					throw Error("Resource group with name '" + resourceGroupName + "' does not exist");
-				}
-
-				if (resourceSettings.dependencies && resourceSettings.dependencies.length)
-				{
-					SDL.jQuery.each(
-							(this.mode & ResourceManagerMode.REVERSE)
-								? resourceSettings.dependencies.reverse()
-								: resourceSettings.dependencies,
-							(index: number, value: string) => this._resolve(value, resources));
+					callstack = [];
 				}
 
 				if (resources.indexOf(resourceGroupName) == -1)
 				{
-					resources.push(resourceGroupName);
-				}
+					var resourceSettings = this.registeredResources[resourceGroupName];
+					if (!resourceSettings)
+					{
+						throw Error("Resource group with name '" + resourceGroupName + "' does not exist");
+					}
 
-				if (resourceSettings.extensions && resourceSettings.extensions.length)
-				{
-					SDL.jQuery.each(
-						(this.mode & ResourceManagerMode.REVERSE)
-							? resourceSettings.extensions.reverse()
-							: resourceSettings.extensions,
-						(index: number, value: string) => this._resolve(value, resources));
+					if (callstack.indexOf(resourceGroupName) != -1)
+					{
+						throw Error("Circular dependency detected: '" + callstack.join(" -> ") + " -> " + resourceGroupName);
+					}
+
+					if (resourceSettings.dependencies && resourceSettings.dependencies.length)
+					{
+						callstack = callstack.concat(resourceGroupName);
+						SDL.jQuery.each(
+								(this.mode & ResourceManagerMode.REVERSE)
+									? resourceSettings.dependencies.reverse()
+									: resourceSettings.dependencies,
+								(index: number, value: string) => this._resolve(value, resources, callstack));
+					}
+
+					if (resources.indexOf(resourceGroupName) == -1)
+					{
+						resources.push(resourceGroupName);
+
+						if (resourceSettings.extensions && resourceSettings.extensions.length)
+						{
+							SDL.jQuery.each(
+								(this.mode & ResourceManagerMode.REVERSE)
+									? resourceSettings.extensions.reverse()
+									: resourceSettings.extensions,
+								(index: number, value: string) => this._resolve(value, resources));
+						}
+					}
 				}
 				
 				return resources;

@@ -15,7 +15,7 @@ var SDL;
                     }
                     ControlRenderer.renderControl = function (type, element, settings, callback, errorcallback) {
                         if (element) {
-                            SDL.jQuery(element).data("control-create", true);
+                            SDL.jQuery(element).data("control-create", true); // setting data to a value to be able to detect it when the element is removed from the DOM
                         }
 
                         SDL.Client.Resources.ResourceManager.load(type, function () {
@@ -54,9 +54,6 @@ var SDL;
                     };
 
                     ControlRenderer.disposeControl = function (control) {
-                        if (control.getElement) {
-                            SDL.jQuery(control.getElement()).removeData();
-                        }
                         if (control.dispose) {
                             control.dispose();
                         }

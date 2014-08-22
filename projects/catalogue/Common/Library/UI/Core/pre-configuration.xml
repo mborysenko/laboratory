@@ -10,18 +10,21 @@
 
 	<include src="Bootstrap/_Config.xml" />
 	<include src="Controls/_Config.xml"/>
+	<include src="Css/_Config.xml"/>
 	<include src="Event/_Config.xml"/>
 	<include src="Utils/_Config.xml"/>
 	<include src="Views/_Config.xml"/>
 	<include src="Renderers/_Config.xml"/>
 	<include src="Styles/_Config.xml"/>
+    <include src="Libraries/Polyfills/_Config.xml"/>
 
 	<include src="packages.xml"/>
 
 	<resourceGroups>
 		<resourceGroup name="SDL.UI.Core">
 			<dependencies>
-				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+				<dependency name="SDL.UI.Core.Controls"/>
+				<dependency name="SDL.UI.Core.Css"/>
 				<dependency name="SDL.UI.Core.Event"/>
 				<dependency name="SDL.UI.Core.Renderers"/>
 				<dependency name="SDL.UI.Core.Utils"/>

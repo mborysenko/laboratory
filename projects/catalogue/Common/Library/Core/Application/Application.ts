@@ -33,6 +33,7 @@ module SDL.Client.Application
 	export var ApplicationHost: IApplicationHost;
 	export var useHostedLibraryResources: boolean = true;
 	export var libraryVersion: string;
+	export var sharedSettings: any;
 	export var isInitialized: boolean = false;
 
 	var _isInitialized = false;
@@ -361,36 +362,36 @@ module SDL.Client.Application
 			CrossDomainMessaging.addTrustedDomain("*");
 
 			// notify the host the app is loaded, and see if the library version can be served by the host
-			var interval: number;
-			if (window.console)
+			var timeout: number = window.setTimeout(function()
 			{
-				var intervalCount = 0;
-				interval = window.setInterval(function()
-					{
-						intervalCount++;
-						console.log("NO REPLY FROM HOST AFTER " + intervalCount + " SECOND(S).");
-						if (intervalCount >= 30)
-						{
-							window.clearInterval(interval);
-							interval = null;
-						}
-					}, 1000);
-			}
+				timeout = null;
 
-			var host = new ApplicationHostProxyClass();
+				if (window.console)
+				{
+					console.log("No reply from application host after 1 second -> setting isHosted = false");
+				}
+
+				Application.isHosted = false;
+				Application.useHostedLibraryResources = false;
+				isInitialized = _isInitialized = true;
+				callbacks();
+			}, 1000);
+
+			var host: IApplicationHost = new ApplicationHostProxyClass();
 			var onUnload = () =>
 				{
 					host.applicationEntryPointUnloaded();
 					window.removeEventListener("unload", onUnload);
+					window.removeEventListener("hashchange", updateTargetDisplayUrl);
 				};
 			window.addEventListener("unload", onUnload);
 
 			host.applicationEntryPointLoaded(Application.libraryVersion, function(data: IApplicationHostData)
 				{
-					if (interval)
+					if (timeout)
 					{
-						window.clearInterval(interval);
-						interval = null;
+						window.clearTimeout(timeout);
+						timeout = null;
 					}
 
 					applicationHostUrl = sessionStorage["appHost-url"] = data.applicationHostUrl;
@@ -419,13 +420,23 @@ module SDL.Client.Application
 					Application.ApplicationHost = host;
 					Application.isHosted = true;
 
+					if (host.isTrusted)
+					{
+						Application.sharedSettings = data.sharedSettings;
+					}
+
 					if (!host.isTrusted || !data.libraryVersionSupported)
 					{
 						Application.useHostedLibraryResources = false;
 					}
 
-					isInitialized = _isInitialized = true;
-					callbacks();
+					updateTargetDisplayUrl();
+
+					if (!isInitialized)
+					{
+						isInitialized = _isInitialized = true;
+						callbacks();
+					}
 				});
 		}
 		else if (defaultApplicationHostUrl)	// only redirect if defaultApplicationHostUrl is specified, regardless of the applicationHostUrl stored in sessionStorage
@@ -449,4 +460,13 @@ module SDL.Client.Application
 			callbacks();
 		}
 	};
+
+	var updateTargetDisplayUrl = () =>
+		{
+			if (Application.isHosted && Application.ApplicationHost.isTrusted && Application.ApplicationHost.isSupported("updateTargetDisplayUrl"))
+			{
+				Application.ApplicationHost.updateTargetDisplayUrlUnsecure(window.location.href);
+			}
+		};
+	window.addEventListener("hashchange", updateTargetDisplayUrl);
 }

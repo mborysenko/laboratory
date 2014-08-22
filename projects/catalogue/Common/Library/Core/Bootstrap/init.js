@@ -5,8 +5,8 @@ var SDL;
     /// <reference path="../Localization/Localization.ts" />
     /// <reference path="../Resources/ResourceManager.ts" />
     (function (Client) {
-        var Appl = SDL.Client.Application;
-        var Conf = SDL.Client.Configuration;
+        var Appl = Client.Application;
+        var Conf = Client.Configuration;
         var cm = Conf.ConfigurationManager;
         var pageConfigurationElement;
         var corePackageKey;
@@ -22,40 +22,42 @@ var SDL;
                 Appl.libraryVersion = cm.coreVersion; // use 'coreVersion' setting if configured
             }
 
-            var hostingElement = SDL.Client.Xml.selectSingleNode(Conf.ConfigurationManager.configuration, "//configuration/hosting");
+            var hostingElement = Client.Xml.selectSingleNode(Conf.ConfigurationManager.configuration, "//configuration/hosting");
             if (hostingElement) {
-                Appl.defaultApplicationHostUrl = SDL.Client.Xml.getInnerText(hostingElement, "defaultApplicationHostUrl");
-                Appl.defaultApplicationEntryPointId = SDL.Client.Xml.getInnerText(hostingElement, "defaultApplicationEntryPointId");
-                Appl.defaultApplicationSuiteId = SDL.Client.Xml.getInnerText(hostingElement, "defaultApplicationSuiteId");
-                Appl.useHostedLibraryResources = !SDL.Client.Xml.selectSingleNode(hostingElement, "useHostedLibraryResources[.='false' or .='0']");
+                Appl.defaultApplicationHostUrl = Client.Xml.getInnerText(hostingElement, "defaultApplicationHostUrl");
+                Appl.defaultApplicationEntryPointId = Client.Xml.getInnerText(hostingElement, "defaultApplicationEntryPointId");
+                Appl.defaultApplicationSuiteId = Client.Xml.getInnerText(hostingElement, "defaultApplicationSuiteId");
+                Appl.useHostedLibraryResources = !Client.Xml.selectSingleNode(hostingElement, "useHostedLibraryResources[.='false' or .='0']");
 
                 var map = function (nodes, handler) {
                     var result = [];
                     for (var i = 0, len = nodes.length; i < len; i++) {
-                        result.push(handler ? handler(SDL.Client.Xml.getInnerText(nodes[i])) : SDL.Client.Xml.getInnerText(nodes[i]));
+                        result.push(handler ? handler(Client.Xml.getInnerText(nodes[i])) : Client.Xml.getInnerText(nodes[i]));
                     }
                     return result;
                 };
 
-                Appl.trustedApplicationHostDomains = map(SDL.Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplicationHostDomains/domain"), function (domain) {
-                    return SDL.Client.Types.Url.getAbsoluteUrl(domain);
+                Appl.trustedApplicationHostDomains = map(Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplicationHostDomains/domain"), function (domain) {
+                    return Client.Types.Url.getAbsoluteUrl(domain);
                 });
 
-                Appl.trustedApplications = map(SDL.Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplications/applicationId"));
+                Appl.trustedApplications = map(Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplications/applicationId"));
 
-                Appl.trustedApplicationDomains = map(SDL.Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplicationDomains/domain"), function (domain) {
-                    return SDL.Client.Types.Url.getAbsoluteUrl(domain);
+                Appl.trustedApplicationDomains = map(Client.Xml.selectNodes(hostingElement, "restrictions/trustedApplicationDomains/domain"), function (domain) {
+                    return Client.Types.Url.getAbsoluteUrl(domain);
                 });
             }
 
             // Appl.initialize(), when completed, will unblock ConfigurationManager, allow it to load library configuration resources
             Appl.initialize(function () {
+                var i;
+                var len;
                 var packagesToLoad = [];
                 if (!SDL.Client.Resources) {
                     SDL.Client.Resources = {};
                 }
 
-                var packages = SDL.Client.Resources.preloadPackages || (SDL.Client.Resources.preloadPackages = {});
+                var packages = Client.Resources.preloadPackages || (Client.Resources.preloadPackages = {});
                 var corePackageUrl = "~/Library/Core/Packages/SDL.Client.Core.js";
                 corePackageKey = corePackageUrl.toLowerCase();
                 if (!packages[corePackageKey]) {
@@ -63,36 +65,45 @@ var SDL;
                 }
 
                 if (cm.getAppSetting("debug") != "true") {
-                    var preloadPackages = SDL.Client.Xml.selectNodes(pageConfigurationElement, "preloadPackages/package[@url]");
-                    if (preloadPackages.length) {
-                        var baseUrlNodes = SDL.Client.Xml.selectNodes(pageConfigurationElement, "ancestor::configuration/@baseUrl");
-                        var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                    var pageConfElements = [pageConfigurationElement];
 
-                        var appVersionNodes = SDL.Client.Xml.selectNodes(pageConfigurationElement, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-                        var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+                    var nodes = cm.getCurrentPageExtensionConfigurationNodes();
+                    for (i = 0, len = nodes.length; i < len; i++) {
+                        pageConfElements.push(nodes[i]);
+                    }
 
-                        for (var i = 0, len = preloadPackages.length; i < len; i++) {
-                            var packageElement = preloadPackages[i];
-                            var url = packageElement.getAttribute("url");
-                            if (url.indexOf("~/") != 0) {
-                                url = SDL.Client.Types.Url.combinePath(baseUrl, url);
-                            }
-                            var key = url.toLowerCase();
+                    for (i = 0, len = pageConfElements.length; i < len; i++) {
+                        var preloadPackages = Client.Xml.selectNodes(pageConfElements[i], "preloadPackages/package[@url]");
+                        if (preloadPackages.length) {
+                            var baseUrlNodes = Client.Xml.selectNodes(pageConfElements[i], "ancestor::configuration/@baseUrl");
+                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
-                            if (!packages[key]) {
-                                var version = url.indexOf("~/") == 0 ? Appl.libraryVersion : appVersion;
-                                var modification = packageElement.getAttribute("modification") || "";
+                            var appVersionNodes = Client.Xml.selectNodes(pageConfElements[i], "ancestor::configuration/appSettings/setting[@name='version']/@value");
+                            var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
 
-                                packagesToLoad.push(packages[key] = {
-                                    packageName: packageElement.getAttribute("name"),
-                                    url: url,
-                                    version: (version && modification) ? (version + "." + modification) : (version || modification) });
+                            for (var j = 0, lenj = preloadPackages.length; j < lenj; j++) {
+                                var packageElement = preloadPackages[j];
+                                var url = packageElement.getAttribute("url");
+                                if (url.indexOf("~/") != 0) {
+                                    url = Client.Types.Url.combinePath(baseUrl, url);
+                                }
+                                var key = url.toLowerCase();
+
+                                if (!packages[key]) {
+                                    var version = url.indexOf("~/") == 0 ? Appl.libraryVersion : appVersion;
+                                    var modification = packageElement.getAttribute("modification") || "";
+
+                                    packagesToLoad.push(packages[key] = {
+                                        packageName: packageElement.getAttribute("name"),
+                                        url: url,
+                                        version: (version && modification) ? (version + "." + modification) : (version || modification) });
+                                }
                             }
                         }
                     }
                 }
 
-                for (var i = 0, len = packagesToLoad.length; i < len; i++) {
+                for (i = 0, len = packagesToLoad.length; i < len; i++) {
                     (function (pckg) {
                         if (Appl.isHosted && Appl.useHostedLibraryResources && pckg.url.indexOf("~/") == 0) {
                             Appl.ApplicationHost.getCommonLibraryResource({ url: pckg.url, version: pckg.version }, Appl.libraryVersion, function (data) {
@@ -124,7 +135,7 @@ var SDL;
                                 }
                             };
 
-                            xhr.open("GET", (pckg.url.indexOf("~/") == 0 ? SDL.Client.Types.Url.combinePath(cm.corePath, pckg.url.slice(2)) : pckg.url) + (pckg.version ? "?" + pckg.version : ""), true);
+                            xhr.open("GET", (pckg.url.indexOf("~/") == 0 ? Client.Types.Url.combinePath(cm.corePath, pckg.url.slice(2)) : pckg.url) + (pckg.version ? "?" + pckg.version : ""), true);
                             xhr.send();
                         }
                     })(packagesToLoad[i]);
@@ -137,32 +148,35 @@ var SDL;
         }
 
         function initApplication() {
-            if (cm.isInitialized && SDL.Client.Resources && SDL.Client.Resources.preloadPackages) {
-                var corePackage = SDL.Client.Resources.preloadPackages[corePackageKey];
+            if (cm.isInitialized && Client.Resources && Client.Resources.preloadPackages) {
+                var corePackage = Client.Resources.preloadPackages[corePackageKey];
                 var finalizeInitialization = corePackage && corePackage.data != null;
                 if (finalizeInitialization) {
                     var globalEval = eval;
-                    var corePackageUrl = Appl.isHosted && Appl.useHostedLibraryResources && corePackage.url.indexOf("~/") == 0 ? SDL.Client.Types.Url.combinePath(SDL.Client.Application.applicationHostCorePath, corePackage.url.slice(2)) : SDL.Client.Types.Url.getAbsoluteUrl(corePackage.url.indexOf("~/") == 0 ? SDL.Client.Types.Url.combinePath(cm.corePath, corePackage.url.slice(2)) : corePackage.url);
-                    SDL.Client.Resources.executingPackageUrl = corePackageUrl;
+                    var corePackageUrl = Appl.isHosted && Appl.useHostedLibraryResources && corePackage.url.indexOf("~/") == 0 ? Client.Types.Url.combinePath(Client.Application.applicationHostCorePath, corePackage.url.slice(2)) : Client.Types.Url.getAbsoluteUrl(corePackage.url.indexOf("~/") == 0 ? Client.Types.Url.combinePath(cm.corePath, corePackage.url.slice(2)) : corePackage.url);
                     globalEval(corePackage.data + "\n//@ sourceURL=" + corePackageUrl);
-                    SDL.Client.Resources.executingPackageUrl = null;
                 }
 
-                var rm = SDL.Client.Resources.ResourceManager;
+                var rm = Client.Resources.ResourceManager;
                 if (rm) {
-                    for (var key in SDL.Client.Resources.preloadPackages) {
-                        var pckg = SDL.Client.Resources.preloadPackages[key];
-                        if (pckg && pckg.data != null) {
-                            switch (pckg.packageName) {
-                                case "SDL.Client.Init":
-                                case "SDL.Client.Core":
-                                    rm.registerPackageRendered(pckg.packageName, pckg.url, pckg.data);
-                                    break;
-                                default:
-                                    rm.storeFileData(pckg.url, pckg.data, pckg.isShared);
-                                    break;
+                    for (var key in Client.Resources.preloadPackages) {
+                        var pckg = Client.Resources.preloadPackages[key];
+                        if (pckg) {
+                            if (pckg.data != null) {
+                                switch (pckg.packageName) {
+                                    case "SDL.Client.Init":
+                                    case "SDL.Client.Core":
+                                        rm.registerPackageRendered(pckg.packageName, pckg.url, pckg.data);
+                                        break;
+                                    default:
+                                        rm.storeFileData(pckg.url, pckg.data, pckg.isShared);
+                                        break;
+                                }
+                                Client.Resources.preloadPackages[key] = null;
+                            } else if (pckg.packageName == "SDL.Client.Init") {
+                                rm.registerPackageRendered(pckg.packageName, pckg.url);
+                                Client.Resources.preloadPackages[key] = null;
                             }
-                            SDL.Client.Resources.preloadPackages[key] = null;
                         }
                     }
                 }
@@ -170,7 +184,7 @@ var SDL;
                 if (finalizeInitialization) {
                     rm.registerPackageRendered("SDL.Client.Init"); // in case it was not registered as rendered
 
-                    SDL.Client.Localization.setCulture((Appl.isHosted && Appl.ApplicationHost.culture) || cm.getAppSetting("culture") || "en");
+                    Client.Localization.setCulture((Appl.isHosted && Appl.ApplicationHost.culture) || cm.getAppSetting("culture") || "en");
                     rm.readConfiguration();
 
                     window.document.title = pageConfigurationElement.getAttribute("title") || "";
@@ -178,10 +192,10 @@ var SDL;
                     var resource = pageConfigurationElement.getAttribute("resource");
                     if (resource) {
                         rm.load(resource, function () {
-                            SDL.Client.Application.setApplicationReady();
+                            Client.Application.setApplicationReady();
                         });
                     } else {
-                        SDL.Client.Application.setApplicationReady();
+                        Client.Application.setApplicationReady();
                     }
                 }
             }

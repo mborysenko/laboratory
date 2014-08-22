@@ -1,6 +1,11 @@
 declare module SDL.Client.Types.OO
 {
 	var enableCustomInheritance: string;
+
+	function resolveInterface(namespace: string): any;
+	function enableInterface(object: any, interfaceName: string, args: any[]): void;
+	function enableInterface(object: any, interfaceName: string, args: IArguments): void;
+	function enableInterface(object: any, interfaceName: string): void;
 	function createInterface(interfaceName: string, implementation?: Function): Function;
 	function extendInterface(baseInterfaceName: string, newInterfaceName: string): void;
 	function implementsInterface(object: any, interfaceName: string): boolean;

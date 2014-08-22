@@ -485,7 +485,7 @@ SDL.Client.Types.OO.nonInheritable = function SDL$Client$Types$OO$nonInheritable
 				}
 			}
 
-			delegate = SDL.jQuery.proxy(method, this.getMainInterface());
+			delegate = method.bind(this.getMainInterface());
 			delegates.push({method: method, delegate: delegate});
 			return delegate;
 		}

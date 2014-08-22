@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.269" />
+    <setting name="version" value="1.4.0.1772" />
   </appSettings>
   <!-- SDL.Client core configuration -->
   <include src="../../Core/configuration.xml" />
@@ -27,12 +27,13 @@
         <resourceGroup name="SDL.UI.Core.Controls">
           <dependencies>
             <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.FocusableControlBase" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Controls.ControlBase">
           <files>
             <file name="Controls/Base.js" />
-            <file name="Controls/jQuery.js" />
             <file name="Controls/ControlBase.js" />
           </files>
           <dependencies>
@@ -41,6 +42,54 @@
             <dependency name="SDL.Client.Types.ObjectWithEvents" />
             <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
           </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Controls.JQuery">
+          <files>
+            <file name="Controls/jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Controls.FocusableControlBase">
+          <files>
+            <file name="Controls/FocusableControlBase.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Css/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Css">
+          <dependencies>
+            <dependency name="SDL.UI.Core.Css.Browser" />
+            <dependency name="SDL.UI.Core.Css.ZIndexManager" />
+            <dependency name="SDL.UI.Core.Css.TextInput" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Css.Browser">
+          <files>
+            <file name="Css/Css.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Types.Base" />
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Css.ZIndexManager">
+          <files>
+            <file name="Css/ZIndexManager.js" />
+          </files>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Css.TextInput">
+          <files>
+            <file name="Css/TextInput.css" />
+          </files>
         </resourceGroup>
       </resourceGroups>
     </configuration>
@@ -76,21 +125,9 @@
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
         <resourceGroup name="SDL.UI.Core.Utils">
-          <files />
           <dependencies>
-            <dependency name="SDL.UI.Core.Utils.Css" />
             <dependency name="SDL.UI.Core.Utils.Dom" />
             <dependency name="SDL.UI.Core.Utils.Event" />
-          </dependencies>
-        </resourceGroup>
-        <resourceGroup name="SDL.UI.Core.Utils.Css">
-          <files>
-            <file name="Utils/Css.js" />
-          </files>
-          <dependencies>
-            <dependency name="SDL.Client.Diagnostics" />
-            <dependency name="SDL.Client.Types.Base" />
-            <dependency name="SDL.Client.Types.String" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Utils.Dom">
@@ -183,6 +220,18 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="Libraries/Polyfills/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.Client.UI.Core.Libraries.Polyfills">
+          <files>
+            <file name="Libraries/Polyfills/classList.min.js" />
+            <file name="Libraries/Polyfills/placeholder.min.js" />
+          </files>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="packages.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <packages>
@@ -190,15 +239,20 @@
           <resourceGroups>
             <resourceGroup name="SDL.UI.Core.Renderers.ControlRenderer" />
             <resourceGroup name="SDL.UI.Core.Controls.ControlBase" />
+            <resourceGroup name="SDL.UI.Core.Controls.JQuery" />
+            <resourceGroup name="SDL.UI.Core.Controls.FocusableControlBase" />
+            <resourceGroup name="SDL.UI.Core.Css.Browser" />
+            <resourceGroup name="SDL.UI.Core.Css.ZIndexManager" />
+            <resourceGroup name="SDL.UI.Core.Css.TextInput" />
             <resourceGroup name="SDL.UI.Core.Event.Constants" />
             <resourceGroup name="SDL.UI.Core.Renderers.ViewRenderer" />
-            <resourceGroup name="SDL.UI.Core.Utils.Css" />
             <resourceGroup name="SDL.UI.Core.Utils.Dom" />
             <resourceGroup name="SDL.UI.Core.Utils.Event" />
             <resourceGroup name="SDL.UI.Core.Styles.Common" />
             <resourceGroup name="SDL.UI.Core.Views.ViewBase" />
             <resourceGroup name="SDL.UI.Core.Init" />
             <resourceGroup name="SDL.UI.Core.Event.GlobalMouseEventTracker" />
+            <resourceGroup name="SDL.Client.UI.Core.Libraries.Polyfills" />
           </resourceGroups>
         </package>
       </packages>
@@ -207,7 +261,8 @@
   <resourceGroups>
     <resourceGroup name="SDL.UI.Core">
       <dependencies>
-        <dependency name="SDL.UI.Core.Controls.ControlBase" />
+        <dependency name="SDL.UI.Core.Controls" />
+        <dependency name="SDL.UI.Core.Css" />
         <dependency name="SDL.UI.Core.Event" />
         <dependency name="SDL.UI.Core.Renderers" />
         <dependency name="SDL.UI.Core.Utils" />

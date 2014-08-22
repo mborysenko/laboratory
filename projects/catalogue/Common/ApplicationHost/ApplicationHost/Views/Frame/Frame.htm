@@ -1,30 +1,16 @@
-﻿<script id='SDL.Client.UI.ApplicationHost.Views.Frame' type='text/html+knockout'>
+﻿<div id='SDL.Client.UI.ApplicationHost.Views.Frame' type='text/html+knockout'>
 	<div data-bind="attr: {lang: culture}">
 		<!-- ko if: !initialized() -->
-			<div class="frame-applications">
-				<div class="frame-application-loading">
-					<div>
-						<div class="frame-application-loading-screen">&nbsp;</div>
-						<div>
-							<span>
-								<span data-bind="text: $root.localize('apphost.loading')" class="frame-application-loading-text"></span>
-							</span>
-						</div>
-						<div>
-							<span>
-								<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
-							</span>
-						</div>
-					</div>
-				</div>
+			<div class="frame-application-loading" data-bind="control: {
+					type: 'SDL.UI.Controls.Knockout.ActivityIndicator',
+					data: { text: $root.localize('apphost.loading') }}">
 			</div>
 		<!-- /ko -->
 		<!-- ko if: initialized -->
 			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays), event: {scroll: function() {$element.scrollLeft = 0;}}">
 				<div data-bind="if: accessed() && !disposed(),
-								css: {'frame-application-fixed': $data.navigationItem && $data.navigationItem() &&
-																	($data.navigationItem().overlay === false || ($data.navigationItem().type == 'home' && !$data.navigationItem().overlay)) &&
-																	$root.navigationPaneShown(),
+								css: {'frame-application-out': $root.isTargetDisplayOut($data),
+									'frame-application-animated': $root.isTargetDisplaySlideAnimated($data, $element),
 									'frame-application-hidden': $data != $root.shownTargetDisplay() }">
 					<div class="frame-application-scroll-wrapper">
 						<iframe data-bind="attr: { src: src, foo: $root.registerTargetDisplayFrame($data, $element) },
@@ -37,20 +23,9 @@
 						-->
 					<!-- /ko -->
 					<!-- ko if: loading -->
-						<div class="frame-application-loading">
-							<div>
-								<div class="frame-application-loading-screen">&nbsp;</div>
-								<div>
-									<span>
-										<span data-bind="text: $root.localize('apphost.loading')" class="frame-application-loading-text"></span>
-									</span>
-								</div>
-								<div>
-									<span>
-										<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
-									</span>
-								</div>
-							</div>
+						<div class="frame-application-loading" data-bind="control: {
+								type: 'SDL.UI.Controls.Knockout.ActivityIndicator',
+								data: { text: $root.localize('apphost.loading') }}">
 						</div>
 					<!-- /ko -->
 				</div>
@@ -58,22 +33,23 @@
 
 			<div class="frame-navigation" data-bind="css: {'frame-navigation-hidden': !navigationPaneShown(), 'frame-navigation-shown': navigationPaneShown},
 						event: {blur: blurredNavigationPane}" tabIndex="0">
-				<div class="frame-navigation-toggle" data-bind="click: toggleNavigationPane, visible: navigationPaneToggleShown"><div _unselectable="on"></div></div>
+				<div class="frame-navigation-toggle" data-bind="click: toggleNavigationPane, visible: navigationPaneToggleShown"><div></div></div>
 				<div class="frame-navigation-pane" data-bind="css: {
 						'frame-navigation-pane-no-top': !topNavigationGroup.shownItems(),
 						'frame-navigation-pane-one-top': topNavigationGroup.shownItems() == 1,
 						'frame-navigation-pane-full-top': topNavigationGroup.shownItems() > 1}">
 					<div class="frame-navigation-logo" unselectable="on"></div>
 					<!-- ko if: topNavigationGroup.shownItems() > 0 -->
-						<ul class="frame-navigation-top">
-							<!-- ko if: $root.homeNavigationItem -->
-								<li data-bind="click: function() {$root.selectNavigationItem($root.homeNavigationItem)},
-												css: { 'frame-navigation-option-selected': $root.homeNavigationItem == $root.currentNavigationItem() }"
-											class="frame-navigation-option" unselectable="on">
-									<span class="frame-navigation-option-icon frame-navigation-option-home" unselectable="on">&nbsp;</span>
-									<span class="frame-navigation-option-text" data-bind="text: $root.localize('apphost.home')" unselectable="on"></span>
-								</li>
-							<!-- /ko -->
+						<ul class="frame-navigation-top" data-bind="foreach: topNavigationGroup.navigationItems">
+							<li class="frame-navigation-option" unselectable="on"
+								data-bind="css: { 'frame-navigation-option-selected': $data == $root.currentNavigationItem() },
+									click: $root.selectNavigationItem">
+								<span class = "frame-navigation-option-icon" unselectable="on"
+									data-bind="css: {'frame-navigation-option-home': $data.type == 'home' && !($parent.topNavigationGroup.shownItems() > 1 && $data.topIcon || $data.icon)},
+											attr: {style: ($parent.topNavigationGroup.shownItems() > 1 && $data.topIcon || $data.icon)
+												? 'background-image: url(\'' + ($parent.topNavigationGroup.shownItems() > 1 && $data.topIcon || $data.icon) + '\')' : ''}">&nbsp;</span>
+								<span class="frame-navigation-option-text" data-bind="text: $root.getNavigationItemName($data)" unselectable="on"></span>
+							</li>
 						</ul>
 					<!-- /ko -->
 					<div class="frame-navigation-middle" data-bind="control: {type: 'SDL.UI.Controls.Knockout.ScrollView', data: {overflowX: 'hidden', style: 'dark', overlay: true}}">
@@ -96,7 +72,10 @@
 														click: $root.selectNavigationGroup">
 													<span class="frame-navigation-option-text" unselectable="on">
 														<!-- ko if: authenticationTargetDisplay().loading() -->
-															<span class="frame-application-loading-rotate" data-bind="attr: {foo: $root.animateLoadingFeedback($element)}"></span>
+															<div style="position: relative" data-bind="control: {
+																	type: 'SDL.UI.Controls.Knockout.ActivityIndicator',
+																	data: { screen: 'none', size: 'medium' }}">
+															</div>
 														<!-- /ko -->
 														<!-- ko if: !authenticationTargetDisplay().loading() -->
 															<span class="frame-navigation-option-icon" unselectable="on">&nbsp;</span><br/>
@@ -137,4 +116,4 @@
 			</div>
 		<!-- /ko -->
 	</div>
-</script>
+</div>

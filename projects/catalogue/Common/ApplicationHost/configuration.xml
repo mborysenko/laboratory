@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.269" />
+    <setting name="version" value="1.4.0.1772" />
     <setting name="debug" value="false" />
     <setting name="corePath" value="../" />
-    <setting name="coreVersion" value="1.1.0.269" />
+    <setting name="coreVersion" value="1.4.0.1772" />
   </appSettings>
+  <locales>
+    <locale>en</locale>
+    <locale>de</locale>
+    <locale>es</locale>
+    <locale>fr</locale>
+    <locale>ja</locale>
+    <locale>nl</locale>
+    <locale>ru</locale>
+  </locales>
   <pages>
     <page url="/*" resource="SDL.Client.UI.ApplicationHost.Views.Frame.Init" view="SDL.Client.UI.ApplicationHost.Views.Frame" title="SDL">
       <preloadPackages>

@@ -16,6 +16,8 @@ module SDL.Client.UI.ApplicationHost.Views
 		currentNavigationGroup: KnockoutObservable<Navigation.INavigationGroup>;
 		navigationPaneShown: KnockoutObservable<boolean>;
 		navigationPaneToggleShown: KnockoutComputed<boolean>;
+		isTargetDisplayOut: (targetDisplay: Navigation.ITargetDisplay) => boolean;
+		isTargetDisplaySlideAnimated: (targetDisplay: Navigation.ITargetDisplay, element: HTMLDivElement) => boolean;
 		expandedNavigationGroup: KnockoutObservable<Navigation.INavigationGroup>;
 		navigationItemTargetDisplays: Navigation.INavigationItemTargetDisplay[];
 		authenticationTargetDisplays: Navigation.IAuthenticationTargetDisplay[];
@@ -132,34 +134,11 @@ module SDL.Client.UI.ApplicationHost.Views
 						{
 							frame.src = src;
 						}
+
 						targetDisplay.src = src;
 					}
 				}
 			};
-
-			model.animateLoadingFeedback = function(element: HTMLElement)
-			{
-				// IE9 does not support animation -> use javascript
-				if (element.style.animation == undefined && (<any>element.style).webkitAnimation == undefined)
-				{
-					var position = 0;
-					var step = 12;
-					var interval = window.setInterval(function()
-						{
-							position += step;
-							if (position >= 360)
-							{
-								position -= 360;
-							}
-							element.style.msTransform = "rotate(" + position + "deg)";
-						}, 30);
-
-					ko.utils.domNodeDisposal.addDisposeCallback(element, function()
-					{
-						window.clearInterval(interval);
-					});
-				}
-			}
 
 			var getTranslation = function(translations: SDL.Client.ApplicationHost.ITranslations, fallbackTranslations: SDL.Client.ApplicationHost.ITranslations)
 			{
@@ -286,6 +265,35 @@ module SDL.Client.UI.ApplicationHost.Views
 						}
 						return true;
 					});
+
+					model.isTargetDisplayOut = (targetDisplay: Navigation.ITargetDisplay) =>
+					{
+						var navItem = (<Navigation.INavigationItemTargetDisplay>targetDisplay).navigationItem &&
+							(<Navigation.INavigationItemTargetDisplay>targetDisplay).navigationItem();
+						return navItem && (navItem.overlay === false || (navItem.type == 'home' && !navItem.overlay)) && model.navigationPaneShown();
+					};
+
+					model.isTargetDisplaySlideAnimated = (targetDisplay: Navigation.ITargetDisplay, element: HTMLDivElement) =>
+					{
+						if (model.navigationPaneShown() && !model.isTargetDisplayOut(targetDisplay))
+						{
+							return false;
+						}
+						else if (!SDL.jQuery(element).hasClass("frame-application-animated"))
+						{
+							// enable animation with a delay to prevent animation when the display becomes active when navigation pane is already shown
+							setTimeout(() =>
+								{
+									SDL.jQuery(element).addClass("frame-application-animated");
+								}, 10);
+							return false;
+						}
+						else
+						{
+							// keep animation enabled
+							return true;
+						}
+					};
 
 					model.expandedNavigationGroup = ko.observable((() =>
 						{

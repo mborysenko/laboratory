@@ -15,7 +15,7 @@ declare module SDL.Client.Models
 		constructor(id: string); 
 		setLastUpdateCheckTimeStamp(timeStamp: number): void;
 		getLastUpdateCheckTimeStamp(): number;
-		setDataFromList(data: any, parentId: string, timeStamp: number): void;
+		setDataFromList(data: any, parentId: string, timeStamp?: number): void;
 		updateData(data: any, parentId: string): void;
 		getId(): string;
     }

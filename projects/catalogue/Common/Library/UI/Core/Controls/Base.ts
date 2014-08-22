@@ -23,12 +23,6 @@ module SDL.UI.Core.Controls
 		returnsValue?: boolean;
 	}
 
-	export interface IPluginEventDefinition
-	{
-		event: string;
-		originalEvent?: string;
-	}
-
 	export function getInstanceAttributeName(control: IControlType): string
 	{
 		return "data-__control__-" + SDL.Client.Types.Object.getUniqueId(control);

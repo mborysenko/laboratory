@@ -77,19 +77,19 @@ var SDL;
                         throw Error("Unable to expose application facade: application host is untrusted.");
                     }
 
-                    if (SDL.Client.Application.isApplicationFacadeSecure === undefined) {
-                        SDL.Client.Application.isApplicationFacadeSecure = true;
+                    if (Application.isApplicationFacadeSecure === undefined) {
+                        Application.isApplicationFacadeSecure = true;
                         this.call("exposeApplicationFacade", [applicationEntryPointId]);
-                    } else if (!SDL.Client.Application.isApplicationFacadeSecure) {
+                    } else if (!Application.isApplicationFacadeSecure) {
                         throw Error("Application facade is already exposed as unsecure.");
                     }
                 };
 
                 ApplicationHostProxyClass.prototype.exposeApplicationFacadeUnsecure = function (applicationEntryPointId) {
-                    if (SDL.Client.Application.isApplicationFacadeSecure === undefined) {
-                        SDL.Client.Application.isApplicationFacadeSecure = false;
+                    if (Application.isApplicationFacadeSecure === undefined) {
+                        Application.isApplicationFacadeSecure = false;
                         this.call("exposeApplicationFacade", [applicationEntryPointId]);
-                    } else if (SDL.Client.Application.isApplicationFacadeSecure) {
+                    } else if (Application.isApplicationFacadeSecure) {
                         throw Error("Application facade is already exposed as secure.");
                     }
                 };
@@ -115,35 +115,39 @@ var SDL;
                 };
 
                 ApplicationHostProxyClass.prototype.setApplicationEntryPointUrl = function (applicationEntryPointId, url, applicationSuiteId) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to set application entry point Url: application host is untrusted.");
                     }
 
-                    if (applicationSuiteId && applicationSuiteId != SDL.Client.Application.applicationSuiteId && (SDL.Client.Application.trustedApplications ? (applicationSuiteId != SDL.Client.Application.applicationSuiteId && SDL.Client.Application.trustedApplications.indexOf(applicationSuiteId) == -1) : !SDL.Client.Application.trustedApplicationDomains)) {
+                    if (applicationSuiteId && applicationSuiteId != Application.applicationSuiteId && (Application.trustedApplications ? (applicationSuiteId != Application.applicationSuiteId && Application.trustedApplications.indexOf(applicationSuiteId) == -1) : !Application.trustedApplicationDomains)) {
                         throw Error("Unable to set application entry point Url: application \"" + applicationSuiteId + "\" is untrusted.");
                     }
 
                     this.call("setApplicationEntryPointUrl", [
                         applicationEntryPointId, url, applicationSuiteId,
-                        SDL.Client.Application.trustedApplicationDomains ? this.getWithLocalDomain(SDL.Client.Application.trustedApplicationDomains) : null]);
+                        Application.trustedApplicationDomains ? this.getWithLocalDomain(Application.trustedApplicationDomains) : null]);
                 };
 
                 ApplicationHostProxyClass.prototype.setApplicationEntryPointUrlUnsecure = function (applicationEntryPointId, url, applicationSuiteId) {
                     this.call("setApplicationEntryPointUrl", [applicationEntryPointId, url, applicationSuiteId]);
                 };
 
+                ApplicationHostProxyClass.prototype.updateTargetDisplayUrlUnsecure = function (url) {
+                    this.call("updateTargetDisplayUrl", [url]);
+                };
+
                 ApplicationHostProxyClass.prototype.callApplicationFacade = function (applicationEntryPointId, method, args, callback, applicationSuiteId) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to call application facade: application host is untrusted.");
                     }
 
-                    if (applicationSuiteId && applicationSuiteId != SDL.Client.Application.applicationSuiteId && (SDL.Client.Application.trustedApplications ? (applicationSuiteId != SDL.Client.Application.applicationSuiteId && SDL.Client.Application.trustedApplications.indexOf(applicationSuiteId) == -1) : !SDL.Client.Application.trustedApplicationDomains)) {
+                    if (applicationSuiteId && applicationSuiteId != Application.applicationSuiteId && (Application.trustedApplications ? (applicationSuiteId != Application.applicationSuiteId && Application.trustedApplications.indexOf(applicationSuiteId) == -1) : !Application.trustedApplicationDomains)) {
                         throw Error("Unable to call application facade: application \"" + applicationSuiteId + "\" is untrusted.");
                     }
 
                     this.call("callApplicationFacade", [
                         applicationEntryPointId, method, args, callback, applicationSuiteId,
-                        SDL.Client.Application.trustedApplicationDomains ? this.getWithLocalDomain(SDL.Client.Application.trustedApplicationDomains) : null]);
+                        Application.trustedApplicationDomains ? this.getWithLocalDomain(Application.trustedApplicationDomains) : null]);
                 };
 
                 ApplicationHostProxyClass.prototype.callApplicationFacadeUnsecure = function (applicationEntryPointId, method, args, callback, applicationSuiteId) {
@@ -159,59 +163,65 @@ var SDL;
                 };
 
                 ApplicationHostProxyClass.prototype.storeApplicationData = function (key, data) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to store application data: application host is untrusted.");
                     }
                     this.call("storeApplicationData", [key, data]);
                 };
 
                 ApplicationHostProxyClass.prototype.storeApplicationSessionData = function (key, data) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to store application session data: application host is untrusted.");
                     }
                     this.call("storeApplicationSessionData", [key, data]);
                 };
 
                 ApplicationHostProxyClass.prototype.getApplicationData = function (key, callback) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to get application data: application host is untrusted.");
                     }
                     this.call("getApplicationData", [key], callback);
                 };
 
                 ApplicationHostProxyClass.prototype.getApplicationSessionData = function (key, callback) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to get application session data: application host is untrusted.");
                     }
                     this.call("getApplicationSessionData", [key], callback);
                 };
 
                 ApplicationHostProxyClass.prototype.clearApplicationData = function () {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to clear application data: application host is untrusted.");
                     }
                     this.call("clearApplicationData");
                 };
 
                 ApplicationHostProxyClass.prototype.clearApplicationSessionData = function () {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to clear application session data: application host is untrusted.");
                     }
                     this.call("clearApplicationSessionData");
                 };
 
                 ApplicationHostProxyClass.prototype.removeApplicationData = function (key) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to remove application data: application host is untrusted.");
                     }
                     this.call("removeApplicationData", [key]);
                 };
 
                 ApplicationHostProxyClass.prototype.removeApplicationSessionData = function (key) {
-                    if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                    if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to remove application session data: application host is untrusted.");
                     }
                     this.call("removeApplicationSessionData", [key]);
+                };
+
+                ApplicationHostProxyClass.prototype.triggerAnalyticsEvent = function (event, object) {
+                    if (this.isSupported("triggerAnalyticsEvent")) {
+                        this.call("triggerAnalyticsEvent", [event, object]);
+                    }
                 };
 
                 ApplicationHostProxyClass.prototype.addEventListener = function (event, handler) {
@@ -265,7 +275,7 @@ var SDL;
 
                 ApplicationHostProxyClass.prototype.call = function (method, args, callback) {
                     if (this.isSupported(method)) {
-                        SDL.Client.CrossDomainMessaging.call(window.parent, "SDL.Client.ApplicationHost.ApplicationHostFacade." + method, args, callback);
+                        Client.CrossDomainMessaging.call(window.parent, "SDL.Client.ApplicationHost.ApplicationHostFacade." + method, args, callback);
                     } else {
                         throw Error("ApplicationHost (ver. " + this.version + ") does not support method \"" + method + "\".");
                     }
@@ -285,12 +295,12 @@ var SDL;
                 };
 
                 ApplicationHostProxyClass.prototype.getWithLocalDomain = function (domains) {
-                    var localDomain = SDL.Client.Types.Url.getDomain(window.location.href);
+                    var localDomain = Client.Types.Url.getDomain(window.location.href);
                     if (!domains) {
                         return [localDomain];
                     } else {
                         for (var i = 0, len = domains.length; i < len; i++) {
-                            if (SDL.Client.Types.Url.isSameDomain(domains[i], localDomain)) {
+                            if (Client.Types.Url.isSameDomain(domains[i], localDomain)) {
                                 return domains;
                             }
                         }
@@ -301,26 +311,14 @@ var SDL;
                 ApplicationHostProxyClass.prototype._processHandlers = function (eventObj, handlersCollectionName) {
                     var handlers = this.handlers && this.handlers[handlersCollectionName];
                     if (handlers) {
-                        // handlers can be added/removed while handling an event
-                        // thus have to recheck them if at least one handler has been executed
-                        var needPostprocess;
-                        var processedHandlers = [];
-
-                        do {
-                            needPostprocess = false;
-
-                            for (var i = 0; handlers && (i < handlers.length); i++) {
-                                var handler = handlers[i];
-                                if (processedHandlers.indexOf(handler) == -1) {
-                                    needPostprocess = true;
-                                    processedHandlers.push(handler);
-
-                                    handler.fnc.call(this, eventObj); // cannot cancel ApplicationHost events -> ignore the return value
-
-                                    handlers = this.handlers && this.handlers[handlersCollectionName];
-                                }
+                        var handlersClone = handlers.concat();
+                        for (var i = 0, len = handlersClone.length; i < len && handlers; i++) {
+                            var handler = handlersClone[i];
+                            if (handlers.indexOf(handler) != -1) {
+                                handler.fnc.call(this, eventObj); // cannot cancel ApplicationHost events -> ignore the return value
+                                handlers = this.handlers && this.handlers[handlersCollectionName];
                             }
-                        } while(needPostprocess);
+                        }
                     }
                 };
                 return ApplicationHostProxyClass;

@@ -1,11 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.269" />
+    <setting name="version" value="1.4.0.1772" />
+    <setting name="activityIndicatorLegacyMode" value="true" />
   </appSettings>
   <!-- SDL.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
   <!-- Controls -->
+  <include src="ActionBar/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.ActionBar">
+          <files>
+            <file name="ActionBar/ActionBar.js" />
+            <file name="ActionBar/ActionBar.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Controls.JQuery.Button" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.ActionBar">
+          <files>
+            <file name="ActionBar/ActionBar.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.ActionBar" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="ActivityIndicator/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.ActivityIndicator">
+          <files>
+            <file name="ActivityIndicator/ActivityIndicator.js" />
+            <file name="ActivityIndicator/ActivityIndicator.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.Client.Configuration.ConfigurationManager" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.ActivityIndicator">
+          <files>
+            <file name="ActivityIndicator/ActivityIndicator.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.ActivityIndicator" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="Button/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
@@ -15,7 +69,7 @@
             <file name="Button/Button.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
             <dependency name="SDL.UI.Core.Event.Constants" />
           </dependencies>
         </resourceGroup>
@@ -25,7 +79,7 @@
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.Button" />
           </dependencies>
         </resourceGroup>
@@ -41,7 +95,10 @@
             <file name="Callout/Callout.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.FocusableControlBase" />
+            <dependency name="SDL.UI.Controls.JQuery.ActionBar" />
+            <dependency name="SDL.UI.Core.Utils.Dom" />
+            <dependency name="SDL.UI.Core.Css.ZIndexManager" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Controls.JQuery.Callout">
@@ -50,7 +107,7 @@
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.Callout" />
           </dependencies>
         </resourceGroup>
@@ -62,11 +119,14 @@
       <resourceGroups>
         <resourceGroup name="SDL.UI.Controls.Dialog">
           <files>
+            <file name="Dialog/Screen.css" />
             <file name="Dialog/Dialog.js" />
             <file name="Dialog/Dialog.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.FocusableControlBase" />
+            <dependency name="SDL.UI.Controls.JQuery.ActionBar" />
+            <dependency name="SDL.UI.Core.Css.ZIndexManager" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Controls.JQuery.Dialog">
@@ -75,7 +135,7 @@
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.Dialog" />
           </dependencies>
         </resourceGroup>
@@ -91,8 +151,7 @@
             <file name="Message/Message.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
-            <dependency name="SDL.UI.Controls.JQuery.Button" />
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Controls.JQuery.Message">
@@ -108,28 +167,56 @@
       </resourceGroups>
     </configuration>
   </include>
-  <include src="Tabs/_Config.xml">
+  <include src="ResizeTrigger/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
-        <resourceGroup name="SDL.UI.Controls.Tabs">
+        <resourceGroup name="SDL.UI.Controls.ResizeTrigger">
           <files>
-            <file name="Tabs/Tabs.js" />
-            <file name="Tabs/Tabs.css" />
+            <file name="ResizeTrigger/ResizeTrigger.js" />
+            <file name="ResizeTrigger/ResizeTrigger.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
-            <dependency name="SDL.UI.Core.Event.Constants" />
-            <dependency name="SDL.UI.Controls.JQuery.Tooltip" />
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
           </dependencies>
         </resourceGroup>
-        <resourceGroup name="SDL.UI.Controls.JQuery.Tabs">
+        <resourceGroup name="SDL.UI.Controls.JQuery.ResizeTrigger">
           <files>
-            <file name="Tabs/Tabs.jQuery.js" />
+            <file name="ResizeTrigger/ResizeTrigger.jQuery.js" />
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
-            <dependency name="SDL.UI.Controls.Tabs" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.ResizeTrigger" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="TopPageTabs/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.TopPageTabs">
+          <files>
+            <file name="TopPageTabs/TopPageTabs.js" />
+            <file name="TopPageTabs/TopPageTabs.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.UI.Controls.JQuery.Tooltip" />
+            <dependency name="SDL.UI.Controls.JQuery.ScrollView" />
+            <dependency name="SDL.UI.Controls.JQuery.Callout" />
+            <dependency name="SDL.UI.Controls.JQuery.ResizeTrigger" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.TopPageTabs">
+          <files>
+            <file name="TopPageTabs/TopPageTabs.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.TopPageTabs" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -144,7 +231,7 @@
             <file name="Tooltip/Tooltip.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Controls.JQuery.Tooltip">
@@ -153,7 +240,7 @@
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.Tooltip" />
           </dependencies>
         </resourceGroup>
@@ -169,7 +256,7 @@
             <file name="ScrollView/ScrollView.css" />
           </files>
           <dependencies>
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
             <dependency name="SDL.UI.Core.Event.Constants" />
             <dependency name="SDL.UI.Core.Utils.Dom" />
           </dependencies>
@@ -180,8 +267,140 @@
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
-            <dependency name="SDL.UI.Core.Controls" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.ScrollView" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="DatePicker/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.DatePicker">
+          <files>
+            <file name="DatePicker/Dependencies/moment.min.js" />
+            <file name="DatePicker/Dependencies/pikaday.modified.js" />
+            <file name="DatePicker/Styles/pikaday.css" />
+            <file name="DatePicker/Styles/sdl.carbon2.pikaday.css" />
+            <file name="DatePicker/SDL.UI.Controls.DatePicker.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.Client.UI.Core.Libraries.Polyfills" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker">
+          <files>
+            <file name="DatePicker/SDL.UI.Controls.DatePicker.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.DatePicker" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="TextInput/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.TextInput">
+          <files>
+            <file name="TextInput/TextInput.js" />
+            <file name="TextInput/TextInput.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Css.TextInput" />
+            <dependency name="SDL.Client.UI.Core.Libraries.Polyfills" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.TextInput">
+          <files>
+            <file name="TextInput/TextInput.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.TextInput" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Checkbox/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Checkbox">
+          <files>
+            <file name="Checkbox/Checkbox.js" />
+            <file name="Checkbox/Checkbox.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Checkbox">
+          <files>
+            <file name="Checkbox/Checkbox.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.Checkbox" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="RadioButton/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.RadioButton">
+          <files>
+            <file name="RadioButton/RadioButton.js" />
+            <file name="RadioButton/RadioButton.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.RadioButton">
+          <files>
+            <file name="RadioButton/RadioButton.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.RadioButton" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="Combobox/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.Combobox">
+          <files>
+            <file name="Combobox/Combobox.js" />
+            <file name="Combobox/Combobox.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.Combobox">
+          <files>
+            <file name="Combobox/Combobox.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.Combobox" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -193,24 +412,40 @@
       <packages>
         <package name="SDL.UI.Controls" src="Packages/SDL.UI.Controls.txt">
           <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.ActionBar" />
+            <resourceGroup name="SDL.UI.Controls.ActivityIndicator" />
             <resourceGroup name="SDL.UI.Controls.Button" />
             <resourceGroup name="SDL.UI.Controls.Callout" />
             <resourceGroup name="SDL.UI.Controls.Dialog" />
             <resourceGroup name="SDL.UI.Controls.Message" />
-            <resourceGroup name="SDL.UI.Controls.Tabs" />
+            <resourceGroup name="SDL.UI.Controls.ResizeTrigger" />
+            <resourceGroup name="SDL.UI.Controls.TopPageTabs" />
             <resourceGroup name="SDL.UI.Controls.Tooltip" />
             <resourceGroup name="SDL.UI.Controls.ScrollView" />
+            <resourceGroup name="SDL.UI.Controls.TextInput" />
+            <resourceGroup name="SDL.UI.Controls.DatePicker" />
+            <resourceGroup name="SDL.UI.Controls.Checkbox" />
+            <resourceGroup name="SDL.UI.Controls.RadioButton" />
+            <resourceGroup name="SDL.UI.Controls.Combobox" />
           </resourceGroups>
         </package>
         <package name="SDL.UI.Controls.JQuery" src="Packages/SDL.UI.Controls.JQuery.js">
           <resourceGroups>
+            <resourceGroup name="SDL.UI.Controls.JQuery.ActionBar" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.ActivityIndicator" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Button" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Callout" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Dialog" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Message" />
-            <resourceGroup name="SDL.UI.Controls.JQuery.Tabs" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.ResizeTrigger" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.TopPageTabs" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Tooltip" />
             <resourceGroup name="SDL.UI.Controls.JQuery.ScrollView" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.TextInput" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Checkbox" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.RadioButton" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.Combobox" />
           </resourceGroups>
         </package>
       </packages>

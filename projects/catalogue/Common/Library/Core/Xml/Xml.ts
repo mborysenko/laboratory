@@ -43,34 +43,6 @@ module SDL.Client.Xml
 		}
 	};
 
-	export function createAttributeNS(xmlDoc: Document, ns: string, name: string): Attr
-	{
-		Diagnostics.Assert.isDocument(xmlDoc);
-		Diagnostics.Assert.isString(ns);
-		Diagnostics.Assert.isString(name);
-
-		if (xmlDoc.createAttributeNS)
-		{
-			return xmlDoc.createAttributeNS(ns, name);
-		}
-		else
-		{
-			return (<any>xmlDoc).createNode(2, name, ns);
-		}
-	};
-
-	export function setAttributeNodeNS(element: Element, attribute: Attr, ns: string): void
-	{
-		if (element.setAttributeNodeNS)
-		{
-			element.setAttributeNodeNS(attribute);
-		}
-		else
-		{
-			element.setAttributeNode(attribute);
-		}
-	};
-
 	export function escape(value: string, attribute = false): string
 	{
 		if (value != null)

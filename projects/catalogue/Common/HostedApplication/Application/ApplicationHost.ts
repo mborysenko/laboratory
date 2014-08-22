@@ -33,6 +33,7 @@ module SDL.Client.Application
 		callApplicationFacadeUnsecure(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string): void;
 		initializeApplicationSuite(includeApplicationEntryPointIds?: string[], excludeApplicationEntryPointIds?: string[], domainDefinitions?: { [id: string]: IApplicationDomain; }): void;
 		resetApplicationSuite(): void;
+		updateTargetDisplayUrlUnsecure(url: string): void;
 		storeApplicationData(key: string, data: any): void;
 		storeApplicationSessionData(key: string, data: any): void;
 		getApplicationData(key: string, callback: (data: any) => void): void;
@@ -41,6 +42,7 @@ module SDL.Client.Application
 		clearApplicationSessionData(): void;
 		removeApplicationData(key: string): void;
 		removeApplicationSessionData(key: string): void;
+		triggerAnalyticsEvent(event: string, object: any): void;
 
 		addEventListener(event: string, handler: Function): void;
 		removeEventListener(event: string, handler: Function): void;
@@ -49,6 +51,12 @@ module SDL.Client.Application
 		isSupported(method: string): boolean;
 	}
 
+	export interface IApplicationData
+	{
+		coreVersion?: string;
+		loadedUrl: string;
+	}
+	
 	export interface IApplicationHostData
 	{
 		applicationHostUrl: string;
@@ -60,6 +68,7 @@ module SDL.Client.Application
 		activeApplicationEntryPointId: string;
 		activeApplicationId: string;
 		supportedMethods?: { [method: string]: boolean };
+		sharedSettings?: { [setting: string]: string };
 	};
 
 	export interface IApplicationDomain
@@ -225,6 +234,11 @@ module SDL.Client.Application
 			this.call("setApplicationEntryPointUrl", [applicationEntryPointId, url, applicationSuiteId]);
 		}
 
+		public updateTargetDisplayUrlUnsecure(url: string): void
+		{
+			this.call("updateTargetDisplayUrl", [url]);
+		}
+
 		public callApplicationFacade(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string)
 		{
 			if (!ApplicationHost.isTrusted)
@@ -328,6 +342,14 @@ module SDL.Client.Application
 				throw Error("Unable to remove application session data: application host is untrusted.");
 			}
 			this.call("removeApplicationSessionData", [key]);
+		}
+
+		public triggerAnalyticsEvent(event: string, object: any): void
+		{
+			if (this.isSupported("triggerAnalyticsEvent"))
+			{
+				this.call("triggerAnalyticsEvent", [event, object]);
+			}
 		}
 
 		public addEventListener(event: string, handler: Function): void
@@ -446,30 +468,16 @@ module SDL.Client.Application
 			var handlers = this.handlers && this.handlers[handlersCollectionName];
 			if (handlers)
 			{
-				// handlers can be added/removed while handling an event
-				// thus have to recheck them if at least one handler has been executed
-				var needPostprocess: boolean;
-				var processedHandlers: IHandler[] = [];
-
-				do
+				var handlersClone = handlers.concat();	// creating a snapshot of handlers as newly added handlers should not be processed
+				for (var i = 0, len = handlersClone.length; i < len && handlers; i++)
 				{
-					needPostprocess = false;
-
-					for (var i = 0; handlers && (i < handlers.length); i++)
+					var handler: IHandler = handlersClone[i];
+					if (handlers.indexOf(handler) != -1)	// making sure not to call removed handlers
 					{
-						var handler: IHandler = handlers[i];
-						if (processedHandlers.indexOf(handler) == -1)
-						{
-							needPostprocess = true;
-							processedHandlers.push(handler);
-
-							handler.fnc.call(this, eventObj);	// cannot cancel ApplicationHost events -> ignore the return value
-
-							handlers = this.handlers && this.handlers[handlersCollectionName];
-						}
+						handler.fnc.call(this, eventObj);	// cannot cancel ApplicationHost events -> ignore the return value
+						handlers = this.handlers && this.handlers[handlersCollectionName];
 					}
 				}
-				while (needPostprocess);
 			}
 		}
 	}

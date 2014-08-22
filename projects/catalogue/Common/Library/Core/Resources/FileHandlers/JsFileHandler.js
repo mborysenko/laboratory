@@ -16,8 +16,8 @@ var SDL;
                     function JsFileHandler() {
                         _super.apply(this, arguments);
                     }
-                    JsFileHandler.prototype.addSourceUrl = function (file) {
-                        return file.data + "\n//@ sourceURL=" + ((file.url.indexOf("~/") == 0) ? SDL.Client.Types.Url.combinePath(file.isShared ? SDL.Client.Application.applicationHostCorePath : SDL.Client.Types.Url.getAbsoluteUrl(SDL.Client.Configuration.ConfigurationManager.corePath), file.url.slice(2)) : SDL.Client.Types.Url.getAbsoluteUrl(file.url));
+                    JsFileHandler.prototype.getSourceUrlFooter = function (file) {
+                        return "\n//@ sourceURL=" + ((file.url.indexOf("~/") == 0) ? Client.Types.Url.combinePath(file.isShared ? Client.Application.applicationHostCorePath : Client.Types.Url.getAbsoluteUrl(Client.Configuration.ConfigurationManager.corePath), file.url.slice(2)) : Client.Types.Url.getAbsoluteUrl(file.url));
                     };
 
                     JsFileHandler.prototype._supports = function (ext) {
@@ -27,17 +27,16 @@ var SDL;
                     JsFileHandler.prototype._render = function (file) {
                         file.type = "text/javascript";
                         if (file.context) {
-                            (function () {
-                                SDL.jQuery.globalEval(arguments[0]);
-                            }).apply(file.context, [this.addSourceUrl(file)]);
+                            eval("(function(){\n" + file.data + "\n}).apply(arguments[0].context);" + this.getSourceUrlFooter(file));
+                            // using arguments[0] instead of 'file' beacause js-minimizer will rename the variable
                         } else {
-                            SDL.jQuery.globalEval(this.addSourceUrl(file));
+                            SDL.jQuery.globalEval(file.data + this.getSourceUrlFooter(file));
                         }
                     };
                     return JsFileHandler;
-                })(SDL.Client.Resources.FileResourceHandler);
+                })(Resources.FileResourceHandler);
                 FileHandlers.JsFileHandler = JsFileHandler;
-                SDL.Client.Resources.FileResourceHandler.registeredResourceHandlers.push(new JsFileHandler());
+                Resources.FileResourceHandler.registeredResourceHandlers.push(new JsFileHandler());
             })(Resources.FileHandlers || (Resources.FileHandlers = {}));
             var FileHandlers = Resources.FileHandlers;
         })(Client.Resources || (Client.Resources = {}));

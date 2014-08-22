@@ -59,6 +59,8 @@ module SDL.Client
 			// Appl.initialize(), when completed, will unblock ConfigurationManager, allow it to load library configuration resources
 			Appl.initialize(function()	// Application is initialized, we know now how to load the Core package
 				{
+					var i: number;
+					var len: number;
 					var packagesToLoad: Resources.IPreloadPackageFileResource[] = [];
 					if (!SDL.Client.Resources)
 					{
@@ -75,40 +77,51 @@ module SDL.Client
 
 					if (cm.getAppSetting("debug") != "true")	// no need to preload packages if in debug mode
 					{
-						var preloadPackages = <Element[]>Xml.selectNodes(pageConfigurationElement, "preloadPackages/package[@url]");
-						if (preloadPackages.length)
+						var pageConfElements = [pageConfigurationElement];
+
+						var nodes = cm.getCurrentPageExtensionConfigurationNodes();
+						for (i = 0, len = nodes.length; i < len; i++)
 						{
-							var baseUrlNodes =  Xml.selectNodes(pageConfigurationElement, "ancestor::configuration/@baseUrl");
-							var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+							pageConfElements.push(nodes[i]);
+						}
 
-							var appVersionNodes =  Xml.selectNodes(pageConfigurationElement, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-							var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
-
-							for (var i = 0, len = preloadPackages.length; i < len; i++)
+						for (i = 0, len = pageConfElements.length; i < len; i++)
+						{
+							var preloadPackages = <Element[]>Xml.selectNodes(pageConfElements[i], "preloadPackages/package[@url]");
+							if (preloadPackages.length)
 							{
-								var packageElement = preloadPackages[i];
-								var url = packageElement.getAttribute("url");
-								if (url.indexOf("~/") != 0)
-								{
-									url = Types.Url.combinePath(baseUrl, url);
-								}
-								var key = url.toLowerCase();
+								var baseUrlNodes =  Xml.selectNodes(pageConfElements[i], "ancestor::configuration/@baseUrl");
+								var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
 
-								if (!packages[key])
-								{
-									var version = url.indexOf("~/") == 0 ? Appl.libraryVersion : appVersion;
-									var modification = packageElement.getAttribute("modification") || "";
+								var appVersionNodes =  Xml.selectNodes(pageConfElements[i], "ancestor::configuration/appSettings/setting[@name='version']/@value");
+								var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
 
-									packagesToLoad.push(packages[key] = {
-										packageName: packageElement.getAttribute("name"),
-										url: url,
-										version: (version && modification) ? (version + "." + modification) : (version || modification)});
+								for (var j = 0, lenj = preloadPackages.length; j < lenj; j++)
+								{
+									var packageElement = preloadPackages[j];
+									var url = packageElement.getAttribute("url");
+									if (url.indexOf("~/") != 0)
+									{
+										url = Types.Url.combinePath(baseUrl, url);
+									}
+									var key = url.toLowerCase();
+
+									if (!packages[key])
+									{
+										var version = url.indexOf("~/") == 0 ? Appl.libraryVersion : appVersion;
+										var modification = packageElement.getAttribute("modification") || "";
+
+										packagesToLoad.push(packages[key] = {
+											packageName: packageElement.getAttribute("name"),
+											url: url,
+											version: (version && modification) ? (version + "." + modification) : (version || modification)});
+									}
 								}
 							}
 						}
 					}
 
-					for (var i = 0, len = packagesToLoad.length; i < len; i++)
+					for (i = 0, len = packagesToLoad.length; i < len; i++)
 					{
 						((pckg: Resources.IPreloadPackageFileResource) =>
 						{
@@ -177,9 +190,7 @@ module SDL.Client
 				var corePackageUrl = Appl.isHosted && Appl.useHostedLibraryResources && corePackage.url.indexOf("~/") == 0
 					? Types.Url.combinePath(Application.applicationHostCorePath, corePackage.url.slice(2))
 					: Types.Url.getAbsoluteUrl(corePackage.url.indexOf("~/") == 0 ? Types.Url.combinePath(cm.corePath, corePackage.url.slice(2)) : corePackage.url);
-				Resources.executingPackageUrl = corePackageUrl;
 				globalEval(corePackage.data + "\n//@ sourceURL=" + corePackageUrl);
-				Resources.executingPackageUrl = null;
 			}
 
 			var rm = Resources.ResourceManager;
@@ -188,19 +199,27 @@ module SDL.Client
 				for (var key in Resources.preloadPackages)
 				{
 					var pckg = Resources.preloadPackages[key];
-					if (pckg && pckg.data != null)
+					if (pckg)
 					{
-						switch (pckg.packageName)
+						if (pckg.data != null)
 						{
-							case "SDL.Client.Init":
-							case "SDL.Client.Core":
-								rm.registerPackageRendered(pckg.packageName, pckg.url, pckg.data);
-								break;
-							default:
-								rm.storeFileData(pckg.url, pckg.data, pckg.isShared);
-								break;
+							switch (pckg.packageName)
+							{
+								case "SDL.Client.Init":
+								case "SDL.Client.Core":
+									rm.registerPackageRendered(pckg.packageName, pckg.url, pckg.data);
+									break;
+								default:
+									rm.storeFileData(pckg.url, pckg.data, pckg.isShared);
+									break;
+							}
+							Resources.preloadPackages[key] = null;
 						}
-						Resources.preloadPackages[key] = null;
+						else if (pckg.packageName == "SDL.Client.Init")	// init package might have been loaded using <script> tag, would have no data to cache by ResourceManager
+						{
+							rm.registerPackageRendered(pckg.packageName, pckg.url);
+							Resources.preloadPackages[key] = null;
+						}
 					}
 				}
 			}

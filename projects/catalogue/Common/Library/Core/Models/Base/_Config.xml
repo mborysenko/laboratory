@@ -149,6 +149,7 @@
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Types.RegExp"/>
+				<dependency name="SDL.Client.Models"/>
 			</dependencies>
 		</resourceGroup>
 

@@ -1,6 +1,7 @@
 /// <reference path="Resources.d.ts" />
 /// <reference path="../Libraries/jQuery/SDL.jQuery.ts" />
 /// <reference path="../Localization/Localization.ts" />
+/// <reference path="../ApplicationHost/ApplicationHost.ts" />
 /// <reference path="../Application/Application.ts" />
 /// <reference path="../Net/Ajax.d.ts" />
 /// <reference path="../Types/Array.d.ts" />
@@ -37,7 +38,7 @@ var SDL;
                             }
                             file.rendered = true;
                             delete file.rendering;
-                            if (!SDL.Client.Configuration.ConfigurationManager.isApplicationHost || file.url.indexOf("~/") != 0) {
+                            if (!Client.Configuration.ConfigurationManager.isApplicationHost || file.url.indexOf("~/") != 0) {
                                 delete file.data;
                             }
                         }
@@ -58,19 +59,19 @@ var SDL;
                     FileResourceHandler.load(file, callback, errorcallback, sync);
                 };
 
-                FileResourceHandler.load = function (file, callback, errorcallback, sync) {
+                FileResourceHandler.load = function (file, callback, errorcallback, sync, caller) {
                     if (file && file.url) {
                         var key = file.url.toLowerCase();
                         var fileResource = FileResourceHandler.fileResources[key];
 
                         if (!fileResource) {
                             fileResource = FileResourceHandler.fileResources[key] = SDL.jQuery.extend({}, file);
-                            if (SDL.Client.Resources.preloadPackages) {
-                                var pckg = SDL.Client.Resources.preloadPackages[key];
+                            if (Resources.preloadPackages) {
+                                var pckg = Resources.preloadPackages[key];
                                 if (pckg) {
                                     if (pckg.error) {
                                         fileResource.error = pckg.error;
-                                        delete SDL.Client.Resources.preloadPackages[key];
+                                        delete Resources.preloadPackages[key];
                                     } else {
                                         fileResource.loading = true;
                                         FileResourceHandler.callbacks[key] = SDL.jQuery.Callbacks("once");
@@ -111,7 +112,7 @@ var SDL;
                             if (file.url.indexOf("{CULTURE}") != -1) {
                                 FileResourceHandler.cultureResources[key] = fileResource;
 
-                                var culture = SDL.Client.Localization.getCulture();
+                                var culture = Client.Localization.getCulture();
                                 var filesToLoadCount = 1;
                                 var _loadFileCallback = function (cultureFile) {
                                     if (cultureFile && !cultureFile.loaded && cultureFile.error) {
@@ -124,7 +125,7 @@ var SDL;
                                     if (!--filesToLoadCount) {
                                         delete fileResource.loading;
 
-                                        if (culture == SDL.Client.Localization.getCulture()) {
+                                        if (culture == Client.Localization.getCulture()) {
                                             fileResource.loaded = true;
                                             var errorcallbacks = FileResourceHandler.errorcallbacks[key];
                                             if (errorcallbacks) {
@@ -145,7 +146,7 @@ var SDL;
                                             }
                                         } else {
                                             // call load() on the same file resource again, now that culture has changed, to load the required culture files
-                                            FileResourceHandler.load(file, callback, errorcallback, sync);
+                                            FileResourceHandler.load(file, callback, errorcallback, sync, caller);
                                         }
                                     }
                                 };
@@ -154,15 +155,18 @@ var SDL;
                                     var dashIndex = culture.indexOf("-");
                                     if (dashIndex > 0) {
                                         var lang = culture.slice(0, dashIndex);
-                                        if (lang != "en") {
-                                            // load the neutral culture file
+                                        if (lang != "en" && (!fileResource.locales || fileResource.locales["*"] || fileResource.locales[lang.toLowerCase()])) {
+                                            // render the neutral culture file if supported
                                             filesToLoadCount++;
-                                            FileResourceHandler.load(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, lang), context: SDL }), _loadFileCallback, _loadFileCallback, sync);
+                                            FileResourceHandler.load(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, lang), context: SDL }), _loadFileCallback, _loadFileCallback, sync, caller);
                                         }
                                     }
 
-                                    // load the culture file
-                                    FileResourceHandler.load(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL }), _loadFileCallback, _loadFileCallback, sync);
+                                    if (fileResource.locales && !fileResource.locales["*"] && !fileResource.locales[culture.toLowerCase()]) {
+                                        _loadFileCallback(); // nothing to load
+                                    } else {
+                                        FileResourceHandler.load(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL }), _loadFileCallback, _loadFileCallback, sync, caller);
+                                    }
                                 } else {
                                     _loadFileCallback(); // no culture to load
                                 }
@@ -179,9 +183,9 @@ var SDL;
                                     });
                                 }
 
-                                FileResourceHandler.loadPackage(FileResourceHandler.getPreferedPackage(fileResource.parentPackages), null, null, sync);
+                                FileResourceHandler.loadPackage(FileResourceHandler.getPreferedPackage(fileResource.parentPackages), null, null, sync, caller);
                             } else {
-                                SDL.Client.Resources.ResourceLoader.load({ url: fileResource.url, version: fileResource.version }, FileResourceHandler.corePath, sync, function (data, isShared) {
+                                Resources.ResourceLoader.load({ url: fileResource.url, version: fileResource.version }, FileResourceHandler.corePath, sync, function (data, isShared) {
                                     fileResource.data = data;
                                     fileResource.isShared = isShared;
                                     fileResource.loaded = true;
@@ -226,7 +230,7 @@ var SDL;
                                     } else {
                                         throw Error(file.url + ": " + error);
                                     }
-                                });
+                                }, caller);
                             }
                         }
                     } else if (callback)
@@ -247,7 +251,7 @@ var SDL;
                             }, errorcallback, sync);
                         } else {
                             if (file.url.indexOf("{CULTURE}") != -1) {
-                                var culture = SDL.Client.Localization.getCulture();
+                                var culture = Client.Localization.getCulture();
                                 var filesToRenderCount = 1;
                                 var _renderFileCallback = function (cultureFile) {
                                     if (cultureFile && !cultureFile.rendered && cultureFile.error) {
@@ -256,7 +260,7 @@ var SDL;
                                     }
 
                                     if (!--filesToRenderCount) {
-                                        if (culture == SDL.Client.Localization.getCulture()) {
+                                        if (culture == Client.Localization.getCulture()) {
                                             fileResource.rendered = true;
                                             if (callback) {
                                                 callback(fileResource);
@@ -270,15 +274,20 @@ var SDL;
                                     var dashIndex = culture.indexOf("-");
                                     if (dashIndex > 0) {
                                         var lang = culture.slice(0, dashIndex);
-                                        if (lang != "en") {
-                                            // render the neutral culture file
+                                        if (lang != "en" && (!fileResource.locales || fileResource.locales["*"] || fileResource.locales[lang.toLowerCase()])) {
+                                            // render the neutral culture file if supported
                                             filesToRenderCount++;
                                             FileResourceHandler.renderWhenLoaded(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, lang), context: SDL }), _renderFileCallback, _renderFileCallback, sync);
                                         }
                                     }
-                                    FileResourceHandler.renderWhenLoaded(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL }), _renderFileCallback, _renderFileCallback, sync);
+
+                                    if (fileResource.locales && !fileResource.locales["*"] && !fileResource.locales[culture.toLowerCase()]) {
+                                        _renderFileCallback(); // nothing to render
+                                    } else {
+                                        FileResourceHandler.renderWhenLoaded(SDL.jQuery.extend({}, file, { url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL }), _renderFileCallback, _renderFileCallback, sync);
+                                    }
                                 } else {
-                                    _renderFileCallback(); // nothing to render
+                                    _renderFileCallback();
                                 }
                             } else {
                                 for (var i = 0; i < FileResourceHandler.registeredResourceHandlers.length; i++) {
@@ -409,14 +418,15 @@ var SDL;
                     } else {
                         var parentPackage;
                         var parentPackageUrl;
+                        var i;
 
-                        for (var i = 0, len = packages.length; i < len; i++) {
+                        for (i = 0, len = packages.length; i < len; i++) {
                             var newPackage = packages[i];
                             var newPackageUrl = newPackage.url;
                             var key = newPackageUrl.toLowerCase();
                             var newPackageFileResource = FileResourceHandler.fileResources[key];
 
-                            if ((newPackageFileResource && (newPackageFileResource.loading || newPackageFileResource.loaded)) || (SDL.Client.Resources.preloadPackages && SDL.Client.Resources.preloadPackages[key] && !SDL.Client.Resources.preloadPackages[key].error)) {
+                            if ((newPackageFileResource && (newPackageFileResource.loading || newPackageFileResource.loaded)) || (Resources.preloadPackages && Resources.preloadPackages[key] && !Resources.preloadPackages[key].error)) {
                                 return newPackage;
                             }
 
@@ -434,7 +444,7 @@ var SDL;
                                     } else {
                                         useNewPackage = false;
                                     }
-                                } else if (newPackageUrlCommon && SDL.Client.Application.isHosted && SDL.Client.Application.useHostedLibraryResources) {
+                                } else if (newPackageUrlCommon && Client.Application.isHosted && Client.Application.useHostedLibraryResources) {
                                     // rendered or not locally (next check) is not relevant if loading via host
                                 } else if (newPackage.rendered) {
                                     if (!parentPackage.rendered) {
@@ -444,21 +454,21 @@ var SDL;
                                         var newUrl = newPackageUrl;
 
                                         if (parentPackageUrlCommon) {
-                                            oldUrl = SDL.Client.Types.Url.combinePath(FileResourceHandler.corePath, oldUrl.slice(2));
+                                            oldUrl = Client.Types.Url.combinePath(FileResourceHandler.corePath, oldUrl.slice(2));
                                         }
-                                        oldUrl = SDL.Client.Types.Url.combinePath(window.location.href, oldUrl);
+                                        oldUrl = Client.Types.Url.combinePath(window.location.href, oldUrl);
 
                                         if (newPackageUrlCommon) {
-                                            newUrl = SDL.Client.Types.Url.combinePath(FileResourceHandler.corePath, newUrl.slice(2));
+                                            newUrl = Client.Types.Url.combinePath(FileResourceHandler.corePath, newUrl.slice(2));
                                         }
-                                        newUrl = SDL.Client.Types.Url.combinePath(window.location.href, newUrl);
+                                        newUrl = Client.Types.Url.combinePath(window.location.href, newUrl);
 
                                         var scripts = SDL.jQuery("script[src]");
                                         var oldUrlFound = false;
                                         var newUrlFound = false;
 
-                                        for (var i = 0, len = scripts.length; i < len && (!oldUrlFound || !newUrlFound); i++) {
-                                            var src = scripts[i].src;
+                                        for (var j = 0, lenj = scripts.length; j < lenj && (!oldUrlFound || !newUrlFound); j++) {
+                                            var src = scripts[j].src;
                                             var index = src.indexOf("?");
                                             if (index != -1) {
                                                 src = src.slice(0, index);
@@ -492,14 +502,14 @@ var SDL;
                     }
                 };
 
-                FileResourceHandler.loadPackage = function (resourcesPackage, callback, errorcallback, sync) {
+                FileResourceHandler.loadPackage = function (resourcesPackage, callback, errorcallback, sync, caller) {
                     var key = resourcesPackage.url.toLowerCase();
                     var file = FileResourceHandler.fileResources[key];
 
                     if (!file || !file.loaded) {
                         FileResourceHandler.load(resourcesPackage, function (file) {
                             return FileResourceHandler.processPackageFileLoaded(resourcesPackage, file);
-                        }, errorcallback, sync);
+                        }, errorcallback, sync, caller);
                     } else if (!resourcesPackage.unpacked) {
                         FileResourceHandler.processPackageFileLoaded(resourcesPackage, file);
                     } else if (callback) {
@@ -513,7 +523,7 @@ var SDL;
 
                         var data = file.data;
 
-                        if (!SDL.Client.Configuration.ConfigurationManager.isApplicationHost || file.url.indexOf("~/") != 0) {
+                        if (!Client.Configuration.ConfigurationManager.isApplicationHost || file.url.indexOf("~/") != 0) {
                             delete file.data;
                         }
 
@@ -558,7 +568,7 @@ var SDL;
                                     }
                                 }
 
-                                if (!resourceFile.rendered || SDL.Client.Configuration.ConfigurationManager.isApplicationHost) {
+                                if (!resourceFile.rendered || Client.Configuration.ConfigurationManager.isApplicationHost) {
                                     if (sizes) {
                                         resourceFile.data = data.substr(start, size);
                                     } else {
@@ -605,7 +615,7 @@ var SDL;
                         var key = resourcesPackage.url.toLowerCase();
                         var resourceFile = fileResources[key] || (fileResources[key] = { url: resourcesPackage.url });
                         resourceFile.rendered = true;
-                        if (resourceFile.data && (!SDL.Client.Configuration.ConfigurationManager.isApplicationHost || resourceFile.url.indexOf("~/") != 0)) {
+                        if (resourceFile.data && (!Client.Configuration.ConfigurationManager.isApplicationHost || resourceFile.url.indexOf("~/") != 0)) {
                             delete resourceFile.data;
                         }
 
@@ -614,7 +624,7 @@ var SDL;
                                 var key = url.toLowerCase();
                                 var resourceFile = fileResources[key] || (fileResources[key] = { url: url });
                                 resourceFile.rendered = true;
-                                if (resourceFile.data && (!SDL.Client.Configuration.ConfigurationManager.isApplicationHost || resourceFile.url.indexOf("~/") != 0)) {
+                                if (resourceFile.data && (!Client.Configuration.ConfigurationManager.isApplicationHost || resourceFile.url.indexOf("~/") != 0)) {
                                     delete resourceFile.data;
                                 }
                             });

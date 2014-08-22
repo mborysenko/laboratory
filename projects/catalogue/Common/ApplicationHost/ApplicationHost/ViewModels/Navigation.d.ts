@@ -26,6 +26,7 @@ declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
         titleResource?: string;
         applicationEntryPoint?: Client.ApplicationHost.IApplicationEntryPoint;
         icon?: string;
+        topIcon?: string;
         src: KnockoutObservable<string>;
         navigationGroup?: INavigationGroup;
         targetDisplay: INavigationItemTargetDisplay;

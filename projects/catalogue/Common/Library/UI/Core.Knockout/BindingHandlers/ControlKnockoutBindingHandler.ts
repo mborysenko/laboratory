@@ -4,19 +4,30 @@
 
 module SDL.UI.Core.Knockout.BindingHandlers
 {
+	export interface IEvents
+	{
+		[event: string]: () => void;
+	}
+
+	interface IControlEventsBinding
+	{
+		controlEvents?: {[control: string]: IEvents};
+	}
+
 	export interface IControlKnockoutBinding
 	{
 		type?: string;
 		handler?: string;
 		controlsDescendantBindings?: boolean;	// by default it's false
 		data?: any;
+		events?: IEvents;
 	}
 
 	class ControlKnockoutBindingHandler implements KnockoutBindingHandler
 	{
-		init(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): {controlsDescendantBindings: boolean;}
+		init(element: HTMLElement, valueAccessor: () => IControlKnockoutBinding, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): {controlsDescendantBindings: boolean;}
 		{
-			var value = <IControlKnockoutBinding>ko.unwrap(valueAccessor()) || "";
+			var value: IControlKnockoutBinding = ko.unwrap(valueAccessor());
 			if (value)
 			{
 				SDL.jQuery(element).data("control-handlers", {});
@@ -37,7 +48,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		update(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
+		update(element: HTMLElement, valueAccessor: () => IControlKnockoutBinding, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
 		{
 			// TODO: implement dynamically adding/removing controls:
 			//		- if controls are added -> they must be loaded and initialized
@@ -60,7 +71,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		private static addControlBinding(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
+		private static addControlBinding(element: HTMLElement, valueAccessor: () => IControlKnockoutBinding, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
 		{
 			var value = <IControlKnockoutBinding>ko.unwrap(valueAccessor()) || "";
 			if (value)
@@ -78,14 +89,14 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		private static initControlBinding(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
+		private static initControlBinding(element: HTMLElement, valueAccessor: () => IControlKnockoutBinding, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
 		{
 			var $e = SDL.jQuery(element);
 			var handlers: {[type: string]: KnockoutBindingHandler;} = $e.data("control-handlers");
 			if (handlers)	// will not be there if the element is disposed
 			{
-				var value = <IControlKnockoutBinding>ko.unwrap(valueAccessor()) || "";
-				var type = <string>ko.unwrap(value.type) || ""+value;
+				var value = <IControlKnockoutBinding>ko.unwrap(valueAccessor());
+				var type = <string>ko.unwrap(value.type) || ""+(value || "");
 				var handlerName = <string>ko.unwrap(value.handler);
 				var handler: KnockoutBindingHandler;
 
@@ -120,15 +131,17 @@ module SDL.UI.Core.Knockout.BindingHandlers
 				handlers[type] = handler || null;
 				if (handler)
 				{
-					var dataValueAccessor = ControlKnockoutBindingHandler.getDataValueAccessor(valueAccessor);
+					var dataValueAccessor = ControlKnockoutBindingHandler.getDataValueAccessor(value);
+					var allBindingsWithEventsAccessor = ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor(allBindingsAccessor, type, value);
+
 					if (handler.init)
 					{
-						handler.init(element, dataValueAccessor, allBindingsAccessor, viewModel, bindingContext);
+						handler.init(element, dataValueAccessor, allBindingsWithEventsAccessor, viewModel, bindingContext);
 					}
 
 					if ($e.data("control-update") && handler.update)
 					{
-						handler.update(element, dataValueAccessor, allBindingsAccessor, viewModel, bindingContext);
+						handler.update(element, dataValueAccessor, allBindingsWithEventsAccessor, viewModel, bindingContext);
 					}
 				}
 				else if (type)
@@ -140,16 +153,16 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		private static updateControlBinding(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
+		private static updateControlBinding(element: HTMLElement, valueAccessor: () => IControlKnockoutBinding, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
 		{
 			var $e = SDL.jQuery(element);
 			var handlers: {[type: string]: KnockoutBindingHandler;} = $e.data("control-handlers");
 			if (handlers)
 			{
-				var value = ko.unwrap(valueAccessor()) || "";
+				var value: IControlKnockoutBinding = ko.unwrap(valueAccessor());
 				if (value)
 				{
-					var type: string = ko.unwrap(value.type) || ""+value;
+					var type: string = ko.unwrap(value.type) || ""+(value || "");
 					var handler: KnockoutBindingHandler = handlers[type];
 
 					if (handler !== null)	// null means handler could not be resolved or has no 'update' method
@@ -161,7 +174,8 @@ module SDL.UI.Core.Knockout.BindingHandlers
 						}
 						else if (handler.update)
 						{
-							handler.update(element, ControlKnockoutBindingHandler.getDataValueAccessor(valueAccessor), allBindingsAccessor, viewModel, bindingContext);
+							handler.update(element, ControlKnockoutBindingHandler.getDataValueAccessor(value),
+								ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor(allBindingsAccessor, type, value), viewModel, bindingContext);
 						}
 						else
 						{
@@ -172,9 +186,47 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		private static getDataValueAccessor(valueAccessor: () => any): () => any
+		private static getDataValueAccessor(value: IControlKnockoutBinding): () => any
 		{
-			return ()=>{ return valueAccessor().data; };
+			return ()=>{ return value.data; };
+		}
+
+		private static getAllBindingsWithEventsAccessor(allBindingsAccessor: () => IControlEventsBinding, control: string, value: IControlKnockoutBinding): () => any
+		{
+			if (value.events)
+			{
+				var allBindings: IControlEventsBinding;
+
+				return () =>
+				{
+					if (!allBindings)
+					{
+						allBindings = SDL.jQuery.extend({}, allBindingsAccessor());
+						if (!allBindings.controlEvents)
+						{
+							allBindings.controlEvents = {};
+						}
+						else
+						{
+							allBindings.controlEvents = SDL.jQuery.extend({}, ko.unwrap(allBindings.controlEvents));
+						}
+
+						if (!allBindings.controlEvents[control])
+						{
+							allBindings.controlEvents[control] = value.events;
+						}
+						else
+						{
+							allBindings.controlEvents[control] = SDL.jQuery.extend(allBindings.controlEvents[control], value.events);
+						}
+					}
+					return allBindings;
+				};
+			}
+			else
+			{
+				return allBindingsAccessor;
+			}
 		}
 
 		private static elementDisposalCallback(element: HTMLElement): void

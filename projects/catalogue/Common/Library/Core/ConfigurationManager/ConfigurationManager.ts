@@ -6,6 +6,7 @@ module SDL.Client.Configuration
 {
 	export declare var settingsFile: string;
 	export declare var settingsVersion: string;
+	export declare var settings: string;
 
 	export interface IConfigurationManager
 	{
@@ -18,6 +19,7 @@ module SDL.Client.Configuration
 		isInitialized: boolean;
 		getAppSetting(name: string): string;
 		getCurrentPageConfigurationNode(): Element;
+		getCurrentPageExtensionConfigurationNodes(): Element[];
 		isApplicationHost: boolean;
 	};
 
@@ -37,6 +39,7 @@ module SDL.Client.Configuration
 		private loadingCounter: number = 0;
 		private coreConfigurationToLoad: Element[] = [];
 		private currentPageConfigurationNode: Element;
+		private currentPageExtensionConfigurationNodes: Element[];
 
 		initialize(callback?: () => void, nonCoreInitCallback?: () => void): void
 		{
@@ -94,8 +97,16 @@ module SDL.Client.Configuration
 
 					this.loadingCounter = 1;
 
-					xhr(settingsVersion ? Types.Url.combinePath(settingsFile, "?" + settingsVersion) : settingsFile,
-						(result) => this.processConfigurationFile(result, settingsFile));
+
+					if (settings)
+					{
+						this.processConfigurationFile(settings, settingsFile);
+					}
+					else
+					{
+						xhr(settingsVersion ? Types.Url.combinePath(settingsFile, "?" + settingsVersion) : settingsFile,
+							(result) => this.processConfigurationFile(result, settingsFile));
+					}
 				}
 			}
 			else if (callback)
@@ -106,14 +117,15 @@ module SDL.Client.Configuration
 
 		public getAppSetting(name: string): string
 		{
-			return Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name +  "']/@value");
+			return Application.isHosted && Application.sharedSettings && Application.sharedSettings[name] ||
+				Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name +  "']/@value");
 		}
 
 		public getCurrentPageConfigurationNode(): Element
 		{
 			if (!this.currentPageConfigurationNode)
 			{
-				var pageNodes = <Element[]>SDL.Client.Xml.selectNodes(this.configuration, "//configuration/pages/page[@url and @view]");
+				var pageNodes = <Element[]>SDL.Client.Xml.selectNodes(this.configuration, "//configuration/pages/page[@url]");
 				if (pageNodes)
 				{
 					var path = window.location.pathname;
@@ -156,6 +168,56 @@ module SDL.Client.Configuration
 				}
 			}
 			return this.currentPageConfigurationNode;
+		}
+
+		public getCurrentPageExtensionConfigurationNodes(): Element[]
+		{
+			if (!this.currentPageExtensionConfigurationNodes)
+			{
+				var extensionNodes = this.currentPageExtensionConfigurationNodes = [];
+				var pageNodes = <Element[]>SDL.Client.Xml.selectNodes(this.configuration, "//configuration/extensions/pages/page[@url]");
+				if (pageNodes.length)
+				{
+					var path = window.location.pathname;
+
+					for (var i = 0, len = pageNodes.length; i < len; i++)
+					{
+						var pageNode: Element = pageNodes[i];
+						var url = pageNode.getAttribute("url");
+						if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
+						{
+							var baseUrl = (<Element>pageNode.parentNode).getAttribute("baseUrl");
+							if (baseUrl)
+							{
+								url = SDL.Client.Types.Url.combinePath(baseUrl, url);
+							}
+
+							if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
+							{
+								var baseUrlNodes =  Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
+								if (baseUrlNodes.length)
+								{
+									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+								}
+							}
+						}
+
+						// create a regular expression to process '*' as <anything>.
+						// if need '*', then use '\*'.
+						// if need \<anything>, use %5C for '\' => %5C*
+						var regExp = new RegExp("^" +
+											url.replace(/([\(\)\{\}\[\]\^\$\?\:\.\|\+]|\\(?!\*))/g, "\\$1")	// Escaping all characters except '*' and '\' before '*'.
+												.replace(/\*/g, ".*").replace(/\\\.\*/g, "\\*")				// Replacing '*' with '.*', except when after '\'
+											+ "$", "i");
+
+						if (regExp.test(path))
+						{
+							extensionNodes.push(pageNode);
+						}
+					}
+				}
+			}
+			return this.currentPageExtensionConfigurationNodes;
 		}
 
 		private callbacks()

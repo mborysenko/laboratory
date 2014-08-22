@@ -4,5 +4,5 @@
 /// <reference path="../Libraries/knockout/knockout.d.ts" />
 /// <reference path="../Utils/knockout.d.ts" />
 declare module SDL.UI.Core.Knockout.Controls {
-    function createKnockoutBinding(control: Core.Controls.IControlType, name: string, events?: Core.Controls.IPluginEventDefinition[]): void;
+    function createKnockoutBinding(control: Core.Controls.IControlType, name: string): void;
 }

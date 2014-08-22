@@ -16,13 +16,21 @@
 	if (!sdl_client.Application)
 	{
 		var app = sdl_client.Application = {
-			initCallbacks: []
+			initCallbacks: [],
+			readyCallbacks: []
 		};
 		app.initialize = app.addInitializeCallback = function(callback)
 			{
 				if (callback)
 				{
 					this.initCallbacks.push(callback);
+				}
+			};
+		app.addReadyCallback = function(callback)
+			{
+				if (callback)
+				{
+					this.readyCallbacks.push(callback);
 				}
 			};
 	}
@@ -126,8 +134,7 @@
 			packages["~/" + url.toLowerCase()] = {packageName: "SDL.Client.Init", url: "~/" + url, data: result};
 
 			var globalEval = eval;
-			url = resources.executingPackageUrl = location.protocol + "//" + location.host + path + url;
-			globalEval(result + "\n//@ sourceURL=" + url);
+			globalEval(result + "\n//@ sourceURL=" + location.protocol + "//" + location.host + path + url);
 		});
 	});
 })();

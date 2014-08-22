@@ -8,7 +8,7 @@
 				<file name="Tooltip.css"/>
 			</files>
 			<dependencies>
-				<dependency name="SDL.UI.Core.Controls"/>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
 			</dependencies>
 		</resourceGroup>
 
@@ -18,7 +18,7 @@
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
-				<dependency name="SDL.UI.Core.Controls"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
 				<dependency name="SDL.UI.Controls.Tooltip"/>
 			</dependencies>
 		</resourceGroup>

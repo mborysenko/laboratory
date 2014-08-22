@@ -35,6 +35,12 @@
 				<file name="KnockoutBindingHandlers.js"/>
 			</files>
 		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate">
+			<files>
+				<file name="Indeterminate.js"/>
+			</files>
+		</resourceGroup>
 	</resourceGroups>
 
 </configuration>

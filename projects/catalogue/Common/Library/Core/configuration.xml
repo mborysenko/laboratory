@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.1.0.269" />
+    <setting name="version" value="1.4.0.1772" />
   </appSettings>
   <!-- Library core settings -->
   <include src="settings.xml" />
@@ -70,7 +70,6 @@
   <!-- ApplicationHost resources -->
   <include src="ApplicationHost/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <!-- All Libraries -->
       <resourceGroups>
         <resourceGroup name="SDL.Client.ApplicationHost">
           <files>
@@ -180,6 +179,7 @@
             <dependency name="SDL.Client.Event.EventRegister" />
             <dependency name="SDL.Client.Types.Function" />
             <dependency name="SDL.Client.Types.String" />
+            <dependency name="SDL.Client.Types.RegExp" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -202,10 +202,12 @@
             <file name="Resources/FileHandlers/CssFileHandler.js" />
             <file name="Resources/FileHandlers/HtmlFileHandler.js" />
             <file name="Resources/FileHandlers/JsFileHandler.js" />
+            <file name="Resources/FileHandlers/ResjsonFileHandler.js" />
             <file name="Resources/ResourceManager.js" />
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.Client.Libraries.SDL.Globalize" />
             <dependency name="SDL.Client.Net.Ajax" />
             <dependency name="SDL.Client.Application" />
             <dependency name="SDL.Client.Localization" />
@@ -239,6 +241,9 @@
       </include>
       <include src="Libraries/Globalize/_Config.xml">
         <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <locales>
+            <locale>*</locale>
+          </locales>
           <resourceGroups>
             <resourceGroup name="SDL.Client.Libraries.SDL.Globalize">
               <files>
@@ -253,7 +258,6 @@
                 <dependency name="SDL.Client.Types.Base" />
                 <dependency name="SDL.Client.Types.Date" />
                 <dependency name="SDL.Client.Event.EventRegister" />
-                <dependency name="SDL.Client.Resources.ResourceManager" />
               </dependencies>
             </resourceGroup>
           </resourceGroups>
@@ -632,6 +636,7 @@
               </files>
               <dependencies>
                 <dependency name="SDL.Client.Types.RegExp" />
+                <dependency name="SDL.Client.Models" />
               </dependencies>
             </resourceGroup>
           </resourceGroups>
@@ -829,11 +834,11 @@
             <resourceGroup name="SDL.Client.Application.Localization" />
             <resourceGroup name="SDL.Client.Types.String" />
             <resourceGroup name="SDL.Client.Xml" />
+            <resourceGroup name="SDL.Client.Types.Date" />
+            <resourceGroup name="SDL.Client.Libraries.SDL.Globalize" />
             <resourceGroup name="SDL.Client.Net.Ajax" />
             <resourceGroup name="SDL.Client.Resources.ResourceManager" />
             <resourceGroup name="SDL.Client.ApplicationHost" />
-            <resourceGroup name="SDL.Client.Types.Date" />
-            <resourceGroup name="SDL.Client.Libraries.SDL.Globalize" />
             <resourceGroup name="SDL.Client.Types.Number" />
             <resourceGroup name="SDL.Client.Core" />
           </resourceGroups>

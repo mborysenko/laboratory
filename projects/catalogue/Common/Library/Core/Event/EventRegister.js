@@ -243,43 +243,28 @@ SDL.Client.Event.EventRegisterClass.$constructor = function SDL$Client$Event$Eve
 
 				var eventObj = args[0] = SDL.jQuery.event.fix(args[0]);
 
-				// handlers can be added/removed while handling an event, thus have to recheck them when at least one handler has been executed
-				var needPostprocess;
-				var processedHandlers = [];
 				var combinedResult;
 				var returnFalse = false;
 
-				do
+				var handlersClone = handlers.concat();	// creating a snapshot of handlers as newly added handlers should not be processed
+				for (var i = 0, len = handlersClone.length; i < len && handlers; i++)
 				{
-					needPostprocess = false;
-					if (handlers)
+					var handler = handlersClone[i];
+					if (handlers.indexOf(handler) != -1)	// making sure not to call removed handlers
 					{
-						for (var i = 0; handlers && (i < handlers.length); i++)
-						{
-							var handler = handlers[i];
-							if (SDL.jQuery.inArray(handler, processedHandlers) == -1)
-							{
-								needPostprocess = true;
-								processedHandlers.push(handler);
-								
-								var result = handler.fnc.apply(object, args);
+						var result = handler.fnc.apply(object, args);
 
-								combinedResult = combinedResult || result;
-								if (result === false)
-								{
-									returnFalse = true;
-									eventObj.preventDefault();
-									eventObj.stopPropagation();
-									needPostprocess = false;
-									break;
-								}
-								//while event handling the handlers object may get removed (when detaching the last handler) -> need to reset the local variable
-								handlers = listener.handlers;
-							}
+						combinedResult = combinedResult || result;
+						if (result === false)
+						{
+							returnFalse = true;
+							eventObj.preventDefault();
+							eventObj.stopPropagation();
+							break;
 						}
+						handlers = listener.handlers;
 					}
 				}
-				while (needPostprocess);
 			}
 
 			switch (event)

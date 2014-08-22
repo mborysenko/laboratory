@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../configuration.xsd">
 
+	<locales>
+		<locale>*</locale>
+	</locales>
+
 	<resourceGroups>
 
 		<resourceGroup name="SDL.Client.Libraries.SDL.Globalize">
@@ -16,7 +20,6 @@
 				<dependency name="SDL.Client.Types.Base"/>
 				<dependency name="SDL.Client.Types.Date"/>
 				<dependency name="SDL.Client.Event.EventRegister"/>
-				<dependency name="SDL.Client.Resources.ResourceManager"/>
 			</dependencies>
 		</resourceGroup>
 		

@@ -5,9 +5,9 @@ module SDL.Client.Resources.FileHandlers
 {
 	export class JsFileHandler extends FileResourceHandler
 	{
-		public addSourceUrl(file: IFileResource)
+		public getSourceUrlFooter(file: IFileResource): string
 			{
-				return file.data + "\n//@ sourceURL=" + (
+				return "\n//@ sourceURL=" + (
 					(file.url.indexOf("~/") == 0)
 						? Types.Url.combinePath(
 							file.isShared ? Application.applicationHostCorePath : Types.Url.getAbsoluteUrl(Configuration.ConfigurationManager.corePath),
@@ -25,14 +25,12 @@ module SDL.Client.Resources.FileHandlers
 				file.type = "text/javascript";
 				if (file.context)
 				{
-					(function()
-					{
-						SDL.jQuery.globalEval(arguments[0]);
-					}).apply(file.context, [this.addSourceUrl(file)]);
+					eval("(function(){\n" + file.data + "\n}).apply(arguments[0].context);" + this.getSourceUrlFooter(file));
+					// using arguments[0] instead of 'file' beacause js-minimizer will rename the variable
 				}
 				else
 				{
-					SDL.jQuery.globalEval(this.addSourceUrl(file));
+					SDL.jQuery.globalEval(file.data + this.getSourceUrlFooter(file));
 				}
 			}
 	}

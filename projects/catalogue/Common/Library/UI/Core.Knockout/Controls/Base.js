@@ -9,66 +9,109 @@ var SDL;
         (function (Core) {
             (function (Knockout) {
                 (function (Controls) {
-                    function createKnockoutBinding(control, name, events) {
-                        ko.bindingHandlers[name] = new KnockoutBindingHandler(control, name, events);
+                    function createKnockoutBinding(control, name) {
+                        ko.bindingHandlers[name] = new KnockoutBindingHandler(control, name);
                     }
                     Controls.createKnockoutBinding = createKnockoutBinding;
 
                     var KnockoutBindingHandler = (function () {
-                        function KnockoutBindingHandler(control, name, events) {
+                        function KnockoutBindingHandler(control, name) {
                             this.control = control;
-                            this.events = events;
                             this.name = name;
+
+                            // knockout calls init and update without KnockoutBindingHandler's context
+                            this.init = this.init.bind(this);
+                            this.update = this.update.bind(this);
                         }
                         KnockoutBindingHandler.prototype.init = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                             // everything is done in update
                         };
 
                         KnockoutBindingHandler.prototype.update = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                            var _this = this;
                             var values = valueAccessor();
-                            var attrName = SDL.UI.Core.Controls.getInstanceAttributeName(this.control);
+                            var attrName = Core.Controls.getInstanceAttributeName(this.control);
                             var instance = element[attrName];
+
+                            var controlEvents;
+                            var allBindings = allBindingsAccessor();
+                            var events = ko.unwrap(allBindings.controlEvents);
+                            if (events) {
+                                controlEvents = events[this.name];
+                            }
+
                             if (!instance || (instance.getDisposed && instance.getDisposed())) {
+                                if (instance) {
+                                    // instance is there -> it's disposed -> release references to event handlers
+                                    instance[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+                                }
+
                                 // create a control instance
-                                element[attrName] = instance = new this.control(element, SDL.UI.Core.Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindingsAccessor().jQuery));
+                                element[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindings.jQuery));
                                 instance.render();
                                 ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                                    return SDL.UI.Core.Renderers.ControlRenderer.disposeControl(instance);
+                                    if (instance.getDisposed && !instance.getDisposed()) {
+                                        // not disposed yet -> remove handlers and dispose
+                                        _this.removeEventHandlers(instance);
+                                        Core.Renderers.ControlRenderer.disposeControl(instance);
+                                    } else {
+                                        // already disposed -> release references to event handlers
+                                        instance[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+                                    }
                                 });
 
-                                this.addEventHandlers(instance, values, bindingContext['$data']);
+                                this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
                             } else {
                                 this.removeEventHandlers(instance);
-                                this.addEventHandlers(instance, values, bindingContext['$data']);
+                                this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
 
                                 if (instance.update) {
                                     // Call update on the existing instance
-                                    instance.update(SDL.UI.Core.Knockout.Utils.unwrapRecursive(values));
+                                    instance.update(Knockout.Utils.unwrapRecursive(values));
                                 }
                             }
                         };
 
-                        KnockoutBindingHandler.prototype.addEventHandlers = function (instance, values, viewModel) {
+                        KnockoutBindingHandler.prototype.addEventHandlers = function (instance, controlEvents, values, viewModel) {
                             if (instance.addEventListener) {
                                 var events = instance[KnockoutBindingHandler.eventHandlersAttributeName] = {};
+                                var propertyChangeHandler = (values ? function (e) {
+                                    var propertyChain = (e.data.property + "").split(".");
+                                    var setting = values;
 
-                                instance.addEventListener("propertychange", events["propertychange"] = function (e) {
-                                    if (values && ko.isWriteableObservable(values[e.data.property])) {
+                                    for (var i = 0; setting && i < propertyChain.length; i++) {
+                                        setting = ko.unwrap(setting);
+                                        if (setting) {
+                                            setting = setting[propertyChain[i]];
+                                        }
+                                    }
+
+                                    if (ko.isWriteableObservable(setting)) {
+                                        setting(e.data.value);
+                                    } else if (propertyChain.length > 1 && ko.isWriteableObservable(values[e.data.property])) {
                                         values[e.data.property](e.data.value);
                                     }
-                                });
+                                } : null);
 
-                                if (this.events) {
-                                    SDL.jQuery.each(this.events, function (i, event) {
-                                        if (values && SDL.Client.Type.isFunction(values[event.event])) {
-                                            var eventName = event.originalEvent || event.event;
-                                            if (eventName != "propertychange") {
+                                if (controlEvents) {
+                                    SDL.jQuery.each(controlEvents, function (eventName, eventHandler) {
+                                        if (SDL.Client.Type.isFunction(eventHandler)) {
+                                            if (eventName == "propertychange" && propertyChangeHandler) {
                                                 instance.addEventListener(eventName, events[eventName] = function (e) {
-                                                    values[event.event].apply(viewModel, [viewModel, e, instance]);
+                                                    propertyChangeHandler(e);
+                                                    eventHandler.apply(viewModel, [viewModel, e, instance]);
+                                                });
+                                            } else {
+                                                instance.addEventListener(eventName, events[eventName] = function (e) {
+                                                    eventHandler.apply(viewModel, [viewModel, e, instance]);
                                                 });
                                             }
                                         }
                                     });
+                                }
+
+                                if (propertyChangeHandler && !events["propertychange"]) {
+                                    instance.addEventListener("propertychange", events["propertychange"] = propertyChangeHandler);
                                 }
                             }
                         };

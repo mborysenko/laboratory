@@ -12,7 +12,7 @@ var SDL;
                     if (parent.nodeType == 2) {
                         return child == parent;
                     } else if (child && child.nodeType == 2) {
-                        child = SDL.Client.Xml.selectSingleNode(child, "..");
+                        child = Xml.selectSingleNode(child, "..");
                     }
 
                     while (child && child != parent) {
@@ -26,9 +26,9 @@ var SDL;
             ;
 
             function createElementNS(xmlDoc, ns, name) {
-                SDL.Client.Diagnostics.Assert.isDocument(xmlDoc);
-                SDL.Client.Diagnostics.Assert.isString(ns);
-                SDL.Client.Diagnostics.Assert.isString(name);
+                Client.Diagnostics.Assert.isDocument(xmlDoc);
+                Client.Diagnostics.Assert.isString(ns);
+                Client.Diagnostics.Assert.isString(name);
 
                 if (xmlDoc.createElementNS) {
                     return xmlDoc.createElementNS(ns, name);
@@ -37,30 +37,6 @@ var SDL;
                 }
             }
             Xml.createElementNS = createElementNS;
-            ;
-
-            function createAttributeNS(xmlDoc, ns, name) {
-                SDL.Client.Diagnostics.Assert.isDocument(xmlDoc);
-                SDL.Client.Diagnostics.Assert.isString(ns);
-                SDL.Client.Diagnostics.Assert.isString(name);
-
-                if (xmlDoc.createAttributeNS) {
-                    return xmlDoc.createAttributeNS(ns, name);
-                } else {
-                    return xmlDoc.createNode(2, name, ns);
-                }
-            }
-            Xml.createAttributeNS = createAttributeNS;
-            ;
-
-            function setAttributeNodeNS(element, attribute, ns) {
-                if (element.setAttributeNodeNS) {
-                    element.setAttributeNodeNS(attribute);
-                } else {
-                    element.setAttributeNode(attribute);
-                }
-            }
-            Xml.setAttributeNodeNS = setAttributeNodeNS;
             ;
 
             function escape(value, attribute) {
@@ -82,7 +58,7 @@ var SDL;
 
             function getInnerXml(node, xpath, namespaces) {
                 if (node) {
-                    var selection = xpath ? SDL.Client.Xml.selectSingleNode(node, xpath, namespaces) : node;
+                    var selection = xpath ? Xml.selectSingleNode(node, xpath, namespaces) : node;
                     if (selection) {
                         var stringBuilder = [];
                         var childNode = selection.firstChild;
@@ -98,14 +74,14 @@ var SDL;
             ;
 
             function getNewXsltProcessor(xslt) {
-                SDL.Client.Diagnostics.Assert.isNotNullOrUndefined(xslt);
+                Client.Diagnostics.Assert.isNotNullOrUndefined(xslt);
 
-                var stylesheetXml = SDL.Client.Type.isString(xslt) ? SDL.Client.Xml.getNewXmlDocument(xslt) : xslt;
+                var stylesheetXml = Client.Type.isString(xslt) ? Xml.getNewXmlDocument(xslt) : xslt;
 
                 if (window.XSLTProcessor) {
                     var processor = new window.XSLTProcessor();
                     if (SDL.jQuery.browser.mozilla) {
-                        var htmlMethodAttribute = SDL.Client.Xml.selectSingleNode(stylesheetXml, "/xsl:stylesheet/xsl:output/@method[.='html']");
+                        var htmlMethodAttribute = Xml.selectSingleNode(stylesheetXml, "/xsl:stylesheet/xsl:output/@method[.='html']");
                         if (htmlMethodAttribute) {
                             htmlMethodAttribute.value = "xml";
                         }
@@ -114,15 +90,15 @@ var SDL;
                     try  {
                         processor.importStylesheet(stylesheetXml);
                     } catch (e) {
-                        SDL.Client.Diagnostics.Assert.raiseError(e.message);
+                        Client.Diagnostics.Assert.raiseError(e.message);
                         throw e;
                     }
                     return processor;
                 } else {
-                    var progIDs = SDL.Client.Xml.progIDs();
+                    var progIDs = Xml.progIDs();
                     if (progIDs.xslTemplate) {
                         var xslt = new ActiveXObject(progIDs.xslTemplate);
-                        var freeTheadedXml = SDL.Client.Xml.getNewXmlDocument(stylesheetXml.xml, true, true);
+                        var freeTheadedXml = Xml.getNewXmlDocument(stylesheetXml.xml, true, true);
 
                         xslt.stylesheet = freeTheadedXml;
                         return xslt.createProcessor();
@@ -135,16 +111,16 @@ var SDL;
             ;
 
             function getParentNode(child) {
-                return child.nodeType == 2 ? SDL.Client.Xml.selectSingleNode(child, "..") : child.parentNode;
+                return child.nodeType == 2 ? Xml.selectSingleNode(child, "..") : child.parentNode;
             }
             Xml.getParentNode = getParentNode;
             ;
 
             function getOuterXml(node, xpath) {
                 if (node) {
-                    var selection = xpath ? SDL.Client.Xml.selectSingleNode(node, xpath) : node;
+                    var selection = xpath ? Xml.selectSingleNode(node, xpath) : node;
                     if (selection) {
-                        if (SDL.Client.Type.isString(selection.xml)) {
+                        if (Client.Type.isString(selection.xml)) {
                             return selection.xml;
                         } else {
                             return (new window.XMLSerializer()).serializeToString(selection);
@@ -159,14 +135,14 @@ var SDL;
                 var doc = (!parent || parent.nodeType == 9) ? parent : parent.ownerDocument;
                 if (doc) {
                     if (doc.evaluate) {
-                        var xPathResult = doc.evaluate(xPath, parent, SDL.Client.Xml.createResolver(namespaces), window.XPathResult.STRING_TYPE, null);
+                        var xPathResult = doc.evaluate(xPath, parent, Xml.createResolver(namespaces), window.XPathResult.STRING_TYPE, null);
 
                         return xPathResult ? xPathResult.stringValue : null;
                     } else {
                         if (namespaces) {
                             var nsList = String(doc.getProperty("SelectionNamespaces") || "").split(" ");
                             for (var prefix in namespaces) {
-                                var spec = SDL.Client.Types.String.format("xmlns:{0}=\"{1}\"", prefix, namespaces[prefix]);
+                                var spec = Client.Types.String.format("xmlns:{0}=\"{1}\"", prefix, namespaces[prefix]);
                                 if (SDL.jQuery.inArray(spec, nsList) == -1) {
                                     nsList.push(spec);
                                 }
@@ -223,7 +199,7 @@ var SDL;
                 if (node) {
                     setInnerText(node, "");
                     if (xml) {
-                        var doc = SDL.Client.Xml.getNewXmlDocument("<r>" + xml + "</r>");
+                        var doc = Xml.getNewXmlDocument("<r>" + xml + "</r>");
 
                         var docElement = importNode(node.ownerDocument, doc.documentElement, true);
                         var child = docElement.firstChild;
@@ -238,7 +214,7 @@ var SDL;
             ;
 
             function importNode(document, node, deep) {
-                if (SDL.jQuery.browser.msie && SDL.Client.Xml.progIDs().domDocument == "MSXML2.DOMDocument.3.0") {
+                if (SDL.jQuery.browser.msie && Xml.progIDs().domDocument == "MSXML2.DOMDocument.3.0") {
                     return node.cloneNode(deep);
                 } else if (document && node) {
                     return document.importNode(node, deep);
@@ -251,7 +227,7 @@ var SDL;
                 if (node && node.nodeType == 1) {
                     var parent = node.parentNode;
                     if (xml) {
-                        var doc = SDL.Client.Xml.getNewXmlDocument(xml);
+                        var doc = Xml.getNewXmlDocument(xml);
                         var newNode = importNode(node.ownerDocument, doc.documentElement, true);
                         parent.replaceChild(newNode, node);
                         return newNode;
@@ -273,8 +249,8 @@ var SDL;
             * @returns {XMLDocument} The result of the transformation.
             */
             function transformToXmlDocument(inputDoc, xslProcessor, parameters) {
-                SDL.Client.Diagnostics.Assert.isNode(inputDoc);
-                SDL.Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
+                Client.Diagnostics.Assert.isNode(inputDoc);
+                Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
 
                 return xsltTransform(xslProcessor, inputDoc, parameters, true);
             }
@@ -289,8 +265,8 @@ var SDL;
             * @returns {String} The result of the transformation.
             */
             function transformToString(inputDoc, xslProcessor, parameters) {
-                SDL.Client.Diagnostics.Assert.isNode(inputDoc);
-                SDL.Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
+                Client.Diagnostics.Assert.isNode(inputDoc);
+                Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
 
                 return xsltTransform(xslProcessor, inputDoc, parameters, false);
             }
@@ -305,15 +281,15 @@ var SDL;
             * @returns {XSLTProcessor} The result of the transformation.
             */
             function transformToXslProcessor(inputDoc, xslProcessor, parameters, namespaces) {
-                SDL.Client.Diagnostics.Assert.isNode(inputDoc);
-                SDL.Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
+                Client.Diagnostics.Assert.isNode(inputDoc);
+                Client.Diagnostics.Assert.isNotNullOrUndefined(xslProcessor);
 
                 var nsDeclares = [];
                 var nsExcludes = [];
                 if (namespaces) {
                     for (var prefix in namespaces) {
                         nsExcludes.push(prefix);
-                        nsDeclares.push(SDL.Client.Types.String.format('xmlns:{0}="{1}"', prefix, namespaces[prefix]));
+                        nsDeclares.push(Client.Types.String.format('xmlns:{0}="{1}"', prefix, namespaces[prefix]));
                     }
                 }
 
@@ -329,7 +305,7 @@ var SDL;
 
                 xslText = xslText.replace(/[\s\S]*(<xsl:stylesheet .*?)>/, "$1 " + nsDeclares.join(" ") + ' exclude-result-prefixes="' + nsExcludes.join(" ") + '">');
 
-                var xslDocument = SDL.Client.Xml.getNewXmlDocument(xslText);
+                var xslDocument = Xml.getNewXmlDocument(xslText);
                 var xslProcessor = getNewXsltProcessor(xslDocument);
                 return xslProcessor;
             }
@@ -364,7 +340,7 @@ var SDL;
                             xsltProcessor.reset();
                             xsltProcessor.input = xml;
                             if (toDocument) {
-                                output = SDL.Client.Xml.getNewXmlDocument();
+                                output = Xml.getNewXmlDocument();
                                 xsltProcessor.output = output;
                                 xsltProcessor.transform();
                             } else {
@@ -385,7 +361,7 @@ var SDL;
 
             function getAttributes(xmlNode) {
                 if (xmlNode) {
-                    return SDL.Client.Xml.selectNodes(xmlNode, "@*");
+                    return Xml.selectNodes(xmlNode, "@*");
                 }
             }
             Xml.getAttributes = getAttributes;
@@ -448,7 +424,7 @@ var SDL;
                                 result = result[arrayProp];
                             }
                         } else {
-                            result = SDL.Client.Xml.getInnerText(xmlNode);
+                            result = Xml.getInnerText(xmlNode);
                         }
                     }
                     return result;

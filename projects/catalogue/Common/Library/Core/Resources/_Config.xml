@@ -16,10 +16,12 @@
 				<file name="FileHandlers/CssFileHandler.js"/>
 				<file name="FileHandlers/HtmlFileHandler.js"/>
 				<file name="FileHandlers/JsFileHandler.js"/>
+				<file name="FileHandlers/ResjsonFileHandler.js"/>
 				<file name="ResourceManager.js"/>
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.Client.Libraries.SDL.Globalize"/>
 				<dependency name="SDL.Client.Net.Ajax"/>
 				<dependency name="SDL.Client.Application"/>
 				<dependency name="SDL.Client.Localization"/>

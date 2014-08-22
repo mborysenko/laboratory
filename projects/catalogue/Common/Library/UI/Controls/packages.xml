@@ -4,25 +4,41 @@
 	<packages>
 		<package name="SDL.UI.Controls">
 			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.ActionBar"/>
+				<resourceGroup name="SDL.UI.Controls.ActivityIndicator"/>
 				<resourceGroup name="SDL.UI.Controls.Button"/>
 				<resourceGroup name="SDL.UI.Controls.Callout"/>
 				<resourceGroup name="SDL.UI.Controls.Dialog"/>
 				<resourceGroup name="SDL.UI.Controls.Message"/>
-				<resourceGroup name="SDL.UI.Controls.Tabs"/>
+				<resourceGroup name="SDL.UI.Controls.ResizeTrigger"/>
+				<resourceGroup name="SDL.UI.Controls.TopPageTabs"/>
 				<resourceGroup name="SDL.UI.Controls.Tooltip"/>
 				<resourceGroup name="SDL.UI.Controls.ScrollView"/>
+				<resourceGroup name="SDL.UI.Controls.TextInput"/>
+                <resourceGroup name="SDL.UI.Controls.DatePicker"/>
+				<resourceGroup name="SDL.UI.Controls.Checkbox"/>
+				<resourceGroup name="SDL.UI.Controls.RadioButton"/>
+				<resourceGroup name="SDL.UI.Controls.Combobox"/>
 			</resourceGroups>
 		</package>
 
 		<package name="SDL.UI.Controls.JQuery">
 			<resourceGroups>
+				<resourceGroup name="SDL.UI.Controls.JQuery.ActionBar"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.ActivityIndicator"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Button"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Callout"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Dialog"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Message"/>
-				<resourceGroup name="SDL.UI.Controls.JQuery.Tabs"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.ResizeTrigger"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.TopPageTabs"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.Tooltip"/>
 				<resourceGroup name="SDL.UI.Controls.JQuery.ScrollView"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.TextInput"/>
+                <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Checkbox"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.RadioButton"/>
+				<resourceGroup name="SDL.UI.Controls.JQuery.Combobox"/>
 			</resourceGroups>
 		</package>
 	</packages>

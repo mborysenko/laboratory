@@ -18,12 +18,13 @@ module SDL.UI.Core.Renderers
 		{
 			if (element)
 			{
-				SDL.jQuery(element).data("control-create", true);
+				SDL.jQuery(element).data("control-create", true);	// setting data to a value to be able to detect it when the element is removed from the DOM
 			}
 
 			SDL.Client.Resources.ResourceManager.load(type, () =>
 				{
-					if (!element || SDL.jQuery(element).data("control-create"))
+					if (!element || SDL.jQuery(element).data("control-create"))	// all data is deleted when the element itself is removed from the DOM
+																				// -> no need to instantiate the control then
 					{
 						var ctor: Controls.IControlType = ControlRenderer.types[type];
 						if (!ctor)
@@ -69,10 +70,6 @@ module SDL.UI.Core.Renderers
 
 		static disposeControl(control: Controls.IControl)
 		{
-			if (control.getElement)
-			{
-				SDL.jQuery(control.getElement()).removeData();
-			}
 			if ((<SDL.Client.Types.IDisposableObject><any>control).dispose)
 			{
 				(<SDL.Client.Types.IDisposableObject><any>control).dispose();

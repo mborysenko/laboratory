@@ -12,17 +12,17 @@ declare module SDL.Client.Models
         getMaxAge(): number;
         isCacheValid(data: string): boolean;
         invalidateCache(data: string): void;
-        getTimeStamp(data: string): number;
-        setTimeStamp(timestamp: number, data: string): void;
+        getTimeStamp(data?: string): number;
+        setTimeStamp(timestamp: number, data?: string): void;
     }
     export class CacheableObject extends MarshallableObject implements ICacheableObject
     {
         constructor();
         getMaxAge(): number;
-        isCacheValid(data: string): boolean;
-        invalidateCache(data: string): void;
-        getTimeStamp(data: string): number;
-        setTimeStamp(timestamp: number, data: string): void;
+        isCacheValid(data?: string): boolean;
+        invalidateCache(data?: string): void;
+        getTimeStamp(data?: string): number;
+        setTimeStamp(timestamp: number, data?: string): void;
         properties: ICacheableObjectProperties;
     }
 }

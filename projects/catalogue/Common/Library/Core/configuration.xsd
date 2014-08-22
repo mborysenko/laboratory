@@ -10,6 +10,15 @@
 		<xs:sequence maxOccurs="unbounded" minOccurs="0">
 			<xs:choice>
 				<xs:element type="typeAppSettings" name="appSettings" minOccurs="0" maxOccurs="1" />
+				<xs:element type="typeLocales" name="locales" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							Defines supported locales.
+							Resource files for locales not defined here will not be loaded from the server.
+							Remove this element if resources for all locales should be supported.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element type="typePages" name="pages" minOccurs="0" maxOccurs="1" />
 				<xs:element type="typeInclude" name="include" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="typeResourceGroups" name="resourceGroups" minOccurs="0" maxOccurs="1" />
@@ -36,6 +45,16 @@
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="typeLocales">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="locale" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:complexType name="typePages">
 		<xs:sequence>
 			<xs:element maxOccurs="unbounded" name="page" minOccurs="0">
@@ -58,6 +77,31 @@
 					<xs:attribute name="view" type="xs:string" use="optional" />
 					<xs:attribute name="resource" type="xs:string" use="optional" />
 					<xs:attribute name="title" type="xs:string" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="baseUrl" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="typePagesExtension">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="page" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="preloadPackages" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="package" minOccurs="0">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="optional" />
+											<xs:attribute name="url" type="xs:string" use="required" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="url" type="xs:string" use="required" />
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
@@ -110,19 +154,22 @@
 
 	<xs:complexType name="typeExtensions">
 		<xs:sequence>
-			<xs:element name="resourceExtension" maxOccurs="unbounded" minOccurs="0">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="insert" maxOccurs="unbounded" minOccurs="0">
-							<xs:complexType>
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="position" type="typeInsertPosition"/>
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
-					<xs:attribute name="for" type="xs:string" use="required" />
-				</xs:complexType>
-			</xs:element>
+			<xs:choice>
+				<xs:element name="resourceExtension" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="insert" maxOccurs="unbounded" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="position" type="typeInsertPosition"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="for" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element type="typePagesExtension" name="pages" minOccurs="0" maxOccurs="1" />
+			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
 

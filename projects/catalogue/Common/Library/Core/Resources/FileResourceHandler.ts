@@ -1,6 +1,7 @@
 /// <reference path="Resources.d.ts" />
 /// <reference path="../Libraries/jQuery/SDL.jQuery.ts" />
 /// <reference path="../Localization/Localization.ts" />
+/// <reference path="../ApplicationHost/ApplicationHost.ts" />
 /// <reference path="../Application/Application.ts" />
 /// <reference path="../Net/Ajax.d.ts" />
 /// <reference path="../Types/Array.d.ts" />
@@ -118,7 +119,11 @@ module SDL.Client.Resources
 			FileResourceHandler.load(file, callback, errorcallback, sync);
 		}
 
-		static load(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void
+		static load(file: IFileResourceDefinition,
+			callback?: (file: IFileResource) => void,
+			errorcallback?: (file: IFileResource) => void,
+			sync?: boolean,
+			caller?: ApplicationHost.ICallerSignature): void
 			{
 				if (file && file.url)
 				{
@@ -231,7 +236,7 @@ module SDL.Client.Resources
 									else
 									{
 										// call load() on the same file resource again, now that culture has changed, to load the required culture files
-										FileResourceHandler.load(file, callback, errorcallback, sync);
+										FileResourceHandler.load(file, callback, errorcallback, sync, caller);
 									}
 								}
 							};
@@ -242,19 +247,26 @@ module SDL.Client.Resources
 								if (dashIndex > 0)
 								{
 									var lang = culture.slice(0, dashIndex);
-									if (lang != "en")
+									if (lang != "en" && (!fileResource.locales || fileResource.locales["*"] || fileResource.locales[lang.toLowerCase()]))
 									{
-										// load the neutral culture file
+										// render the neutral culture file if supported
 										filesToLoadCount++;
 										FileResourceHandler.load(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, lang), context: SDL}),
-											_loadFileCallback, _loadFileCallback, sync);
+											_loadFileCallback, _loadFileCallback, sync, caller);
 									}
 								}
-								// load the culture file
-								FileResourceHandler.load(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL}),
-									_loadFileCallback, _loadFileCallback, sync);
+
+								if (fileResource.locales && !fileResource.locales["*"] && !fileResource.locales[culture.toLowerCase()])	// culture is not supported
+								{
+									_loadFileCallback();	// nothing to load
+								}
+								else	// culture is supported (by default if nothing is configured or explicitly)
+								{
+									FileResourceHandler.load(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL}),
+										_loadFileCallback, _loadFileCallback, sync, caller);
+								}
 							}
-							else
+							else	// 'en' is the default culture, no need to load
 							{
 								_loadFileCallback();	// no culture to load
 							}
@@ -277,7 +289,7 @@ module SDL.Client.Resources
 									});
 							}
 
-							FileResourceHandler.loadPackage(FileResourceHandler.getPreferedPackage(fileResource.parentPackages), null, null, sync);
+							FileResourceHandler.loadPackage(FileResourceHandler.getPreferedPackage(fileResource.parentPackages), null, null, sync, caller);
 						}
 						else
 						{
@@ -335,7 +347,8 @@ module SDL.Client.Resources
 										{
 											throw Error(file.url + ": " + error);
 										}
-									}
+									},
+								caller
 							);
 						}
 					}
@@ -396,20 +409,28 @@ module SDL.Client.Resources
 								if (dashIndex > 0)
 								{
 									var lang = culture.slice(0, dashIndex);
-									if (lang != "en")
+									if (lang != "en" && (!fileResource.locales || fileResource.locales["*"] || fileResource.locales[lang.toLowerCase()]))
 									{
-										// render the neutral culture file
+										// render the neutral culture file if supported
 										filesToRenderCount++;
 										FileResourceHandler.renderWhenLoaded(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, lang), context: SDL}),
 											_renderFileCallback, _renderFileCallback, sync);
 									}
 								}
-								FileResourceHandler.renderWhenLoaded(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL}),
-									_renderFileCallback, _renderFileCallback, sync);
+
+								if (fileResource.locales && !fileResource.locales["*"] && !fileResource.locales[culture.toLowerCase()])	// culture is not supported
+								{
+									_renderFileCallback();	// nothing to render
+								}
+								else	// culture is supported (by default if nothing is configured or explicitly)
+								{
+									FileResourceHandler.renderWhenLoaded(<IFileResource>SDL.jQuery.extend({}, file, {url: file.url.replace(/\{CULTURE\}/g, culture), context: SDL}),
+										_renderFileCallback, _renderFileCallback, sync);
+								}
 							}
-							else
+							else	// 'en' is the default culture, no need to render
 							{
-								_renderFileCallback();	// nothing to render
+								_renderFileCallback();
 							}
 						}
 						else
@@ -572,7 +593,7 @@ module SDL.Client.Resources
 
 		private static getPreferedPackage(packages: IPackageResourceDefinition[]): IPackageResourceDefinition
 		{
-			var len = packages && packages.length;
+			var len: number = (<any>packages) && packages.length;
 			if (!len)
 			{
 				return null;
@@ -585,8 +606,9 @@ module SDL.Client.Resources
 			{
 				var parentPackage: IPackageResourceDefinition;
 				var parentPackageUrl: string;
+				var i: number;
 
-				for (var i = 0, len = packages.length; i < len; i++)
+				for (i = 0, len = packages.length; i < len; i++)
 				{
 					var newPackage = packages[i];
 					var newPackageUrl = newPackage.url;
@@ -652,9 +674,9 @@ module SDL.Client.Resources
 								var oldUrlFound = false;
 								var newUrlFound = false;
 			
-								for (var i = 0, len = scripts.length; i < len && (!oldUrlFound || !newUrlFound); i++)
+								for (var j = 0, lenj = scripts.length; j < lenj && (!oldUrlFound || !newUrlFound); j++)
 								{
-									var src = (<HTMLScriptElement>scripts[i]).src;
+									var src = (<HTMLScriptElement>scripts[j]).src;
 									var index = src.indexOf("?");
 									if (index != -1)
 									{
@@ -696,14 +718,14 @@ module SDL.Client.Resources
 		}
 
 		private static loadPackage(resourcesPackage: IPackageResourceDefinition, callback: () => void,
-									errorcallback?: (fileResource: IFileResource) => void, sync?: boolean)
+									errorcallback?: (fileResource: IFileResource) => void, sync?: boolean, caller?: ApplicationHost.ICallerSignature)
 		{
 			var key = resourcesPackage.url.toLowerCase();
 			var file = FileResourceHandler.fileResources[key];
 
 			if (!file || !file.loaded)
 			{
-				FileResourceHandler.load(resourcesPackage, (file?: IFileResource) => FileResourceHandler.processPackageFileLoaded(resourcesPackage, file), errorcallback, sync);
+				FileResourceHandler.load(resourcesPackage, (file?: IFileResource) => FileResourceHandler.processPackageFileLoaded(resourcesPackage, file), errorcallback, sync, caller);
 			}
 			else if (!resourcesPackage.unpacked)
 			{

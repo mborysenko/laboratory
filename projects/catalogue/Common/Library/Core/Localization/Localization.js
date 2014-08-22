@@ -9,7 +9,7 @@ var __extends = this.__extends || function (d, b) {
 var SDL;
 (function (SDL) {
     (function (Client) {
-        eval(SDL.Client.Types.OO.enableCustomInheritance);
+        eval(Client.Types.OO.enableCustomInheritance);
         var LocalizationClass = (function (_super) {
             __extends(LocalizationClass, _super);
             function LocalizationClass() {
@@ -26,7 +26,7 @@ var SDL;
                 return this._culture;
             };
             return LocalizationClass;
-        })(SDL.Client.Types.ObjectWithEvents);
+        })(Client.Types.ObjectWithEvents);
         Client.LocalizationClass = LocalizationClass;
         SDL.Client.Types.OO.createInterface("SDL.Client.LocalizationClass", LocalizationClass);
     })(SDL.Client || (SDL.Client = {}));
@@ -37,7 +37,7 @@ var SDL;
 (function (SDL) {
     (function (Client) {
         // has to be in a separate module definition, otherwise creating an instance of the interface fails
-        Client.Localization = new SDL.Client.LocalizationClass();
+        Client.Localization = new Client.LocalizationClass();
     })(SDL.Client || (SDL.Client = {}));
     var Client = SDL.Client;
 })(SDL || (SDL = {}));

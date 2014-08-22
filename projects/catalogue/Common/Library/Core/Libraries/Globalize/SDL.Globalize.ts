@@ -62,14 +62,25 @@ module SDL
 
 			Client.Event.EventRegister.addEventHandler(Client.Localization, "culturechange", (e: Client.Event.Event) =>
 			{
-				if (this._globalize)
+				if (Client.Resources && Client.Resources.FileResourceHandler)
 				{
-					this.culture(e.data.culture);
+					Client.Resources.FileResourceHandler.updateCultureResources(() =>
+						{
+							if (this._globalize)
+							{
+								this.culture(e.data.culture);
+							}
+							this.fireEvent("culturechange", {culture: e.data.culture});
+						});
 				}
-				Client.Resources.FileResourceHandler.updateCultureResources(() =>
+				else
+				{
+					if (this._globalize)
 					{
-						this.fireEvent("culturechange", {culture: e.data.culture});
-					});
+						this.culture(e.data.culture);
+					}
+					this.fireEvent("culturechange", {culture: e.data.culture});
+				}
 			});
 		}
 
@@ -163,8 +174,8 @@ module SDL
 					{messages: null},
 					{messages: SDL.jQuery.extend({}, prevMessages, info.messages)});
 
-			// Make the standard calendar the current culture if it's a new culture
-			if (isNew)
+			// Make the standard calendar the current culture
+			if (info && info.calendars && info.calendars.standard)
 			{
 				this.cultures[cultureName].calendar = this.cultures[cultureName].calendars.standard;
 			}

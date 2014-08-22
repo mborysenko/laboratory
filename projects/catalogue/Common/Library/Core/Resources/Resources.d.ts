@@ -1,12 +1,12 @@
 declare module SDL.Client.Resources
 {
 	export var preloadPackages: {[key: string]: IPreloadPackageFileResource;};
-	export var executingPackageUrl: string;
 
 	export interface IFileResourceDefinition
 	{
 		url: string;
 		version?: string;
+		locales?: {[locale: string]: boolean;};
 	}
 
 	export interface IPreloadPackageFileResource extends IFileResourceDefinition

@@ -32,6 +32,7 @@ declare module SDL.Client.Application {
             [id: string]: IApplicationDomain;
         }): void;
         resetApplicationSuite(): void;
+        updateTargetDisplayUrlUnsecure(url: string): void;
         storeApplicationData(key: string, data: any): void;
         storeApplicationSessionData(key: string, data: any): void;
         getApplicationData(key: string, callback: (data: any) => void): void;
@@ -40,10 +41,15 @@ declare module SDL.Client.Application {
         clearApplicationSessionData(): void;
         removeApplicationData(key: string): void;
         removeApplicationSessionData(key: string): void;
+        triggerAnalyticsEvent(event: string, object: any): void;
         addEventListener(event: string, handler: Function): void;
         removeEventListener(event: string, handler: Function): void;
         fireEvent(event: string, eventData?: any): void;
         isSupported(method: string): boolean;
+    }
+    interface IApplicationData {
+        coreVersion?: string;
+        loadedUrl: string;
     }
     interface IApplicationHostData {
         applicationHostUrl: string;
@@ -56,6 +62,9 @@ declare module SDL.Client.Application {
         activeApplicationId: string;
         supportedMethods?: {
             [method: string]: boolean;
+        };
+        sharedSettings?: {
+            [setting: string]: string;
         };
     }
     interface IApplicationDomain {
@@ -89,6 +98,7 @@ declare module SDL.Client.Application {
         public setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void;
         public setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
         public setApplicationEntryPointUrlUnsecure(applicationEntryPointId: string, url: string, applicationSuiteId?: string): void;
+        public updateTargetDisplayUrlUnsecure(url: string): void;
         public callApplicationFacade(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string): void;
         public callApplicationFacadeUnsecure(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string): void;
         public initializeApplicationSuite(includeApplicationEntryPointIds?: string[], excludeApplicationEntryPointIds?: string[], domainDefinitions?: {
@@ -103,6 +113,7 @@ declare module SDL.Client.Application {
         public clearApplicationSessionData(): void;
         public removeApplicationData(key: string): void;
         public removeApplicationSessionData(key: string): void;
+        public triggerAnalyticsEvent(event: string, object: any): void;
         public addEventListener(event: string, handler: Function): void;
         public removeEventListener(event: string, handler: Function): void;
         public fireEvent(eventType: string, eventData?: any): void;

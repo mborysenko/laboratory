@@ -19,6 +19,7 @@
 				<dependency name="SDL.Client.Event.EventRegister"/>
 				<dependency name="SDL.Client.Types.Function"/>
 				<dependency name="SDL.Client.Types.String"/>
+				<dependency name="SDL.Client.Types.RegExp"/>
 			</dependencies>
 		</resourceGroup>
 	</resourceGroups>

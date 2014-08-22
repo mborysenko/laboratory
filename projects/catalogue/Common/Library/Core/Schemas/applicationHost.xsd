@@ -8,6 +8,20 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:all>
+			<xs:element name="enableGoogleTagManager" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Specifies whether Application Host should trigger Google Tag Manager tags.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="googleTagManagerContainerId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Specifies the ID of a Google Tag Manager container.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="manifestCacheMaxAge" type="xs:integer" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>

@@ -6,8 +6,6 @@
 declare module SDL.Client.Xml {
     function containsNode(parent: Node, child: Node): boolean;
     function createElementNS(xmlDoc: Document, ns: string, name: string): Element;
-    function createAttributeNS(xmlDoc: Document, ns: string, name: string): Attr;
-    function setAttributeNodeNS(element: Element, attribute: Attr, ns: string): void;
     function escape(value: string, attribute?: boolean): string;
     function getInnerXml(node: Node, xpath: string, namespaces: INamespaceDefinitions): string;
     function getNewXsltProcessor(xslt: string): any;

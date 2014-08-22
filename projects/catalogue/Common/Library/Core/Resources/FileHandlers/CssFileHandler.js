@@ -29,7 +29,7 @@ var SDL;
                                         if (!path) {
                                             var url = file.url;
                                             if (url && url.indexOf("~/") == 0) {
-                                                url = SDL.Client.Types.Url.combinePath(SDL.Client.Resources.FileResourceHandler.corePath, url.slice(2));
+                                                url = Client.Types.Url.combinePath(Resources.FileResourceHandler.corePath, url.slice(2));
                                             }
 
                                             if (url) {
@@ -39,9 +39,9 @@ var SDL;
                                                 path = "/";
                                             }
                                         }
-                                        return addHost ? SDL.Client.Types.Url.combinePath(window.location.href, path) : path;
+                                        return addHost ? Client.Types.Url.combinePath(window.location.href, path) : path;
                                     case "ROOT":
-                                        return addHost ? SDL.Client.Types.Url.combinePath(window.location.href, SDL.Client.Resources.FileResourceHandler.corePath) : SDL.Client.Resources.FileResourceHandler.corePath;
+                                        return addHost ? Client.Types.Url.combinePath(window.location.href, Resources.FileResourceHandler.corePath) : Resources.FileResourceHandler.corePath;
                                     case "VERSION":
                                         if (version === undefined) {
                                             version = file.version;
@@ -111,9 +111,9 @@ var SDL;
                         }
                     };
                     return CssFileHandler;
-                })(SDL.Client.Resources.FileResourceHandler);
+                })(Resources.FileResourceHandler);
                 FileHandlers.CssFileHandler = CssFileHandler;
-                SDL.Client.Resources.FileResourceHandler.registeredResourceHandlers.push(new CssFileHandler());
+                Resources.FileResourceHandler.registeredResourceHandlers.push(new CssFileHandler());
             })(Resources.FileHandlers || (Resources.FileHandlers = {}));
             var FileHandlers = Resources.FileHandlers;
         })(Client.Resources || (Client.Resources = {}));

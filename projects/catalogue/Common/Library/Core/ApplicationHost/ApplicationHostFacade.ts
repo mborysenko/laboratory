@@ -5,118 +5,134 @@ module SDL.Client.ApplicationHost.ApplicationHostFacade
 
 	export function applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: Client.Event.Event) => void): Application.IApplicationHostData
 	{
-		return SDL.jQuery.extend({supportedMethods: supportedMethods}, ApplicationHost.applicationEntryPointLoaded(libraryVersion, eventHandler));
+		return SDL.jQuery.extend({supportedMethods: supportedMethods}, ApplicationHost.applicationEntryPointLoaded(libraryVersion, eventHandler, <ICallerSignature>(<any>arguments.callee).caller));
 	}
 
 	export function exposeApplicationFacade(applicationEntryPointId: string): void
 	{
-		return ApplicationHost.exposeApplicationFacade(applicationEntryPointId);
+		return ApplicationHost.exposeApplicationFacade(applicationEntryPointId, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function applicationEntryPointUnloaded(): void
 	{
-		return ApplicationHost.applicationEntryPointUnloaded();
+		return ApplicationHost.applicationEntryPointUnloaded(<ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function setCulture(culture: string): void
 	{
-		return ApplicationHost.setCulture(culture);
+		return ApplicationHost.setCulture(culture, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function startCaptureDomEvents(events: string[]): void
 	{
-		return ApplicationHost.startCaptureDomEvents(events);
+		return ApplicationHost.startCaptureDomEvents(events, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function stopCaptureDomEvents(events?: string[]): void
 	{
-		return ApplicationHost.stopCaptureDomEvents(events);
+		return ApplicationHost.stopCaptureDomEvents(events, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function setActiveApplicationEntryPoint(applicationEntryPointId: string, applicationSuiteId?: string): void
 	{
-		return ApplicationHost.setActiveApplicationEntryPoint(applicationEntryPointId, applicationSuiteId);
+		return ApplicationHost.setActiveApplicationEntryPoint(applicationEntryPointId, applicationSuiteId, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function setApplicationEntryPointUrl(applicationEntryPointId: string, url: string, applicationSuiteId?: string, allowedDomains?: string[]): void
 	{
-		return ApplicationHost.setApplicationEntryPointUrl(applicationEntryPointId, url, applicationSuiteId, allowedDomains);
+		return ApplicationHost.setApplicationEntryPointUrl(applicationEntryPointId, url, applicationSuiteId, allowedDomains, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function callApplicationFacade(applicationEntryPointId: string, method: string, args?: any[], callback?: (result: any) => void, applicationSuiteId?: string, allowedDomains?: string[]): void
 	{
-		return ApplicationHost.callApplicationFacade(applicationEntryPointId, method, args, callback, applicationSuiteId, allowedDomains);
+		return ApplicationHost.callApplicationFacade(applicationEntryPointId, method, args, callback, applicationSuiteId, allowedDomains, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function initializeApplicationSuite(includeApplicationEntryPointIds?: string[], excludeApplicationEntryPointIds?: string[], domainDefinitions?: {[id: string]: Application.IApplicationDomain;}): void
 	{
-		return ApplicationHost.initializeApplicationSuite(includeApplicationEntryPointIds, excludeApplicationEntryPointIds, domainDefinitions);
+		return ApplicationHost.initializeApplicationSuite(includeApplicationEntryPointIds, excludeApplicationEntryPointIds, domainDefinitions, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function resetApplicationSuite(): void
 	{
-		return ApplicationHost.resetApplicationSuite();
+		return ApplicationHost.resetApplicationSuite(<ICallerSignature>(<any>arguments.callee).caller);
+	}
+
+	export function updateTargetDisplayUrl(url: string, caller?: ICallerSignature): void
+	{
+		return ApplicationHost.updateTargetDisplayUrl(url, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function storeApplicationData(key: string, data: any): void
 	{
-		return ApplicationHost.storeApplicationData(key, data);
+		return ApplicationHost.storeApplicationData(key, data, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function storeApplicationSessionData(key: string, data: any): void
 	{
-		return ApplicationHost.storeApplicationSessionData(key, data);
+		return ApplicationHost.storeApplicationSessionData(key, data, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function getApplicationData(key: string): any
 	{
-		return ApplicationHost.getApplicationData(key);
+		return ApplicationHost.getApplicationData(key, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function getApplicationSessionData(key: string): any
 	{
-		return ApplicationHost.getApplicationSessionData(key);
+		return ApplicationHost.getApplicationSessionData(key, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function clearApplicationData(): void
 	{
-		return ApplicationHost.clearApplicationData();
+		return ApplicationHost.clearApplicationData(<ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function clearApplicationSessionData(): void
 	{
-		return ApplicationHost.clearApplicationSessionData();
+		return ApplicationHost.clearApplicationSessionData(<ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function removeApplicationData(key: string): void
 	{
-		return ApplicationHost.removeApplicationData(key);
+		return ApplicationHost.removeApplicationData(key, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function removeApplicationSessionData(key: string): void
 	{
-		return ApplicationHost.removeApplicationSessionData(key);
+		return ApplicationHost.removeApplicationSessionData(key, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function resolveCommonLibraryResources(resourceGroupName: string): Resources.IResolvedResourceGroupResult[]
 	{
-		return ApplicationHost.resolveCommonLibraryResources(resourceGroupName);
+		return ApplicationHost.resolveCommonLibraryResources(resourceGroupName, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: {url: string; data: string;}) => void, onFailure: (error: string) => void): void
 	{
-		return ApplicationHost.getCommonLibraryResources(files, version, onFileLoad, onFailure);
+		return ApplicationHost.getCommonLibraryResources(files, version, onFileLoad, onFailure, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
 	export function getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure: (error: string) => void): void
 	{
-		return ApplicationHost.getCommonLibraryResource(file, version, onSuccess, onFailure);
+		return ApplicationHost.getCommonLibraryResource(file, version, onSuccess, onFailure, <ICallerSignature>(<any>arguments.callee).caller);
 	}
 
-	CrossDomainMessaging.addAllowedHandlerBase(ApplicationHostFacade);
-
-	for (var method in ApplicationHostFacade)
+	export function triggerAnalyticsEvent(event: string, object: any): void
 	{
-		supportedMethods[method] = true;
+		return ApplicationHost.triggerAnalyticsEvent(event, object, <ICallerSignature>(<any>arguments.callee).caller);
+	}
+
+	export function _expose()
+	{
+		CrossDomainMessaging.addAllowedHandlerBase(ApplicationHostFacade);
+
+		for (var method in ApplicationHostFacade)
+		{
+			if (method != "_expose")
+			{
+				supportedMethods[method] = true;
+			}
+		}
 	}
 }

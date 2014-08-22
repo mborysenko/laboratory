@@ -13,7 +13,7 @@ var SDL;
 
                         jQueryObject.each(function () {
                             var element = this;
-                            var attrName = SDL.UI.Core.Controls.getInstanceAttributeName(control);
+                            var attrName = Controls.getInstanceAttributeName(control);
                             var instance = element[attrName];
                             if (!instance || (instance.getDisposed && instance.getDisposed())) {
                                 // create a control instance

@@ -7,11 +7,11 @@ var SDL;
                 function makeRelativeUrl(base, url) {
                     if (!url || url == base) {
                         url = "";
-                    } else if (!SDL.Client.Types.Url.getDomain(url) || (SDL.Client.Types.Url.getDomain(base) && SDL.Client.Types.Url.isSameDomain(base, url))) {
-                        var urlParts = SDL.Client.Types.Url.parseUrl(url);
+                    } else if (!Url.getDomain(url) || (Url.getDomain(base) && Url.isSameDomain(base, url))) {
+                        var urlParts = Url.parseUrl(url);
 
                         if (urlParts[4 /* PATH */].charAt(0) == "/") {
-                            var baseParts = SDL.Client.Types.Url.parseUrl(base);
+                            var baseParts = Url.parseUrl(base);
                             url = "";
 
                             if (baseParts[4 /* PATH */] == urlParts[4 /* PATH */]) {
@@ -68,7 +68,7 @@ var SDL;
                     var m = SDL.Client.Types.Url.parseUrl(url);
                     var params = m[6 /* SEARCH */];
                     if (params) {
-                        m = params.match(new RegExp("(\\?|&)\\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\\s*=([^&]+)(&|$)"));
+                        m = params.match(new RegExp("(\\?|&)\\s*" + Types.RegExp.escape(parameterName) + "\\s*=([^&]+)(&|$)"));
                         if (m) {
                             return decodeURIComponent(m[2]);
                         }
@@ -81,7 +81,7 @@ var SDL;
                     var m = SDL.Client.Types.Url.parseUrl(url);
                     var params = m[7 /* HASH */];
                     if (params) {
-                        m = params.match(new RegExp("(#|&)\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\s*=([^&]+)(&|$)"));
+                        m = params.match(new RegExp("(#|&)\s*" + Types.RegExp.escape(parameterName) + "\s*=([^&]+)(&|$)"));
                         if (m) {
                             return decodeURIComponent(m[2]);
                         }
@@ -98,7 +98,7 @@ var SDL;
                     var paramRegExp;
 
                     if (hash) {
-                        paramRegExp = new RegExp("(#|&)(\s*" + SDL.Client.Types.RegExp.escape(parameterName) + "\s*=)([^&]*)(&|$)");
+                        paramRegExp = new RegExp("(#|&)(\s*" + Types.RegExp.escape(parameterName) + "\s*=)([^&]*)(&|$)");
                         paramMatch = hash.match(paramRegExp);
                         if (paramMatch) {
                             prevValue = decodeURIComponent(paramMatch[3]);

@@ -31,8 +31,8 @@ var SDL;
 
                     ControlBase.prototype.$initialize = function () {
                         var controlType = SDL.Client.Type.resolveNamespace(this.getTypeName());
-                        this.properties.element[SDL.UI.Core.Controls.getInstanceAttributeName(controlType)] = this;
-                        SDL.UI.Core.Renderers.ControlRenderer.onControlCreated(this);
+                        this.properties.element[Controls.getInstanceAttributeName(controlType)] = this;
+                        Core.Renderers.ControlRenderer.onControlCreated(this);
                     };
 
                     ControlBase.prototype.render = function (callback, errorcallback) {
@@ -56,7 +56,7 @@ var SDL;
 
                     ControlBase.prototype.dispose = function () {
                         this.callBase("SDL.Client.Types.ObjectWithEvents", "dispose");
-                        SDL.UI.Core.Renderers.ControlRenderer.onControlDisposed(this);
+                        Core.Renderers.ControlRenderer.onControlDisposed(this);
                     };
                     return ControlBase;
                 })(SDL.Client.Types.ObjectWithEvents);

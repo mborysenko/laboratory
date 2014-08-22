@@ -38,7 +38,7 @@ var SDL;
                 };
 
                 ResourceManagerClass.prototype.getTemplateResource = function (templateId) {
-                    return SDL.Client.Resources.FileResourceHandler.getTemplateResource(templateId);
+                    return Resources.FileResourceHandler.getTemplateResource(templateId);
                 };
 
                 ResourceManagerClass.prototype.resolveResources = function (resourceGroupName) {
@@ -62,122 +62,319 @@ var SDL;
 
                 ResourceManagerClass.prototype.readConfiguration = function () {
                     var _this = this;
-                    var config = SDL.Client.Configuration.ConfigurationManager.configuration;
+                    var config = Client.Configuration.ConfigurationManager.configuration;
 
-                    SDL.Client.Resources.FileResourceHandler.corePath = SDL.Client.Configuration.ConfigurationManager.corePath;
-                    SDL.Client.Resources.FileResourceHandler.enablePackaging = SDL.Client.Configuration.ConfigurationManager.getAppSetting("debug") != "true";
+                    Resources.FileResourceHandler.corePath = Client.Configuration.ConfigurationManager.corePath;
+                    Resources.FileResourceHandler.enablePackaging = Client.Configuration.ConfigurationManager.getAppSetting("debug") != "true";
 
-                    if (SDL.Client.Configuration.ConfigurationManager.isApplicationHost) {
-                        SDL.jQuery.each(SDL.Client.Configuration.ConfigurationManager.configurationFiles, function (url, file) {
+                    if (Client.Configuration.ConfigurationManager.isApplicationHost) {
+                        SDL.jQuery.each(Client.Configuration.ConfigurationManager.configurationFiles, function (url, file) {
                             if (file.url.indexOf("~/") == 0) {
-                                SDL.Client.Resources.FileResourceHandler.storeFileData(file.url, file.data);
+                                Resources.FileResourceHandler.storeFileData(file.url, file.data);
                             }
                         });
                     }
-                    SDL.Client.Configuration.ConfigurationManager.configurationFiles = null;
+                    Client.Configuration.ConfigurationManager.configurationFiles = null;
 
-                    SDL.jQuery.each(SDL.Client.Xml.selectNodes(config, "//resourceGroups[parent::configuration and resourceGroup]"), function (index, resourceGroupsElement) {
-                        var appVersionNodes = SDL.Client.Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-                        var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+                    // traversing xml rather than using xpath, for performance optimization
+                    var extensions = {};
+                    var dependencies = {};
+                    var packageResourcesToRegister = [];
 
-                        var baseUrlNodes = SDL.Client.Xml.selectNodes(resourceGroupsElement, "ancestor::configuration/@baseUrl");
-                        var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                    var processConfigurationElement = function (configuration, baseUrl, version, locales) {
+                        baseUrl = configuration.getAttribute("baseUrl") || baseUrl;
 
-                        SDL.jQuery.each(SDL.Client.Xml.selectNodes(resourceGroupsElement, "resourceGroup"), function (index, resourceGroupElement) {
-                            var name = resourceGroupElement.getAttribute("name");
-                            var resourceGroup = { name: name, files: [], dependencies: [], extensions: [] };
+                        var childNode = configuration.firstChild;
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && !childNode.namespaceURI) {
+                                switch (Client.Xml.getLocalName(childNode)) {
+                                    case "appSettings":
+                                        version = getVersionSetting(childNode);
+                                        break;
+                                    case "locales":
+                                        locales = getSupportedLocales(childNode);
+                                        break;
+                                }
+                            }
+                            childNode = childNode.nextSibling;
+                        }
 
-                            SDL.jQuery.each(SDL.Client.Xml.selectNodes(resourceGroupElement, "files/file[@name]"), function (index, fileElement) {
+                        childNode = configuration.firstChild;
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && !childNode.namespaceURI) {
+                                switch (Client.Xml.getLocalName(childNode)) {
+                                    case "appSettings":
+                                        break;
+                                    case "resourceGroups":
+                                        processResourceGroupsElement(childNode, baseUrl, version, locales);
+                                        break;
+                                    case "extensions":
+                                        processExtensionsElement(childNode);
+                                        break;
+                                    case "packages":
+                                        processPackagesElement(childNode, baseUrl, version);
+                                        break;
+                                    case "configuration":
+                                        processConfigurationElement(childNode, baseUrl, version, locales);
+                                        break;
+                                    case "include":
+                                        processIncludedConfiguration(childNode, baseUrl, version, locales);
+                                        break;
+                                }
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                    };
+
+                    var processIncludedConfiguration = function (node, baseUrl, appVersion, locales) {
+                        var childNode = node.firstChild;
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && !childNode.namespaceURI) {
+                                switch (Client.Xml.getLocalName(childNode)) {
+                                    case "configuration":
+                                        processConfigurationElement(childNode, baseUrl, appVersion, locales);
+                                        break;
+                                    case "include":
+                                        processIncludedConfiguration(childNode, baseUrl, appVersion, locales);
+                                        break;
+                                }
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                    };
+
+                    var getVersionSetting = function (settings) {
+                        var childNode = settings.firstChild;
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && Client.Xml.getLocalName(childNode) == "setting" && childNode.getAttribute("name") == "version" && !childNode.namespaceURI) {
+                                return childNode.getAttribute("value");
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                    };
+
+                    var getSupportedLocales = function (settings) {
+                        var childNode = settings.firstChild;
+                        var locales = {};
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && !childNode.namespaceURI && Client.Xml.getLocalName(childNode) == "locale") {
+                                locales[Client.Xml.getInnerText(childNode).trim().toLowerCase()] = true;
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                        return locales;
+                    };
+
+                    var processResourceGroupsElement = function (resourceGroups, baseUrl, appVersion, locales) {
+                        var resourceGroup = resourceGroups.firstChild;
+                        while (resourceGroup) {
+                            if (resourceGroup.nodeType == 1 && Client.Xml.getLocalName(resourceGroup) == "resourceGroup" && !resourceGroup.namespaceURI) {
+                                processResourceGroupElement(resourceGroup, baseUrl, appVersion, locales);
+                            }
+                            resourceGroup = resourceGroup.nextSibling;
+                        }
+                    };
+
+                    var processResourceGroupElement = function (resourceGroupElement, baseUrl, appVersion, locales) {
+                        var name = resourceGroupElement.getAttribute("name");
+                        var resourceGroup = {
+                            name: name, files: [],
+                            dependencies: dependencies[name] || (dependencies[name] = []),
+                            extensions: extensions[name] || (extensions[name] = []) };
+                        var childNode = resourceGroupElement.firstChild;
+                        while (childNode) {
+                            if (childNode.nodeType == 1 && !childNode.namespaceURI) {
+                                switch (Client.Xml.getLocalName(childNode)) {
+                                    case "files":
+                                        processResourceGroupFilesElement(childNode, resourceGroup, baseUrl, appVersion, locales);
+                                        break;
+                                    case "dependencies":
+                                        processResourceGroupDependenciesElement(childNode, resourceGroup);
+                                        break;
+                                }
+                            }
+                            childNode = childNode.nextSibling;
+                        }
+                        _this.newResourceGroup(resourceGroup);
+                    };
+
+                    var processResourceGroupFilesElement = function (resourceGroupFilesElement, resourceGroup, baseUrl, appVersion, locales) {
+                        var fileElement = resourceGroupFilesElement.firstChild;
+                        while (fileElement) {
+                            if (fileElement.nodeType == 1 && Client.Xml.getLocalName(fileElement) == "file" && !fileElement.namespaceURI) {
                                 var modification = fileElement.getAttribute("modification");
                                 var url = fileElement.getAttribute("name");
                                 var file = {
-                                    url: url.indexOf("~/") == 0 ? url : SDL.Client.Types.Url.combinePath(baseUrl, url),
-                                    version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification)
+                                    url: url.indexOf("~/") == 0 ? url : Client.Types.Url.combinePath(baseUrl, url),
+                                    version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
+                                    locales: locales
                                 };
                                 resourceGroup.files.push(file);
-                            });
+                            }
+                            fileElement = fileElement.nextSibling;
+                        }
+                    };
 
-                            SDL.jQuery.each(SDL.Client.Xml.selectNodes(resourceGroupElement, "dependencies/dependency/@name"), function (index, dependency) {
-                                resourceGroup.dependencies.push(dependency.value);
-                            });
+                    var processResourceGroupDependenciesElement = function (resourceGroupDependenciesElement, resourceGroup) {
+                        var dependencyElement = resourceGroupDependenciesElement.firstChild;
+                        while (dependencyElement) {
+                            if (dependencyElement.nodeType == 1 && Client.Xml.getLocalName(dependencyElement) == "dependency" && !dependencyElement.namespaceURI) {
+                                resourceGroup.dependencies.push(dependencyElement.getAttribute("name"));
+                            }
+                            dependencyElement = dependencyElement.nextSibling;
+                        }
+                    };
 
-                            SDL.jQuery.each(SDL.Client.Xml.selectNodes(config, "//configuration/extensions/resourceExtension[@for = \"" + name + "\"]/insert[@position = 'before']/@name"), function (index, dependency) {
-                                resourceGroup.dependencies.push(dependency.value);
-                            });
+                    var processExtensionsElement = function (extensions) {
+                        var resourceExtension = extensions.firstChild;
+                        while (resourceExtension) {
+                            if (resourceExtension.nodeType == 1 && Client.Xml.getLocalName(resourceExtension) == "resourceExtension" && !resourceExtension.namespaceURI) {
+                                processResourceExtensionElement(resourceExtension);
+                            }
+                            resourceExtension = resourceExtension.nextSibling;
+                        }
+                    };
 
-                            SDL.jQuery.each(SDL.Client.Xml.selectNodes(config, "//configuration/extensions/resourceExtension[@for = \"" + name + "\"]/insert[not(@position) or @position = 'after']/@name"), function (index, extension) {
-                                resourceGroup.extensions.push(extension.value);
-                            });
+                    var processResourceExtensionElement = function (resourceExtension) {
+                        var forResource = resourceExtension.getAttribute("for");
+                        var extension = resourceExtension.firstChild;
+                        while (extension) {
+                            if (extension.nodeType == 1 && !extension.namespaceURI) {
+                                switch (Client.Xml.getLocalName(extension)) {
+                                    case "insert":
+                                        var extensionName = extension.getAttribute("name");
+                                        switch (extension.getAttribute("position")) {
+                                            case "before":
+                                                if (!dependencies[forResource]) {
+                                                    dependencies[forResource] = [extensionName];
+                                                } else {
+                                                    dependencies[forResource].push(extensionName);
+                                                }
+                                                break;
 
-                            _this.newResourceGroup(resourceGroup);
-                        });
-                    });
+                                            default:
+                                                if (!extensions[forResource]) {
+                                                    extensions[forResource] = [extensionName];
+                                                } else {
+                                                    extensions[forResource].push(extensionName);
+                                                }
+                                                break;
+                                        }
+                                        break;
+                                }
+                            }
+                            extension = extension.nextSibling;
+                        }
+                    };
 
-                    SDL.jQuery.each(SDL.Client.Xml.selectNodes(config, "//packages[parent::configuration and package]"), function (index, packagesNode) {
-                        var appVersionNodes = SDL.Client.Xml.selectNodes(packagesNode, "ancestor::configuration/appSettings/setting[@name='version']/@value");
-                        var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+                    var processPackagesElement = function (packages, baseUrl, appVersion) {
+                        var packageElement = packages.firstChild;
+                        while (packageElement) {
+                            if (packageElement.nodeType == 1 && Client.Xml.getLocalName(packageElement) == "package" && !packageElement.namespaceURI) {
+                                processPackageElement(packageElement, baseUrl, appVersion);
+                            }
+                            packageElement = packageElement.nextSibling;
+                        }
+                    };
 
-                        var baseUrlNodes = SDL.Client.Xml.selectNodes(packagesNode, "ancestor::configuration/@baseUrl");
-                        var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                    var processPackageElement = function (packageElement, baseUrl, appVersion) {
+                        var url = packageElement.getAttribute("src");
+                        var modification = packageElement.getAttribute("modification");
 
-                        SDL.jQuery.each(SDL.Client.Xml.selectNodes(packagesNode, "package"), function (index, packageElement) {
-                            var url = packageElement.getAttribute("src");
-                            var modification = packageElement.getAttribute("modification");
+                        var resourcesPackage = {
+                            name: packageElement.getAttribute("name"),
+                            url: url.indexOf("~/") == 0 ? url : Client.Types.Url.combinePath(baseUrl, url),
+                            version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
+                            resourceGroups: [] };
 
-                            var resourcesPackage = {
-                                name: packageElement.getAttribute("name"),
-                                url: url.indexOf("~/") == 0 ? url : SDL.Client.Types.Url.combinePath(baseUrl, url),
-                                version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
-                                resourceGroups: [] };
+                        var packageResourceGroupsElement = packageElement.firstChild;
+                        while (packageResourceGroupsElement) {
+                            if (packageResourceGroupsElement.nodeType == 1 && Client.Xml.getLocalName(packageResourceGroupsElement) == "resourceGroups" && !packageResourceGroupsElement.namespaceURI) {
+                                processPackageResourceGroupsElement(packageResourceGroupsElement, resourcesPackage);
+                            }
+                            packageResourceGroupsElement = packageResourceGroupsElement.nextSibling;
+                        }
+                        packageResourcesToRegister.push(resourcesPackage);
+                    };
 
-                            SDL.jQuery.each(SDL.Client.Xml.selectNodes(packageElement, ".//resourceGroups/resourceGroup"), function (index, groupElement) {
-                                var groupName = groupElement.getAttribute("name");
-                                var files = [];
-                                resourcesPackage.resourceGroups.push({ name: groupName, files: files });
-                                SDL.jQuery.each(_this.registeredResources[groupName].files, function (index, file) {
-                                    if (file.url.indexOf("{CULTURE}") == -1) {
-                                        files.push(file.url);
+                    var processPackageResourceGroupsElement = function (resourceGroupsElement, resourcesPackage) {
+                        var packageResourceGroup = resourceGroupsElement.firstChild;
+                        while (packageResourceGroup) {
+                            if (packageResourceGroup.nodeType == 1 && Client.Xml.getLocalName(packageResourceGroup) == "resourceGroup" && !packageResourceGroup.namespaceURI) {
+                                resourcesPackage.resourceGroups.push({ name: packageResourceGroup.getAttribute("name"), files: [] });
+                            }
+                            packageResourceGroup = packageResourceGroup.nextSibling;
+                        }
+                    };
+
+                    processConfigurationElement(config, "", "", null);
+
+                    for (var i = 0, len = packageResourcesToRegister.length; i < len; i++) {
+                        var packageResource = packageResourcesToRegister[i];
+                        var resourceGroups = packageResource.resourceGroups;
+                        for (var j = 0, lenj = resourceGroups.length; j < lenj; j++) {
+                            var resourceGroup = resourceGroups[j];
+                            var resources = this.registeredResources[resourceGroup.name];
+                            if (resources) {
+                                for (var k = 0, lenk = resources.files.length; k < lenk; k++) {
+                                    var url = resources.files[k].url;
+                                    if (url.indexOf("{CULTURE}") == -1) {
+                                        resourceGroup.files.push(url);
                                     }
-                                });
-                            });
-                            SDL.Client.Resources.FileResourceHandler.registerPackage(resourcesPackage);
-                        });
-                    });
+                                }
+                            } else {
+                                throw Error("Unknown resource group name '" + resourceGroup.name + "' encountered in package '" + packageResource.name + "'.");
+                            }
+                        }
+
+                        Resources.FileResourceHandler.registerPackage(packageResource);
+                    }
                 };
 
                 ResourceManagerClass.prototype.storeFileData = function (url, data, isShared) {
-                    SDL.Client.Resources.FileResourceHandler.storeFileData(url, data, isShared);
+                    Resources.FileResourceHandler.storeFileData(url, data, isShared);
                 };
 
                 ResourceManagerClass.prototype.registerPackageRendered = function (packageName, url, data) {
-                    SDL.Client.Resources.FileResourceHandler.registerPackageRendered(packageName, url, data);
+                    Resources.FileResourceHandler.registerPackageRendered(packageName, url, data);
                 };
 
-                ResourceManagerClass.prototype._resolve = function (resourceGroupName, resources) {
+                ResourceManagerClass.prototype._resolve = function (resourceGroupName, resources, callstack) {
                     var _this = this;
                     if (!resources) {
                         resources = [];
                     }
 
-                    var resourceSettings = this.registeredResources[resourceGroupName];
-                    if (!resourceSettings) {
-                        throw Error("Resource group with name '" + resourceGroupName + "' does not exist");
-                    }
-
-                    if (resourceSettings.dependencies && resourceSettings.dependencies.length) {
-                        SDL.jQuery.each((this.mode & 1 /* REVERSE */) ? resourceSettings.dependencies.reverse() : resourceSettings.dependencies, function (index, value) {
-                            return _this._resolve(value, resources);
-                        });
+                    if (!callstack) {
+                        callstack = [];
                     }
 
                     if (resources.indexOf(resourceGroupName) == -1) {
-                        resources.push(resourceGroupName);
-                    }
+                        var resourceSettings = this.registeredResources[resourceGroupName];
+                        if (!resourceSettings) {
+                            throw Error("Resource group with name '" + resourceGroupName + "' does not exist");
+                        }
 
-                    if (resourceSettings.extensions && resourceSettings.extensions.length) {
-                        SDL.jQuery.each((this.mode & 1 /* REVERSE */) ? resourceSettings.extensions.reverse() : resourceSettings.extensions, function (index, value) {
-                            return _this._resolve(value, resources);
-                        });
+                        if (callstack.indexOf(resourceGroupName) != -1) {
+                            throw Error("Circular dependency detected: '" + callstack.join(" -> ") + " -> " + resourceGroupName);
+                        }
+
+                        if (resourceSettings.dependencies && resourceSettings.dependencies.length) {
+                            callstack = callstack.concat(resourceGroupName);
+                            SDL.jQuery.each((this.mode & 1 /* REVERSE */) ? resourceSettings.dependencies.reverse() : resourceSettings.dependencies, function (index, value) {
+                                return _this._resolve(value, resources, callstack);
+                            });
+                        }
+
+                        if (resources.indexOf(resourceGroupName) == -1) {
+                            resources.push(resourceGroupName);
+
+                            if (resourceSettings.extensions && resourceSettings.extensions.length) {
+                                SDL.jQuery.each((this.mode & 1 /* REVERSE */) ? resourceSettings.extensions.reverse() : resourceSettings.extensions, function (index, value) {
+                                    return _this._resolve(value, resources);
+                                });
+                            }
+                        }
                     }
 
                     return resources;
@@ -298,7 +495,7 @@ var SDL;
                                     if (nextFileToLoad < filesCount) {
                                         var file = resourceSettings.files[nextFileToLoad];
                                         nextFileToLoad++;
-                                        SDL.Client.Resources.FileResourceHandler.renderWhenLoaded(file, renderNextFile, errorcallback ? function (file) {
+                                        Resources.FileResourceHandler.renderWhenLoaded(file, renderNextFile, errorcallback ? function (file) {
                                             return errorcallback(file && file.error);
                                         } : null, (_this.mode & 2 /* SYNCHRONOUS */) != 0);
                                     } else {
@@ -315,7 +512,7 @@ var SDL;
                                 if (filesCount) {
                                     // Start loading this resource group's files
                                     SDL.jQuery.each(resourceSettings.files, function (index, value) {
-                                        return SDL.Client.Resources.FileResourceHandler.loadIfNotRendered(value, null, errorcallback ? function (file) {
+                                        return Resources.FileResourceHandler.loadIfNotRendered(value, null, errorcallback ? function (file) {
                                             return errorcallback(file && file.error);
                                         } : null, (_this.mode & 2 /* SYNCHRONOUS */) != 0);
                                     });

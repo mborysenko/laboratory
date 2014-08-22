@@ -156,37 +156,24 @@ module SDL.Client.Types
 
 		private _processHandlers(eventObj: any, handlersCollectionName: string): boolean
 		{
-			var handlers = this.properties.handlers && this.properties.handlers[handlersCollectionName];
+			var p = this.properties;
+			var handlers = p.handlers && p.handlers[handlersCollectionName];
 			if (handlers)
 			{
-				// handlers can be added/removed while handling an event
-				// thus have to recheck them if at least one handler has been executed
-				var needPostprocess: boolean;
-				var processedHandlers: any[] = [];
-
-				do
+				var handlersClone = handlers.concat();	// creating a snapshot of handlers as newly added handlers should not be processed
+				for (var i = 0, len = handlersClone.length; i < len && handlers; i++)
 				{
-					needPostprocess = false;
-
-					for (var i = 0; handlers && (i < handlers.length); i++)
+					var handler = handlersClone[i];
+					if (handlers.indexOf(handler) != -1)	// making sure not to call removed handlers
 					{
-						var handler = handlers[i];
-						if (processedHandlers.indexOf(handler) == -1)
+						if (handler.fnc.call(this, eventObj) === false)	// if an event hadler returns false stop event handling
 						{
-							needPostprocess = true;
-							processedHandlers.push(handler);
-
-							if (handler.fnc.call(this, eventObj) === false)	//if an event hadler returns false stop event handling
-							{
-								return false;
-							}
-
-							handlers = this.properties.handlers && this.properties.handlers[handlersCollectionName];
+							return false;
 						}
-					}
 
+						handlers = p.handlers && p.handlers[handlersCollectionName];
+					}
 				}
-				while (needPostprocess);
 			}
 		}
 

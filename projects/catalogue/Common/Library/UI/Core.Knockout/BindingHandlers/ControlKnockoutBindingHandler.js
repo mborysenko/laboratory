@@ -11,7 +11,7 @@ var SDL;
                         function ControlKnockoutBindingHandler() {
                         }
                         ControlKnockoutBindingHandler.prototype.init = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                            var value = ko.unwrap(valueAccessor()) || "";
+                            var value = ko.unwrap(valueAccessor());
                             if (value) {
                                 SDL.jQuery(element).data("control-handlers", {});
                                 ko.utils.domNodeDisposal.addDisposeCallback(element, ControlKnockoutBindingHandler.elementDisposalCallback);
@@ -65,8 +65,8 @@ var SDL;
                             var $e = SDL.jQuery(element);
                             var handlers = $e.data("control-handlers");
                             if (handlers) {
-                                var value = ko.unwrap(valueAccessor()) || "";
-                                var type = ko.unwrap(value.type) || "" + value;
+                                var value = ko.unwrap(valueAccessor());
+                                var type = ko.unwrap(value.type) || "" + (value || "");
                                 var handlerName = ko.unwrap(value.handler);
                                 var handler;
 
@@ -91,17 +91,19 @@ var SDL;
 
                                 handlers[type] = handler || null;
                                 if (handler) {
-                                    var dataValueAccessor = ControlKnockoutBindingHandler.getDataValueAccessor(valueAccessor);
+                                    var dataValueAccessor = ControlKnockoutBindingHandler.getDataValueAccessor(value);
+                                    var allBindingsWithEventsAccessor = ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor(allBindingsAccessor, type, value);
+
                                     if (handler.init) {
-                                        handler.init(element, dataValueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                                        handler.init(element, dataValueAccessor, allBindingsWithEventsAccessor, viewModel, bindingContext);
                                     }
 
                                     if ($e.data("control-update") && handler.update) {
-                                        handler.update(element, dataValueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                                        handler.update(element, dataValueAccessor, allBindingsWithEventsAccessor, viewModel, bindingContext);
                                     }
                                 } else if (type) {
                                     // no handler is found, just create the control
-                                    SDL.UI.Core.Renderers.ControlRenderer.renderControl(type, element, SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data), function (control) {
+                                    SDL.UI.Core.Renderers.ControlRenderer.renderControl(type, element, Knockout.Utils.unwrapRecursive(value.data), function (control) {
                                         return ControlKnockoutBindingHandler.addControlDisposalCallback(element, control);
                                     });
                                 }
@@ -112,17 +114,17 @@ var SDL;
                             var $e = SDL.jQuery(element);
                             var handlers = $e.data("control-handlers");
                             if (handlers) {
-                                var value = ko.unwrap(valueAccessor()) || "";
+                                var value = ko.unwrap(valueAccessor());
                                 if (value) {
-                                    var type = ko.unwrap(value.type) || "" + value;
+                                    var type = ko.unwrap(value.type) || "" + (value || "");
                                     var handler = handlers[type];
 
                                     if (handler !== null) {
                                         if (!handler) {
                                             $e.data("control-update", true);
-                                            SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data); // this is to make sure observables are evaluated, otherwise ko will not notify us when they change
+                                            Knockout.Utils.unwrapRecursive(value.data); // this is to make sure observables are evaluated, otherwise ko will not notify us when they change
                                         } else if (handler.update) {
-                                            handler.update(element, ControlKnockoutBindingHandler.getDataValueAccessor(valueAccessor), allBindingsAccessor, viewModel, bindingContext);
+                                            handler.update(element, ControlKnockoutBindingHandler.getDataValueAccessor(value), ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor(allBindingsAccessor, type, value), viewModel, bindingContext);
                                         } else {
                                             $e.data("control-handlers")[type] = null;
                                         }
@@ -131,10 +133,36 @@ var SDL;
                             }
                         };
 
-                        ControlKnockoutBindingHandler.getDataValueAccessor = function (valueAccessor) {
+                        ControlKnockoutBindingHandler.getDataValueAccessor = function (value) {
                             return function () {
-                                return valueAccessor().data;
+                                return value.data;
                             };
+                        };
+
+                        ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor = function (allBindingsAccessor, control, value) {
+                            if (value.events) {
+                                var allBindings;
+
+                                return function () {
+                                    if (!allBindings) {
+                                        allBindings = SDL.jQuery.extend({}, allBindingsAccessor());
+                                        if (!allBindings.controlEvents) {
+                                            allBindings.controlEvents = {};
+                                        } else {
+                                            allBindings.controlEvents = SDL.jQuery.extend({}, ko.unwrap(allBindings.controlEvents));
+                                        }
+
+                                        if (!allBindings.controlEvents[control]) {
+                                            allBindings.controlEvents[control] = value.events;
+                                        } else {
+                                            allBindings.controlEvents[control] = SDL.jQuery.extend(allBindings.controlEvents[control], value.events);
+                                        }
+                                    }
+                                    return allBindings;
+                                };
+                            } else {
+                                return allBindingsAccessor;
+                            }
                         };
 
                         ControlKnockoutBindingHandler.elementDisposalCallback = function (element) {

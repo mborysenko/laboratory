@@ -2,22 +2,9 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
 	<resourceGroups>
 		<resourceGroup name="SDL.UI.Core.Utils">
-			<files>
-			</files>
 			<dependencies>
-				<dependency name="SDL.UI.Core.Utils.Css"/>
 				<dependency name="SDL.UI.Core.Utils.Dom"/>
 				<dependency name="SDL.UI.Core.Utils.Event"/>
-			</dependencies>
-		</resourceGroup>
-		<resourceGroup name="SDL.UI.Core.Utils.Css">
-			<files>
-				<file name="Css.js"/>
-			</files>
-			<dependencies>
-				<dependency name="SDL.Client.Diagnostics"/>
-				<dependency name="SDL.Client.Types.Base"/>
-				<dependency name="SDL.Client.Types.String"/>
 			</dependencies>
 		</resourceGroup>
 		<resourceGroup name="SDL.UI.Core.Utils.Dom">

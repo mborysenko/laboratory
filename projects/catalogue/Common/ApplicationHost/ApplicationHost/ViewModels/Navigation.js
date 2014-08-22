@@ -11,7 +11,7 @@ var SDL;
                         var Url = SDL.Client.Types.Url;
                         var AppHost = SDL.Client.ApplicationHost;
 
-                        SDL.Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
+                        Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
 
                         ;
 
@@ -36,6 +36,7 @@ var SDL;
                         var applicationNavigationItemTargetDisplaysIndex = {};
                         var initialized = false;
                         var initCallbacks = [];
+                        var topNavigationGroupItems = [];
 
                         function selectNavigationItem(navigationItem) {
                             if (navigationItem) {
@@ -81,7 +82,6 @@ var SDL;
 
                                         if (prevNavItem != newNavItem) {
                                             selectNavigationItem(newNavItem);
-                                            AppHost.ApplicationHost.setActiveApplicationEntryPoint(newNavItem.applicationEntryPoint && newNavItem.applicationEntryPoint.id, newNavItem.applicationEntryPoint && newNavItem.applicationEntryPoint.application.id);
                                         }
                                     }
                                 }
@@ -95,7 +95,6 @@ var SDL;
                                     if (group && group.authenticationTargetDisplay && group.authenticationTargetDisplay()) {
                                         Navigation.currentNavigationGroup(group);
                                         selectNavigationItem(null);
-                                        AppHost.ApplicationHost.setActiveApplicationEntryPoint(null, null);
                                     }
                                 }
                                 return;
@@ -103,7 +102,6 @@ var SDL;
 
                             if (Navigation.currentNavigationItem() != Navigation.homeNavigationItem) {
                                 selectNavigationItem(Navigation.homeNavigationItem);
-                                AppHost.ApplicationHost.setActiveApplicationEntryPoint(Navigation.homeNavigationItem.applicationEntryPoint && Navigation.homeNavigationItem.applicationEntryPoint.id, Navigation.homeNavigationItem.applicationEntryPoint && Navigation.homeNavigationItem.applicationEntryPoint.application.id);
                             }
                         }
                         Navigation.setNavigationSelectionFromUrl = setNavigationSelectionFromUrl;
@@ -117,7 +115,7 @@ var SDL;
                                 if (initialized === false) {
                                     initialized = undefined;
 
-                                    AppHost.ApplicationHost.initialize(function () {
+                                    AppHost.initialize(function () {
                                         initializeNavigationViewModel();
                                         initialized = true;
                                         for (var i = 0, len = initCallbacks.length; i < len; i++) {
@@ -134,17 +132,13 @@ var SDL;
                         ;
 
                         function getNavigationItemById(navigationItemId, applicationId) {
-                            var navigationItem;
-                            if (Navigation.homeNavigationItem && (!navigationItemId || Navigation.homeNavigationItem.id == navigationItemId) && (!applicationId || Navigation.homeNavigationItem.applicationEntryPoint && Navigation.homeNavigationItem.applicationEntryPoint.application.id == applicationId)) {
-                                return Navigation.homeNavigationItem;
-                            } else {
-                                for (var i = 0, len = Navigation.navigationGroups.length; i < len; i++) {
-                                    var navigationItems = Navigation.navigationGroups[i].navigationItems;
-                                    for (var j = 0, lenj = navigationItems.length; j < lenj; j++) {
-                                        var item = navigationItems[j];
-                                        if (item && (!navigationItemId || item.id == navigationItemId) && (!applicationId || item.applicationEntryPoint.application.id == applicationId)) {
-                                            return item;
-                                        }
+                            var allGroups = [Navigation.topNavigationGroup].concat(Navigation.navigationGroups);
+                            for (var i = 0, len = allGroups.length; i < len; i++) {
+                                var navigationItems = allGroups[i].navigationItems;
+                                for (var j = 0, lenj = navigationItems.length; j < lenj; j++) {
+                                    var item = navigationItems[j];
+                                    if (item && (!navigationItemId || item.id == navigationItemId) && (!applicationId || item.applicationEntryPoint && item.applicationEntryPoint.application.id == applicationId)) {
+                                        return item;
                                     }
                                 }
                             }
@@ -161,7 +155,6 @@ var SDL;
                                     if (curNavigationItem != navigationItem) {
                                         targetDisplay.navigationItem(navigationItem);
                                         if (!curNavigationItem) {
-                                            navigationItem.targetDisplay.src = navigationItem.src();
                                             navigationItem.targetDisplay.accessed(true);
                                         }
                                     }
@@ -171,10 +164,10 @@ var SDL;
                         ;
 
                         function initializeNavigationViewModel() {
-                            var navigationNode = SDL.Client.Xml.selectSingleNode(SDL.Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
+                            var navigationNode = Client.Xml.selectSingleNode(Client.Configuration.ConfigurationManager.configuration, "//configuration/customSections/apphost:navigation");
                             if (navigationNode) {
                                 // navigation is defined in configuration
-                                var navigationGroupNodes = SDL.Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
+                                var navigationGroupNodes = Client.Xml.selectNodes(navigationNode, "apphost:navigationGroup");
                                 Navigation.navigationGroups = SDL.jQuery.map(navigationGroupNodes, function (navigationGroupNode, index) {
                                     var applicationEntryPointGroupId = navigationGroupNode.getAttribute("applicationEntryPointGroupId");
                                     if (applicationEntryPointGroupId) {
@@ -253,13 +246,15 @@ var SDL;
                                 }
                             });
 
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointactivate", setActiveApplicationEntryPoint);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointurlchange", setApplicationEntryPointUrl);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointvisited", onApplicationEntryPointVisited);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationfacaderequest", loadApplicationEntryPoint);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationsuiteinitialize", initializeApplicationSuite);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationsuitereset", resetApplicationSuite);
-                            SDL.Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayunload", onTargetDisplayUnloaded);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointactivate", setActiveApplicationEntryPoint);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointurlchange", setApplicationEntryPointUrl);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationentrypointvisited", onApplicationEntryPointVisited);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationfacaderequest", loadApplicationEntryPoint);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationsuiteinitialize", initializeApplicationSuite);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "applicationsuitereset", resetApplicationSuite);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayload", onTargetDisplayLoaded);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayunload", onTargetDisplayUnloaded);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayurlchange", onTargetDisplayUrlChange);
 
                             setNavigationSelectionFromUrl(true);
 
@@ -366,7 +361,7 @@ var SDL;
 
                         function buildNavigationGroup(navigationGroupNode, isFirstGroup) {
                             var groupApplicationId = navigationGroupNode.getAttribute("applicationSuiteId");
-                            var navigationItemNodes = SDL.Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
+                            var navigationItemNodes = Client.Xml.selectNodes(navigationGroupNode, "apphost:navigationItems/apphost:navigationItem[@applicationEntryPointId]");
                             var navigationGroup = {
                                 id: navigationGroupNode.getAttribute("id"),
                                 title: navigationGroupNode.getAttribute("title"),
@@ -400,7 +395,7 @@ var SDL;
                                     }
 
                                     var navigationItem = buildNavigationItemForApplicationEntryPoint(applicationEntryPoint, navigationGroup, isFirstGroup, navigationItemNode);
-                                    if (navigationItem != Navigation.homeNavigationItem) {
+                                    if (topNavigationGroupItems.indexOf(navigationItem) == -1) {
                                         if (!navigationItem.contextual() && !navigationItem.hidden()) {
                                             shownItems++;
                                         }
@@ -429,7 +424,7 @@ var SDL;
                             var shownItems = 0;
                             navigationGroup.navigationItems = SDL.jQuery.map(applicationEntryPointGroup.entryPoints, function (entryPoint, index) {
                                 var navigationItem = buildNavigationItemForApplicationEntryPoint(entryPoint, navigationGroup, isFirstGroup);
-                                if (navigationItem != Navigation.homeNavigationItem) {
+                                if (topNavigationGroupItems.indexOf(navigationItem) == -1) {
                                     if (!navigationItem.contextual() && !navigationItem.hidden()) {
                                         shownItems++;
                                     }
@@ -482,6 +477,7 @@ var SDL;
                                 applicationEntryPoint: applicationEntryPoint,
                                 src: ko.observable(Url.isAbsoluteUrl(applicationEntryPoint.url) ? applicationEntryPoint.url : "about:blank"),
                                 icon: applicationEntryPoint.icon,
+                                topIcon: applicationEntryPoint.topIcon,
                                 navigationGroup: parentNavigationGroup,
                                 targetDisplay: buildNavigationItemTargetDisplay(applicationEntryPoint.targetDisplay.name, applicationEntryPoint.application),
                                 contextual: ko.observable(applicationEntryPoint.contextual && !applicationEntryPoint.visited),
@@ -490,8 +486,19 @@ var SDL;
                                 overlay: applicationEntryPoint.overlay
                             };
 
-                            if (!Navigation.homeNavigationItem && isFirstGroup && navigationItem.type == "home") {
-                                Navigation.homeNavigationItem = navigationItem;
+                            if (isFirstGroup) {
+                                switch (navigationItem.type) {
+                                    case "home":
+                                        if (!Navigation.homeNavigationItem) {
+                                            Navigation.homeNavigationItem = navigationItem;
+                                            topNavigationGroupItems.unshift(navigationItem);
+                                        }
+                                        break;
+                                    case "top":
+                                        // add to the top group
+                                        topNavigationGroupItems.push(navigationItem);
+                                        break;
+                                }
                             }
 
                             if (!navigationItemsIndex[applicationEntryPoint.application.id]) {
@@ -503,17 +510,36 @@ var SDL;
                             if (navigationItemNode) {
                                 navigationItem.titleResource = navigationItemNode.getAttribute("titleResource");
                                 navigationItem.translations = buildNameTranslations(navigationItemNode);
+
                                 var icon = navigationItemNode.getAttribute("icon");
-                                if (icon) {
-                                    if (icon.charAt(0) != "/" && icon.indexOf("~/") == -1) {
-                                        var baseUrlNodes = SDL.Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
-                                        var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                                var topIcon = navigationItemNode.getAttribute("topIcon");
+                                var isIconRelative = icon && icon.charAt(0) != "/" && icon.indexOf("~/") == -1;
+                                var isTopIconRelative = topIcon && topIcon.charAt(0) != "/" && topIcon.indexOf("~/") == -1;
+                                if (isIconRelative || isTopIconRelative) {
+                                    var baseUrlNodes = Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
+                                    var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+
+                                    if (isIconRelative) {
                                         icon = Url.combinePath(baseUrl, icon);
                                     }
+
+                                    if (isTopIconRelative) {
+                                        topIcon = Url.combinePath(baseUrl, topIcon);
+                                    }
+                                }
+
+                                if (icon) {
                                     if (icon.indexOf("~/") == 0) {
-                                        icon = Url.combinePath(SDL.Client.Configuration.ConfigurationManager.corePath, icon.slice(2));
+                                        icon = Url.combinePath(Client.Configuration.ConfigurationManager.corePath, icon.slice(2));
                                     }
                                     navigationItem.icon = icon;
+                                }
+
+                                if (topIcon) {
+                                    if (topIcon.indexOf("~/") == 0) {
+                                        topIcon = Url.combinePath(Client.Configuration.ConfigurationManager.corePath, topIcon.slice(2));
+                                    }
+                                    navigationItem.topIcon = topIcon;
                                 }
 
                                 var external = navigationItemNode.getAttribute("external");
@@ -603,10 +629,10 @@ var SDL;
 
                         function buildNameTranslations(parent) {
                             var translations = {};
-                            var translationNodes = SDL.Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
+                            var translationNodes = Client.Xml.selectNodes(parent, "apphost:translations/apphost:title[@lang]");
                             for (var i = 0, len = translationNodes.length; i < len; i++) {
                                 var translationNode = translationNodes[i];
-                                translations[translationNode.getAttribute("lang")] = SDL.Client.Xml.getInnerText(translationNode);
+                                translations[translationNode.getAttribute("lang")] = Client.Xml.getInnerText(translationNode);
                             }
                             return translations;
                         }
@@ -655,20 +681,30 @@ var SDL;
                                 id: null,
                                 title: null,
                                 applicationEntryPointGroup: null,
-                                navigationItems: [],
+                                navigationItems: topNavigationGroupItems,
                                 applications: [],
-                                shownItems: ko.observable(1)
+                                shownItems: ko.observable(topNavigationGroupItems.length + (Navigation.homeNavigationItem ? 0 : 1))
                             };
 
-                            if (Navigation.homeNavigationItem) {
-                                var application = Navigation.homeNavigationItem.applicationEntryPoint.application;
-                                Navigation.homeNavigationItem.navigationGroup = Navigation.topNavigationGroup;
-                                Navigation.topNavigationGroup.applicationId = application.id;
-                                Navigation.topNavigationGroup.applications.push(application);
-                                if (application.authenticationUrl && !application.authenticated) {
+                            for (var i = 0; i < topNavigationGroupItems.length; i++) {
+                                var topNavigationGroupItem = topNavigationGroupItems[i];
+                                application = topNavigationGroupItem.applicationEntryPoint.application;
+                                topNavigationGroupItem.navigationGroup = Navigation.topNavigationGroup;
+
+                                if (Navigation.topNavigationGroup.applications.indexOf(application) == -1) {
+                                    Navigation.topNavigationGroup.applications.push(application);
+                                }
+
+                                if (!Navigation.topNavigationGroup.applicationId) {
+                                    Navigation.topNavigationGroup.applicationId = application.id;
+                                }
+
+                                if (application.authenticationUrl && !application.authenticated && !Navigation.topNavigationGroup.authenticationTargetDisplay) {
                                     Navigation.topNavigationGroup.authenticationTargetDisplay = ko.observable(getAuthenticationTargetDisplay(application));
                                 }
-                            } else {
+                            }
+
+                            if (!Navigation.homeNavigationItem) {
                                 Navigation.homeNavigationItem = {
                                     id: null,
                                     type: "home",
@@ -679,7 +715,7 @@ var SDL;
                                     hidden: ko.observable(false)
                                 };
 
-                                if (Navigation.navigationGroups.length) {
+                                if (!Navigation.topNavigationGroup.applicationId && Navigation.navigationGroups.length) {
                                     var firstGroup = Navigation.navigationGroups[0];
                                     var application = firstGroup.applications.length == 1 ? firstGroup.applications[0] : (firstGroup.applicationId ? AppHost.ApplicationHost.applicationsIndex[firstGroup.applicationId] : null);
 
@@ -691,15 +727,14 @@ var SDL;
                                         }
                                     }
                                 }
+                                topNavigationGroupItems.unshift(Navigation.homeNavigationItem);
                             }
-
-                            Navigation.topNavigationGroup.navigationItems.push(Navigation.homeNavigationItem);
                         }
                         ;
 
                         function setActiveApplicationEntryPoint(event) {
                             var applicationEntryPointId = event.data.applicationEntryPointId;
-                            if (event.data.applicationEntryPointId) {
+                            if (applicationEntryPointId) {
                                 var applicationId = event.data.applicationId;
                                 var navigationItem = Navigation.currentNavigationItem();
                                 if (!navigationItem || navigationItem.id != applicationEntryPointId || (navigationItem.applicationEntryPoint && navigationItem.applicationEntryPoint.application.id) != applicationId) {
@@ -758,7 +793,6 @@ var SDL;
                                 }
                                 if (itemToAuthenticate) {
                                     selectNavigationItem(itemToAuthenticate);
-                                    AppHost.ApplicationHost.setActiveApplicationEntryPoint(itemToAuthenticate.applicationEntryPoint && itemToAuthenticate.applicationEntryPoint.id, itemToAuthenticate.applicationEntryPoint && itemToAuthenticate.applicationEntryPoint.application.id);
                                 }
                             }
                         }
@@ -922,14 +956,51 @@ var SDL;
                         }
                         ;
 
+                        function onTargetDisplayLoaded(event) {
+                            var targetDisplay = event.data.targetDisplay;
+                            var application = targetDisplay.application;
+                            if (application && targetDisplay.name) {
+                                var applicationTargetDisplays = applicationNavigationItemTargetDisplaysIndex[application.id];
+                                if (applicationTargetDisplays) {
+                                    var navigationItemTargetDisplay = applicationTargetDisplays[targetDisplay.name];
+                                    if (navigationItemTargetDisplay) {
+                                        navigationItemTargetDisplay.loaded(true);
+                                    }
+                                }
+                            }
+                        }
+                        ;
+
                         function onTargetDisplayUnloaded(event) {
                             var targetDisplay = event.data.targetDisplay;
-                            var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[targetDisplay.application.id];
-                            if (authenticationTargetDisplay && authenticationTargetDisplay.authenticated && authenticationTargetDisplay.targetDisplay == targetDisplay && !authenticationTargetDisplay.disposed()) {
-                                authenticationTargetDisplay.targetDisplay.frame = null;
-                                setTimeout(function () {
-                                    return authenticationTargetDisplay.disposed(true);
-                                }, 1); // Chrome crashes without the timeout
+                            var application = targetDisplay.application;
+                            if (application) {
+                                var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[application.id];
+                                if (authenticationTargetDisplay && authenticationTargetDisplay.targetDisplay == targetDisplay) {
+                                    if (authenticationTargetDisplay.authenticated && !authenticationTargetDisplay.disposed()) {
+                                        authenticationTargetDisplay.targetDisplay.frame = null;
+                                        setTimeout(function () {
+                                            return authenticationTargetDisplay.disposed(true);
+                                        }, 1); // Chrome crashes without the timeout
+                                    }
+                                } else if (targetDisplay.name) {
+                                    var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][targetDisplay.name];
+                                    if (navigationItemTargetDisplay) {
+                                        navigationItemTargetDisplay.loaded(false);
+                                    }
+                                }
+                            }
+                        }
+                        ;
+
+                        function onTargetDisplayUrlChange(event) {
+                            var targetDisplay = event.data.targetDisplay;
+                            var application = targetDisplay.application;
+                            if (application && targetDisplay.name) {
+                                var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][targetDisplay.name];
+                                if (navigationItemTargetDisplay) {
+                                    navigationItemTargetDisplay.src = targetDisplay.loadedUrl; // must be the same as event.data.url
+                                }
                             }
                         }
                         ;

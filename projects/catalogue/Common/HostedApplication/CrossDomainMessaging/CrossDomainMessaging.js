@@ -8,7 +8,7 @@ var SDL;
         (function (CrossDomainMessaging) {
             var reqId = new Date().getTime();
             var callbacks = {};
-            var trustedDomains = [SDL.Client.Types.Url.getDomain(window.location.href)];
+            var trustedDomains = [Client.Types.Url.getDomain(window.location.href)];
             var allowedHandlerBases;
             var parentXdm = undefined;
 
@@ -18,7 +18,7 @@ var SDL;
                         trustedDomains = ["*"];
                     } else {
                         for (var i = 0, len = trustedDomains.length; i < len; i++) {
-                            if (SDL.Client.Types.Url.isSameDomain(trustedDomains[i], url)) {
+                            if (Client.Types.Url.isSameDomain(trustedDomains[i], url)) {
                                 return;
                             }
                         }
@@ -106,7 +106,7 @@ var SDL;
                             }
 
                             execute.sourceWindow = source;
-                            execute.sourceDomain = SDL.Client.Types.Url.getDomain(origin);
+                            execute.sourceDomain = Client.Types.Url.getDomain(origin);
 
                             result = execute();
 
@@ -127,7 +127,7 @@ var SDL;
                                     callback.apply(window, message.args || []);
                                 };
                                 execute.sourceWindow = source;
-                                execute.sourceDomain = SDL.Client.Types.Url.getDomain(origin);
+                                execute.sourceDomain = Client.Types.Url.getDomain(origin);
                                 execute();
                             }
                         }
@@ -155,7 +155,7 @@ var SDL;
 
                         remoteXdm = parentXdm;
                     }
-                } else if (SDL.Client.Types.Url.isSameDomain(origin, window.location.href)) {
+                } else if (Client.Types.Url.isSameDomain(origin, window.location.href)) {
                     try  {
                         remoteXdm = target.SDL.Client.CrossDomainMessaging;
                     } catch (err) {
@@ -190,7 +190,7 @@ var SDL;
                     var allowed = trustedDomains[0] == "*";
                     if (!allowed) {
                         for (var i = 0, len = trustedDomains.length; i < len; i++) {
-                            if (SDL.Client.Types.Url.isSameDomain(trustedDomains[i], e.origin)) {
+                            if (Client.Types.Url.isSameDomain(trustedDomains[i], e.origin)) {
                                 allowed = true;
                                 break;
                             }

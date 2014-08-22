@@ -10,6 +10,7 @@
 		<xs:all minOccurs="0">
 			<xs:element type="typeApplicationDomains" name="applicationDomains" minOccurs="0" maxOccurs="1" />
 			<xs:element type="typeApplicationEntryPointGroups" name="applicationEntryPointGroups" minOccurs="0" maxOccurs="1" />
+			<xs:element type="typeLoggingSettings" name="loggingSettings" minOccurs="0" maxOccurs="1" />
 		</xs:all>
 		<xs:attribute name="id" type="xs:string" use="required">
 			<xs:annotation>
@@ -24,6 +25,47 @@
 		<xs:attribute name="authenticationMode" type="typeAuthenticationMode" use="optional" default="on-startup"/>
 	</xs:complexType>
 
+	<xs:complexType name="typeLoggingSettings">
+		<xs:annotation>
+			<xs:documentation>
+				Defines rules for logging events triggered in Application Suite
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all minOccurs="0">
+			<xs:element name="applicationEntryPointUrlFilter" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>
+							Regular expression defining parts of Url to be logged. Everything matched by the regular expression will be visible in log data, everything not matched will be hidden.
+							Default is .* matching the whole Url.
+							The match is performed on the Url, relative to the url of the domain as defined in the "domain" attribute of the corresponding ApplicationDomain element.
+							Example: use <![CDATA[^[^\?#]+|[\?&][^=&#]+=?|#.*]]> to hide values of all query string parameters.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="caseSensitive" type="xs:boolean" use="optional" default="false">
+								<xs:annotation>
+									<xs:documentation>Defines whether the regular expression should be case sensitive.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="hideDomainName" minOccurs="0">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>
+							Specify whether the domain name should not be shown in log data.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:boolean"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	
 	<xs:complexType name="typeApplicationDomains">
 		<xs:annotation>
 			<xs:documentation>

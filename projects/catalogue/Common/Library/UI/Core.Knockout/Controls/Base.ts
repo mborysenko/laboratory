@@ -6,24 +6,25 @@
 
 module SDL.UI.Core.Knockout.Controls
 {
-	export function createKnockoutBinding(control: SDL.UI.Core.Controls.IControlType,
-			name: string, events?: Core.Controls.IPluginEventDefinition[]): void
+	export function createKnockoutBinding(control: SDL.UI.Core.Controls.IControlType, name: string): void
 	{
-		ko.bindingHandlers[name] = new KnockoutBindingHandler(control, name, events);
+		ko.bindingHandlers[name] = new KnockoutBindingHandler(control, name);
 	}
 
 	class KnockoutBindingHandler
 	{
 		private control: Core.Controls.IControlType;
-		private events: Core.Controls.IPluginEventDefinition[];
 		private name: string;
 		private static eventHandlersAttributeName = "data-__knockout_binding_events__";
 
-		constructor(control: Core.Controls.IControlType, name: string, events: Core.Controls.IPluginEventDefinition[])
+		constructor(control: Core.Controls.IControlType, name: string)
 		{
 			this.control = control;
-			this.events = events;
 			this.name = name;
+
+			// knockout calls init and update without KnockoutBindingHandler's context
+			this.init = this.init.bind(this);
+			this.update = this.update.bind(this);
 		}
 
 		public init(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
@@ -36,20 +37,48 @@ module SDL.UI.Core.Knockout.Controls
 			var values: any = valueAccessor();
 			var attrName = Core.Controls.getInstanceAttributeName(this.control);
 			var instance: Core.Controls.IControl = (<any>element)[attrName];
+			
+			var controlEvents: {[event: string]: any;};
+			var allBindings = allBindingsAccessor();
+			var events = ko.unwrap(allBindings.controlEvents);
+			if (events)
+			{
+				controlEvents = events[this.name];
+			}
+
 			if (!instance || ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && (<SDL.Client.Types.IDisposableObject><any>instance).getDisposed()))
 			{
+				if (instance)
+				{
+					// instance is there -> it's disposed -> release references to event handlers
+					(<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+				}
+
 				// create a control instance
-				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindingsAccessor().jQuery));
+				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindings.jQuery));
 				instance.render();
 				ko.utils.domNodeDisposal.addDisposeCallback(element,
-					() => Core.Renderers.ControlRenderer.disposeControl(instance));
+					() =>
+						{
+							if ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && !(<SDL.Client.Types.IDisposableObject><any>instance).getDisposed())
+							{
+								// not disposed yet -> remove handlers and dispose
+								this.removeEventHandlers(instance);
+								Core.Renderers.ControlRenderer.disposeControl(instance);
+							}
+							else
+							{
+								// already disposed -> release references to event handlers
+								(<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+							}
+						});
 
-				this.addEventHandlers(instance, values, bindingContext['$data']);
+				this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
 			}
 			else
 			{
 				this.removeEventHandlers(instance);
-				this.addEventHandlers(instance, values, bindingContext['$data']);
+				this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
 
 				if (instance.update)
 				{
@@ -59,36 +88,65 @@ module SDL.UI.Core.Knockout.Controls
 			}
 		}
 
-		private addEventHandlers(instance: Core.Controls.IControl, values: any, viewModel: any)
+		private addEventHandlers(instance: Core.Controls.IControl, controlEvents: {[event: string]: any;}, values: any, viewModel: any)
 		{
 			if ((<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener)
 			{
 				var events = (<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = <{[event: string]: any;}>{};
-
-				(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener("propertychange", events["propertychange"] = function(e: any)
-					{
-						if (values && ko.isWriteableObservable(values[e.data.property]))
+				var propertyChangeHandler: (e: any) => void = (values
+					? function(e: any)
 						{
-							values[e.data.property](e.data.value);
-						}
-					});
-
-				if (this.events)
-				{
-					SDL.jQuery.each(this.events, (i: number, event: Core.Controls.IPluginEventDefinition) =>
-						{
-							if (values && SDL.Client.Type.isFunction(values[event.event]))
+							var propertyChain = (e.data.property + "").split(".");
+							var setting: any = values;
+						
+							for (var i = 0; setting && i < propertyChain.length; i++)
 							{
-								var eventName = event.originalEvent || event.event;
-								if (eventName != "propertychange")
+								setting = ko.unwrap(setting);
+								if (setting)
+								{
+									setting = setting[propertyChain[i]];
+								}
+							}
+
+							if (ko.isWriteableObservable(setting))
+							{
+								setting(e.data.value);
+							}
+							else if (propertyChain.length > 1 && ko.isWriteableObservable(values[e.data.property]))
+							{
+								values[e.data.property](e.data.value);
+							}
+						}
+					: null);
+
+				if (controlEvents)
+				{
+					SDL.jQuery.each(controlEvents, (eventName: string, eventHandler: any) =>
+						{
+							if (SDL.Client.Type.isFunction(eventHandler))
+							{
+								if (eventName == "propertychange" && propertyChangeHandler)
 								{
 									(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener(eventName, events[eventName] = function(e: any)
 									{
-										values[event.event].apply(viewModel, [viewModel, e, instance]);
+										propertyChangeHandler(e);
+										eventHandler.apply(viewModel, [viewModel, e, instance]);
+									});
+								}
+								else
+								{
+									(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener(eventName, events[eventName] = function(e: any)
+									{
+										eventHandler.apply(viewModel, [viewModel, e, instance]);
 									});
 								}
 							}
 						});
+				}
+
+				if (propertyChangeHandler && !events["propertychange"])
+				{
+					(<SDL.Client.Types.IObjectWithEvents><any>instance).addEventListener("propertychange", events["propertychange"] = propertyChangeHandler);
 				}
 			}
 		}

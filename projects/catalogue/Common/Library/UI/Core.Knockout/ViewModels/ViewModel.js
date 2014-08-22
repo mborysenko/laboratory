@@ -22,7 +22,7 @@ var SDL;
                             this.item = item;
                         }
                         return ViewModel;
-                    })(SDL.UI.Core.Knockout.ViewModels.ViewModelBase);
+                    })(ViewModels.ViewModelBase);
                     ViewModels.ViewModel = ViewModel;
 
                     ViewModel.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Core$ViewModels$Knockout$ViewModel$disposeInterface() {

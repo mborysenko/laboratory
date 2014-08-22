@@ -11,7 +11,7 @@ var SDL;
 
             (function (ApplicationFacadeStub) {
                 function callApplicationFacade(method, arguments, caller) {
-                    if (!SDL.Client.Application.isHosted) {
+                    if (!Application.isHosted) {
                         throw Error("Attempt to call Application facade failed: application is not hosted.");
                     } else if (!Application.ApplicationFacade[method]) {
                         throw Error("Attempt to call Application facade failed: method '" + method + "' is not defined.");
@@ -19,24 +19,24 @@ var SDL;
                         throw Error("Attempt to call Application facade failed: unable to determine security level of the Application facade.");
                     } else {
                         if (Application.isApplicationFacadeSecure) {
-                            if (!SDL.Client.Application.ApplicationHost.isTrusted) {
+                            if (!Application.ApplicationHost.isTrusted) {
                                 throw Error("Attempt to call secured Application facade failed: appliction host is untrusted.");
                             } else if (!caller.applicationId || !caller.applicationDomain) {
                                 throw Error("Attempt to call secured Application facade failed: unable to determine the caller.");
-                            } else if (caller.applicationId != SDL.Client.Application.applicationSuiteId || !SDL.Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain)) {
-                                if (!SDL.Client.Application.trustedApplications && !SDL.Client.Application.trustedApplicationDomains) {
+                            } else if (caller.applicationId != Application.applicationSuiteId || !Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain)) {
+                                if (!Application.trustedApplications && !Application.trustedApplicationDomains) {
                                     throw Error("Attempt to call secured Application facade failed: caller untrusted (" + caller.applicationId + ", " + caller.applicationDomain + ")");
                                 } else {
                                     var allowed;
                                     var i, len;
-                                    if (SDL.Client.Application.trustedApplications && caller.applicationId != SDL.Client.Application.applicationSuiteId && SDL.Client.Application.trustedApplications.indexOf(caller.applicationId) == -1) {
+                                    if (Application.trustedApplications && caller.applicationId != Application.applicationSuiteId && Application.trustedApplications.indexOf(caller.applicationId) == -1) {
                                         throw Error("Attempt to call secured Application facade failed: caller untrusted (" + caller.applicationId + ")");
                                     }
 
-                                    if (SDL.Client.Application.trustedApplicationDomains && !SDL.Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain) && !SDL.Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain)) {
+                                    if (Application.trustedApplicationDomains && !Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain) && !Client.Types.Url.isSameDomain(window.location.href, caller.applicationDomain)) {
                                         allowed = false;
-                                        for (i = 0, len = SDL.Client.Application.trustedApplicationDomains.length; i < len; i++) {
-                                            if (SDL.Client.Types.Url.isSameDomain(SDL.Client.Application.trustedApplicationDomains[i], caller.applicationDomain)) {
+                                        for (i = 0, len = Application.trustedApplicationDomains.length; i < len; i++) {
+                                            if (Client.Types.Url.isSameDomain(Application.trustedApplicationDomains[i], caller.applicationDomain)) {
                                                 allowed = true;
                                                 break;
                                             }

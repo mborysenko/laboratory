@@ -1,13 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../SDL.Client.Core/configuration.xsd">
 
-	<resourceGroups>
-		<resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout">
-			<files>
-				<file name="knockout.js"/>
-				<file name="knockout-deferred-updates.min.js"/>
-			</files>
-		</resourceGroup>
-	</resourceGroups>
+    <resourceGroups>
+        <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout">
+            <files>
+                <file name="knockout.js" />
+                <file name="knockout-deferred-updates.min.js" />
+            </files>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout.Mapping">
+            <files>
+                <file name="knockout.mapping.min.js" />
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
+            </dependencies>
+        </resourceGroup>
+    </resourceGroups>
 
 </configuration>

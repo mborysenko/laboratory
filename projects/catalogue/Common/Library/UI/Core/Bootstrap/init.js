@@ -17,22 +17,22 @@ var SDL;
                 if (view) {
                     rm.load("SDL.UI.Core.Renderers.ViewRenderer", function () {
                         var target = document.getElementById("main-view-target") || document.body;
-                        SDL.UI.Core.Renderers.ViewRenderer.renderView(view, target, null, function (view) {
+                        Core.Renderers.ViewRenderer.renderView(view, target, null, function (view) {
                             SDL.Client.Event.EventRegister.addEventHandler(SDL.Client.Event.EventRegister, "beforedispose", function () {
-                                SDL.UI.Core.Renderers.ViewRenderer.disposeView(view);
+                                Core.Renderers.ViewRenderer.disposeView(view);
                             });
                         });
 
                         SDL.Client.Event.EventRegister.addEventListener("dispose", function () {
                             var undisposed = [];
-                            SDL.jQuery.each(SDL.UI.Core.Renderers.ViewRenderer.getCreatedViewCounts(), function (i, value) {
+                            SDL.jQuery.each(Core.Renderers.ViewRenderer.getCreatedViewCounts(), function (i, value) {
                                 if (value != 0) {
                                     undisposed.push(i + " (" + value + ")");
                                 }
                             });
 
-                            if (SDL.UI.Core.Renderers.ControlRenderer != null) {
-                                SDL.jQuery.each(SDL.UI.Core.Renderers.ControlRenderer.getCreatedControlCounts(), function (i, value) {
+                            if (Core.Renderers.ControlRenderer != null) {
+                                SDL.jQuery.each(Core.Renderers.ControlRenderer.getCreatedControlCounts(), function (i, value) {
                                     if (value != 0) {
                                         undisposed.push(i + " (" + value + ")");
                                     }

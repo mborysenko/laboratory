@@ -23,6 +23,7 @@ declare module SDL.Client.Application {
     var ApplicationHost: IApplicationHost;
     var useHostedLibraryResources: boolean;
     var libraryVersion: string;
+    var sharedSettings: any;
     var isInitialized: boolean;
     var initCallbacks: {
         (): void;

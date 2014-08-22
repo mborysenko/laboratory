@@ -54,7 +54,7 @@ var SDL;
                             var baseParts = parseUrl(base);
 
                             if (charAt0 != "/") {
-                                path = SDL.Client.Types.Url.normalize(baseParts[4 /* PATH */] + path);
+                                path = Url.normalize(baseParts[4 /* PATH */] + path);
                             } else if (path.charAt(1) == "/") {
                                 // path starts with // (a hostname without the protocol)
                                 return baseParts[0 /* PROTOCOL */] + path;

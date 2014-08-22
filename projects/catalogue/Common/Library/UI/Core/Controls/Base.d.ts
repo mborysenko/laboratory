@@ -15,9 +15,5 @@ declare module SDL.UI.Core.Controls {
         implementation?: string;
         returnsValue?: boolean;
     }
-    interface IPluginEventDefinition {
-        event: string;
-        originalEvent?: string;
-    }
     function getInstanceAttributeName(control: IControlType): string;
 }

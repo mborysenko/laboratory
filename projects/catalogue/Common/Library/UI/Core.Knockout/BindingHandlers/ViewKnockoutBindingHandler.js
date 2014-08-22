@@ -41,7 +41,7 @@ var SDL;
                                 if (handler !== null) {
                                     if (!handler) {
                                         $e.data("view-update", true);
-                                        SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data); // this is to make sure observables are evaluated, otherwise ko will not notify us when they change
+                                        Knockout.Utils.unwrapRecursive(value.data); // this is to make sure observables are evaluated, otherwise ko will not notify us when they change
                                     } else if (handler.update) {
                                         handler.update(element, ViewKnockoutBindingHandler.getDataValueAccessor(valueAccessor), allBindingsAccessor, viewModel, bindingContext);
                                     } else {
@@ -94,7 +94,7 @@ var SDL;
                                     $e.data("view-handler", null);
                                     if (type) {
                                         // no handler is found, just create the view
-                                        SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element, SDL.UI.Core.Knockout.BindingHandlers.areKnockoutObservableSettingsEnabled(type) ? value.data : SDL.UI.Core.Knockout.Utils.unwrapRecursive(value.data), ViewKnockoutBindingHandler.addViewDisposalCallback);
+                                        SDL.UI.Core.Renderers.ViewRenderer.renderView(type, element, BindingHandlers.areKnockoutObservableSettingsEnabled(type) ? value.data : Knockout.Utils.unwrapRecursive(value.data), ViewKnockoutBindingHandler.addViewDisposalCallback);
                                     }
                                 }
                             }

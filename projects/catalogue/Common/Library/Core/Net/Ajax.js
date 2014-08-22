@@ -8,6 +8,7 @@ SDL.Client.Net.WebRequest = function SDL$Client$Net$WebRequest()
 	this.body;
 	this.httpVerb;
 	this.invokeCalled;
+	this.isRetry;
 	this.responseText;
 	this.requestHeaders;
 	this.responseContentType;
@@ -66,6 +67,34 @@ SDL.Client.Net.WebRequest.prototype =
 					}
 				}
 
+				if (SDL.Client.Net.WebRequest.csrfTokenHeaderName === undefined)
+				{
+					SDL.Client.Net.WebRequest.csrfTokenHeaderName = SDL.Client.Configuration.ConfigurationManager.getAppSetting("antiCsrfTokenHttpHeaderName") || null;
+				}
+
+				if (SDL.Client.Net.WebRequest.csrfTokenHeaderName)
+				{
+					var header;
+					if (document.cookie)
+					{
+						if (SDL.Client.Net.WebRequest.csrfTokenCookieName === undefined)
+						{
+							SDL.Client.Net.WebRequest.csrfTokenCookieName = SDL.Client.Configuration.ConfigurationManager.getAppSetting("antiCsrfTokenCookieName") || null;
+						}
+
+						if (SDL.Client.Net.WebRequest.csrfTokenCookieName)
+						{
+							var regEx = new RegExp("(^\\s*|;\\s*)" + SDL.Client.Types.RegExp.escape(SDL.Client.Net.WebRequest.csrfTokenCookieName) + "=([^;]*)(;|$)", "i");
+							var m = document.cookie.match(regEx);
+							if (m)
+							{
+								header = m[2];
+							}
+						}
+					}
+					this.xmlHttp.setRequestHeader(SDL.Client.Net.WebRequest.csrfTokenHeaderName, header || (new Date()).getTime());
+				}
+
 				if (isSetContentType)
 				{
 					if (this.xmlHttp.sendAsBinary)
@@ -108,28 +137,40 @@ SDL.Client.Net.WebRequest.prototype =
 					xmlHttp.onreadystatechange = SDL.jQuery.noop;
 				}
 
-				this.xmlHttp = null;
-      
 				if (!this.hasError)
 				{
-					this.responseContentType = xmlHttp.getResponseHeader("Content-Type");
 					var statusCode = this.statusCode = xmlHttp.status;
-					try
-					{
-						this.statusText = xmlHttp.statusText;
-					}
-					catch (err)
-					{
-						// fails in FF sometimes
-						this.statusText = "";
-					}
-					this.hasError = (statusCode < 200 || statusCode >= 300 || xmlHttp.getResponseHeader("jsonerror") == "true");
-					this.responseText = xmlHttp.responseText;
-				}
 
-				if (this.onComplete)
-				{
-					this.onComplete(this);
+					if (statusCode == 409 &&	// anti CSRF filters will return http code 409 in case of invalid headers
+						!this.isRetry && SDL.Client.Net.WebRequest.csrfTokenHeaderName && document.cookie)
+					{
+						//probably failed the anti CSRF filter, try again with the new token
+						this.invokeCalled = false;
+						this.isRetry = true;
+						this.invoke();
+					}
+					else
+					{
+						this.responseContentType = xmlHttp.getResponseHeader("Content-Type");
+						try
+						{
+							this.statusText = xmlHttp.statusText;
+						}
+						catch (err)
+						{
+							// fails in FF sometimes
+							this.statusText = "";
+						}
+						this.hasError = (statusCode < 200 || statusCode >= 300 || xmlHttp.getResponseHeader("jsonerror") == "true");
+						this.responseText = xmlHttp.responseText;
+
+						if (this.onComplete)
+						{
+							this.onComplete(this);
+						}
+
+						this.xmlHttp = null;
+					}
 				}
 			}
 		}

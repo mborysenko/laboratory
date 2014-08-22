@@ -105,30 +105,20 @@ var SDL;
                 };
 
                 ObjectWithEvents.prototype._processHandlers = function (eventObj, handlersCollectionName) {
-                    var handlers = this.properties.handlers && this.properties.handlers[handlersCollectionName];
+                    var p = this.properties;
+                    var handlers = p.handlers && p.handlers[handlersCollectionName];
                     if (handlers) {
-                        // handlers can be added/removed while handling an event
-                        // thus have to recheck them if at least one handler has been executed
-                        var needPostprocess;
-                        var processedHandlers = [];
-
-                        do {
-                            needPostprocess = false;
-
-                            for (var i = 0; handlers && (i < handlers.length); i++) {
-                                var handler = handlers[i];
-                                if (processedHandlers.indexOf(handler) == -1) {
-                                    needPostprocess = true;
-                                    processedHandlers.push(handler);
-
-                                    if (handler.fnc.call(this, eventObj) === false) {
-                                        return false;
-                                    }
-
-                                    handlers = this.properties.handlers && this.properties.handlers[handlersCollectionName];
+                        var handlersClone = handlers.concat();
+                        for (var i = 0, len = handlersClone.length; i < len && handlers; i++) {
+                            var handler = handlersClone[i];
+                            if (handlers.indexOf(handler) != -1) {
+                                if (handler.fnc.call(this, eventObj) === false) {
+                                    return false;
                                 }
+
+                                handlers = p.handlers && p.handlers[handlersCollectionName];
                             }
-                        } while(needPostprocess);
+                        }
                     }
                 };
 
@@ -138,7 +128,7 @@ var SDL;
                     this.fireEvent("dispose");
                 };
                 return ObjectWithEvents;
-            })(SDL.Client.Types.DisposableObject);
+            })(Types.DisposableObject);
             Types.ObjectWithEvents = ObjectWithEvents;
             ;
 
