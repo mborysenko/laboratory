@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1804" />
+    <setting name="version" value="1.4.0.1880" />
   </appSettings>
   <!-- SDL.Client.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
@@ -117,6 +117,7 @@
           <dependencies>
             <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
             <dependency name="SDL.Client.Libraries.SDL.Globalize" />
+            <dependency name="SDL.Client.Configuration.ConfigurationManager" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>

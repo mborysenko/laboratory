@@ -5,4 +5,5 @@
   <include src="Library/UI/Core.Knockout/configuration.xml" />
   <include src="Library/UI/Controls/configuration.xml" />
   <include src="Library/UI/Controls.Knockout/configuration.xml" />
+  <include src="Library/UI/Views/configuration.xml" />
 </configuration>
