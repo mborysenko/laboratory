@@ -22,6 +22,7 @@
 	<include src="Dialog/_Config.xml"/>
 	<include src="Message/_Config.xml"/>
 	<include src="ResizeTrigger/_Config.xml"/>
+	<include src="TopBar/_Config.xml"/>
 	<include src="TopPageTabs/_Config.xml"/>
 	<include src="Tooltip/_Config.xml"/>
 	<include src="ScrollView/_Config.xml"/>
@@ -30,7 +31,7 @@
 	<include src="TextInput/_Config.xml"/>
 	<include src="Checkbox/_Config.xml"/>
 	<include src="RadioButton/_Config.xml"/>
-	<include src="Combobox/_Config.xml"/>
+	<include src="DropdownList/_Config.xml"/>
 	
 	<!-- Packages -->
 	<include src="packages.xml"/>

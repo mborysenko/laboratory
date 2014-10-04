@@ -28,6 +28,7 @@ module SDL.UI.Core.Knockout.ViewModels
 		public format(value: Date, format?: string): string;
 		public format(value: any, format?: string): string
 		{
+			culture();	// this adds a dependency on the culture
 			return SDL.Globalize.format(value, format);
 		}
 	}

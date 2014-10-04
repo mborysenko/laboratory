@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1772" />
+    <setting name="version" value="1.4.0.1804" />
   </appSettings>
   <!-- Library core settings -->
   <include src="settings.xml" />
@@ -37,6 +37,7 @@
             <file name="Application/ApplicationHost.js" />
             <file name="Application/Application.js" />
             <file name="Application/ApplicationFacade.js" />
+            <file name="Application/ApplicationHostFacade.js" />
           </files>
           <dependencies>
             <dependency name="SDL.Client.Types.Url1" />

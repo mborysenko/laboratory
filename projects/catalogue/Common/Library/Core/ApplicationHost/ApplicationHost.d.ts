@@ -1,5 +1,6 @@
 /// <reference path="../Types/Types.d.ts" />
 /// <reference path="../Application/Application.d.ts" />
+/// <reference path="../Application/ApplicationHostFacade.d.ts" />
 /// <reference path="../Application/ApplicationFacade.d.ts" />
 /// <reference path="ApplicationHostFacade.d.ts" />
 /// <reference path="../ConfigurationManager/ConfigurationManager.d.ts" />
@@ -22,6 +23,7 @@ declare module SDL.Client.ApplicationHost {
             [id: string]: IApplication;
         };
         initialize(callback?: () => void): void;
+        publishEvent(type: string, data: any, targetDisplay?: ITargetDisplay): void;
         registerApplication(applicationEntries: string, caller?: ICallerSignature): void;
         applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: {
             type: string;
@@ -49,6 +51,8 @@ declare module SDL.Client.ApplicationHost {
         removeApplicationData(key: string, caller?: ICallerSignature): void;
         removeApplicationSessionData(key: string, caller?: ICallerSignature): void;
         triggerAnalyticsEvent(event: string, object: any, caller?: ICallerSignature): void;
+        showTopBar(caller?: ICallerSignature): void;
+        setTopBarOptions(options: any, caller?: ICallerSignature): void;
         resolveCommonLibraryResources(resourceGroupName: string, caller?: ICallerSignature): Resources.IResolvedResourceGroupResult[];
         getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void, caller?: ICallerSignature): void;
         getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void, caller?: ICallerSignature): void;
@@ -217,12 +221,14 @@ declare module SDL.Client.ApplicationHost {
         public removeApplicationData(key: string, caller?: ICallerSignature): void;
         public removeApplicationSessionData(key: string, caller?: ICallerSignature): void;
         public triggerAnalyticsEvent(event: string, object: any, caller?: ICallerSignature): void;
+        public showTopBar(caller?: ICallerSignature): void;
+        public setTopBarOptions(options: any, caller?: ICallerSignature): void;
         public resolveCommonLibraryResources(resourceGroupName: string, caller?: ICallerSignature): Resources.IResolvedResourceGroupResult[];
         public getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void, caller?: ICallerSignature): void;
         public getCommonLibraryResource(file: Resources.IFileResourceDefinition, version: string, onSuccess: (data: string) => void, onFailure?: (error: string) => void, caller?: ICallerSignature): void;
         public initialize(callback?: () => void): void;
         public registerApplication(applicationEntries: string, caller?: ICallerSignature): void;
-        public publishEvent(type: string, data: any): void;
+        public publishEvent(type: string, data: any, targetDisplay?: ITargetDisplay): void;
         public getCallerTargetDisplay(allowAuthenticationTargetDisplay: boolean, allowSelfTargetDisplay: boolean, allowUnauthenticated: boolean, caller: ICallerSignature): ITargetDisplay;
         public getApplicationEntryPointById(applicationEntryPointId: string, application: IApplication): IApplicationEntryPoint;
         private loadApplicationManifests();

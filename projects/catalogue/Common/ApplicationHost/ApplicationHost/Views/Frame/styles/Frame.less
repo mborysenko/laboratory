@@ -1,13 +1,4 @@
-﻿html, body, #main-view-target
-{
-	height: 100%;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-/* RIGHT-HAND SIDE WHERE APPLICATIONS ARE SHOWN */
+﻿/* RIGHT-HAND SIDE WHERE APPLICATIONS ARE SHOWN */
 .frame-applications, .frame-applications div, .frame-applications iframe
 {
 	position: absolute;
@@ -17,7 +8,8 @@
 	left: 0;
 	right: 0;
 	top: 0;
-	height: 100%;
+	bottom: 0;
+	height: auto;
 	width: auto;
 	margin: 0;
 	padding: 0;
@@ -27,6 +19,7 @@
 .frame-applications iframe
 {
 	width: 100%;
+	height: 100%;
 }
 
 .frame-applications
@@ -37,7 +30,6 @@
 
 .frame-applications .frame-application-scroll-wrapper
 {
-	position: relative;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 }
@@ -56,6 +48,22 @@
 {
 	z-index: -1;
 	left: 100%;		/* needed to enable proper scrolling on iPad */
+	right: -100%;
+}
+
+/* TOP BAR */
+.frame-application-with-topbar > .frame-application-scroll-wrapper
+{
+	top: 31px;
+}
+
+.frame-application-with-topbar > span
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: auto;
 }
 
 /* NAVIGATION PANEL */

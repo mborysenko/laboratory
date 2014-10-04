@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1772" />
+    <setting name="version" value="1.4.0.1804" />
     <setting name="activityIndicatorLegacyMode" value="true" />
   </appSettings>
   <!-- SDL.UI.Core configuration -->
@@ -187,6 +187,44 @@
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
             <dependency name="SDL.UI.Core.Controls.JQuery" />
             <dependency name="SDL.UI.Controls.ResizeTrigger" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
+  <include src="TopBar/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.TopBar">
+          <files>
+            <file name="TopBar/TopBar.js" />
+            <file name="TopBar/TopBar.css" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.UI.Controls.JQuery.ResizeTrigger" />
+            <dependency name="SDL.UI.Controls.JQuery.ScrollView" />
+            <dependency name="SDL.UI.Controls.JQuery.Callout" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.TopBar">
+          <files>
+            <file name="TopBar/TopBar.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.TopBar" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.Application.TopBar">
+          <files>
+            <file name="TopBar/Application/TopBar.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Application" />
+            <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -381,26 +419,26 @@
       </resourceGroups>
     </configuration>
   </include>
-  <include src="Combobox/_Config.xml">
+  <include src="DropdownList/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
-        <resourceGroup name="SDL.UI.Controls.Combobox">
+        <resourceGroup name="SDL.UI.Controls.DropdownList">
           <files>
-            <file name="Combobox/Combobox.js" />
-            <file name="Combobox/Combobox.css" />
+            <file name="DropdownList/DropdownList.js" />
+            <file name="DropdownList/DropdownList.css" />
           </files>
           <dependencies>
             <dependency name="SDL.UI.Core.Controls.ControlBase" />
           </dependencies>
         </resourceGroup>
-        <resourceGroup name="SDL.UI.Controls.JQuery.Combobox">
+        <resourceGroup name="SDL.UI.Controls.JQuery.DropdownList">
           <files>
-            <file name="Combobox/Combobox.jQuery.js" />
+            <file name="DropdownList/DropdownList.jQuery.js" />
           </files>
           <dependencies>
             <dependency name="SDL.Client.Libraries.SDL.JQuery" />
             <dependency name="SDL.UI.Core.Controls.JQuery" />
-            <dependency name="SDL.UI.Controls.Combobox" />
+            <dependency name="SDL.UI.Controls.DropdownList" />
           </dependencies>
         </resourceGroup>
       </resourceGroups>
@@ -419,6 +457,7 @@
             <resourceGroup name="SDL.UI.Controls.Dialog" />
             <resourceGroup name="SDL.UI.Controls.Message" />
             <resourceGroup name="SDL.UI.Controls.ResizeTrigger" />
+            <resourceGroup name="SDL.UI.Controls.TopBar" />
             <resourceGroup name="SDL.UI.Controls.TopPageTabs" />
             <resourceGroup name="SDL.UI.Controls.Tooltip" />
             <resourceGroup name="SDL.UI.Controls.ScrollView" />
@@ -426,7 +465,8 @@
             <resourceGroup name="SDL.UI.Controls.DatePicker" />
             <resourceGroup name="SDL.UI.Controls.Checkbox" />
             <resourceGroup name="SDL.UI.Controls.RadioButton" />
-            <resourceGroup name="SDL.UI.Controls.Combobox" />
+            <resourceGroup name="SDL.UI.Controls.DropdownList" />
+            <resourceGroup name="SDL.UI.Controls.Application.TopBar" />
           </resourceGroups>
         </package>
         <package name="SDL.UI.Controls.JQuery" src="Packages/SDL.UI.Controls.JQuery.js">
@@ -438,6 +478,7 @@
             <resourceGroup name="SDL.UI.Controls.JQuery.Dialog" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Message" />
             <resourceGroup name="SDL.UI.Controls.JQuery.ResizeTrigger" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.TopBar" />
             <resourceGroup name="SDL.UI.Controls.JQuery.TopPageTabs" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Tooltip" />
             <resourceGroup name="SDL.UI.Controls.JQuery.ScrollView" />
@@ -445,7 +486,7 @@
             <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Checkbox" />
             <resourceGroup name="SDL.UI.Controls.JQuery.RadioButton" />
-            <resourceGroup name="SDL.UI.Controls.JQuery.Combobox" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.DropdownList" />
           </resourceGroups>
         </package>
       </packages>

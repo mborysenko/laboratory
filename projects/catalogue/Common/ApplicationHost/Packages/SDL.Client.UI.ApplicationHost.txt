@@ -1,6 +1,7 @@
-/*66365,21520,17804,379,7437*//// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
+/*70047,21740,17929,379,8002*//// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Controls/TopBar/TopBar.d.ts" />
 var SDL;
 (function (SDL) {
     (function (Client) {
@@ -37,6 +38,7 @@ var SDL;
                         var initialized = false;
                         var initCallbacks = [];
                         var topNavigationGroupItems = [];
+                        var baseTopBarOptions = { ribbonTabs: undefined, selectedRibbonTabId: undefined, buttons: undefined };
 
                         function selectNavigationItem(navigationItem) {
                             if (navigationItem) {
@@ -145,6 +147,11 @@ var SDL;
                         }
                         Navigation.getNavigationItemById = getNavigationItemById;
                         ;
+
+                        function onTopBarEvent(targetDisplay, e, topBar) {
+                            AppHost.ApplicationHost.publishEvent("topbarevent", { type: e.type, data: e.data }, targetDisplay.targetDisplay);
+                        }
+                        Navigation.onTopBarEvent = onTopBarEvent;
 
                         function loadTargetDisplayForNavigationItem(navigationItem) {
                             if (!navigationItem.hidden()) {
@@ -255,6 +262,8 @@ var SDL;
                             Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayload", onTargetDisplayLoaded);
                             Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayunload", onTargetDisplayUnloaded);
                             Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayurlchange", onTargetDisplayUrlChange);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "showtopbar", onTargetDisplayTopBarShow);
+                            Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "settopbaroptions", onTargetDisplayTopBarOptions);
 
                             setNavigationSelectionFromUrl(true);
 
@@ -455,6 +464,8 @@ var SDL;
                                     src: application.authenticationUrl,
                                     loaded: ko.observable(false),
                                     loading: null,
+                                    topBarShown: ko.observable(false),
+                                    topBarOptions: ko.observable(SDL.jQuery.extend({}, baseTopBarOptions)),
                                     timeout: 0,
                                     authenticationMode: application.authenticationMode,
                                     accessed: ko.observable(application.authenticationMode != "on-access"),
@@ -578,6 +589,8 @@ var SDL;
                                             accessed: ko.observable(false),
                                             loaded: ko.observable(false),
                                             loading: null,
+                                            topBarShown: ko.observable(false),
+                                            topBarOptions: ko.observable(SDL.jQuery.extend({}, baseTopBarOptions)),
                                             timeout: 0,
                                             disposed: ko.observable(false),
                                             navigationItem: ko.observable(null)
@@ -987,6 +1000,7 @@ var SDL;
                                     var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][targetDisplay.name];
                                     if (navigationItemTargetDisplay) {
                                         navigationItemTargetDisplay.loaded(false);
+                                        navigationItemTargetDisplay.topBarShown(false);
                                     }
                                 }
                             }
@@ -1004,6 +1018,39 @@ var SDL;
                             }
                         }
                         ;
+
+                        function onTargetDisplayTopBarShow(event) {
+                            var targetDisplay = event.data.targetDisplay;
+                            var application = targetDisplay.application;
+                            if (application) {
+                                var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[application.id];
+                                if (authenticationTargetDisplay && authenticationTargetDisplay.targetDisplay == targetDisplay) {
+                                    authenticationTargetDisplay.topBarShown(true);
+                                } else if (targetDisplay.name) {
+                                    var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][targetDisplay.name];
+                                    if (navigationItemTargetDisplay) {
+                                        navigationItemTargetDisplay.topBarShown(true);
+                                    }
+                                }
+                            }
+                        }
+
+                        function onTargetDisplayTopBarOptions(event) {
+                            var options = event.data.options;
+                            var targetDisplay = event.data.targetDisplay;
+                            var application = targetDisplay.application;
+                            if (application) {
+                                var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[application.id];
+                                if (authenticationTargetDisplay && authenticationTargetDisplay.targetDisplay == targetDisplay) {
+                                    authenticationTargetDisplay.topBarOptions(SDL.jQuery.extend({}, baseTopBarOptions, options));
+                                } else if (targetDisplay.name) {
+                                    var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][targetDisplay.name];
+                                    if (navigationItemTargetDisplay) {
+                                        navigationItemTargetDisplay.topBarOptions(SDL.jQuery.extend({}, baseTopBarOptions, options));
+                                    }
+                                }
+                            }
+                        }
 
                         initialize();
                     })(ViewModels.Navigation || (ViewModels.Navigation = {}));
@@ -1292,6 +1339,10 @@ var SDL;
                                     }
                                 });
 
+                                model.onTopBarEvent = function (targetDisplay, e, topBar) {
+                                    Navigation.onTopBarEvent(targetDisplay, e, topBar);
+                                };
+
                                 _this.setInitialized();
                             });
 
@@ -1356,15 +1407,6 @@ var SDL;
     var Client = SDL.Client;
 })(SDL || (SDL = {}));
 //# sourceMappingURL=Frame.js.map
-html,
-body,
-#main-view-target {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-}
 /* RIGHT-HAND SIDE WHERE APPLICATIONS ARE SHOWN */
 .frame-applications,
 .frame-applications div,
@@ -1376,7 +1418,8 @@ body,
   left: 0;
   right: 0;
   top: 0;
-  height: 100%;
+  bottom: 0;
+  height: auto;
   width: auto;
   margin: 0;
   padding: 0;
@@ -1384,13 +1427,13 @@ body,
 }
 .frame-applications iframe {
   width: 100%;
+  height: 100%;
 }
 .frame-applications {
   background-color: #eee;
   overflow: hidden;
 }
 .frame-applications .frame-application-scroll-wrapper {
-  position: relative;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -1404,6 +1447,18 @@ body,
   z-index: -1;
   left: 100%;
   /* needed to enable proper scrolling on iPad */
+  right: -100%;
+}
+/* TOP BAR */
+.frame-application-with-topbar > .frame-application-scroll-wrapper {
+  top: 31px;
+}
+.frame-application-with-topbar > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: auto;
 }
 /* NAVIGATION PANEL */
 .frame-navigation {
@@ -1800,11 +1855,26 @@ SDL.Globalize.addCultureInfo( "default", {
 			</div>
 		<!-- /ko -->
 		<!-- ko if: initialized -->
-			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays), event: {scroll: function() {$element.scrollLeft = 0;}}">
+			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays),
+					event: {scroll: function() {$element.scrollLeft = 0;}}">
 				<div data-bind="if: accessed() && !disposed(),
 								css: {'frame-application-out': $root.isTargetDisplayOut($data),
 									'frame-application-animated': $root.isTargetDisplaySlideAnimated($data, $element),
-									'frame-application-hidden': $data != $root.shownTargetDisplay() }">
+									'frame-application-hidden': $data != $root.shownTargetDisplay(),
+									'frame-application-with-topbar': topBarShown}">
+					<!-- ko if: topBarShown -->
+						<span data-bind="control: {
+								type: 'SDL.UI.Controls.Knockout.TopBar',
+								data: {
+										ribbonTabs: topBarOptions().ribbonTabs,
+										selectedRibbonTabId: topBarOptions().selectedRibbonTabId,
+										buttons: topBarOptions().buttons,
+										ribbonTabsFlyoutMenuShown: $data == $root.shownTargetDisplay() && null,
+										hostMode: true
+									},
+								events: {'*': $root.onTopBarEvent}}">
+						</span>
+					<!-- /ko -->
 					<div class="frame-application-scroll-wrapper">
 						<iframe data-bind="attr: { src: src, foo: $root.registerTargetDisplayFrame($data, $element) },
 							event: {load: function() {loaded(true);}, focus: $root.blurredNavigationPane}"></iframe>

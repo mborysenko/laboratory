@@ -36,7 +36,7 @@ module SDL.UI.Core.Renderers
 						{
 							if (ctor.createElement)
 							{
-								element = ctor.createElement(document, settings, SDL.jQuery);
+								element = ctor.createElement(document, settings);
 							}
 							else
 							{
@@ -45,7 +45,7 @@ module SDL.UI.Core.Renderers
 						}
 
 						// Instantiate the control
-						var control: Controls.IControl = new ctor(element, settings, SDL.jQuery);
+						var control: Controls.IControl = new ctor(element, settings);
 
 						// Render control
 						control.render(callback ? () => {

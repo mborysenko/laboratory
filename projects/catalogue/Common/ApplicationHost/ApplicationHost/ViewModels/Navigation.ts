@@ -1,6 +1,7 @@
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Controls/TopBar/TopBar.d.ts" />
 
 module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 {
@@ -16,6 +17,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		accessed: KnockoutObservable<boolean>;
 		loaded: KnockoutObservable<boolean>;
 		loading: KnockoutComputed<boolean>;
+		topBarShown: KnockoutObservable<boolean>;
+		topBarOptions: KnockoutObservable<any>;
 		timeout: number;
 	};
 
@@ -79,6 +82,7 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 	var initialized: boolean = false;
 	var initCallbacks = [];
 	var topNavigationGroupItems: INavigationItem[] = [];
+	var baseTopBarOptions = {ribbonTabs: undefined, selectedRibbonTabId: undefined, buttons: undefined};
 
 	export function selectNavigationItem(navigationItem: INavigationItem)
 	{
@@ -218,6 +222,11 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		}
 	};
 
+	export function onTopBarEvent(targetDisplay: ITargetDisplay, e: JQueryEventObject, topBar: SDL.UI.Controls.TopBar): void
+	{
+		AppHost.ApplicationHost.publishEvent("topbarevent", {type: e.type, data: e.data}, targetDisplay.targetDisplay);
+	}
+
 	function loadTargetDisplayForNavigationItem(navigationItem: INavigationItem)
 	{
 		if (!navigationItem.hidden())
@@ -352,6 +361,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 		Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayload", onTargetDisplayLoaded);
 		Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayunload", onTargetDisplayUnloaded);
 		Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "targetdisplayurlchange", onTargetDisplayUrlChange);
+		Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "showtopbar", onTargetDisplayTopBarShow);
+		Client.Event.EventRegister.addEventHandler(AppHost.ApplicationHost, "settopbaroptions", onTargetDisplayTopBarOptions);
 
 		setNavigationSelectionFromUrl(true);
 
@@ -600,6 +611,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 						src: application.authenticationUrl,
 						loaded: ko.observable(false),
 						loading: null,
+						topBarShown: ko.observable(false),
+						topBarOptions: ko.observable(SDL.jQuery.extend({}, baseTopBarOptions)),
 						timeout: 0,
 						authenticationMode: application.authenticationMode,
 						accessed: ko.observable(application.authenticationMode != "on-access"),
@@ -746,6 +759,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 							accessed: ko.observable(false),
 							loaded: ko.observable(false),
 							loading: null,
+							topBarShown: ko.observable(false),
+							topBarOptions: ko.observable(SDL.jQuery.extend({}, baseTopBarOptions)),
 							timeout: 0,
 							disposed: ko.observable(false),
 							navigationItem: ko.observable(null)
@@ -1245,6 +1260,7 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 				if (navigationItemTargetDisplay)
 				{
 					navigationItemTargetDisplay.loaded(false);
+					navigationItemTargetDisplay.topBarShown(false);
 				}
 			}
 		}
@@ -1263,6 +1279,51 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 			}
 		}
 	};
+
+	function onTargetDisplayTopBarShow(event: Client.Event.Event)
+	{
+		var targetDisplay: AppHost.ITargetDisplay = event.data.targetDisplay;
+		var application = targetDisplay.application;
+		if (application)
+		{
+			var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[application.id];
+			if (authenticationTargetDisplay && authenticationTargetDisplay.targetDisplay == targetDisplay)
+			{
+				authenticationTargetDisplay.topBarShown(true);
+			}
+			else if ((<SDL.Client.ApplicationHost.IApplicationEntryPointTargetDisplay>targetDisplay).name)
+			{
+				var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][(<SDL.Client.ApplicationHost.IApplicationEntryPointTargetDisplay>targetDisplay).name];
+				if (navigationItemTargetDisplay)
+				{
+					navigationItemTargetDisplay.topBarShown(true);
+				}
+			}
+		}
+	}
+
+	function onTargetDisplayTopBarOptions(event: Client.Event.Event)
+	{
+		var options = event.data.options;
+		var targetDisplay: AppHost.ITargetDisplay = event.data.targetDisplay;
+		var application = targetDisplay.application;
+		if (application)
+		{
+			var authenticationTargetDisplay = applicationAuthenticationTargetDisplays[application.id];
+			if (authenticationTargetDisplay && authenticationTargetDisplay.targetDisplay == targetDisplay)
+			{
+				authenticationTargetDisplay.topBarOptions(SDL.jQuery.extend({}, baseTopBarOptions, options));
+			}
+			else if ((<SDL.Client.ApplicationHost.IApplicationEntryPointTargetDisplay>targetDisplay).name)
+			{
+				var navigationItemTargetDisplay = applicationNavigationItemTargetDisplaysIndex[application.id][(<SDL.Client.ApplicationHost.IApplicationEntryPointTargetDisplay>targetDisplay).name];
+				if (navigationItemTargetDisplay)
+				{
+					navigationItemTargetDisplay.topBarOptions(SDL.jQuery.extend({}, baseTopBarOptions, options));
+				}
+			}
+		}
+	}
 
 	initialize();
 }

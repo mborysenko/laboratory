@@ -6,6 +6,7 @@
 				<file name="ApplicationHost.js"/>
 				<file name="Application.js"/>
 				<file name="ApplicationFacade.js"/>
+				<file name="ApplicationHostFacade.js"/>
 			</files>
 			<dependencies>
 				<dependency name="SDL.Client.Types.Url1"/>

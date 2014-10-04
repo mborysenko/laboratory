@@ -42,6 +42,8 @@ declare module SDL.Client.Application {
         removeApplicationData(key: string): void;
         removeApplicationSessionData(key: string): void;
         triggerAnalyticsEvent(event: string, object: any): void;
+        showTopBar(): void;
+        setTopBarOptions(options: any): void;
         addEventListener(event: string, handler: Function): void;
         removeEventListener(event: string, handler: Function): void;
         fireEvent(event: string, eventData?: any): void;
@@ -66,6 +68,8 @@ declare module SDL.Client.Application {
         sharedSettings?: {
             [setting: string]: string;
         };
+        isApplicationHostProxy?: boolean;
+        isApplicationHostTrusted?: boolean;
     }
     interface IApplicationDomain {
         domain: string;
@@ -114,6 +118,8 @@ declare module SDL.Client.Application {
         public removeApplicationData(key: string): void;
         public removeApplicationSessionData(key: string): void;
         public triggerAnalyticsEvent(event: string, object: any): void;
+        public showTopBar(): void;
+        public setTopBarOptions(options: any): void;
         public addEventListener(event: string, handler: Function): void;
         public removeEventListener(event: string, handler: Function): void;
         public fireEvent(eventType: string, eventData?: any): void;

@@ -15,12 +15,11 @@ declare module SDL.UI.Controls {
     class Tooltip extends Core.Controls.ControlBase {
         static tooltipTimer: number;
         static shownTooltip: Tooltip;
-        private $;
         private $element;
         private settings;
         private mouse;
         private shown;
-        constructor(element: HTMLElement, options?: ITooltipOptions, jQuery?: JQueryStatic);
+        constructor(element: HTMLElement, options?: ITooltipOptions);
         public $initialize(): void;
         public update(options?: ITooltipOptions): void;
         /**

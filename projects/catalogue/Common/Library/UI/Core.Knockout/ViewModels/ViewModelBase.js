@@ -34,6 +34,7 @@ var SDL;
                         };
 
                         ViewModelBase.prototype.format = function (value, format) {
+                            culture(); // this adds a dependency on the culture
                             return SDL.Globalize.format(value, format);
                         };
                         return ViewModelBase;

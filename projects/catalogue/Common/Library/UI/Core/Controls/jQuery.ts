@@ -24,7 +24,7 @@ module SDL.UI.Core.Controls
 				if (!instance || ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && (<SDL.Client.Types.IDisposableObject><any>instance).getDisposed()))
 				{
 					// create a control instance
-					instance = (<any>element)[attrName] = new control(element, options, jQuery);
+					instance = (<any>element)[attrName] = new control(element, options);
 					instance.render();
 				}
 				else if (options && instance.update)

@@ -1,5 +1,6 @@
 /// <reference path="../Types/Types.d.ts" />
 /// <reference path="../Application/Application.ts" />
+/// <reference path="../Application/ApplicationHostFacade.ts" />
 /// <reference path="../Application/ApplicationFacade.ts" />
 /// <reference path="../ApplicationHost/ApplicationHostFacade.ts" />
 /// <reference path="../ConfigurationManager/ConfigurationManager.ts" />
@@ -25,6 +26,7 @@ module SDL.Client.ApplicationHost
 		applications: IApplication[];
 		applicationsIndex: {[id: string]: IApplication;};
 		initialize(callback?: () => void): void;
+		publishEvent(type: string, data: any, targetDisplay?: ITargetDisplay): void;
 		registerApplication(applicationEntries: string, caller?: ICallerSignature): void;
 		//--------- Begin methods supporting SDL.Client.ApplicationHost.ApplicationHostFacade ----------------
 		applicationEntryPointLoaded(libraryVersion: string, eventHandler: (e: {type: string; data: any;}) => void, caller?: ICallerSignature): Application.IApplicationHostData;
@@ -50,6 +52,9 @@ module SDL.Client.ApplicationHost
 		removeApplicationSessionData(key: string, caller?: ICallerSignature): void;
 
 		triggerAnalyticsEvent(event: string, object: any, caller?: ICallerSignature): void;
+
+		showTopBar(caller?: ICallerSignature): void;
+		setTopBarOptions(options: any,caller?: ICallerSignature): void;
 
 		resolveCommonLibraryResources(resourceGroupName: string, caller?: ICallerSignature): Resources.IResolvedResourceGroupResult[];
 		getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: Application.ICommonLibraryResource) => void, onFailure?: (error: string) => void, caller?: ICallerSignature): void;
@@ -447,7 +452,7 @@ module SDL.Client.ApplicationHost
 		{
 			this.triggerAnalyticsEvent("stop-capture-dom-events", {
 								type: "Application Host API",
-								data: events || events.join(", ")
+								data: events && events.join(", ")
 							}, caller);
 			this._stopCaptureDomEvents(this.getCallerTargetDisplay(true, false, true, caller), events);
 		}
@@ -1009,6 +1014,27 @@ module SDL.Client.ApplicationHost
 			}
 		}
 
+		public showTopBar(caller?: ICallerSignature): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true, false, true, caller);
+			if (targetDisplay)
+			{
+				this.triggerAnalyticsEvent("topbar-show", {
+								type: "Application Host API"
+							}, caller)
+				this.fireEvent("showtopbar", { targetDisplay: targetDisplay });
+			}
+		}
+
+		public setTopBarOptions(options: any, caller?: ICallerSignature): void
+		{
+			var targetDisplay = this.getCallerTargetDisplay(true, false, true, caller);
+			if (targetDisplay)
+			{
+				this.fireEvent("settopbaroptions", { targetDisplay: targetDisplay, options: options });
+			}
+		}
+
 		public resolveCommonLibraryResources(resourceGroupName: string, caller?: ICallerSignature): Resources.IResolvedResourceGroupResult[]
 		{
 			this.triggerAnalyticsEvent("library-resources-resolve", {
@@ -1351,17 +1377,32 @@ module SDL.Client.ApplicationHost
 			throw Error("Unexpected 'registerApplication' call from domain " + sourceDomain + ".");
 		}
 
-		publishEvent(type: string, data: any): void
+		publishEvent(type: string, data: any, targetDisplay?: ITargetDisplay): void
 		{
 			var p = this.properties;
-			SDL.jQuery.each(p.applications, (index: number, application: IApplication) =>
-				SDL.jQuery.each(application.targetDisplays, (index: number, targetDisplay: IApplicationEntryPointTargetDisplay) =>
-					{
-						if (targetDisplay.eventHandler)
+
+			if (targetDisplay)
+			{
+				if (targetDisplay.eventHandler && (targetDisplay.application.authenticationTargetDisplay == targetDisplay ||
+					(<ITargetDisplay[]>targetDisplay.application.targetDisplays).indexOf(targetDisplay) != -1))
+				{
+					targetDisplay.eventHandler({type: type, data: data});
+				}
+			}
+			else
+			{
+				SDL.jQuery.each(p.applications, (index: number, application: IApplication) =>
+					SDL.jQuery.each(application.authenticationTargetDisplay
+									? (<ITargetDisplay[]>application.targetDisplays).concat(application.authenticationTargetDisplay)
+									: application.targetDisplays,
+							(index: number, targetDisplay: IApplicationEntryPointTargetDisplay) =>
 						{
-							targetDisplay.eventHandler({type: type, data: data});
-						}
-					}));
+							if (targetDisplay.eventHandler)
+							{
+								targetDisplay.eventHandler({type: type, data: data});
+							}
+						}));
+			}
 		}
 
 		getCallerTargetDisplay(allowAuthenticationTargetDisplay: boolean, allowSelfTargetDisplay: boolean, allowUnauthenticated: boolean, caller: ICallerSignature): ITargetDisplay
@@ -1782,7 +1823,7 @@ module SDL.Client.ApplicationHost
 					p.applicationsIndex[appId] = application;
 				}
 
-				SDL.Client.ApplicationHost.ApplicationHostFacade._expose();
+				SDL.Client.ApplicationHost.ApplicationHostFacade = new SDL.Client.ApplicationHost.ApplicationHostFacadeClass();
 			}
 
 			p.initialized = true;

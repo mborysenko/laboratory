@@ -11,6 +11,7 @@
 				<resourceGroup name="SDL.UI.Controls.Knockout.Dialog"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Message"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.ResizeTrigger"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.TopBar"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.TopPageTabs"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Tooltip"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.ScrollView"/>
@@ -19,7 +20,8 @@
                 <resourceGroup name="SDL.UI.Controls.Knockout.DatePicker"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Checkbox"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.RadioButton"/>
-				<resourceGroup name="SDL.UI.Controls.Knockout.Combobox"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.DropdownList"/>
+				<resourceGroup name="SDL.UI.Controls.Knockout.Application.ViewModels.TopBar"/>
 			</resourceGroups>
 		</package>
 	</packages>

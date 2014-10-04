@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1772" />
+    <setting name="version" value="1.4.0.1804" />
   </appSettings>
   <!-- SDL.Client.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
@@ -18,7 +18,7 @@
             </resourceGroup>
             <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout.Mapping">
               <files>
-                <file name="Libraries/knockout/knockout.mapping.min.js" />
+                <file name="Libraries/knockout/knockout.mapping.debug.js" />
               </files>
               <dependencies>
                 <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
@@ -129,6 +129,7 @@
           <dependencies>
             <dependency name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler" />
             <dependency name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler" />
+            <dependency name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler">
@@ -160,6 +161,9 @@
           <files>
             <file name="BindingHandlers/Indeterminate.js" />
           </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
+          </dependencies>
         </resourceGroup>
       </resourceGroups>
     </configuration>
@@ -179,6 +183,7 @@
             <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Common" />
             <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler" />
             <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler" />
+            <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate" />
           </resourceGroups>
         </package>
       </packages>
@@ -196,11 +201,5 @@
       </dependencies>
     </resourceGroup>
   </resourceGroups>
-  <packages>
-    <package name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate-auto" src="Packages/SDL.UI.Core.Knockout.BindingHandlers.Indeterminate-auto.js">
-      <resourceGroups>
-        <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate" />
-      </resourceGroups>
-    </package>
-  </packages>
+  <packages />
 </configuration>

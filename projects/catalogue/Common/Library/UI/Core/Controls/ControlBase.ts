@@ -8,27 +8,24 @@ module SDL.UI.Core.Controls
 {
 	export interface IControlBase extends IControl, SDL.Client.Types.IObjectWithEvents
 	{
-		getJQuery?: () => JQueryStatic;
 	}
 
 	export interface IControlBaseProperties extends SDL.Client.Types.IObjectWithEventsProperties
 	{
 		element: HTMLElement;
 		options?: any;
-		jQuery?: JQueryStatic;
 	}
 
 	eval(SDL.Client.Types.OO.enableCustomInheritance);
 	export class ControlBase extends SDL.Client.Types.ObjectWithEvents implements IControlBase
 	{
 		public properties: IControlBaseProperties;
-		constructor(element: HTMLElement, options?: any, jQuery?: JQueryStatic)
+		constructor(element: HTMLElement, options?: any)
 		{
 			super();
 			var p = this.properties;
 			p.element = element;
 			p.options = options;
-			p.jQuery = jQuery;
 		}
 
 		public update(options?: any): void
@@ -61,11 +58,6 @@ module SDL.UI.Core.Controls
 		public getElement(): HTMLElement
 		{
 			return this.properties.element;
-		}
-
-		public getJQuery(): JQueryStatic
-		{
-			return this.properties.jQuery;
 		}
 
 		public dispose(): void

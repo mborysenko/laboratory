@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1772" />
+    <setting name="version" value="1.4.0.1804" />
   </appSettings>
   <!-- SDL.Client core configuration -->
   <include src="../../Core/configuration.xml" />

@@ -17,6 +17,7 @@
 				<dependency name="SDL.UI.Core.Knockout.Renderers"/>
 				<dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
 				<dependency name="SDL.Client.Libraries.SDL.Globalize"/>
+				<dependency name="SDL.UI.Controls.Knockout.TopBar"/>
 			</dependencies>
 		</resourceGroup>
 

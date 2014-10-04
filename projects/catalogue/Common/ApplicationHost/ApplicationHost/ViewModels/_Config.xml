@@ -12,6 +12,7 @@
 				<dependency name="SDL.Client.Types.Url"/>
 				<dependency name="SDL.Client.Types.Array"/>
 				<dependency name="SDL.UI.Core.Knockout.ViewModels.Base"/>
+				<dependency name="SDL.UI.Controls.TopBar"/>
 			</dependencies>
 		</resourceGroup>
 	</resourceGroups>

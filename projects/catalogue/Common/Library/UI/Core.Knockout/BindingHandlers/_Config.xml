@@ -5,6 +5,7 @@
 			<dependencies>
 				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler"/>
 				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.ControlKnockoutBindingHandler"/>
+				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.Indeterminate"/>
 			</dependencies>
 		</resourceGroup>
 
@@ -40,6 +41,9 @@
 			<files>
 				<file name="Indeterminate.js"/>
 			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
+			</dependencies>
 		</resourceGroup>
 	</resourceGroups>
 

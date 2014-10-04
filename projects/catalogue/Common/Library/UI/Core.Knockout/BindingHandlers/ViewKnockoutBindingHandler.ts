@@ -17,7 +17,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 
 	class ViewKnockoutBindingHandler implements KnockoutBindingHandler
 	{
-		init(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): {controlsDescendantBindings: boolean;}
+		init(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: KnockoutAllBindingsAccessor, viewModel: any, bindingContext: KnockoutBindingContext): {controlsDescendantBindings: boolean;}
 		{
 			var value = <IViewKnockoutBinding>ko.unwrap(valueAccessor()) || "";
 			if (value)
@@ -39,7 +39,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			return {controlsDescendantBindings: true};
 		}
 
-		update(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
+		update(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: KnockoutAllBindingsAccessor, viewModel: any, bindingContext: KnockoutBindingContext): void
 		{
 			var value = ko.unwrap(valueAccessor()) || "";
 			if (value)
@@ -66,7 +66,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 			}
 		}
 
-		private static initViewBinding(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext): void
+		private static initViewBinding(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: KnockoutAllBindingsAccessor, viewModel: any, bindingContext: KnockoutBindingContext): void
 		{
 			var $e = SDL.jQuery(element);
 			if ($e.data("view-create"))

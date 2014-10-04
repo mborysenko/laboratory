@@ -28,6 +28,7 @@ module SDL.Client.UI.ApplicationHost.Views
 		selectNavigationItem: (item: Navigation.INavigationItem) => void;
 		selectNavigationGroup: (group: Navigation.INavigationGroup) => void;
 		toggleExpandNavigationGroup: (group: Navigation.INavigationGroup) => void;
+		onTopBarEvent(targetDisplay: Navigation.ITargetDisplay, e: JQueryEventObject, topBar: SDL.UI.Controls.TopBar): void;
 		onNavigationSelectionChanged: KnockoutComputed<void>;
 		onExpandedNavigationGroupChanged: KnockoutSubscription;
 		blurredNavigationPane: () => void;
@@ -379,6 +380,11 @@ module SDL.Client.UI.ApplicationHost.Views
 							}
 						}
 					});
+
+					model.onTopBarEvent = (targetDisplay: Navigation.ITargetDisplay, e: JQueryEventObject, topBar: SDL.UI.Controls.TopBar): void =>
+					{
+						Navigation.onTopBarEvent(targetDisplay, e, topBar);
+					};
 
 					this.setInitialized();
 				});

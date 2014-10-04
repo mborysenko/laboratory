@@ -27,15 +27,14 @@ var SDL;
                             // everything is done in update
                         };
 
-                        KnockoutBindingHandler.prototype.update = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                        KnockoutBindingHandler.prototype.update = function (element, valueAccessor, allBindings, viewModel, bindingContext) {
                             var _this = this;
                             var values = valueAccessor();
                             var attrName = Core.Controls.getInstanceAttributeName(this.control);
                             var instance = element[attrName];
 
                             var controlEvents;
-                            var allBindings = allBindingsAccessor();
-                            var events = ko.unwrap(allBindings.controlEvents);
+                            var events = ko.unwrap(allBindings.get("controlEvents"));
                             if (events) {
                                 controlEvents = events[this.name];
                             }
@@ -47,7 +46,7 @@ var SDL;
                                 }
 
                                 // create a control instance
-                                element[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindings.jQuery));
+                                element[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values));
                                 instance.render();
                                 ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
                                     if (instance.getDisposed && !instance.getDisposed()) {

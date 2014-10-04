@@ -6,12 +6,12 @@
         <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout">
             <files>
                 <file name="knockout.js" />
-                <file name="knockout-deferred-updates.min.js" />
+				<file name="knockout-deferred-updates.min.js" />
             </files>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Knockout.Libraries.Knockout.Mapping">
             <files>
-                <file name="knockout.mapping.min.js" />
+                <file name="knockout.mapping.js" />
             </files>
             <dependencies>
                 <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />

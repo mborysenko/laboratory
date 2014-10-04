@@ -30,7 +30,6 @@ module SDL.UI.Controls
 		/*private*/ static tooltipTimer: number = 0;	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 		/*private*/ static shownTooltip: Tooltip = null;	// commenting 'private' otherwise TypeScript definition file is missing type definition (ts 1.0rc)
 
-		private $: JQueryStatic;
 		private $element: JQuery;
 		private settings: ITooltipOptions;
 		private mouse: IMouse = {
@@ -41,18 +40,17 @@ module SDL.UI.Controls
 			};
 		private shown: boolean = false;
 
-		constructor(element: HTMLElement, options?: ITooltipOptions, jQuery?: JQueryStatic)
+		constructor(element: HTMLElement, options?: ITooltipOptions)
 		{
-			super(element, options, jQuery);
+			super(element, options);
 		}
 
 		$initialize(): void
 		{
 			var p = this.properties;
-			this.$ = p.jQuery || SDL.jQuery || jQuery;
-			var $element = this.$element = this.$(p.element);
+			var $element = this.$element = SDL.jQuery(p.element);
 
-			var settings: ITooltipOptions = this.settings = this.$.extend({
+			var settings: ITooltipOptions = this.settings = SDL.jQuery.extend({
 				trackMouse: false,
 				relativeTo: "element", // "element", "mouse", "page"
 				position: "bottom", // "top", "left", "bottom", "right" - only applied when relativeTo === "element" NOTE: currently not supported - defaults to "bottom"
@@ -82,7 +80,7 @@ module SDL.UI.Controls
 		{
 			this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
 
-			this.settings = this.$.extend(this.settings, this.properties.options);
+			this.settings = SDL.jQuery.extend(this.settings, this.properties.options);
 
 			// set the content, either from the settings or from the 'tooltip' attribute
 			if (this.settings.content !== null)
@@ -119,7 +117,7 @@ module SDL.UI.Controls
 				this.shown = false;
 				this.fireEvent("hide");
 				this.fireEvent("propertychange", { property: "shown", value: false});
-				this.$(".sdl-tooltip").remove();
+				SDL.jQuery(".sdl-tooltip").remove();
 			}
 		}
 
@@ -188,7 +186,7 @@ module SDL.UI.Controls
 				var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || <HTMLElement>document.body.parentNode || document.body).scrollLeft;
 				var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || <HTMLElement>document.body.parentNode || document.body).scrollTop;
 
-				this.$(".sdl-tooltip")
+				SDL.jQuery(".sdl-tooltip")
 					.css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px")
 					.css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
 			}
@@ -239,9 +237,9 @@ module SDL.UI.Controls
 
 			if (settings.fitToScreen)
 			{
-				var $tooltip = this.$(".sdl-tooltip");
+				var $tooltip = SDL.jQuery(".sdl-tooltip");
 				var position = $tooltip.position();
-				var $window = this.$(window);
+				var $window = SDL.jQuery(window);
 				if (typeof position !== "undefined" && position !== null)
 				{
 					if ($tooltip.outerHeight() + position.top > $window.height())
@@ -284,7 +282,7 @@ module SDL.UI.Controls
 					.off("mouseleave", this.getDelegate(this.onMouseLeave))
 					.off("mousemove", this.getDelegate(this.onMouseMove));
 			this.hideTooltip();
-			this.$ = this.$element = null;
+			this.$element = null;
 		}
 	});
 

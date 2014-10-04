@@ -272,6 +272,10 @@ var SDL;
                                     }
                                 });
 
+                                model.onTopBarEvent = function (targetDisplay, e, topBar) {
+                                    Navigation.onTopBarEvent(targetDisplay, e, topBar);
+                                };
+
                                 _this.setInitialized();
                             });
 

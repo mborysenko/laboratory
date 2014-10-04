@@ -142,24 +142,40 @@ var SDL;
                         ControlKnockoutBindingHandler.getAllBindingsWithEventsAccessor = function (allBindingsAccessor, control, value) {
                             if (value.events) {
                                 var allBindings;
+                                var controlEvents;
 
-                                return function () {
+                                var allBindingsWithEventsAccessor = function () {
                                     if (!allBindings) {
-                                        allBindings = SDL.jQuery.extend({}, allBindingsAccessor());
-                                        if (!allBindings.controlEvents) {
-                                            allBindings.controlEvents = {};
-                                        } else {
-                                            allBindings.controlEvents = SDL.jQuery.extend({}, ko.unwrap(allBindings.controlEvents));
-                                        }
-
-                                        if (!allBindings.controlEvents[control]) {
-                                            allBindings.controlEvents[control] = value.events;
-                                        } else {
-                                            allBindings.controlEvents[control] = SDL.jQuery.extend(allBindings.controlEvents[control], value.events);
-                                        }
+                                        allBindings = SDL.jQuery.extend({}, allBindingsAccessor()); // cloning not to change the original value
+                                        allBindings.controlEvents = allBindingsWithEventsAccessor.get("controlEvents");
                                     }
                                     return allBindings;
                                 };
+
+                                allBindingsWithEventsAccessor.get = function (name) {
+                                    if (name == "controlEvents") {
+                                        if (!controlEvents) {
+                                            var result = allBindingsAccessor.get(name);
+                                            controlEvents = result ? SDL.jQuery.extend({}, ko.unwrap(result)) : {};
+
+                                            if (!controlEvents[control]) {
+                                                controlEvents[control] = value.events;
+                                            } else {
+                                                controlEvents[control] = SDL.jQuery.extend(controlEvents[control], value.events);
+                                            }
+                                        }
+
+                                        return controlEvents;
+                                    } else {
+                                        return allBindingsAccessor.get(name);
+                                    }
+                                };
+
+                                allBindingsWithEventsAccessor.has = function (name) {
+                                    return name == "controlEvents" || allBindingsAccessor.has(name);
+                                };
+
+                                return allBindingsWithEventsAccessor;
                             } else {
                                 return allBindingsAccessor;
                             }

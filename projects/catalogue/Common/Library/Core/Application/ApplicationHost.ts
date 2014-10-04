@@ -43,6 +43,8 @@ module SDL.Client.Application
 		removeApplicationData(key: string): void;
 		removeApplicationSessionData(key: string): void;
 		triggerAnalyticsEvent(event: string, object: any): void;
+		showTopBar(): void;
+		setTopBarOptions(options: any): void;
 
 		addEventListener(event: string, handler: Function): void;
 		removeEventListener(event: string, handler: Function): void;
@@ -69,6 +71,8 @@ module SDL.Client.Application
 		activeApplicationId: string;
 		supportedMethods?: { [method: string]: boolean };
 		sharedSettings?: { [setting: string]: string };
+		isApplicationHostProxy?: boolean;
+		isApplicationHostTrusted?: boolean;
 	};
 
 	export interface IApplicationDomain
@@ -124,25 +128,30 @@ module SDL.Client.Application
 			var _callback: { (data: IApplicationHostData): void; sourceWindow?: Window; sourceDomain?: string; } =
 				(data: IApplicationHostData) =>
 				{
-					this.version = data.version;
-					this.libraryVersionSupported = data.libraryVersionSupported
-							this.activeApplicationEntryPointId = data.activeApplicationEntryPointId;
-					this.activeApplicationId = data.activeApplicationId;
-					this.culture = data.culture;
-					if (data.supportedMethods)
+					if (data)	// data may be undefined once if the parent host supports asynchronous handling of the call.
+								// in this case there will be another callback triggered with the actual data
 					{
-						this.supportedMethods = data.supportedMethods;
-					}
+						this.version = data.version;
+						this.libraryVersionSupported = data.libraryVersionSupported
+								this.activeApplicationEntryPointId = data.activeApplicationEntryPointId;
+						this.activeApplicationId = data.activeApplicationId;
+						this.culture = data.culture;
+						if (data.supportedMethods)
+						{
+							this.supportedMethods = data.supportedMethods;
+						}
 
-					if (callback)
-					{
-						_callback.sourceDomain = (<any>arguments.callee.caller).sourceDomain;
-						_callback.sourceWindow = (<any>arguments.callee.caller).sourceWindow;
-						callback(data);
+						if (callback)
+						{
+							_callback.sourceDomain = (<any>arguments.callee.caller).sourceDomain;
+							_callback.sourceWindow = (<any>arguments.callee.caller).sourceWindow;
+							callback(data);
+						}
 					}
 				};
 
-			this.call("applicationEntryPointLoaded", [coreVersion, (e: any) => { this.onHostEvent(e); }], _callback);
+			this.call("applicationEntryPointLoaded", [coreVersion, (e: any) => { this.onHostEvent(e); }, _callback], _callback);	// pass both result callback and the callback for asynchronous handling
+																																	// async callback will not be triggered if the synchronous result data is returned
 		}
 
 		public startCaptureDomEvents(events: string[]): void
@@ -193,7 +202,14 @@ module SDL.Client.Application
 
 		public resolveCommonLibraryResources(resourceGroupName: string, callback: (file: Resources.IResolvedResourceGroupResult[]) => void): void
 		{
-			this.call("resolveCommonLibraryResources", [resourceGroupName], callback);
+			if (this.isSupported("resolveCommonLibraryResourcesAsync"))
+			{
+				this.call("resolveCommonLibraryResourcesAsync", [resourceGroupName, callback]);
+			}
+			else
+			{
+				this.call("resolveCommonLibraryResources", [resourceGroupName], callback);
+			}
 		}
 
 		public getCommonLibraryResources(files: Resources.IFileResourceDefinition[], version: string, onFileLoad: (resource: ICommonLibraryResource) => void, onFailure?: (error: string) => void): void
@@ -296,7 +312,15 @@ module SDL.Client.Application
 			{
 				throw Error("Unable to get application data: application host is untrusted.");
 			}
-			this.call("getApplicationData", [key], callback);
+
+			if (this.isSupported("getApplicationDataAsync"))
+			{
+				this.call("getApplicationDataAsync", [key, callback]);
+			}
+			else
+			{
+				this.call("getApplicationData", [key], callback);
+			}
 		}
 
 		public getApplicationSessionData(key: string, callback: (data: any) => void): void
@@ -305,7 +329,15 @@ module SDL.Client.Application
 			{
 				throw Error("Unable to get application session data: application host is untrusted.");
 			}
-			this.call("getApplicationSessionData", [key], callback);
+
+			if (this.isSupported("getApplicationSessionDataAsync"))
+			{
+				this.call("getApplicationSessionDataAsync", [key, callback]);
+			}
+			else
+			{
+				this.call("getApplicationSessionData", [key], callback);
+			}
 		}
 
 		public clearApplicationData(): void
@@ -350,6 +382,16 @@ module SDL.Client.Application
 			{
 				this.call("triggerAnalyticsEvent", [event, object]);
 			}
+		}
+
+		public showTopBar(): void
+		{
+			this.call("showTopBar");
+		}
+
+		public setTopBarOptions(options: any): void
+		{
+			this.call("setTopBarOptions", [options]);
 		}
 
 		public addEventListener(event: string, handler: Function): void

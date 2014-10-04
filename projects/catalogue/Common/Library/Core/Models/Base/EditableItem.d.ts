@@ -15,6 +15,7 @@ declare module SDL.Client.Models.Base
 	export class EditableItem extends SDL.Client.Models.Base.Item
 	{
 		constructor(id: string);
+		invalidateInterfaceCachedState(): void;
 		canEditProperties(): boolean;
 		setChanged(changeEventData?: any): void;
 		isChanged(): boolean;

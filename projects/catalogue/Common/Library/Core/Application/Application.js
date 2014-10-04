@@ -328,7 +328,7 @@ var SDL;
                             var domains = Application.trustedApplicationHostDomains || [];
                             for (var i = 0, len = domains.length; i < len; i++) {
                                 if (Client.Types.Url.isSameDomain(domains[i], applicationHostDomain)) {
-                                    host.isTrusted = true;
+                                    host.isTrusted = !data.isApplicationHostProxy || data.isApplicationHostTrusted;
                                     break;
                                 }
                             }

@@ -7,8 +7,8 @@ declare module SDL.UI.Core.Controls {
         getElement?: () => HTMLElement;
     }
     interface IControlType {
-        new(element: Element, options?: any, jQuery?: JQueryStatic): IControl;
-        createElement?: (document: HTMLDocument, options?: any, jQuery?: JQueryStatic) => HTMLElement;
+        new(element: Element, options?: any): IControl;
+        createElement?: (document: HTMLDocument, options?: any) => HTMLElement;
     }
     interface IPluginMethodDefinition {
         method: string;

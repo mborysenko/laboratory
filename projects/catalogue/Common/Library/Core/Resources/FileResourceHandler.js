@@ -335,9 +335,9 @@ var SDL;
                                 var resourceFiles = FileResourceHandler.fileResources;
 
                                 SDL.jQuery.each(resourcesPackage.resourceGroups, function (index, resourceGroup) {
-                                    return SDL.jQuery.each(resourceGroup.files, function (index, url) {
-                                        var key = url.toLowerCase();
-                                        var file = resourceFiles[key] || (resourceFiles[key] = { url: url });
+                                    return SDL.jQuery.each(resourceGroup.files, function (index, fileDefinition) {
+                                        var key = fileDefinition.url.toLowerCase();
+                                        var file = resourceFiles[key] || (resourceFiles[key] = SDL.jQuery.extend({}, fileDefinition));
                                         if (!file.parentPackages) {
                                             file.parentPackages = [resourcesPackage];
                                         } else {
@@ -551,10 +551,10 @@ var SDL;
                         var fileNumber = -1;
 
                         SDL.jQuery.each(resourcesPackage.resourceGroups, function (index, resourceGroup) {
-                            return SDL.jQuery.each(resourceGroup.files, function (index, url) {
+                            return SDL.jQuery.each(resourceGroup.files, function (index, fileDefinition) {
                                 ++fileNumber;
-                                var key = url.toLowerCase();
-                                var resourceFile = fileResources[key] || (fileResources[key] = { url: url });
+                                var key = fileDefinition.url.toLowerCase();
+                                var resourceFile = fileResources[key] || (fileResources[key] = SDL.jQuery.extend({}, fileDefinition));
                                 var size = sizes && sizes[fileNumber] || 0;
 
                                 resourceFile.loaded = true;
@@ -620,14 +620,23 @@ var SDL;
                         }
 
                         SDL.jQuery.each(resourcesPackage.resourceGroups, function (index, resourceGroup) {
-                            return SDL.jQuery.each(resourceGroup.files, function (index, url) {
-                                var key = url.toLowerCase();
-                                var resourceFile = fileResources[key] || (fileResources[key] = { url: url });
+                            SDL.jQuery.each(resourceGroup.files, function (index, fileDefinition) {
+                                var key = fileDefinition.url.toLowerCase();
+                                var resourceFile = fileResources[key] || (fileResources[key] = SDL.jQuery.extend({}, fileDefinition));
                                 resourceFile.rendered = true;
                                 if (resourceFile.data && (!Client.Configuration.ConfigurationManager.isApplicationHost || resourceFile.url.indexOf("~/") != 0)) {
                                     delete resourceFile.data;
                                 }
                             });
+
+                            if (resourceGroup.cultureFiles) {
+                                SDL.jQuery.each(resourceGroup.cultureFiles, function (index, fileDefinition) {
+                                    var key = fileDefinition.url.toLowerCase();
+                                    var resourceFile = fileResources[key] || (fileResources[key] = SDL.jQuery.extend({}, fileDefinition));
+                                    resourceFile.rendered = true;
+                                    FileResourceHandler.cultureResources[key] = resourceFile;
+                                });
+                            }
                         });
                     }
                 };

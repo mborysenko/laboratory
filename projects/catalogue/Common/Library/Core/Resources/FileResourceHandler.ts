@@ -13,7 +13,8 @@ module SDL.Client.Resources
 	export interface IResourceGroupDefinition
 	{
 		name: string;
-		files: string[];
+		files: IFileResourceDefinition[];
+		cultureFiles?: IFileResourceDefinition[];
 	}
 
 	export interface IPackageResourceDefinition extends IFileResourceDefinition
@@ -132,7 +133,7 @@ module SDL.Client.Resources
 					
 					if (!fileResource)
 					{
-						fileResource = FileResourceHandler.fileResources[key] = <IFileResourceDefinition>SDL.jQuery.extend({}, file);
+						fileResource = FileResourceHandler.fileResources[key] = <IFileResource>SDL.jQuery.extend({}, file);
 						if (Resources.preloadPackages)
 						{
 							var pckg = Resources.preloadPackages[key];
@@ -497,10 +498,10 @@ module SDL.Client.Resources
 							var resourceFiles = FileResourceHandler.fileResources;
 
 							SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
-								SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
+								SDL.jQuery.each(resourceGroup.files, (index: number, fileDefinition: IFileResourceDefinition) =>
 									{
-										var key = url.toLowerCase();
-										var file = resourceFiles[key] || (resourceFiles[key] = <IFileResource>{url: url});
+										var key = fileDefinition.url.toLowerCase();
+										var file = resourceFiles[key] || (resourceFiles[key] = <IFileResource>SDL.jQuery.extend({}, fileDefinition));
 										if (!file.parentPackages)
 										{
 											file.parentPackages = [resourcesPackage];
@@ -781,11 +782,11 @@ module SDL.Client.Resources
 				var fileNumber = -1;
 
 				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
-					SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
+					SDL.jQuery.each(resourceGroup.files, (index: number, fileDefinition: IFileResourceDefinition) =>
 					{
 						++fileNumber;
-						var key = url.toLowerCase();
-						var resourceFile = fileResources[key] || (fileResources[key] = <IFileResource>{url: url});
+						var key = fileDefinition.url.toLowerCase();
+						var resourceFile = fileResources[key] || (fileResources[key] = <IFileResource>SDL.jQuery.extend({}, fileDefinition));
 						var size = sizes && sizes[fileNumber] || 0;
 
 						resourceFile.loaded = true;
@@ -868,18 +869,31 @@ module SDL.Client.Resources
 				}
 
 				SDL.jQuery.each(resourcesPackage.resourceGroups, (index: number, resourceGroup: IResourceGroupDefinition) =>
-					SDL.jQuery.each(resourceGroup.files, (index: number, url: string) =>
 					{
-						var key = url.toLowerCase();
-						var resourceFile = fileResources[key] || (fileResources[key] = <IFileResource>{url: url});
-						resourceFile.rendered = true;
-						if (resourceFile.data &&
-								(!Configuration.ConfigurationManager.isApplicationHost ||	// ApplicationHost needs the data stored, for hosted applications
-									resourceFile.url.indexOf("~/") != 0))
+						SDL.jQuery.each(resourceGroup.files, (index: number, fileDefinition: IFileResourceDefinition) =>
 						{
-							delete resourceFile.data;
+							var key = fileDefinition.url.toLowerCase();
+							var resourceFile = fileResources[key] || (fileResources[key] = <IFileResource>SDL.jQuery.extend({}, fileDefinition));
+							resourceFile.rendered = true;
+							if (resourceFile.data &&
+									(!Configuration.ConfigurationManager.isApplicationHost ||	// ApplicationHost needs the data stored, for hosted applications
+										resourceFile.url.indexOf("~/") != 0))
+							{
+								delete resourceFile.data;
+							}
+						})
+
+						if (resourceGroup.cultureFiles)
+						{
+							SDL.jQuery.each(resourceGroup.cultureFiles, (index: number, fileDefinition: IFileResourceDefinition) =>
+							{
+								var key = fileDefinition.url.toLowerCase();
+								var resourceFile = fileResources[key] || (fileResources[key] = <IFileResource>SDL.jQuery.extend({}, fileDefinition));
+								resourceFile.rendered = true;
+								FileResourceHandler.cultureResources[key] = resourceFile;
+							})
 						}
-					}));
+					});
 			}
 		}
 

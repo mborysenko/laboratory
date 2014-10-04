@@ -17,12 +17,11 @@ var SDL;
                 eval(SDL.Client.Types.OO.enableCustomInheritance);
                 var ControlBase = (function (_super) {
                     __extends(ControlBase, _super);
-                    function ControlBase(element, options, jQuery) {
+                    function ControlBase(element, options) {
                         _super.call(this);
                         var p = this.properties;
                         p.element = element;
                         p.options = options;
-                        p.jQuery = jQuery;
                     }
                     ControlBase.prototype.update = function (options) {
                         this.properties.options = options;
@@ -48,10 +47,6 @@ var SDL;
 
                     ControlBase.prototype.getElement = function () {
                         return this.properties.element;
-                    };
-
-                    ControlBase.prototype.getJQuery = function () {
-                        return this.properties.jQuery;
                     };
 
                     ControlBase.prototype.dispose = function () {

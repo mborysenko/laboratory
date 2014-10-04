@@ -407,7 +407,7 @@ module SDL.Client.Application
 						{
 							if (Types.Url.isSameDomain(domains[i], applicationHostDomain))
 							{
-								host.isTrusted = true;
+								host.isTrusted = !data.isApplicationHostProxy || data.isApplicationHostTrusted;
 								break;
 							}
 						}

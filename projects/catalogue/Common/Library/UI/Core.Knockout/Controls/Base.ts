@@ -32,15 +32,14 @@ module SDL.UI.Core.Knockout.Controls
 			// everything is done in update
 		}
 
-		public update(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: KnockoutBindingContext)
+		public update(element: HTMLElement, valueAccessor: () => any, allBindings: KnockoutAllBindingsAccessor, viewModel: any, bindingContext: KnockoutBindingContext)
 		{
 			var values: any = valueAccessor();
 			var attrName = Core.Controls.getInstanceAttributeName(this.control);
 			var instance: Core.Controls.IControl = (<any>element)[attrName];
 			
 			var controlEvents: {[event: string]: any;};
-			var allBindings = allBindingsAccessor();
-			var events = ko.unwrap(allBindings.controlEvents);
+			var events = ko.unwrap(allBindings.get("controlEvents"));
 			if (events)
 			{
 				controlEvents = events[this.name];
@@ -55,7 +54,7 @@ module SDL.UI.Core.Knockout.Controls
 				}
 
 				// create a control instance
-				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values), ko.unwrap(allBindings.jQuery));
+				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values));
 				instance.render();
 				ko.utils.domNodeDisposal.addDisposeCallback(element,
 					() =>

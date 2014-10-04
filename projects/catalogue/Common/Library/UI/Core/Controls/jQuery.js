@@ -17,7 +17,7 @@ var SDL;
                             var instance = element[attrName];
                             if (!instance || (instance.getDisposed && instance.getDisposed())) {
                                 // create a control instance
-                                instance = element[attrName] = new control(element, options, jQuery);
+                                instance = element[attrName] = new control(element, options);
                                 instance.render();
                             } else if (options && instance.update) {
                                 // Call update on the existing instance

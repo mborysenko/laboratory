@@ -1,4 +1,4 @@
-/*14065,600,8984,5932,17710,7193,25051,2869,208,12926,1315,4703,3619,5707,591,54599,8116,11548,810,33270,11838,3749,1346,26049,35348,3392,5073,12619,2203,1840,2245,1417,14466,3313*//// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/*14037,600,8968,5932,17637,7193,25055,2869,208,12837,1497,4614,3619,5691,591,40086,5382,54584,8116,11483,810,33181,11838,3749,1346,26049,35348,3392,5073,12619,2203,1840,2245,1417,14606,3381,4556*//// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../Button/Button.jQuery.ts" />
 var __extends = this.__extends || function (d, b) {
@@ -14,15 +14,14 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var ActionBar = (function (_super) {
                 __extends(ActionBar, _super);
-                function ActionBar(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function ActionBar(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 ActionBar.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
                     p.options = SDL.jQuery.extend({}, p.options);
 
                     if (p.options.actions && p.options.actions.length || p.options.actionFlag) {
@@ -230,6 +229,7 @@ var SDL;
                     var data = $button.data("action");
                     data.handler = actionOptions.handler;
                     data.action = actionOptions.action;
+                    data.disabled = actionOptions.disabled;
                     if ($button.text() != actionOptions.title) {
                         $button.text(actionOptions.title);
                     }
@@ -253,7 +253,7 @@ var SDL;
 
                     this.removeActionButtons();
 
-                    this.$ = this.$element = null;
+                    this.$element = null;
                 };
                 return ActionBar;
             })(SDL.UI.Core.Controls.ControlBase);
@@ -331,8 +331,8 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var ActivityIndicator = (function (_super) {
                 __extends(ActivityIndicator, _super);
-                function ActivityIndicator(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function ActivityIndicator(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 ActivityIndicator.prototype.$initialize = function () {
                     var _this = this;
@@ -676,17 +676,16 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Button = (function (_super) {
                 __extends(Button, _super);
-                function Button(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function Button(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 Button.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
 
-                    p.options = this.$.extend({ purpose: ButtonPurpose.GENERAL, style: ButtonStyle.DEFAULT }, p.options);
+                    p.options = SDL.jQuery.extend({ purpose: ButtonPurpose.GENERAL, style: ButtonStyle.DEFAULT }, p.options);
 
                     this.initialTabIndex = $element.attr("tabIndex");
                     this.tabIndex = this.initialTabIndex || "0";
@@ -707,11 +706,11 @@ var SDL;
                 Button.prototype.update = function (options) {
                     if (options) {
                         var p = this.properties;
-                        var prevOptions = this.$.extend({}, p.options, { disabled: this.isDisabled() });
+                        var prevOptions = SDL.jQuery.extend({}, p.options, { disabled: this.isDisabled() });
 
                         this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
 
-                        options = p.options = this.$.extend(true, {}, prevOptions, p.options);
+                        options = p.options = SDL.jQuery.extend(true, {}, prevOptions, p.options);
 
                         var changedProperties = [];
 
@@ -940,7 +939,7 @@ var SDL;
                     var options = this.properties.options;
                     if ((options.style == ButtonStyle.ICON || options.style == ButtonStyle.ICON_ROUND) || (options.iconClass && (options.iconClass.dark || options.iconClass.light))) {
                         if (!this.$icon) {
-                            this.$icon = this.$("<span>&nbsp;</span>");
+                            this.$icon = SDL.jQuery("<span>&nbsp;</span>");
                             this.$icon.prependTo(this.$element);
                             this.$icon.addClass("sdl-button-image");
                         }
@@ -977,7 +976,7 @@ var SDL;
 
                 this.removeIconMarkup();
 
-                this.$ = this.$element = null;
+                this.$element = null;
             });
 
             SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Button", Button);
@@ -1247,15 +1246,14 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Callout = (function (_super) {
                 __extends(Callout, _super);
-                function Callout(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function Callout(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 Callout.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.FocusableControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
 
                     p.options = SDL.jQuery.extend({}, p.options);
 
@@ -1361,7 +1359,7 @@ var SDL;
 
                         this._setLocation();
                     } else {
-                        console.warn("Callout.location(): location object is not defined");
+                        console.warn("Callout.setLocation(): location object is not defined");
                     }
                 };
 
@@ -1378,14 +1376,14 @@ var SDL;
                         var p = this.properties;
                         var options = p.options;
 
-                        var body = document.body;
-                        var targetElement = options.targetElement || body;
+                        var container = (document.documentElement || document.body.parentNode || document.body);
+                        var targetElement = options.targetElement || container;
 
                         var targetPosition = SDL.jQuery(targetElement).offset();
 
                         // from https://developer.mozilla.org/en-US/docs/Web/API/window.scrollY
-                        var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || body.parentNode || body).scrollLeft;
-                        var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || body.parentNode || body).scrollTop;
+                        var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : container.scrollLeft;
+                        var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : container.scrollTop;
 
                         var posLeft;
                         var posAbove;
@@ -1411,10 +1409,10 @@ var SDL;
                         }
 
                         // ensure the location is in screen
-                        posLeft = Math.max(0, Math.min(body.clientWidth, posLeft));
-                        posAbove = Math.max(0, Math.min(body.clientHeight, posAbove));
-                        posRight = Math.max(0, Math.min(body.clientWidth, posRight));
-                        posBelow = Math.max(0, Math.min(body.clientHeight, posBelow));
+                        posLeft = Math.max(0, Math.min(container.clientWidth, posLeft));
+                        posAbove = Math.max(0, Math.min(container.clientHeight, posAbove));
+                        posRight = Math.max(0, Math.min(container.clientWidth, posRight));
+                        posBelow = Math.max(0, Math.min(container.clientHeight, posBelow));
 
                         // calculate available space for showing the callout
                         var calloutWidth = p.element.offsetWidth;
@@ -1429,22 +1427,22 @@ var SDL;
                         for (var i = 0; !position && i < preferedPositions.length; i++) {
                             switch (preferedPositions[i]) {
                                 case CalloutPosition.ABOVE:
-                                    if (calloutHeight + pointerSize < posAbove && posRight >= pointerMinDistanceFromEdge && posLeft <= body.clientWidth) {
+                                    if (calloutHeight + pointerSize < posAbove && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
                                         position = CalloutPosition.ABOVE;
                                     }
                                     break;
                                 case CalloutPosition.BELOW:
-                                    if (calloutHeight + pointerSize < body.clientHeight - posBelow && posRight >= pointerMinDistanceFromEdge && posLeft <= body.clientWidth) {
+                                    if (calloutHeight + pointerSize < container.clientHeight - posBelow && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
                                         position = CalloutPosition.BELOW;
                                     }
                                     break;
                                 case CalloutPosition.LEFT:
-                                    if (calloutWidth + pointerSize < posLeft && posAbove >= pointerMinDistanceFromEdge && posBelow <= body.clientHeight) {
+                                    if (calloutWidth + pointerSize < posLeft && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
                                         position = CalloutPosition.LEFT;
                                     }
                                     break;
                                 case CalloutPosition.RIGHT:
-                                    if (calloutWidth + pointerSize < body.clientWidth - posRight && posAbove >= pointerMinDistanceFromEdge && posBelow <= body.clientHeight) {
+                                    if (calloutWidth + pointerSize < container.clientWidth - posRight && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
                                         position = CalloutPosition.RIGHT;
                                     }
                                     break;
@@ -1453,8 +1451,8 @@ var SDL;
 
                         if (!position) {
                             var diffVertical;
-                            if (posAbove < body.clientHeight - posBelow) {
-                                diffVertical = (body.clientHeight - posBelow) - (calloutHeight + pointerSize);
+                            if (posAbove < container.clientHeight - posBelow) {
+                                diffVertical = (container.clientHeight - posBelow) - (calloutHeight + pointerSize);
                                 if (diffVertical >= 0) {
                                     position = CalloutPosition.BELOW; // there's enough space below
                                 }
@@ -1466,8 +1464,8 @@ var SDL;
                             }
 
                             var diffHorizontal;
-                            if (posLeft < body.clientWidth - posRight) {
-                                diffHorizontal = (body.clientWidth - posRight) - (calloutWidth + pointerSize);
+                            if (posLeft < container.clientWidth - posRight) {
+                                diffHorizontal = (container.clientWidth - posRight) - (calloutWidth + pointerSize);
                                 if (diffHorizontal >= 0 && diffVertical < diffHorizontal) {
                                     position = CalloutPosition.RIGHT; // there's enough space to the right
                                 }
@@ -1485,7 +1483,7 @@ var SDL;
                                         position = CalloutPosition.ABOVE;
                                         break;
                                     case CalloutPosition.BELOW:
-                                        posBelow = body.clientHeight - (calloutHeight + pointerSize);
+                                        posBelow = container.clientHeight - (calloutHeight + pointerSize);
                                         position = CalloutPosition.BELOW;
                                         break;
                                     case CalloutPosition.LEFT:
@@ -1493,7 +1491,7 @@ var SDL;
                                         position = CalloutPosition.LEFT;
                                         break;
                                     case CalloutPosition.RIGHT:
-                                        posRight = body.clientWidth - (calloutWidth + pointerSize);
+                                        posRight = container.clientWidth - (calloutWidth + pointerSize);
                                         position = CalloutPosition.RIGHT;
                                         break;
                                 }
@@ -1515,16 +1513,16 @@ var SDL;
                             case CalloutPosition.ABOVE:
                             case CalloutPosition.BELOW:
                                 x = (posRight + posLeft - calloutWidth) >> 1; // [>> 1] is division by 2
-                                x = Math.max(0, Math.min(body.clientWidth - calloutWidth, x));
+                                x = Math.max(0, Math.min(container.clientWidth - calloutWidth, x));
                                 xPointer = ((posRight + posLeft) >> 1) - pointerHalfWidth;
-                                xPointer = Math.max(pointerMinDistanceFromEdge - pointerHalfWidth, Math.min(body.clientWidth - pointerMinDistanceFromEdge - pointerHalfWidth, xPointer));
+                                xPointer = Math.max(pointerMinDistanceFromEdge - pointerHalfWidth, Math.min(container.clientWidth - pointerMinDistanceFromEdge - pointerHalfWidth, xPointer));
                                 break;
                             case CalloutPosition.LEFT:
                             case CalloutPosition.RIGHT:
                                 y = (posBelow + posAbove - calloutHeight) >> 1; // [>> 1] is division by 2
-                                y = Math.max(0, Math.min(body.clientHeight - calloutHeight, y));
+                                y = Math.max(0, Math.min(container.clientHeight - calloutHeight, y));
                                 yPointer = ((posBelow + posAbove) >> 1) - pointerHalfWidth;
-                                yPointer = Math.max(pointerMinDistanceFromEdge - pointerHalfWidth, Math.min(body.clientHeight - pointerMinDistanceFromEdge - pointerHalfWidth, yPointer));
+                                yPointer = Math.max(pointerMinDistanceFromEdge - pointerHalfWidth, Math.min(container.clientHeight - pointerMinDistanceFromEdge - pointerHalfWidth, yPointer));
                                 break;
                         }
 
@@ -1535,7 +1533,7 @@ var SDL;
                                 break;
                             case CalloutPosition.BELOW:
                                 y = posBelow + pointerSize;
-                                y = Math.max(pointerSize, Math.min(body.clientHeight - calloutHeight, y));
+                                y = Math.max(pointerSize, Math.min(container.clientHeight - calloutHeight, y));
                                 yPointer = y - pointerSize + 1;
                                 break;
                             case CalloutPosition.LEFT:
@@ -1544,7 +1542,7 @@ var SDL;
                                 break;
                             case CalloutPosition.RIGHT:
                                 x = posRight + pointerSize;
-                                x = Math.max(pointerSize, Math.min(body.clientWidth - calloutWidth, x));
+                                x = Math.max(pointerSize, Math.min(container.clientWidth - calloutWidth, x));
                                 xPointer = x - pointerSize + 1;
                                 break;
                         }
@@ -1653,7 +1651,7 @@ var SDL;
                         this.pointer = null;
                     }
 
-                    this.$ = this.$element = null;
+                    this.$element = null;
                 };
                 return Callout;
             })(SDL.UI.Core.Controls.FocusableControlBase);
@@ -1819,15 +1817,14 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Dialog = (function (_super) {
                 __extends(Dialog, _super);
-                function Dialog(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function Dialog(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 Dialog.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.FocusableControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
 
                     $element.addClass("sdl-dialog");
 
@@ -2064,7 +2061,7 @@ var SDL;
                     this.removeActionBar();
                     $element.removeClass("sdl-dialog sdl-dialog-hidden");
 
-                    this.$ = this.$element = null;
+                    this.$element = null;
                 };
                 Dialog.shownDialogs = [];
                 return Dialog;
@@ -2106,7 +2103,7 @@ var SDL;
   box-sizing: border-box;
   height: 48px;
   white-space: nowrap;
-  padding: 10px;
+  padding: 10px 42px 10px 10px;
   border-bottom: 1px solid #AAA;
   background-color: #FAFAFA;
   line-height: 27px;
@@ -2122,13 +2119,20 @@ var SDL;
   font-size: 15px;
   float: left;
   margin-right: 5px;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 .sdl-dialog-header > button {
-  float: right;
   font-size: 25px;
   width: 27px;
   padding: 0;
   font-weight: normal;
+  position: absolute;
+  right: 10px;
 }
 .sdl-dialog-actionbar {
   -webkit-border-radius: 0 0 2px 2px;
@@ -2162,15 +2166,14 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Message = (function (_super) {
                 __extends(Message, _super);
-                function Message(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function Message(element, options) {
+                    _super.call(this, element, options || {});
                 }
                 Message.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
                     p.options = SDL.jQuery.extend({}, p.options);
 
                     if (p.options.title) {
@@ -2225,7 +2228,7 @@ var SDL;
                         this.$title = null;
                     }
 
-                    this.$ = this.$element = null;
+                    this.$element = null;
                 };
                 return Message;
             })(SDL.UI.Core.Controls.ControlBase);
@@ -2303,8 +2306,8 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var ResizeTrigger = (function (_super) {
                 __extends(ResizeTrigger, _super);
-                function ResizeTrigger(element, options, jQuery) {
-                    _super.call(this, element, options, jQuery);
+                function ResizeTrigger(element, options) {
+                    _super.call(this, element, options);
                 }
                 ResizeTrigger.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
@@ -2429,6 +2432,956 @@ var SDL;
 }
 /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
+/// <reference path="../ScrollView/ScrollView.jQuery.ts" />
+/// <reference path="../Callout/Callout.jQuery.ts" />
+/// <reference path="../ResizeTrigger/ResizeTrigger.jQuery.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            (function (ITopBarButton) {
+                ITopBarButton[ITopBarButton["ACTIVITIES"] = "activities"] = "ACTIVITIES";
+                ITopBarButton[ITopBarButton["MESSAGES"] = "messages"] = "MESSAGES";
+                ITopBarButton[ITopBarButton["USER"] = "user"] = "USER";
+                ITopBarButton[ITopBarButton["SEARCH"] = "search"] = "SEARCH";
+                ITopBarButton[ITopBarButton["CLOSE"] = "close"] = "CLOSE";
+            })(Controls.ITopBarButton || (Controls.ITopBarButton = {}));
+            var ITopBarButton = Controls.ITopBarButton;
+
+            // buttonIDs array defines the order of the buttons in the top bar
+            var buttonIDs = [ITopBarButton.ACTIVITIES, ITopBarButton.MESSAGES, ITopBarButton.USER, ITopBarButton.SEARCH, ITopBarButton.CLOSE];
+
+            eval(SDL.Client.Types.OO.enableCustomInheritance);
+            var TopBar = (function (_super) {
+                __extends(TopBar, _super);
+                function TopBar(element, options) {
+                    _super.call(this, element, options || {});
+                }
+                TopBar.prototype.$initialize = function () {
+                    this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
+
+                    var p = this.properties;
+                    var $element = p.$element = SDL.jQuery(p.element);
+
+                    var options = p.options = SDL.jQuery.extend(true, { ribbonTabs: [], buttons: {} }, p.options);
+
+                    options.hostMode = options.hostMode && options.hostMode.toString() == "true" || false;
+
+                    if (options.ribbonTabs && options.ribbonTabs.length) {
+                        if (!this.hasRibbonTabId(options.selectedRibbonTabId)) {
+                            options.selectedRibbonTabId = options.ribbonTabs[0].id;
+                        }
+                    } else {
+                        options.ribbonTabs = [];
+                        if (options.selectedRibbonTabId != null && !this.hasRibbonTabId(options.selectedRibbonTabId)) {
+                            options.selectedRibbonTabId = null;
+                        }
+                    }
+
+                    if (!options.buttons) {
+                        options.buttons = {};
+                    }
+
+                    if (!options.hostMode) {
+                        SDL.jQuery(document.documentElement).addClass("sdl-topbar-page");
+                    }
+
+                    $element.addClass("sdl-topbar");
+                    p.$ribbonTabsContainer = SDL.jQuery("<div class='sdl-topbar-ribbon'><div class='sdl-topbar-resize-trigger'></div><span class='sdl-topbar-ribbon-overflown-button'></span></div>").appendTo($element).click(this.getDelegate(this.onRibbonTabClick));
+
+                    p.$buttonsContainer = SDL.jQuery("<div class='sdl-topbar-buttons'><span class='sdl-topbar-button-" + buttonIDs.join("'></span><span class='sdl-topbar-button-") + "'></span></div>").appendTo($element).click(this.getDelegate(this.onButtonClick));
+
+                    p.$resizeTrigger = p.$ribbonTabsContainer.children(".sdl-topbar-resize-trigger");
+                    p.$resizeTriggerControl = p.$resizeTrigger.resizeTrigger();
+
+                    p.$tabsOverflowButton = p.$ribbonTabsContainer.children(".sdl-topbar-ribbon-overflown-button");
+
+                    this.populateButtons();
+                    this.populateRibbonTabs();
+                    this.calculateRibbonTabs();
+
+                    p.$resizeTriggerControl.resize(this.getDelegate(this.onRibbonTabsResize));
+
+                    if (options.ribbonTabsFlyoutMenuShown && p.$ribbonTabsContainer.hasClass("sdl-topbar-ribbon-overflown")) {
+                        this.showFlyoutMenu();
+                    }
+                };
+
+                TopBar.prototype.update = function (options) {
+                    if (options) {
+                        var p = this.properties;
+                        var prevOptions = p.options;
+
+                        this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
+
+                        options = p.options = SDL.jQuery.extend(true, {}, p.options);
+
+                        options.hostMode = options.hostMode && options.hostMode.toString() == "true" || false;
+
+                        var changedProperties = [];
+
+                        if (options.hostMode != prevOptions.hostMode) {
+                            if (options.hostMode) {
+                                SDL.jQuery(document.documentElement).removeClass("sdl-topbar-page");
+                            } else {
+                                SDL.jQuery(document.documentElement).addClass("sdl-topbar-page");
+                            }
+                            changedProperties.push("hostMode");
+                        }
+
+                        if (options.ribbonTabs) {
+                            // if needed, compare ribbonTabs and raise an event when changed
+                        } else {
+                            options.ribbonTabs = prevOptions.ribbonTabs;
+                        }
+
+                        if (options.buttons) {
+                            // if needed, compare buttons and raise an event when changed
+                        } else {
+                            options.buttons = prevOptions.buttons;
+                        }
+
+                        if (options.ribbonTabs.length) {
+                            if (!this.hasRibbonTabId(options.selectedRibbonTabId)) {
+                                options.selectedRibbonTabId = options.ribbonTabs[0].id;
+                            }
+                        } else if (options.selectedRibbonTabId != null && !this.hasRibbonTabId(options.selectedRibbonTabId)) {
+                            options.selectedRibbonTabId = null;
+                        }
+
+                        if (options.selectedRibbonTabId != prevOptions.selectedRibbonTabId) {
+                            changedProperties.push("selectedRibbonTabId");
+                        }
+
+                        this.populateButtons();
+                        this.populateRibbonTabs();
+                        this.calculateRibbonTabs();
+
+                        for (var i = 0, len = changedProperties.length; i < len; i++) {
+                            this.fireEvent("propertychange", { property: changedProperties[i], value: options[changedProperties[i]] });
+                        }
+
+                        if (options.ribbonTabsFlyoutMenuShown != null) {
+                            options.ribbonTabsFlyoutMenuShown = options.ribbonTabsFlyoutMenuShown && options.ribbonTabsFlyoutMenuShown.toString() == "true" || false;
+                            if (options.ribbonTabsFlyoutMenuShown) {
+                                if (p.$ribbonTabsContainer.hasClass("sdl-topbar-ribbon-overflown")) {
+                                    this.showFlyoutMenu();
+                                }
+                            } else {
+                                this.hideFlyoutMenu();
+                            }
+                        }
+                    }
+                };
+
+                TopBar.prototype.hasRibbonTabId = function (id) {
+                    var options = this.properties.options;
+                    var found = false;
+                    if (options.selectedRibbonTabId != null) {
+                        SDL.jQuery.each(options.ribbonTabs, function (index, ribbonTab) {
+                            if (ribbonTab.id == options.selectedRibbonTabId) {
+                                found = true;
+                                return false;
+                            }
+                        });
+                    }
+                    return found;
+                };
+
+                TopBar.prototype.populateRibbonTabs = function () {
+                    var p = this.properties;
+                    var $ribbonTabs = this.getRibbonTabs();
+                    var $ribbonTabsLength = $ribbonTabs.length;
+                    var ribbonTabs = p.options.ribbonTabs;
+                    var selectedTabId = p.options.selectedRibbonTabId;
+                    var i;
+                    var len = ribbonTabs.length;
+
+                    for (i = 0; i < len; i++) {
+                        var ribbonTabOptions = ribbonTabs[i];
+                        var $ribbonTab;
+                        var hidden = ribbonTabOptions.hidden && ribbonTabOptions.hidden.toString() == "true" || false;
+
+                        $ribbonTab = $ribbonTabs.length > i ? $ribbonTabs.eq(i) : SDL.jQuery("<span></span>").insertBefore(p.$tabsOverflowButton);
+
+                        $ribbonTab.data("tab-id", ribbonTabOptions.id).text(ribbonTabOptions.label || "_").toggleClass("sdl-topbar-ribbon-tab-hidden", hidden).toggleClass("sdl-topbar-ribbon-tab-selected", ribbonTabOptions.id == selectedTabId);
+                    }
+
+                    if ($ribbonTabs.length > len) {
+                        $ribbonTabs.slice(len).remove();
+                    }
+
+                    this.updateFlyoutMenuList();
+                };
+
+                TopBar.prototype.populateButtons = function () {
+                    var p = this.properties;
+                    var buttonsOptions = p.options.buttons;
+                    var $prevButton;
+
+                    buttonIDs.forEach(function (button, index, array) {
+                        p.$buttonsContainer.find(".sdl-topbar-button-" + button).toggleClass("sdl-topbar-button-hidden", !buttonsOptions[button] || (buttonsOptions[button].hidden && buttonsOptions[button].hidden.toString() == "true") || false).toggleClass("sdl-topbar-button-selected", buttonsOptions[button] && buttonsOptions[button].selected && buttonsOptions[button].selected.toString() == "true" || false);
+                    });
+
+                    p.$element.css("paddingRight", p.$buttonsContainer[0].offsetWidth + 30);
+                };
+
+                TopBar.prototype.onRibbonTabsResize = function () {
+                    this.calculateRibbonTabs();
+                };
+
+                TopBar.prototype.calculateRibbonTabs = function () {
+                    var p = this.properties;
+                    var availableWidth = p.$ribbonTabsContainer[0].offsetWidth;
+                    if (availableWidth < 10) {
+                        // resized to something ridiculously small, don't bother to do calculations
+                        this.hideFlyoutMenu();
+                    } else {
+                        var remainingAvailableWidth = p.$ribbonTabsContainer[0].offsetWidth;
+                        var overflown = false;
+                        var $ribbonTabs = this.getRibbonTabs();
+                        $ribbonTabs.each(function (index, tab) {
+                            if (!remainingAvailableWidth || (remainingAvailableWidth -= tab.offsetWidth) < 0) {
+                                overflown = true;
+                                return false;
+                            }
+                        });
+
+                        if (overflown) {
+                            availableWidth -= 31;
+
+                            var $selectedTab = this.getSelectedRibbonTab();
+
+                            // we'll try to keep the left position of the selected tab as it was
+                            var alignRight = false;
+                            if ($selectedTab.hasClass("sdl-topbar-ribbon-overflown-tab")) {
+                                // unless the selected tab was out of screen
+                                alignRight = true;
+                                $selectedTab.removeClass("sdl-topbar-ribbon-overflown-tab");
+                            }
+                            remainingAvailableWidth = availableWidth - $selectedTab[0].offsetWidth;
+
+                            // process all tabs currently in sight (to the left of the selected tab)
+                            var $prevTab = $selectedTab.prev();
+                            var hiding = false;
+
+                            while ($prevTab.length && !$prevTab.is(p.$resizeTrigger) && (alignRight || !$prevTab.hasClass("sdl-topbar-ribbon-overflown-tab"))) {
+                                if (hiding) {
+                                    $prevTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                } else {
+                                    var offsetWidth = $prevTab[0].offsetWidth;
+                                    if (offsetWidth) {
+                                        offsetWidth = offsetWidth + .5; // adding .5 as the actual size might be more than offsetWidth, which might sum up to something significant
+                                    }
+
+                                    if (remainingAvailableWidth >= offsetWidth) {
+                                        remainingAvailableWidth -= offsetWidth;
+                                        $prevTab.removeClass("sdl-topbar-ribbon-overflown-tab");
+                                    } else {
+                                        hiding = true;
+                                        $prevTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                    }
+                                }
+                                $prevTab = $prevTab.prev();
+                            }
+
+                            // process all tabs to the right of the selected tab
+                            var $nextTab = $selectedTab.next();
+                            hiding = false;
+
+                            while ($nextTab.length && !$nextTab.is(p.$tabsOverflowButton)) {
+                                if (hiding) {
+                                    $nextTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                } else {
+                                    var offsetWidth = $nextTab[0].offsetWidth;
+                                    if (offsetWidth) {
+                                        offsetWidth = offsetWidth + .5; // adding .5 as the actual size might be more than offsetWidth, which might sum up to something significant
+                                    }
+
+                                    if (remainingAvailableWidth >= offsetWidth) {
+                                        remainingAvailableWidth -= offsetWidth;
+                                        $nextTab.removeClass("sdl-topbar-ribbon-overflown-tab");
+                                    } else {
+                                        hiding = true;
+                                        $nextTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                    }
+                                }
+                                $nextTab = $nextTab.next();
+                            }
+
+                            if (remainingAvailableWidth >= 0) {
+                                // process all remaining tabs to the left of the selected tab
+                                hiding = false;
+
+                                while ($prevTab.length && !$prevTab.is(p.$resizeTrigger)) {
+                                    if (hiding) {
+                                        $prevTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                    } else {
+                                        var offsetWidth = $prevTab[0].offsetWidth;
+                                        if (offsetWidth) {
+                                            offsetWidth = offsetWidth + .5; // adding .5 as the actual size might be more than offsetWidth, which might sum up to something significant
+                                        }
+
+                                        if (remainingAvailableWidth >= offsetWidth) {
+                                            remainingAvailableWidth -= offsetWidth;
+                                            $prevTab.removeClass("sdl-topbar-ribbon-overflown-tab");
+                                        } else {
+                                            hiding = true;
+                                            $prevTab.addClass("sdl-topbar-ribbon-overflown-tab");
+                                        }
+                                    }
+                                    $prevTab = $prevTab.prev();
+                                }
+                            }
+                            p.$ribbonTabsContainer.addClass("sdl-topbar-ribbon-overflown");
+                            this.setFlyoutPosition();
+                        } else {
+                            $ribbonTabs.removeClass("sdl-topbar-ribbon-overflown-tab");
+                            p.$ribbonTabsContainer.removeClass("sdl-topbar-ribbon-overflown");
+                            this.hideFlyoutMenu();
+                        }
+                    }
+                };
+
+                TopBar.prototype.onRibbonTabClick = function (e) {
+                    var p = this.properties;
+                    if (e.target == p.$tabsOverflowButton[0]) {
+                        if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                            this.hideFlyoutMenu();
+                        } else {
+                            this.showFlyoutMenu();
+                        }
+                    } else {
+                        this.selectRibbonTabId(SDL.jQuery(e.target).data("tab-id"));
+                    }
+                };
+
+                TopBar.prototype.onButtonClick = function (e) {
+                    var p = this.properties;
+                    if (p.$buttonsContainer[0].contains(e.target)) {
+                        var $button = SDL.jQuery(e.target);
+                        for (var i = 0, len = buttonIDs.length; i < len; i++) {
+                            if ($button.hasClass("sdl-topbar-button-" + buttonIDs[i])) {
+                                this.fireEvent(buttonIDs[i] + "click");
+                            }
+                        }
+                    }
+                };
+
+                TopBar.prototype.getRibbonTabIndexById = function (tabId) {
+                    var index = -1;
+                    this.getRibbonTabs().each(function (i, element) {
+                        if (SDL.jQuery(element).data("tab-id") == tabId) {
+                            index = i;
+                            return false;
+                        }
+                    });
+                    return index;
+                };
+
+                TopBar.prototype.getRibbonTabById = function (tabId) {
+                    var $tab;
+                    this.getRibbonTabs().each(function (i, element) {
+                        if (SDL.jQuery(element).data("tab-id") == tabId) {
+                            $tab = SDL.jQuery(element);
+                            return false;
+                        }
+                    });
+                    return $tab;
+                };
+
+                TopBar.prototype.showFlyoutMenu = function () {
+                    var p = this.properties;
+                    if (!p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        p.$tabsOverflowButton.addClass("sdl-topbar-ribbon-overflown-button-pressed");
+                        if (!p.flyoutMenuElement) {
+                            // create flyout menu element as a child of the body
+                            var $flyoutMenu = SDL.jQuery("<div class='sdl-topbar-ribbon-flyout-menu'><div><div data-sdl-scrollview-child='true'></div></div></div>").appendTo(document.body);
+                            p.flyoutMenuElement = $flyoutMenu[0];
+                            p.flyoutMenuListElement = p.flyoutMenuElement.firstElementChild.firstElementChild;
+
+                            SDL.jQuery(p.flyoutMenuListElement).mousedown(this.getDelegate(this.onFlyoutMouseDown)); // enable selecting items with mouse
+                            $flyoutMenu.keydown(this.getDelegate(this.onFlyoutKeyDown)); // keyboard support in the flyout menu list
+
+                            // create callout control
+                            p.flyoutCallout = $flyoutMenu.callout({
+                                targetElement: p.$tabsOverflowButton[0],
+                                preferredPosition: [Controls.CalloutPosition.BELOW, Controls.CalloutPosition.RIGHT, Controls.CalloutPosition.ABOVE],
+                                purpose: Controls.CalloutPurpose.MENU,
+                                visible: false });
+                            p.flyoutCallout.on("hide", this.getDelegate(this.onFlyoutHide));
+
+                            // create a scrollview in the callout
+                            p.flyoutScrollView = SDL.jQuery(p.flyoutMenuElement.firstElementChild).scrollView({ overflowX: "hidden" });
+                        }
+
+                        this.updateFlyoutMenuList(); // populate the list
+                        this.setFlyoutMenuListDimensions(); // set the size of the list element
+                        this.setFlyoutPosition(); // define flyout's position
+                        p.flyoutCallout.show(); // show the callout
+                        this.scrollToFlyoutMenuSelection(); // ensure the selected item is in screen
+
+                        this.fireEvent("propertychange", { property: "ribbonTabsFlyoutMenuShown", value: true });
+                    }
+                };
+
+                TopBar.prototype.setFlyoutPosition = function () {
+                    var p = this.properties;
+                    if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        p.flyoutCallout.location(p.$tabsOverflowButton);
+                    }
+                };
+
+                TopBar.prototype.updateFlyoutMenuList = function () {
+                    var _this = this;
+                    var p = this.properties;
+                    if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        var $listItems = SDL.jQuery(p.flyoutMenuListElement).children();
+                        var skippedTabsCount = 0;
+                        p.options.ribbonTabs.forEach(function (tab, index, array) {
+                            if (tab.hidden) {
+                                skippedTabsCount++;
+                            } else {
+                                var item = ($listItems.length > (index - skippedTabsCount)) ? $listItems.eq(index - skippedTabsCount)[0] : SDL.jQuery("<div><div></div><span></span></div>").attr("data-sdl-topbar-ribbon-tab-index", index).appendTo(p.flyoutMenuListElement)[0];
+
+                                _this.updateMenuItem(item, tab);
+                            }
+                        });
+
+                        var listItemsCount = p.options.ribbonTabs.length - skippedTabsCount;
+                        if ($listItems.length > listItemsCount) {
+                            $listItems.slice(listItemsCount).remove();
+                        }
+                    }
+                };
+
+                TopBar.prototype.updateMenuItem = function (item, tab) {
+                    if (item.lastElementChild.textContent != tab.label) {
+                        item.lastElementChild.textContent = tab.label;
+                    }
+                    SDL.jQuery(item).toggleClass("sdl-topbar-ribbon-tab-selected", tab.id == this.properties.options.selectedRibbonTabId);
+                };
+
+                TopBar.prototype.setFlyoutMenuListDimensions = function () {
+                    var p = this.properties;
+                    if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        var scrollElement = p.flyoutMenuElement.firstElementChild;
+                        var listElements = p.flyoutMenuListElement.children;
+
+                        scrollElement.style.maxHeight = ((document.documentElement || document.body.parentNode || document.body).offsetHeight - 55) + "px"; // limit the height to the window's height - paddings (2 * 6) - borders (2 * 1) - height of the topbar (31) - callout's pointer (9) - 1
+                        scrollElement.style.height = (listElements.length * 36) + "px"; // calculate the actual height
+
+                        var scrollWidth = 0;
+                        for (var i = 0, len = listElements.length; i < len; i++) {
+                            scrollWidth = Math.max(scrollWidth, listElements[i].scrollWidth); // get the width of the longest title
+                        }
+                        scrollElement.style.width = scrollWidth + "px";
+                    }
+                };
+
+                TopBar.prototype.scrollToFlyoutMenuSelection = function () {
+                    var p = this.properties;
+                    if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        var listElement = p.flyoutMenuListElement;
+                        var selected = SDL.jQuery(".sdl-topbar-ribbon-tab-selected", listElement)[0];
+                        if (selected) {
+                            // scroll to the selected item in the flyout menu list, if the selected item is off screen
+                            var top = selected.offsetTop;
+                            if (listElement.scrollTop > top) {
+                                listElement.scrollTop = top;
+                            } else if (listElement.scrollTop < (top - listElement.clientHeight + 36)) {
+                                listElement.scrollTop = (top - listElement.clientHeight + 36);
+                            }
+                        }
+                    }
+                };
+
+                TopBar.prototype.hideFlyoutMenu = function () {
+                    var p = this.properties;
+                    if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        p.flyoutCallout.hide();
+                    }
+                };
+
+                TopBar.prototype.onFlyoutHide = function () {
+                    this.properties.$tabsOverflowButton.removeClass("sdl-topbar-ribbon-overflown-button-pressed");
+                    this.fireEvent("propertychange", { property: "ribbonTabsFlyoutMenuShown", value: false });
+                };
+
+                TopBar.prototype.onFlyoutKeyDown = function (e) {
+                    var p = this.properties;
+                    if (!e.ctrlKey && !e.shiftKey && p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
+                        var handled = false;
+                        switch (e.which) {
+                            case 37 /* LEFT */:
+                            case 38 /* UP */:
+                                this.selectPreviousRibbonTab();
+                                handled = true;
+                                break;
+                            case 39 /* RIGHT */:
+                            case 40 /* DOWN */:
+                                this.selectNextRibbonTab();
+                                handled = true;
+                                break;
+                            case 36 /* HOME */:
+                                this.selectFirstRibbonTab();
+                                handled = true;
+                                break;
+                            case 35 /* END */:
+                                this.selectLastRibbonTab();
+                                handled = true;
+                                break;
+                            case 13 /* ENTER */:
+                                this.hideFlyoutMenu();
+                                e.stopImmediatePropagation();
+                                e.preventDefault();
+                                break;
+                        }
+
+                        if (handled) {
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
+                            this.scrollToFlyoutMenuSelection();
+                        }
+                    }
+                };
+
+                TopBar.prototype.onFlyoutMouseDown = function (e) {
+                    if (e.which == 1) {
+                        var target = e.target;
+                        var index = target.hasAttribute("data-sdl-topbar-ribbon-tab-index") ? target.getAttribute("data-sdl-topbar-ribbon-tab-index") : target.parentElement.getAttribute("data-sdl-topbar-ribbon-tab-index");
+
+                        if (index != null) {
+                            this.selectRibbonTabIndex(index);
+                            this.hideFlyoutMenu();
+                        }
+                    }
+                };
+
+                TopBar.prototype.selectNextRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    var $selectedTab = this.getSelectedRibbonTab();
+                    var $next = $selectedTab.next();
+                    while ($next && $next.length && !$next.is(this.properties.$tabsOverflowButton)) {
+                        if (!skipHidden || !$next.hasClass("sdl-topbar-ribbon-tab-hidden")) {
+                            this.selectRibbonTab($next);
+                            return;
+                        }
+                        $next = $next.next();
+                    }
+                };
+
+                TopBar.prototype.selectPreviousRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    var $selectedTab = this.getSelectedRibbonTab();
+                    var $prev = $selectedTab.prev();
+                    while ($prev && $prev.length && !$prev.is(this.properties.$resizeTrigger)) {
+                        if (!skipHidden || !$prev.hasClass("sdl-topbar-ribbon-tab-hidden")) {
+                            this.selectRibbonTab($prev);
+                            return;
+                        }
+                        $prev = $prev.prev();
+                    }
+                };
+
+                TopBar.prototype.selectFirstRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    this.selectRibbonTab(this.getFirstRibbonTab(skipHidden));
+                };
+
+                TopBar.prototype.selectLastRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    this.selectRibbonTab(this.getLastRibbonTab(skipHidden));
+                };
+
+                TopBar.prototype.showRibbonTab = function (tabId) {
+                    var tabIndex = this.getRibbonTabIndexById(tabId);
+                    if (tabIndex != -1) {
+                        var tab = this.properties.options.ribbonTabs[tabIndex];
+                        if (tab && tab.hidden) {
+                            tab.selected = true;
+                            this.populateRibbonTabs();
+                            this.fireEvent("propertychange", { property: "ribbonTabs." + this.getRibbonTabIndexById(tabId) + ".hidden", value: false });
+                            this.fireEvent("ribbontabshow", { id: tabId });
+                        }
+                    }
+                };
+
+                TopBar.prototype.hideRibbonTab = function (tabId) {
+                    var tabIndex = this.getRibbonTabIndexById(tabId);
+                    if (tabIndex != -1) {
+                        var tab = this.properties.options.ribbonTabs[tabIndex];
+                        if (tab && !tab.hidden) {
+                            tab.selected = true;
+                            this.populateRibbonTabs();
+                            this.fireEvent("propertychange", { property: "ribbonTabs." + this.getRibbonTabIndexById(tabId) + ".hidden", value: true });
+                            this.fireEvent("ribbontabhide", { id: tabId });
+                        }
+                    }
+                };
+
+                TopBar.prototype.selectRibbonTabId = function (tabId) {
+                    if (tabId) {
+                        this.selectRibbonTab(this.getRibbonTabById(tabId));
+                    }
+                };
+
+                TopBar.prototype.selectRibbonTabIndex = function (tabIndex) {
+                    this.selectRibbonTab(this.getRibbonTabs().eq(tabIndex));
+                };
+
+                TopBar.prototype.getSelectedRibbonTab = function () {
+                    return this.properties.$ribbonTabsContainer.children(".sdl-topbar-ribbon-tab-selected");
+                };
+
+                TopBar.prototype.getFirstRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    return this.getRibbonTabs(skipHidden).first();
+                };
+
+                TopBar.prototype.getLastRibbonTab = function (skipHidden) {
+                    if (typeof skipHidden === "undefined") { skipHidden = true; }
+                    return this.getRibbonTabs(skipHidden).last();
+                };
+
+                TopBar.prototype.getRibbonTabs = function (excludeHidden) {
+                    if (typeof excludeHidden === "undefined") { excludeHidden = false; }
+                    var p = this.properties;
+                    var $tabs = p.$ribbonTabsContainer.children().not(p.$resizeTrigger).not(p.$tabsOverflowButton);
+                    if (excludeHidden) {
+                        $tabs = $tabs.not(".sdl-topbar-ribbon-tab-hidden");
+                    }
+                    return $tabs;
+                };
+
+                TopBar.prototype.selectRibbonTab = function ($tab) {
+                    if ($tab && $tab.length && !$tab.hasClass("sdl-topbar-ribbon-tab-selected")) {
+                        var p = this.properties;
+                        var tabId = p.options.selectedRibbonTabId = $tab.data("tab-id");
+
+                        var $prevSelection = this.getSelectedRibbonTab();
+                        if ($prevSelection.length) {
+                            $prevSelection.removeClass("sdl-topbar-ribbon-tab-selected");
+                        }
+                        $tab.addClass("sdl-topbar-ribbon-tab-selected");
+                        if ($tab[0].offsetTop) {
+                            this.calculateRibbonTabs();
+                        }
+
+                        this.fireEvent("propertychange", { property: "selectedRibbonTabId", value: tabId });
+                        this.fireEvent("ribbonselectionchange", { id: tabId });
+                    }
+                };
+
+                TopBar.prototype.selectedRibbonTabId = function () {
+                    return this.properties.options.selectedRibbonTabId;
+                };
+
+                TopBar.prototype.showButton = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button && button.hidden) {
+                        button.selected = true;
+                        this.populateButtons();
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".hidden", value: false });
+                        this.fireEvent("show" + buttonId);
+                    }
+                };
+
+                TopBar.prototype.hideButton = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button && !button.hidden) {
+                        button.selected = true;
+                        this.populateButtons();
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".hidden", value: true });
+                        this.fireEvent("hide" + buttonId);
+                    }
+                };
+
+                TopBar.prototype.selectButton = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button && !button.selected) {
+                        button.selected = true;
+                        this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId).addClass("sdl-topbar-button-selected");
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: button.selected });
+                        this.fireEvent("select" + buttonId);
+                    }
+                };
+
+                TopBar.prototype.unselectButton = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button && button.selected) {
+                        button.selected = false;
+                        this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId).removeClass("sdl-topbar-button-selected");
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: button.selected });
+                        this.fireEvent("unselect" + buttonId);
+                    }
+                };
+                return TopBar;
+            })(SDL.UI.Core.Controls.ControlBase);
+            Controls.TopBar = TopBar;
+
+            TopBar.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$TopBar$disposeInterface() {
+                var _this = this;
+                var p = _this.properties;
+
+                if (p.$element) {
+                    p.$resizeTriggerControl.dispose();
+                    p.$ribbonTabsContainer.off("click", this.removeDelegate(this.onRibbonTabClick));
+                    p.$buttonsContainer.off("click", this.removeDelegate(this.onButtonClick));
+
+                    if (p.flyoutCallout) {
+                        p.flyoutCallout.off("hide", this.removeDelegate(this.onFlyoutHide));
+                        SDL.jQuery(p.flyoutMenuElement).off("keydown", this.removeDelegate(this.onFlyoutKeyDown));
+                        SDL.jQuery(p.flyoutMenuListElement).off("mousedown", this.removeDelegate(this.onFlyoutMouseDown));
+
+                        p.flyoutCallout.dispose();
+                        p.flyoutScrollView.dispose();
+
+                        p.flyoutCallout = p.flyoutMenuElement = p.flyoutMenuListElement = p.flyoutScrollView = null;
+                    }
+
+                    p.$element.removeClass("sdl-topbar").empty();
+                    p.$element = p.$buttonsContainer = p.$ribbonTabsContainer = p.$resizeTrigger = p.$resizeTriggerControl = p.$tabsOverflowButton = null;
+
+                    if (!p.options.hostMode) {
+                        SDL.jQuery(document.documentElement).removeClass("sdl-topbar-page");
+                    }
+                }
+            });
+
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.TopBar", TopBar);
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));
+html.sdl-topbar-page {
+  overflow: hidden;
+  margin: 31px 0 0;
+  padding: 0;
+}
+html.sdl-topbar-page body {
+  position: absolute;
+  overflow: auto;
+  margin: 0;
+  top: 31px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  width: auto;
+}
+.sdl-topbar {
+  position: relative;
+  display: block;
+  box-sizing: content-box;
+  border: none;
+  border-top: 1px solid #353b46;
+  border-bottom: 1px solid #353b46;
+  background-color: #454b53;
+  height: 29px;
+  -webkit-box-shadow: inset 0 1px 0 0 #5c636d;
+  box-shadow: inset 0 1px 0 0 #5c636d;
+  font-size: 11px;
+  font-family: Verdana;
+  text-shadow: #262C36 0 1px;
+  font-weight: normal;
+  color: #FFF;
+  padding: 0 120px 0 31px;
+  line-height: 30px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+html.sdl-topbar-page .sdl-topbar {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: auto;
+  position: fixed;
+}
+/* RIBBON TABS */
+.sdl-topbar > .sdl-topbar-ribbon {
+  width: 100%;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+.sdl-topbar > .sdl-topbar-ribbon > .sdl-topbar-resize-trigger {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+.sdl-topbar > .sdl-topbar-ribbon > span {
+  white-space: nowrap;
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  padding: 0 10px;
+  margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+.sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-overflown-tab {
+  position: absolute;
+  top: 30px;
+  left: 0;
+}
+.sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-tab-hidden {
+  display: none;
+}
+.sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-tab-selected:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  margin-left: -6px;
+  width: 0;
+  height: 0;
+  border-width: 6px;
+  border-style: solid;
+  border-top-style: none;
+  border-color: transparent;
+  border-bottom-color: #FFF;
+}
+.sdl-topbar > .sdl-topbar-ribbon > .sdl-topbar-ribbon-overflown-button {
+  display: none;
+}
+.sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button {
+  background-color: green;
+  width: 30px;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button:hover {
+  background-color: lightgreen;
+}
+.sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button-pressed {
+  background-color: blue !important;
+}
+.sdl-topbar .sdl-topbar-ribbon-overflown-button:after {
+  content: "...";
+}
+/* TABS OVERFLOW MENU */
+.sdl-topbar-ribbon-flyout-menu {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 6px 1px;
+  background-color: #fafafa;
+}
+.sdl-topbar-ribbon-flyout-menu > div:first-child {
+  min-width: 150px;
+  max-width: 400px;
+  min-height: 36px;
+}
+.sdl-topbar-ribbon-flyout-menu > div:first-child > div:first-child > div {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #262c39;
+  font-family: Verdana;
+  font-size: 13px;
+  text-shadow: 0 1px white;
+  padding: 0 2px 0 0;
+  cursor: default;
+}
+.sdl-topbar-ribbon-flyout-menu > div:first-child > div:first-child > div.sdl-topbar-ribbon-tab-selected {
+  background-color: #bed2f0;
+  text-shadow: none;
+}
+.sdl-topbar-ribbon-flyout-menu > div:first-child > div:first-child > div > div:first-child {
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+/* BUTTONS */
+.sdl-topbar > .sdl-topbar-buttons {
+  position: absolute;
+  left: auto;
+  right: 0;
+  top: 0;
+  height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.sdl-topbar > .sdl-topbar-buttons > span {
+  box-sizing: content-box;
+  white-space: nowrap;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-left: 1px solid #353b46;
+  padding: 6px 8px 7px 8px;
+  -webkit-box-shadow: inset 0 1px 0 0 #5c636d;
+  box-shadow: inset 0 1px 0 0 #5c636d;
+}
+.sdl-topbar > .sdl-topbar-buttons > span:hover {
+  background: #576172;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-hidden {
+  display: none;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-selected {
+  background: #296cd4 !important;
+}
+.sdl-topbar > .sdl-topbar-buttons > span:before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-color: #576172;
+  __background-image: url("data:image/png;base64, [**********] ==");
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-search:before {
+  background-position: left 0px;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-close:before {
+  background-position: left 17px;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-user:before {
+  background-position: left 34px;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-messages:before {
+  background-position: left 51px;
+}
+.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-activities:before {
+  background-position: left 68px;
+}
+/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../Tooltip/Tooltip.jQuery.ts" />
 /// <reference path="../ScrollView/ScrollView.jQuery.ts" />
 /// <reference path="../Callout/Callout.jQuery.ts" />
@@ -2446,8 +3399,8 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var TopPageTabs = (function (_super) {
                 __extends(TopPageTabs, _super);
-                function TopPageTabs(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function TopPageTabs(element, options) {
+                    _super.call(this, element, options || {});
                     this.flyoutButtonMinWidth = 40;
                     this.tabSwitchHeight = 101;
                     this.flyoutMenuPositionBox = { xLeft: -this.flyoutButtonMinWidth, yAbove: 0, xRight: -1, yBelow: this.tabSwitchHeight };
@@ -2462,11 +3415,10 @@ var SDL;
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
-                    this.$pages = this.$();
+                    var $element = this.$element = SDL.jQuery(p.element);
+                    this.$pages = SDL.jQuery();
 
-                    p.options = this.$.extend({}, p.options);
+                    p.options = SDL.jQuery.extend({}, p.options);
 
                     this.initialTabIndex = $element.attr("tabIndex");
                     $element.attr("tabIndex", this.initialTabIndex || "0").addClass("sdl-tabs-container").keydown(this.getDelegate(this.onKeyDown)); // keyboard navigation
@@ -2568,7 +3520,7 @@ var SDL;
                 };
 
                 TopPageTabs.prototype.setSelectedElement = function (page) {
-                    return this.setSelection(this.$(page));
+                    return this.setSelection(SDL.jQuery(page));
                 };
 
                 TopPageTabs.prototype.getSelectedIndex = function () {
@@ -2685,7 +3637,7 @@ var SDL;
                         var scrollElement = this.flyoutMenuElement.firstElementChild;
                         var listElements = this.flyoutMenuListElement.children;
 
-                        scrollElement.style.maxHeight = (document.body.clientHeight - 14) + "px"; // limit the height to the window's height - paddings (2 * 6) - borders (2 * 1)
+                        scrollElement.style.maxHeight = ((document.documentElement || document.body.parentNode || document.body).offsetHeight - 14) + "px"; // limit the height to the window's height - paddings (2 * 6) - borders (2 * 1)
                         scrollElement.style.height = (listElements.length * 36) + "px"; // calculate the actual height
 
                         var scrollWidth = 0;
@@ -3061,7 +4013,7 @@ var SDL;
                                 this.showFlyoutMenu();
                             }
                         } else {
-                            var $targetPage = this.$(e.target).closest(this.$element.children(":not([data-sdl-tabs-no-page=true])"));
+                            var $targetPage = SDL.jQuery(e.target).closest(this.$element.children(":not([data-sdl-tabs-no-page=true])"));
                             if ($targetPage.length) {
                                 // IE workaround: focus is put in an element in side a tab switch even if there's no tabIndex specified
                                 // -> have to reset to the tabs element itself for proper :focus styling
@@ -3391,7 +4343,7 @@ var SDL;
                         $element.attr("tabIndex", this.initialTabIndex);
                     }
 
-                    this.$ = this.$element = this.$pages = null;
+                    this.$element = this.$pages = null;
                 };
                 return TopPageTabs;
             })(SDL.UI.Core.Controls.ControlBase);
@@ -3676,8 +4628,8 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var Tooltip = (function (_super) {
                 __extends(Tooltip, _super);
-                function Tooltip(element, options, jQuery) {
-                    _super.call(this, element, options, jQuery);
+                function Tooltip(element, options) {
+                    _super.call(this, element, options);
                     this.mouse = {
                         x: 0,
                         y: 0,
@@ -3688,10 +4640,9 @@ var SDL;
                 }
                 Tooltip.prototype.$initialize = function () {
                     var p = this.properties;
-                    this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                    var $element = this.$element = this.$(p.element);
+                    var $element = this.$element = SDL.jQuery(p.element);
 
-                    var settings = this.settings = this.$.extend({
+                    var settings = this.settings = SDL.jQuery.extend({
                         trackMouse: false,
                         relativeTo: "element",
                         position: "bottom",
@@ -3717,7 +4668,7 @@ var SDL;
                 Tooltip.prototype.update = function (options) {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "update", [options]);
 
-                    this.settings = this.$.extend(this.settings, this.properties.options);
+                    this.settings = SDL.jQuery.extend(this.settings, this.properties.options);
 
                     // set the content, either from the settings or from the 'tooltip' attribute
                     if (this.settings.content !== null) {
@@ -3750,7 +4701,7 @@ var SDL;
                         this.shown = false;
                         this.fireEvent("hide");
                         this.fireEvent("propertychange", { property: "shown", value: false });
-                        this.$(".sdl-tooltip").remove();
+                        SDL.jQuery(".sdl-tooltip").remove();
                     }
                 };
 
@@ -3807,7 +4758,7 @@ var SDL;
                         var windowScrollX = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
                         var windowScrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-                        this.$(".sdl-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
+                        SDL.jQuery(".sdl-tooltip").css("left", (this.mouse.x + this.settings.offsetX - windowScrollX) + "px").css("top", (this.mouse.y + this.settings.offsetY - windowScrollY) + "px");
                     }
 
                     this.mouse.movementTimer = setTimeout(function () {
@@ -3853,9 +4804,9 @@ var SDL;
                     $element.append('<div class="sdl-tooltip" style="position: fixed; left: ' + x + 'px; top: ' + y + 'px">' + content + '</div>');
 
                     if (settings.fitToScreen) {
-                        var $tooltip = this.$(".sdl-tooltip");
+                        var $tooltip = SDL.jQuery(".sdl-tooltip");
                         var position = $tooltip.position();
-                        var $window = this.$(window);
+                        var $window = SDL.jQuery(window);
                         if (typeof position !== "undefined" && position !== null) {
                             if ($tooltip.outerHeight() + position.top > $window.height()) {
                                 $tooltip.css("top", ($window.height() - $tooltip.outerHeight() - document.body.scrollTop) + "px");
@@ -3893,7 +4844,7 @@ var SDL;
                 if (this.$element) {
                     this.$element.off("mouseenter", this.getDelegate(this.onMouseEnter)).off("mouseleave", this.getDelegate(this.onMouseLeave)).off("mousemove", this.getDelegate(this.onMouseMove));
                     this.hideTooltip();
-                    this.$ = this.$element = null;
+                    this.$element = null;
                 }
             });
 
@@ -3953,8 +4904,8 @@ var SDL;
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var ScrollView = (function (_super) {
                 __extends(ScrollView, _super);
-                function ScrollView(element, options, jQuery) {
-                    _super.call(this, element, options || {}, jQuery);
+                function ScrollView(element, options) {
+                    _super.call(this, element, options || {});
                     this.secondaryScrollBars = {};
                     this.childCreated = false;
                     this.scrollBarChildBottom = 0;
@@ -3966,10 +4917,9 @@ var SDL;
 
                     if (!SDL.jQuery.browser.macintosh && !SDL.jQuery.browser.mobile) {
                         var p = this.properties;
-                        this.$ = p.jQuery || SDL.jQuery || SDL.jQuery;
-                        var $element = this.$element = this.$(p.element);
+                        var $element = this.$element = SDL.jQuery(p.element);
 
-                        var options = p.options = this.$.extend({
+                        var options = p.options = SDL.jQuery.extend({
                             overflowX: "auto",
                             overflowY: "auto",
                             overlay: false
@@ -4495,7 +5445,7 @@ var SDL;
                             $scrollElement.scrollLeft(scrollLeft);
                         }
 
-                        this.$ = this.$element = this.$scrollChild = this.$corner = null;
+                        this.$element = this.$scrollChild = this.$corner = null;
                     }
                 };
                 return ScrollView;
@@ -6930,12 +7880,12 @@ var SDL;
     (function (UI) {
         (function (Controls) {
             eval(SDL.Client.Types.OO.enableCustomInheritance);
-            var Combobox = (function (_super) {
-                __extends(Combobox, _super);
-                function Combobox() {
+            var DropdownList = (function (_super) {
+                __extends(DropdownList, _super);
+                function DropdownList() {
                     _super.apply(this, arguments);
                 }
-                Combobox.prototype.$initialize = function () {
+                DropdownList.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
 
                     var p = this.properties;
@@ -6949,7 +7899,7 @@ var SDL;
                     opts.disabled = opts.disabled != null ? opts.disabled.toString() == "true" : this.isDisabled();
                     opts.options = opts.options != null ? SDL.Client.Types.Array.clone(opts.options) : [];
 
-                    $elem.addClass("sdl-combobox").on("click", this.getDelegate(this._onClick)).on("blur", this.getDelegate(this._onBlur)).on("keydown", this.getDelegate(this._onKeyDown));
+                    $elem.addClass("sdl-dropdownlist").on("click", this.getDelegate(this._onClick)).on("blur", this.getDelegate(this._onBlur)).on("keydown", this.getDelegate(this._onKeyDown));
 
                     this._$list.on("click", this.getDelegate(this._onListClick));
                     var $window = SDL.jQuery(window).on("scroll", this.getDelegate(this._hideOptions)).on("resize", this.getDelegate(this._onWindowResize));
@@ -6963,7 +7913,7 @@ var SDL;
                     this._windowHeight = $window.innerHeight();
                 };
 
-                Combobox.prototype.update = function (options) {
+                DropdownList.prototype.update = function (options) {
                     if (options) {
                         var prevOptions = SDL.jQuery.extend({}, this.properties.options);
                         var changedProperties = [];
@@ -7007,7 +7957,7 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype.disable = function () {
+                DropdownList.prototype.disable = function () {
                     if (!this.isDisabled()) {
                         this.properties.options.disabled = true;
                         this._updateDisabledState();
@@ -7016,7 +7966,7 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype.enable = function () {
+                DropdownList.prototype.enable = function () {
                     if (this.isDisabled()) {
                         this.properties.options.disabled = false;
                         this._updateDisabledState();
@@ -7024,15 +7974,15 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype.isDisabled = function () {
+                DropdownList.prototype.isDisabled = function () {
                     return !!this._$elem.attr("disabled");
                 };
 
-                Combobox.prototype.getValue = function () {
+                DropdownList.prototype.getValue = function () {
                     return this.properties.options.selectedValue;
                 };
 
-                Combobox.prototype.setValue = function (value) {
+                DropdownList.prototype.setValue = function (value) {
                     var o = this.properties.options.options;
                     var index = -1;
                     for (var i = 0, l = o.length; i < l; i++) {
@@ -7047,7 +7997,7 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype._initializeOptions = function (options) {
+                DropdownList.prototype._initializeOptions = function (options) {
                     var _this = this;
                     var selectedValue = this.properties.options.selectedValue;
                     options.forEach(function (value, index) {
@@ -7064,7 +8014,7 @@ var SDL;
                     });
                 };
 
-                Combobox.prototype._updateDisabledState = function () {
+                DropdownList.prototype._updateDisabledState = function () {
                     if (this.properties.options.disabled) {
                         this._$elem.attr("disabled", "true").removeAttr("tabIndex");
                     } else {
@@ -7072,16 +8022,16 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype._onWindowResize = function () {
+                DropdownList.prototype._onWindowResize = function () {
                     this._windowHeight = SDL.jQuery(window).innerHeight();
                     this._hideOptions();
                 };
 
-                Combobox.prototype._hideOptions = function () {
+                DropdownList.prototype._hideOptions = function () {
                     this._$elem.removeClass("open");
                 };
 
-                Combobox.prototype._showOptions = function () {
+                DropdownList.prototype._showOptions = function () {
                     if (!this._isOpen()) {
                         this._$elem.addClass("open");
 
@@ -7097,7 +8047,7 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype._toggleOptions = function () {
+                DropdownList.prototype._toggleOptions = function () {
                     if (this._isOpen()) {
                         this._hideOptions();
                     } else {
@@ -7105,33 +8055,33 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype._isOpen = function () {
+                DropdownList.prototype._isOpen = function () {
                     return this._$elem.hasClass("open");
                 };
 
-                Combobox.prototype._onClick = function () {
+                DropdownList.prototype._onClick = function () {
                     if (!this.isDisabled()) {
                         this._toggleOptions();
                     }
                 };
 
-                Combobox.prototype._onBlur = function () {
+                DropdownList.prototype._onBlur = function () {
                     if (this._isOpen()) {
                         this._hideOptions();
                     }
                 };
 
-                Combobox.prototype._getSelectedOption = function () {
+                DropdownList.prototype._getSelectedOption = function () {
                     return this._$list.find("li.selected");
                 };
 
-                Combobox.prototype._updateSelectedValue = function () {
+                DropdownList.prototype._updateSelectedValue = function () {
                     var option = this.properties.options.options[this._getSelectedOption().index()];
                     var text = option.text || option.value;
                     this._$title.text(text).attr("title", text);
                 };
 
-                Combobox.prototype._setSelectedOption = function ($option) {
+                DropdownList.prototype._setSelectedOption = function ($option) {
                     if ($option.length > 0) {
                         var $selectedOption = this._getSelectedOption();
                         if ($selectedOption) {
@@ -7151,7 +8101,7 @@ var SDL;
                     }
                 };
 
-                Combobox.prototype._onListClick = function (e) {
+                DropdownList.prototype._onListClick = function (e) {
                     var $target = SDL.jQuery(e.target);
                     if (!$target.hasClass("selected")) {
                         this._setSelectedOption($target);
@@ -7160,15 +8110,15 @@ var SDL;
                     e.stopPropagation();
                 };
 
-                Combobox.prototype._selectNext = function () {
+                DropdownList.prototype._selectNext = function () {
                     this._setSelectedOption(this._getSelectedOption().next());
                 };
 
-                Combobox.prototype._selectPrevious = function () {
+                DropdownList.prototype._selectPrevious = function () {
                     this._setSelectedOption(this._getSelectedOption().prev());
                 };
 
-                Combobox.prototype._onKeyDown = function (e) {
+                DropdownList.prototype._onKeyDown = function (e) {
                     switch (e.which) {
                         case 13 /* ENTER */:
                             this._toggleOptions();
@@ -7203,18 +8153,18 @@ var SDL;
                             break;
                     }
                 };
-                return Combobox;
+                return DropdownList;
             })(SDL.UI.Core.Controls.ControlBase);
-            Controls.Combobox = Combobox;
+            Controls.DropdownList = DropdownList;
 
-            Combobox.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$Combobox$disposeInterface() {
+            DropdownList.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$DropdownList$disposeInterface() {
                 this._$list.off("click", this.getDelegate(this._onListClick));
                 SDL.jQuery(window).off("scroll resize", this.getDelegate(this._hideOptions));
 
                 this._$title = undefined;
                 this._$list = undefined;
 
-                this._$elem.removeClass("sdl-combobox").off("click", this.getDelegate(this._onClick)).off("blur", this.getDelegate(this._onBlur)).off("keydown", this.getDelegate(this._onKeyDown)).empty();
+                this._$elem.removeClass("sdl-dropdownlist").off("click", this.getDelegate(this._onClick)).off("blur", this.getDelegate(this._onBlur)).off("keydown", this.getDelegate(this._onKeyDown)).empty();
 
                 if (!this._initialTabIndex) {
                     this._$elem.removeAttr("tabIndex");
@@ -7225,14 +8175,14 @@ var SDL;
                 this._$elem = undefined;
             });
 
-            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Combobox", Combobox);
+            SDL.Client.Types.OO.createInterface("SDL.UI.Controls.DropdownList", DropdownList);
         })(UI.Controls || (UI.Controls = {}));
         var Controls = UI.Controls;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
 /* An elliptical shadow  for use on the bottom edge of containers/elements, can be positioned with a combination of shadowMargin, x and y offsets */
-.sdl-combobox {
+.sdl-dropdownlist {
   height: 27px;
   width: 200px;
   min-width: 100px;
@@ -7268,14 +8218,14 @@ var SDL;
   -ms-user-select: none;
   user-select: none;
 }
-.sdl-combobox span {
+.sdl-dropdownlist span {
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
 }
-.sdl-combobox:after {
+.sdl-dropdownlist:after {
   content: '';
-  background-image: url({PATH}Images/combobox-arrow.16.mono-dark.svg);
+  background-image: url({PATH}Images/dropdown-arrow.16.mono-dark.svg);
   width: 16px;
   height: 16px;
   position: absolute;
@@ -7286,29 +8236,29 @@ var SDL;
   filter: alpha(opacity=75);
   opacity: 0.75;
 }
-.sdl-combobox:not([disabled]):hover,
-.sdl-combobox:not([disabled]):focus,
-.sdl-combobox.open {
+.sdl-dropdownlist:not([disabled]):hover,
+.sdl-dropdownlist:not([disabled]):focus,
+.sdl-dropdownlist.open {
   border-color: #454545;
 }
-.sdl-combobox:not([disabled]):hover:after,
-.sdl-combobox:not([disabled]):focus:after,
-.sdl-combobox.open:after {
+.sdl-dropdownlist:not([disabled]):hover:after,
+.sdl-dropdownlist:not([disabled]):focus:after,
+.sdl-dropdownlist.open:after {
   -webkit-opacity: 1;
   filter: alpha(opacity=100);
   opacity: 1;
 }
-.sdl-combobox[disabled] {
+.sdl-dropdownlist[disabled] {
   color: #aaaaaa;
   background-color: #f4f4f4;
   border-color: #aaaaaa;
 }
-.sdl-combobox[disabled]:after {
+.sdl-dropdownlist[disabled]:after {
   -webkit-opacity: 0.5;
   filter: alpha(opacity=50);
   opacity: 0.5;
 }
-.sdl-combobox ul {
+.sdl-dropdownlist ul {
   margin: 0;
   padding: 0;
   position: absolute;
@@ -7335,7 +8285,7 @@ var SDL;
   display: none;
   z-index: 1;
 }
-.sdl-combobox ul li {
+.sdl-dropdownlist ul li {
   height: 26px;
   line-height: 26px;
   margin: 1px 1px 0;
@@ -7346,7 +8296,7 @@ var SDL;
   border: solid 1px #fff;
   box-sizing: border-box;
 }
-.sdl-combobox ul li:hover {
+.sdl-dropdownlist ul li:hover {
   background-color: #e9f0fa;
   border-color: #bed2f0;
   -webkit-text-shadow: none;
@@ -7355,7 +8305,7 @@ var SDL;
   -o-text-shadow: none;
   text-shadow: none;
 }
-.sdl-combobox ul li.selected {
+.sdl-dropdownlist ul li.selected {
   background-color: #bed2f0;
   border-color: #94b5e5;
   -webkit-text-shadow: none;
@@ -7364,9 +8314,94 @@ var SDL;
   -o-text-shadow: none;
   text-shadow: none;
 }
-.sdl-combobox ul li:last-child {
+.sdl-dropdownlist ul li:last-child {
   margin-bottom: 1px;
 }
-.sdl-combobox.open ul {
+.sdl-dropdownlist.open ul {
   display: block;
 }
+/// <reference path="../../../SDL.Client.Core/Application/Application.d.ts" />
+/// <reference path="../../../SDL.Client.UI.Core/Renderers/ControlRenderer.d.ts" />
+/// <reference path="../TopBar.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var SDL;
+(function (SDL) {
+    (function (UI) {
+        (function (Controls) {
+            (function (Application) {
+                var topBar;
+
+                eval(SDL.Client.Types.OO.enableCustomInheritance);
+                var TopBarClass = (function (_super) {
+                    __extends(TopBarClass, _super);
+                    function TopBarClass() {
+                        _super.apply(this, arguments);
+                    }
+                    TopBarClass.prototype.$initialize = function () {
+                        var _this = this;
+                        this.callBase("SDL.Client.Types.ObjectWithEvents", "$initialize");
+                        if (SDL.Client.Application.isHosted && SDL.Client.Application.ApplicationHost.isSupported("showTopBar")) {
+                            SDL.Client.Application.ApplicationHost.addEventListener("topbarevent", this.getDelegate(function (e) {
+                                _this.fireEvent(e.data.type, e.data.data);
+                            }));
+                            SDL.Client.Application.ApplicationHost.showTopBar();
+                        } else {
+                            topBar = null;
+                            var topBarElement = document.createElement("div");
+                            document.body.appendChild(topBarElement);
+
+                            SDL.Client.Resources.ResourceManager.load("SDL.UI.Controls.TopBar", function () {
+                                var options;
+                                if (_this.optionsToApply) {
+                                    options = _this.optionsToApply;
+                                    _this.optionsToApply = null;
+                                }
+
+                                SDL.UI.Core.Renderers.ControlRenderer.renderControl("SDL.UI.Controls.TopBar", topBarElement, options, function (control) {
+                                    topBar = control;
+                                    SDL.Client.Event.EventRegister.addEventHandler(window, "unload", function () {
+                                        topBar.dispose();
+                                    });
+                                    SDL.Client.Event.EventRegister.addEventHandler(topBar, "*", _this.getDelegate(function (e) {
+                                        _this.fireEvent(e.type, e.data);
+                                    }));
+
+                                    if (_this.optionsToApply) {
+                                        topBar.update(_this.optionsToApply);
+                                        _this.optionsToApply = null;
+                                    }
+                                });
+                            });
+                        }
+                    };
+
+                    TopBarClass.prototype.setOptions = function (options) {
+                        if (topBar === undefined) {
+                            SDL.Client.Application.ApplicationHost.setTopBarOptions(options);
+                        } else if (topBar) {
+                            topBar.update(options);
+                        } else {
+                            this.optionsToApply = options;
+                        }
+                    };
+                    return TopBarClass;
+                })(SDL.Client.Types.ObjectWithEvents);
+                Application.TopBarClass = TopBarClass;
+
+                SDL.Client.Types.OO.createInterface("SDL.UI.Controls.Application.TopBarClass", TopBarClass);
+
+                // using [new SDL.UI.Controls.Application["TopBarClass"]()] instead of [new TopBarClass()]
+                // because [new TopBarClass()] would refer to the closure, not the interface defined in the line above
+                Application.TopBar = new SDL.UI.Controls.Application["TopBarClass"]();
+            })(Controls.Application || (Controls.Application = {}));
+            var Application = Controls.Application;
+        })(UI.Controls || (UI.Controls = {}));
+        var Controls = UI.Controls;
+    })(SDL.UI || (SDL.UI = {}));
+    var UI = SDL.UI;
+})(SDL || (SDL = {}));

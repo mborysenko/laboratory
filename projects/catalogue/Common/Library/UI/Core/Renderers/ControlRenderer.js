@@ -27,14 +27,14 @@ var SDL;
 
                                 if (!element) {
                                     if (ctor.createElement) {
-                                        element = ctor.createElement(document, settings, SDL.jQuery);
+                                        element = ctor.createElement(document, settings);
                                     } else {
                                         element = document.createElement("div");
                                     }
                                 }
 
                                 // Instantiate the control
-                                var control = new ctor(element, settings, SDL.jQuery);
+                                var control = new ctor(element, settings);
 
                                 // Render control
                                 control.render(callback ? function () {

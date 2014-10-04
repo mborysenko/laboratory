@@ -43,25 +43,28 @@ var SDL;
                 ApplicationHostProxyClass.prototype.applicationEntryPointLoaded = function (coreVersion, callback) {
                     var _this = this;
                     var _callback = function (data) {
-                        _this.version = data.version;
-                        _this.libraryVersionSupported = data.libraryVersionSupported;
-                        _this.activeApplicationEntryPointId = data.activeApplicationEntryPointId;
-                        _this.activeApplicationId = data.activeApplicationId;
-                        _this.culture = data.culture;
-                        if (data.supportedMethods) {
-                            _this.supportedMethods = data.supportedMethods;
-                        }
+                        if (data) {
+                            _this.version = data.version;
+                            _this.libraryVersionSupported = data.libraryVersionSupported;
+                            _this.activeApplicationEntryPointId = data.activeApplicationEntryPointId;
+                            _this.activeApplicationId = data.activeApplicationId;
+                            _this.culture = data.culture;
+                            if (data.supportedMethods) {
+                                _this.supportedMethods = data.supportedMethods;
+                            }
 
-                        if (callback) {
-                            _callback.sourceDomain = arguments.callee.caller.sourceDomain;
-                            _callback.sourceWindow = arguments.callee.caller.sourceWindow;
-                            callback(data);
+                            if (callback) {
+                                _callback.sourceDomain = arguments.callee.caller.sourceDomain;
+                                _callback.sourceWindow = arguments.callee.caller.sourceWindow;
+                                callback(data);
+                            }
                         }
                     };
 
                     this.call("applicationEntryPointLoaded", [coreVersion, function (e) {
                             _this.onHostEvent(e);
-                        }], _callback);
+                        }, _callback], _callback); // pass both result callback and the callback for asynchronous handling
+                    // async callback will not be triggered if the synchronous result data is returned
                 };
 
                 ApplicationHostProxyClass.prototype.startCaptureDomEvents = function (events) {
@@ -99,7 +102,11 @@ var SDL;
                 };
 
                 ApplicationHostProxyClass.prototype.resolveCommonLibraryResources = function (resourceGroupName, callback) {
-                    this.call("resolveCommonLibraryResources", [resourceGroupName], callback);
+                    if (this.isSupported("resolveCommonLibraryResourcesAsync")) {
+                        this.call("resolveCommonLibraryResourcesAsync", [resourceGroupName, callback]);
+                    } else {
+                        this.call("resolveCommonLibraryResources", [resourceGroupName], callback);
+                    }
                 };
 
                 ApplicationHostProxyClass.prototype.getCommonLibraryResources = function (files, version, onFileLoad, onFailure) {
@@ -180,14 +187,24 @@ var SDL;
                     if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to get application data: application host is untrusted.");
                     }
-                    this.call("getApplicationData", [key], callback);
+
+                    if (this.isSupported("getApplicationDataAsync")) {
+                        this.call("getApplicationDataAsync", [key, callback]);
+                    } else {
+                        this.call("getApplicationData", [key], callback);
+                    }
                 };
 
                 ApplicationHostProxyClass.prototype.getApplicationSessionData = function (key, callback) {
                     if (!Application.ApplicationHost.isTrusted) {
                         throw Error("Unable to get application session data: application host is untrusted.");
                     }
-                    this.call("getApplicationSessionData", [key], callback);
+
+                    if (this.isSupported("getApplicationSessionDataAsync")) {
+                        this.call("getApplicationSessionDataAsync", [key, callback]);
+                    } else {
+                        this.call("getApplicationSessionData", [key], callback);
+                    }
                 };
 
                 ApplicationHostProxyClass.prototype.clearApplicationData = function () {
@@ -222,6 +239,14 @@ var SDL;
                     if (this.isSupported("triggerAnalyticsEvent")) {
                         this.call("triggerAnalyticsEvent", [event, object]);
                     }
+                };
+
+                ApplicationHostProxyClass.prototype.showTopBar = function () {
+                    this.call("showTopBar");
+                };
+
+                ApplicationHostProxyClass.prototype.setTopBarOptions = function (options) {
+                    this.call("setTopBarOptions", [options]);
                 };
 
                 ApplicationHostProxyClass.prototype.addEventListener = function (event, handler) {

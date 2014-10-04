@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1772" />
+    <setting name="version" value="1.4.0.1804" />
     <setting name="debug" value="false" />
     <setting name="corePath" value="../" />
-    <setting name="coreVersion" value="1.4.0.1772" />
+    <setting name="coreVersion" value="1.4.0.1804" />
   </appSettings>
   <locales>
     <locale>en</locale>
@@ -57,6 +57,7 @@
                         <dependency name="SDL.UI.Core.Knockout.Renderers" />
                         <dependency name="SDL.UI.Core.Knockout.BindingHandlers" />
                         <dependency name="SDL.Client.Libraries.SDL.Globalize" />
+                        <dependency name="SDL.UI.Controls.Knockout.TopBar" />
                       </dependencies>
                     </resourceGroup>
                     <resourceGroup name="SDL.Client.UI.ApplicationHost.Views.Frame.Init">
@@ -91,6 +92,7 @@
                     <dependency name="SDL.Client.Types.Url" />
                     <dependency name="SDL.Client.Types.Array" />
                     <dependency name="SDL.UI.Core.Knockout.ViewModels.Base" />
+                    <dependency name="SDL.UI.Controls.TopBar" />
                   </dependencies>
                 </resourceGroup>
               </resourceGroups>

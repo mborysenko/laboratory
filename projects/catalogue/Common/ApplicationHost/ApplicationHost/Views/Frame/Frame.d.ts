@@ -23,6 +23,7 @@ declare module SDL.Client.UI.ApplicationHost.Views {
         selectNavigationItem: (item: ViewModels.Navigation.INavigationItem) => void;
         selectNavigationGroup: (group: ViewModels.Navigation.INavigationGroup) => void;
         toggleExpandNavigationGroup: (group: ViewModels.Navigation.INavigationGroup) => void;
+        onTopBarEvent(targetDisplay: ViewModels.Navigation.ITargetDisplay, e: JQueryEventObject, topBar: SDL.UI.Controls.TopBar): void;
         onNavigationSelectionChanged: KnockoutComputed<void>;
         onExpandedNavigationGroupChanged: KnockoutSubscription;
         blurredNavigationPane: () => void;

@@ -1,5 +1,6 @@
 /// <reference path="../Types/Types.d.ts" />
 /// <reference path="../Application/Application.ts" />
+/// <reference path="../Application/ApplicationHostFacade.ts" />
 /// <reference path="../Application/ApplicationFacade.ts" />
 /// <reference path="../ApplicationHost/ApplicationHostFacade.ts" />
 /// <reference path="../ConfigurationManager/ConfigurationManager.ts" />
@@ -244,7 +245,7 @@ var SDL;
                 ApplicationHostClass.prototype.stopCaptureDomEvents = function (events, caller) {
                     this.triggerAnalyticsEvent("stop-capture-dom-events", {
                         type: "Application Host API",
-                        data: events || events.join(", ")
+                        data: events && events.join(", ")
                     }, caller);
                     this._stopCaptureDomEvents(this.getCallerTargetDisplay(true, false, true, caller), events);
                 };
@@ -686,6 +687,23 @@ var SDL;
                     }
                 };
 
+                ApplicationHostClass.prototype.showTopBar = function (caller) {
+                    var targetDisplay = this.getCallerTargetDisplay(true, false, true, caller);
+                    if (targetDisplay) {
+                        this.triggerAnalyticsEvent("topbar-show", {
+                            type: "Application Host API"
+                        }, caller);
+                        this.fireEvent("showtopbar", { targetDisplay: targetDisplay });
+                    }
+                };
+
+                ApplicationHostClass.prototype.setTopBarOptions = function (options, caller) {
+                    var targetDisplay = this.getCallerTargetDisplay(true, false, true, caller);
+                    if (targetDisplay) {
+                        this.fireEvent("settopbaroptions", { targetDisplay: targetDisplay, options: options });
+                    }
+                };
+
                 ApplicationHostClass.prototype.resolveCommonLibraryResources = function (resourceGroupName, caller) {
                     this.triggerAnalyticsEvent("library-resources-resolve", {
                         type: "Application Host API",
@@ -963,15 +981,22 @@ var SDL;
                     throw Error("Unexpected 'registerApplication' call from domain " + sourceDomain + ".");
                 };
 
-                ApplicationHostClass.prototype.publishEvent = function (type, data) {
+                ApplicationHostClass.prototype.publishEvent = function (type, data, targetDisplay) {
                     var p = this.properties;
-                    SDL.jQuery.each(p.applications, function (index, application) {
-                        return SDL.jQuery.each(application.targetDisplays, function (index, targetDisplay) {
-                            if (targetDisplay.eventHandler) {
-                                targetDisplay.eventHandler({ type: type, data: data });
-                            }
+
+                    if (targetDisplay) {
+                        if (targetDisplay.eventHandler && (targetDisplay.application.authenticationTargetDisplay == targetDisplay || targetDisplay.application.targetDisplays.indexOf(targetDisplay) != -1)) {
+                            targetDisplay.eventHandler({ type: type, data: data });
+                        }
+                    } else {
+                        SDL.jQuery.each(p.applications, function (index, application) {
+                            return SDL.jQuery.each(application.authenticationTargetDisplay ? application.targetDisplays.concat(application.authenticationTargetDisplay) : application.targetDisplays, function (index, targetDisplay) {
+                                if (targetDisplay.eventHandler) {
+                                    targetDisplay.eventHandler({ type: type, data: data });
+                                }
+                            });
                         });
-                    });
+                    }
                 };
 
                 ApplicationHostClass.prototype.getCallerTargetDisplay = function (allowAuthenticationTargetDisplay, allowSelfTargetDisplay, allowUnauthenticated, caller) {
@@ -1323,7 +1348,7 @@ var SDL;
                             p.applicationsIndex[appId] = application;
                         }
 
-                        SDL.Client.ApplicationHost.ApplicationHostFacade._expose();
+                        SDL.Client.ApplicationHost.ApplicationHostFacade = new SDL.Client.ApplicationHost.ApplicationHostFacadeClass();
                     }
 
                     p.initialized = true;

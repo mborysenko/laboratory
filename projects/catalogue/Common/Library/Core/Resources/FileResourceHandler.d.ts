@@ -10,7 +10,8 @@
 declare module SDL.Client.Resources {
     interface IResourceGroupDefinition {
         name: string;
-        files: string[];
+        files: IFileResourceDefinition[];
+        cultureFiles?: IFileResourceDefinition[];
     }
     interface IPackageResourceDefinition extends IFileResourceDefinition {
         name: string;

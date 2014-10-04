@@ -7,11 +7,26 @@
 			</div>
 		<!-- /ko -->
 		<!-- ko if: initialized -->
-			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays), event: {scroll: function() {$element.scrollLeft = 0;}}">
+			<div class="frame-applications" data-bind="foreach: navigationItemTargetDisplays.concat(authenticationTargetDisplays),
+					event: {scroll: function() {$element.scrollLeft = 0;}}">
 				<div data-bind="if: accessed() && !disposed(),
 								css: {'frame-application-out': $root.isTargetDisplayOut($data),
 									'frame-application-animated': $root.isTargetDisplaySlideAnimated($data, $element),
-									'frame-application-hidden': $data != $root.shownTargetDisplay() }">
+									'frame-application-hidden': $data != $root.shownTargetDisplay(),
+									'frame-application-with-topbar': topBarShown}">
+					<!-- ko if: topBarShown -->
+						<span data-bind="control: {
+								type: 'SDL.UI.Controls.Knockout.TopBar',
+								data: {
+										ribbonTabs: topBarOptions().ribbonTabs,
+										selectedRibbonTabId: topBarOptions().selectedRibbonTabId,
+										buttons: topBarOptions().buttons,
+										ribbonTabsFlyoutMenuShown: $data == $root.shownTargetDisplay() && null,
+										hostMode: true
+									},
+								events: {'*': $root.onTopBarEvent}}">
+						</span>
+					<!-- /ko -->
 					<div class="frame-application-scroll-wrapper">
 						<iframe data-bind="attr: { src: src, foo: $root.registerTargetDisplayFrame($data, $element) },
 							event: {load: function() {loaded(true);}, focus: $root.blurredNavigationPane}"></iframe>

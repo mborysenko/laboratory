@@ -317,9 +317,15 @@ var SDL;
                             var resources = this.registeredResources[resourceGroup.name];
                             if (resources) {
                                 for (var k = 0, lenk = resources.files.length; k < lenk; k++) {
-                                    var url = resources.files[k].url;
+                                    var fileDefinition = resources.files[k];
+                                    var url = fileDefinition.url;
                                     if (url.indexOf("{CULTURE}") == -1) {
-                                        resourceGroup.files.push(url);
+                                        resourceGroup.files.push(fileDefinition);
+                                    } else {
+                                        if (!resourceGroup.cultureFiles) {
+                                            resourceGroup.cultureFiles = [];
+                                        }
+                                        resourceGroup.cultureFiles.push(fileDefinition);
                                     }
                                 }
                             } else {

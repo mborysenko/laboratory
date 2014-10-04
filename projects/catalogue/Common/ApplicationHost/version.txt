@@ -1,2 +1,2 @@
-confVersion = 1.4.0.1772
-initVersion = 1.4.0.1772
+confVersion = 1.4.0.1804
+initVersion = 1.4.0.1804

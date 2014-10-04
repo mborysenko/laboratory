@@ -1,6 +1,7 @@
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
+/// <reference path="../../../../SDL.Client/SDL.Client.UI.Controls/TopBar/TopBar.d.ts" />
 declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
     interface ITargetDisplay {
         targetDisplay: Client.ApplicationHost.ITargetDisplay;
@@ -8,6 +9,8 @@ declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
         accessed: KnockoutObservable<boolean>;
         loaded: KnockoutObservable<boolean>;
         loading: KnockoutComputed<boolean>;
+        topBarShown: KnockoutObservable<boolean>;
+        topBarOptions: KnockoutObservable<any>;
         timeout: number;
     }
     interface INavigationItemTargetDisplay extends ITargetDisplay {
@@ -59,4 +62,5 @@ declare module SDL.Client.UI.ApplicationHost.ViewModels.Navigation {
     function setNavigationSelectionFromUrl(ignoreErrors?: boolean): void;
     function initialize(callback?: () => void): void;
     function getNavigationItemById(navigationItemId: string, applicationId: string): INavigationItem;
+    function onTopBarEvent(targetDisplay: ITargetDisplay, e: JQueryEventObject, topBar: SDL.UI.Controls.TopBar): void;
 }
