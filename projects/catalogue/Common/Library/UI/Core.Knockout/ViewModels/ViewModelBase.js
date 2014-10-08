@@ -1,7 +1,10 @@
 /// <reference path="../../SDL.Client.Core/Types/Types.d.ts" />
+/// <reference path="../../SDL.Client.Core/ConfigurationManager/ConfigurationManager.d.ts" />
 /// <reference path="../../SDL.Client.Core/Types/DisposableObject.d.ts" />
 /// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
 /// <reference path="../../SDL.Client.Core/Event/EventRegister.d.ts" />
+/// <reference path="../../SDL.Client.Core/Resources/FileResourceHandler.d.ts" />
+/// <reference path="../../SDL.Client.UI.Core/Views/ViewBase.d.ts" />
 /// <reference path="../Libraries/knockout/knockout.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -15,7 +18,7 @@ var SDL;
         (function (Core) {
             (function (Knockout) {
                 (function (ViewModels) {
-                    eval(SDL.Client.Types.OO.enableCustomInheritance);
+                    eval(Client.Types.OO.enableCustomInheritance);
 
                     var culture = ko.observable(SDL.Globalize.culture().name);
                     SDL.Client.Event.EventRegister.addEventHandler(SDL.Globalize, "culturechange", function (e) {
@@ -24,9 +27,22 @@ var SDL;
 
                     var ViewModelBase = (function (_super) {
                         __extends(ViewModelBase, _super);
-                        function ViewModelBase() {
-                            _super.apply(this, arguments);
+                        function ViewModelBase(view) {
+                            _super.call(this);
                             this.culture = culture;
+
+                            if (view) {
+                                var templateResource = view.getTemplateResource();
+                                var url = templateResource.url;
+                                if (url && url.indexOf("~/") == 0) {
+                                    url = SDL.Client.Types.Url.combinePath(SDL.Client.Application.applicationHostCorePath || SDL.Client.Configuration.ConfigurationManager.corePath, url.slice(2));
+                                }
+
+                                this.template = {
+                                    url: SDL.Client.Types.Url.getAbsoluteUrl(url),
+                                    version: templateResource.version
+                                };
+                            }
                         }
                         ViewModelBase.prototype.localize = function (resource, parameters) {
                             culture(); // this adds a dependency on the culture
@@ -36,6 +52,14 @@ var SDL;
                         ViewModelBase.prototype.format = function (value, format) {
                             culture(); // this adds a dependency on the culture
                             return SDL.Globalize.format(value, format);
+                        };
+
+                        ViewModelBase.prototype.setting = function (name) {
+                            return SDL.Client.Configuration.ConfigurationManager.getAppSetting(name);
+                        };
+
+                        ViewModelBase.prototype.path = function (path) {
+                            return this.template ? SDL.Client.Types.Url.combinePath(this.template.url, path) : path;
                         };
                         return ViewModelBase;
                     })(SDL.Client.Types.DisposableObject);

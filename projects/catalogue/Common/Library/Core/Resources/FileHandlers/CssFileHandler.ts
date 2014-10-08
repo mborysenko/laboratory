@@ -13,7 +13,7 @@ module SDL.Client.Resources.FileHandlers
 				var path: string;
 				var version: string;
 
-				return data.replace(/\{(PATH|ROOT|VERSION)\}(\/?)/g,
+				return data.replace(/\{(PATH|ROOT|VERSION|SETTING:([^\}]+))\}(\/?)/g,
 					<(substring: string, ...args: any[]) => string>function(substring: string, token: string, next: string): string
 					{
 						switch (token)
@@ -58,15 +58,18 @@ module SDL.Client.Resources.FileHandlers
 									version = version ? "?" + version : "";
 								}
 								return version;
+							default:
+								// SETTING:setting-name
+								return SDL.Client.Configuration.ConfigurationManager.getAppSetting(token.slice(8).trim()) || "";
 						}
 					});
 			}
 			return data;
 		}
 
-		public static supports(url: string): boolean
+		public static supports(url: string, fileType?: string): boolean
 		{
-			return (/\.css(\?|\#|$)/i).test(url);
+			return fileType == "css" || ((!fileType || fileType == "auto") && (/\.css(\?|\#|$)/i).test(url));
 		}
 
 		public _supports(ext: string): boolean

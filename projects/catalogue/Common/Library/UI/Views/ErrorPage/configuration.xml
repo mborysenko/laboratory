@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
+  <appSettings>
+    <setting name="version" value="1.5.0.1883" />
+    <setting name="debug" value="false" />
+    <setting name="corePath" value="/Common/" />
+    <setting name="coreVersion" value="1.5.0.1883" />
+  </appSettings>
+  <include src="~/configuration.xml" />
+  <pages>
+    <page url="*" resource="SDL.UI.Views.InitErrorPage" />
+  </pages>
+  <resourceGroups>
+    <resourceGroup name="SDL.UI.Views.InitErrorPage">
+      <dependencies>
+        <dependency name="SDL.UI.Core.Init" />
+        <dependency name="SDL.UI.Views.ErrorPage" />
+        <dependency name="SDL.UI.Controls.Application.TopBar" />
+      </dependencies>
+    </resourceGroup>
+  </resourceGroups>
+</configuration>

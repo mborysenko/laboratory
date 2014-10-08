@@ -1,0 +1,64 @@
+﻿@import "../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+
+@borderColor: #454B53;
+@borderWidth: 1px;
+@borderRadius: 3px;
+@borderShadowColor: rgba(38, 44, 57, 0.15);
+
+.sdl-dialog
+{
+	position: fixed;
+	border: @borderWidth solid @borderColor;
+	.border-radius(@borderRadius);
+	.box-shadow(0, 1px, 5px, 0, @borderShadowColor);
+	min-width: 150px;
+	min-height: 100px;
+	z-index: 100;
+	background-color: white;
+	outline: none;
+}
+
+.sdl-dialog-hidden
+{
+	visibility: hidden;
+}
+
+.sdl-dialog-header
+{
+	.box-sizing(border-box);
+	height: 48px;
+	white-space: nowrap;
+	padding: 10px 42px 10px 10px;
+	border-bottom: 1px solid #AAA;
+	background-color: #FAFAFA;
+	line-height: 27px;
+	.border-radius((@borderRadius - 1) (@borderRadius - 1) 0 0);
+}
+
+.sdl-dialog-header > label
+{
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 15px;
+	float: left;
+	margin-right: 5px;
+	overflow: hidden;
+	.text-overflow(ellipsis);
+	white-space: nowrap;
+	width: 100%;
+}
+
+.sdl-dialog-header > button
+{
+	font-size: 25px;
+	width: 27px;
+	padding: 0;
+	font-weight: normal;
+	position: absolute;
+	right: 10px;
+}
+
+.sdl-dialog-actionbar
+{
+	.border-radius(0 0 (@borderRadius - 1) (@borderRadius - 1));
+}

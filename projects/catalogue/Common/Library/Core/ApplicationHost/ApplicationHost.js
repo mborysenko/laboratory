@@ -769,7 +769,7 @@ var SDL;
                                 if (onFileLoad) {
                                     var url = file.url;
                                     var data = file.data;
-                                    if (Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
+                                    if (Client.Resources.FileHandlers.CssFileHandler.supports(url, file.fileType)) {
                                         data = Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
                                     }
                                     onFileLoad({ url: url, data: data });
@@ -857,7 +857,7 @@ var SDL;
                         if (onSuccess) {
                             var url = file.url;
                             var data = file.data;
-                            if (Client.Resources.FileHandlers.CssFileHandler.supports(url)) {
+                            if (Client.Resources.FileHandlers.CssFileHandler.supports(url, file.fileType)) {
                                 data = Client.Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
                             }
 
@@ -1134,7 +1134,7 @@ var SDL;
                         this.manifestsLoadStartTime = +new Date();
                         SDL.jQuery.each(nodes, function (i, xmlElement) {
                             var baseUrlNodes = Client.Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
-                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
                             var url = Url.getAbsoluteUrl(Url.combinePath(baseUrl, xmlElement.getAttribute("url")));
                             var id = xmlElement.getAttribute("id");
@@ -1249,7 +1249,7 @@ var SDL;
                             var applicationReferenceNode = nodes[i];
 
                             var baseUrlNodes = Client.Xml.selectNodes(applicationReferenceNode, "ancestor::configuration/@baseUrl");
-                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
                             var appId = applicationReferenceNode.getAttribute("id");
                             if (p.applicationsIndex[appId]) {

@@ -1,0 +1,1 @@
+﻿SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.DatePicker, "datePicker");

@@ -1113,7 +1113,7 @@ module SDL.Client.ApplicationHost
 									{
 										var url = file.url;
 										var data = file.data;
-										if (Resources.FileHandlers.CssFileHandler.supports(url))
+										if (Resources.FileHandlers.CssFileHandler.supports(url, file.fileType))
 										{
 											data = Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
 										}
@@ -1223,7 +1223,7 @@ module SDL.Client.ApplicationHost
 							{
 								var url = file.url;
 								var data = file.data;
-								if (Resources.FileHandlers.CssFileHandler.supports(url))
+								if (Resources.FileHandlers.CssFileHandler.supports(url, file.fileType))
 								{
 									data = Resources.FileHandlers.CssFileHandler.updatePaths(file, true);
 								}
@@ -1575,8 +1575,8 @@ module SDL.Client.ApplicationHost
 				this.manifestsLoadStartTime = +new Date();
 				SDL.jQuery.each(nodes, (i: number, xmlElement: Element) =>
 					{
-						var baseUrlNodes =  Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
-						var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+						var baseUrlNodes =  <Attr[]>Xml.selectNodes(xmlElement, "ancestor::configuration/@baseUrl");
+						var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
 						var url = Url.getAbsoluteUrl(Url.combinePath(baseUrl, xmlElement.getAttribute("url")));
 						var id = xmlElement.getAttribute("id");
@@ -1709,8 +1709,8 @@ module SDL.Client.ApplicationHost
 				{
 					var applicationReferenceNode = <Element>nodes[i];
 
-					var baseUrlNodes =  Xml.selectNodes(applicationReferenceNode, "ancestor::configuration/@baseUrl");
-					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+					var baseUrlNodes =  <Attr[]>Xml.selectNodes(applicationReferenceNode, "ancestor::configuration/@baseUrl");
+					var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
 					var appId = applicationReferenceNode.getAttribute("id");
 					if (p.applicationsIndex[appId])

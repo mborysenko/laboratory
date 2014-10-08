@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Core.Css">
+			<dependencies>
+				<dependency name="SDL.UI.Core.Css.Browser"/>
+				<dependency name="SDL.UI.Core.Css.ZIndexManager"/>
+				<dependency name="SDL.UI.Core.Css.TextInput"/>
+			</dependencies>
+		</resourceGroup>
+		<resourceGroup name="SDL.UI.Core.Css.Browser">
+			<files>
+				<file name="Css.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Types.Base"/>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+			</dependencies>
+		</resourceGroup>
+		<resourceGroup name="SDL.UI.Core.Css.ZIndexManager">
+			<files>
+				<file name="ZIndexManager.js"/>
+			</files>
+		</resourceGroup>
+		<resourceGroup name="SDL.UI.Core.Css.TextInput">
+			<files>
+				<file name="TextInput.css"/>
+			</files>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

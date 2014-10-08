@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.ActionBar">
+			<files>
+				<file name="ActionBar.js"/>
+				<file name="ActionBar.css"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+				<dependency name="SDL.UI.Controls.JQuery.Button"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Controls.JQuery.ActionBar">
+			<files>
+				<file name="ActionBar.jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Controls.ActionBar"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

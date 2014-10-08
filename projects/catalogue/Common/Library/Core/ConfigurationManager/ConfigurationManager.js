@@ -14,6 +14,7 @@ var SDL;
                     this.nonCoreInitialized = false;
                     this.loadingCounter = 0;
                     this.coreConfigurationToLoad = [];
+                    this.cachedAppSettings = {};
                 }
                 ConfigurationManagerClass.prototype.initialize = function (callback, nonCoreInitCallback) {
                     var _this = this;
@@ -72,7 +73,26 @@ var SDL;
                 };
 
                 ConfigurationManagerClass.prototype.getAppSetting = function (name) {
-                    return Client.Application.isHosted && Client.Application.sharedSettings && Client.Application.sharedSettings[name] || Client.Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name + "']/@value");
+                    var value = this.cachedAppSettings[name];
+                    if (value === undefined) {
+                        if (Client.Application.isHosted && Client.Application.sharedSettings) {
+                            value = Client.Application.sharedSettings[name];
+                        }
+
+                        if (value === undefined) {
+                            var settingNode = Client.Xml.selectSingleNode(this.configuration, "//configuration/appSettings/setting[@name='" + name + "' and @value]");
+                            if (settingNode) {
+                                value = settingNode.getAttribute("value");
+                                if (value && value.indexOf("~") == 0 && settingNode.getAttribute("type") == "url") {
+                                    value = Client.Types.Url.getAbsoluteUrl(Client.Types.Url.combinePath(this.corePath, value.slice(2)));
+                                }
+                            } else {
+                                value = null;
+                            }
+                        }
+                        this.cachedAppSettings[name] = value;
+                    }
+                    return value;
                 };
 
                 ConfigurationManagerClass.prototype.getCurrentPageConfigurationNode = function () {
@@ -93,7 +113,7 @@ var SDL;
                                     if (!SDL.Client.Types.Url.isAbsoluteUrl(url)) {
                                         var baseUrlNodes = Client.Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
                                         if (baseUrlNodes.length) {
-                                            url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+                                            url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].value, url);
                                         }
                                     }
                                 }
@@ -131,7 +151,7 @@ var SDL;
                                     if (!SDL.Client.Types.Url.isAbsoluteUrl(url)) {
                                         var baseUrlNodes = Client.Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
                                         if (baseUrlNodes.length) {
-                                            url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+                                            url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].value, url);
                                         }
                                     }
                                 }
@@ -197,6 +217,14 @@ var SDL;
                                 corePath += "/";
                             }
                             this.corePath = Client.Types.Url.combinePath(baseUrl, corePath);
+                        }
+                    }
+
+                    var urlSettings = Client.Xml.selectNodes(data, "//configuration/appSettings/setting[@type='url']/@value");
+                    for (var i = 0, len = urlSettings.length; i < len; i++) {
+                        var urlSetting = urlSettings[i];
+                        if (urlSetting.value.indexOf("~") != 0 && !Client.Types.Url.isAbsoluteUrl(urlSetting.value)) {
+                            urlSetting.value = Client.Types.Url.getAbsoluteUrl(Client.Types.Url.combinePath(baseUrl, urlSetting.value));
                         }
                     }
 

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../SDL.Client.Core/configuration.xsd">
+	
+    <resourceGroups>
+		<resourceGroup name="SDL.Client.UI.Core.Libraries.Polyfills">
+            <files>
+                <file name="classList.min.js"/>
+                <file name="placeholder.min.js"/>
+            </files>
+		</resourceGroup>
+	</resourceGroups>
+    
+</configuration>

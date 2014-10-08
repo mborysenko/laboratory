@@ -1,0 +1,117 @@
+﻿@import "../../SDL.Client.UI.Core/Less/inputs.less";
+
+@listSelectedColor: #bed2f0;
+@listHoverColor: #e9f0fa;
+
+@itemSelectedBorderColor: #94b5e5;
+@itemHoverBorderColor: @listSelectedColor;
+
+.sdl-dropdownlist
+{
+	.sdl-input-styles();
+	position: relative;
+	padding: 0 @fontOffset + 16 0 @fontOffset;
+	white-space: nowrap;
+	line-height: @height;
+	.user-select(none);
+
+	span
+	{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+	}
+
+	&:after
+	{
+		content: '';
+		background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjAiIHk9IjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTQgNkwxMiA2TDggMTFMNCA2WiIgZmlsbD0iIzM0M2E0NiIvPjwvc3ZnPg==);
+		width: 16px;
+		height: 16px;
+		position: absolute;
+		top: 4px;
+		right: 5px;
+		z-index: 0;
+		.opacity(0.75);
+	}
+
+	&:not([disabled]):hover,
+	&:not([disabled]):focus,
+	&.open
+	{
+		.sdl-input-hover-styles();
+
+		&:after
+		{
+			.opacity(1);
+		}
+	}
+
+	&[disabled]
+	{
+		.sdl-input-disabled-styles();
+
+		&:after
+		{
+			.opacity(0.5);
+		}
+	}
+
+	ul
+	{
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: @height;
+		left: -1px;
+		right: -1px;
+		box-sizing: border-box;
+		list-style-type: none;
+		border: solid 1px @borderColorHover;
+		background-color: #fff;
+		font-family: @fontFamily;
+		font-size: @fontSize;
+		color: @fontColor;
+		.textShadow(#fff);
+		.border-radius(@borderRadius);
+		display: none;
+		z-index: 1;
+
+		li
+		{
+			height: @height - 1;
+			line-height: @height - 1;
+			margin: 1px 1px 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			padding: 0 @fontOffset;
+			border: solid 1px #fff;
+			box-sizing: border-box;
+
+			&:hover
+			{
+				background-color: @listHoverColor;
+				border-color: @itemHoverBorderColor;
+				.text-shadow(none);
+			}
+
+			&.selected
+			{
+				background-color: @listSelectedColor;
+				border-color: @itemSelectedBorderColor;
+				.text-shadow(none);
+			}
+
+			&:last-child
+			{
+				margin-bottom: 1px;
+			}
+		}
+	}
+
+	&.open ul
+	{
+		display: block;
+	}
+}

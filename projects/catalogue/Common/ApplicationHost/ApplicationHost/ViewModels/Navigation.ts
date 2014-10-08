@@ -683,8 +683,8 @@ module SDL.Client.UI.ApplicationHost.ViewModels.Navigation
 			var isTopIconRelative = topIcon && topIcon.charAt(0) != "/" && topIcon.indexOf("~/") == -1;
 			if (isIconRelative || isTopIconRelative)
 			{
-				var baseUrlNodes =  Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
-				var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+				var baseUrlNodes =  <Attr[]>Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
+				var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
 				if (isIconRelative)
 				{

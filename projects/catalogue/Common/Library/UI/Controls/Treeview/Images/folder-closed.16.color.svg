@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!-- Generator: Adobe Fireworks 10, Export SVG Extension by Aaron Beall (http://fireworks.abeall.com) . Version: 0.6.1  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="Untitled-Page%201" viewBox="0 0 16 16" style="background-color:#ffffff00" version="1.1"
+	xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+	x="0px" y="0px" width="16px" height="16px"
+>
+	<g id="Layer%201">
+		<g>
+			<path d="M 15.5 3 L 9 3 L 9 1 L 0.5 1 C 0.2236 1 0 1.2236 0 1.5 L 0 12.5 L 0 13.5 C 0 13.7764 0.2236 14 0.5 14 L 15.5 14 C 15.7764 14 16 13.7764 16 13.5 L 16 3.5 C 16 3.2236 15.7764 3 15.5 3 ZM 15 13 L 1 13 L 1 2 L 8 2 L 8 4 L 15 4 L 15 13 Z" fill="#ad7629"/>
+			<path d="M 15 13 L 15 4 L 9 4 L 9 2 L 1 2 L 1 13 L 1 13 " fill="#fdb52f"/>
+		</g>
+		<path d="M 0 4.5 L 0 13.5 C 0 13.7764 0.2236 14 0.5 14 L 15.5 14 C 15.7764 14 16 13.7764 16 13.5 L 16 12.5 L 16 2.5 C 16 2.2236 15.7764 2 15.5 2 L 8 2 L 7 4 L 0.5 4 C 0.2236 4 0 4.2236 0 4.5 ZM 1 5 L 8 5 L 10 3 L 15 3 L 15 13 L 1 13 L 1 5 Z" fill="#ad7629"/>
+		<path d="M 1 13 L 1 5 L 8 5 L 9 3 L 15 3 L 15 13 L 15 13 " fill="#fdb52f"/>
+		<path opacity="0.2" d="M 16 15 L 0 15 L 0 14 L 16 14 L 16 15 Z" fill="#221e1f"/>
+		<path d="M 0 16 L 0 0 L 16 0 L 16 16 L 0 16 Z" fill="none"/>
+	</g>
+</svg>

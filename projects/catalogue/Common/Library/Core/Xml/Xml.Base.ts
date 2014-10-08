@@ -156,18 +156,25 @@ module SDL.Client.Xml
 
 		if (node)
 		{
-			if (node.nodeType == 9)
+			if (node.nodeType == 2)
 			{
-				node = (<Document>node).documentElement;
-			}
-
-			if (node.textContent != undefined)
-			{
-				return node.textContent;
+				return (<Attr>node).value;
 			}
 			else
 			{
-				return (<any>node).text;
+				if (node.nodeType == 9)
+				{
+					node = (<Document>node).documentElement;
+				}
+
+				if (node.textContent != undefined)
+				{
+					return node.textContent;
+				}
+				else
+				{
+					return (<any>node).text;
+				}
 			}
 		}
 	};

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.Callout">
+			<files>
+				<file name="Callout.js"/>
+				<file name="Callout.css"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.FocusableControlBase"/>
+				<dependency name="SDL.UI.Controls.JQuery.ActionBar"/>
+				<dependency name="SDL.UI.Core.Utils.Dom"/>
+				<dependency name="SDL.UI.Core.Css.ZIndexManager"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Controls.JQuery.Callout">
+			<files>
+				<file name="Callout.jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Controls.Callout"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

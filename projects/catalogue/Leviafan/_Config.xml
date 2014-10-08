@@ -1,14 +1,7 @@
 ﻿<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
-    <resourceGroups>
-        <resourceGroup name="Leviafan.Views.Dashboard">
-            <files>
-                <file name="dashboard.html"/>
-                <file name="dashboard.js"/>
-            </files>
-            <dependencies>
-                <dependency name="SDL.UI.Core.Init"/>
-                <dependency name="SDL.UI.Core.Views.ViewBase"/>
-            </dependencies>
-        </resourceGroup>
-    </resourceGroups>
+
+    <include src="Views/_config.xml" />
+
+    <include src="Themes/_config.xml" />
+
 </configuration>

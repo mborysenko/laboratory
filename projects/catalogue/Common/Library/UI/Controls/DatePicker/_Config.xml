@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+    <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.DatePicker">
+            <files>
+                <file name="Dependencies\moment.min.js"/>
+                <file name="Dependencies\pikaday.modified.js"/>
+                <file name="Styles\pikaday.css"/>
+                <file name="Styles\sdl.carbon2.pikaday.css"/>
+                <file name="SDL.UI.Controls.DatePicker.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Controls.ControlBase"/>
+                <dependency name="SDL.UI.Core.Event.Constants"/>
+                <dependency name="SDL.Client.UI.Core.Libraries.Polyfills"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker">
+            <files>
+                <file name="SDL.UI.Controls.DatePicker.jQuery.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+                <dependency name="SDL.UI.Core.Controls.JQuery"/>
+                <dependency name="SDL.UI.Controls.DatePicker"/>
+            </dependencies>
+        </resourceGroup>
+    </resourceGroups>
+
+</configuration>

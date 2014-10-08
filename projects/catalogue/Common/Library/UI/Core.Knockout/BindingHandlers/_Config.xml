@@ -17,6 +17,7 @@
 				<dependency name="SDL.UI.Core.Renderers.ControlRenderer"/>
 				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
 				<dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common"/>
+				<dependency name="SDL.UI.Core.Knockout.Controls"/>
 			</dependencies>
 		</resourceGroup>
 

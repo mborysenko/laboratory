@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.ResizeTrigger">
+			<files>
+				<file name="ResizeTrigger.js"/>
+				<file name="ResizeTrigger.css"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Controls.JQuery.ResizeTrigger">
+			<files>
+				<file name="ResizeTrigger.jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Controls.ResizeTrigger"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

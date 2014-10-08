@@ -1,0 +1,20 @@
+﻿<script id="SDL.UI.Views.ErrorPage" type="text/html+knockout">
+<div class="errorpage">
+	<div class="main">
+		<div class="content" class="hidedetails">
+			<div class="title" data-bind="text: title || localize('views.errorpage.title')"></div>
+			<div class="description" data-bind="text: description, css: { oneline: detailsShown() }"></div>
+			<textarea readonly class="details" data-bind="text: details, visible: detailsShown()"></textarea>
+			<div class="actions">
+				<a href="javascript:;" class="hideDetails" data-bind="visible: detailsShown(), text: localize('views.errorpage.hideDetails'), click: hideDetails"></a>
+				<a href="javascript:;" class="showDetails" data-bind="visible: !detailsShown(), text: localize('views.errorpage.showDetails'), click: showDetails"></a>
+			</div>
+		</div>
+		<div class="footer">
+			<span data-bind="html: localize('views.errorpage.copyright')"></span>
+			<br/>
+			<span data-bind="html: localize('views.errorpage.terms')"></span>
+		</div>
+	</div>
+</div>
+</script>

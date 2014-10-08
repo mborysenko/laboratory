@@ -1,4 +1,4 @@
-/*14037,600,8968,5932,17637,7193,25055,2869,208,12837,1497,4614,3619,5691,591,40086,5382,54584,8116,11483,810,33181,11838,3749,1346,26049,35348,3392,5073,12619,2203,1840,2245,1417,14606,3381,4556*//// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+/*14364,600,9084,7099,17637,7193,25059,2869,208,13456,1497,4614,3619,5691,591,51594,288,20136,54584,7886,11483,810,34543,11849,3891,1748,26049,35348,3392,5073,12619,8800,33238,200,2203,7211,2245,4541,14693,4029,4640,5953,57618*//// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../Button/Button.jQuery.ts" />
 var __extends = this.__extends || function (d, b) {
@@ -230,9 +230,16 @@ var SDL;
                     data.handler = actionOptions.handler;
                     data.action = actionOptions.action;
                     data.disabled = actionOptions.disabled;
+                    data.iconClass = SDL.jQuery.extend({}, actionOptions.iconClass);
                     if ($button.text() != actionOptions.title) {
                         $button.text(actionOptions.title);
                     }
+
+                    $button.button({
+                        disabled: actionOptions.disabled,
+                        iconClass: actionOptions.iconClass,
+                        purpose: actionOptions.purpose
+                    });
                 };
 
                 ActionBar.prototype.removeActionButtons = function () {
@@ -354,7 +361,7 @@ var SDL;
                     this.sizeClass = (!p.options.size || p.options.size == ActivityIndicatorSize.LARGE) ? "sdl-activityindicator-child-size-large" : "sdl-activityindicator-child-size-" + p.options.size;
 
                     $element.addClass("sdl-activityindicator" + (p.options.legacyMode || (p.options.legacyMode !== false && SDL.Client.Configuration && SDL.Client.Configuration.ConfigurationManager && SDL.Client.Configuration.ConfigurationManager.getAppSetting("activityIndicatorLegacyMode") == "true") ? "-legacy" : ""));
-                    this.$childElement = SDL.jQuery("<div class='sdl-activityindicator-child" + (this.screenClass ? " " + this.screenClass : "") + (this.sizeClass ? " " + this.sizeClass : "") + "'><div></div><div></div></div>").appendTo($element);
+                    this.$childElement = SDL.jQuery("<div class='sdl-activityindicator-child" + (this.screenClass ? " " + this.screenClass : "") + (this.sizeClass ? " " + this.sizeClass : "") + "'><div></div><div><svg><circle cx='10' cy='10' r='8'/><path d='M10,2 A8,8 0 0,1 18,10'/><path d='M17.996,9.8 A8,8 0 0,1 10,18'/></svg></div></div>").appendTo($element);
                     this.$childElement.children(":first").text((p.options.text || "").trim());
                     if (p.element.style.animation == undefined && p.element.style.webkitAnimation == undefined) {
                         // IE9 does not support animation -> use javascript
@@ -562,49 +569,70 @@ var SDL;
   top: 50%;
   left: 50%;
   padding: 0;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+}
+.sdl-activityindicator-child > :last-child > svg {
+  width: 20px;
+  height: 20px;
 }
 .sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child {
-  width: 170px;
-  height: 170px;
-  margin: -85px 0 0 -85px;
-  border: 13px solid #666666;
-  border-top-color: #CDCDCD;
-  border-right-color: #CDCDCD;
   -webkit-animation: sdl-activityindicator-rotate-legacy 1s linear infinite;
   -o-animation: sdl-activityindicator-rotate-legacy 1s linear infinite;
   -moz-animation: sdl-activityindicator-rotate-legacy 1s linear infinite;
   animation: sdl-activityindicator-rotate-legacy 1s linear infinite;
 }
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg {
+  transform: scale(9.8);
+}
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > circle {
+  stroke: #CDCDCD;
+}
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > path {
+  stroke: #666666;
+}
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > circle,
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > path {
+  stroke-width: 1.3px;
+  fill: none;
+}
 .sdl-activityindicator > .sdl-activityindicator-child > :last-child {
-  width: 68px;
-  height: 68px;
-  margin: -34px 0 0 -34px;
-  border: 9px solid rgba(125, 139, 171, 0.4);
-  border-top-color: #7D8BAB;
   -webkit-animation: sdl-activityindicator-rotate 0.5s linear infinite;
   -o-animation: sdl-activityindicator-rotate 0.5s linear infinite;
   -moz-animation: sdl-activityindicator-rotate 0.5s linear infinite;
   animation: sdl-activityindicator-rotate 0.5s linear infinite;
 }
-.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child {
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-  border-width: 5px;
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg {
+  transform: scale(3.7);
 }
-.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child {
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
-  border-width: 2px;
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > circle {
+  stroke: rgba(125, 139, 171, 0.4);
+}
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > path:last-child {
+  stroke: #7D8BAB;
+}
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > circle,
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > path {
+  stroke-width: 2.4px;
+  fill: none;
+}
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg {
+  transform: scale(1.8);
+}
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg > cirlce,
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg > path {
+  stroke-width: 2.6px;
+}
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg {
+  transform: scale(0.88);
+}
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg > cirlce,
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg > path {
+  stroke-width: 2.2px;
 }
 .sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty) + :last-child {
-  margin-top: -50px;
+  margin-top: -26px;
 }
 @keyframes sdl-activityindicator-rotate-legacy {
   from {
@@ -1427,22 +1455,22 @@ var SDL;
                         for (var i = 0; !position && i < preferedPositions.length; i++) {
                             switch (preferedPositions[i]) {
                                 case CalloutPosition.ABOVE:
-                                    if (calloutHeight + pointerSize < posAbove && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
+                                    if (calloutHeight + pointerSize <= posAbove && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
                                         position = CalloutPosition.ABOVE;
                                     }
                                     break;
                                 case CalloutPosition.BELOW:
-                                    if (calloutHeight + pointerSize < container.clientHeight - posBelow && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
+                                    if (calloutHeight + pointerSize <= container.clientHeight - posBelow && posRight >= pointerMinDistanceFromEdge && posLeft <= container.clientWidth) {
                                         position = CalloutPosition.BELOW;
                                     }
                                     break;
                                 case CalloutPosition.LEFT:
-                                    if (calloutWidth + pointerSize < posLeft && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
+                                    if (calloutWidth + pointerSize <= posLeft && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
                                         position = CalloutPosition.LEFT;
                                     }
                                     break;
                                 case CalloutPosition.RIGHT:
-                                    if (calloutWidth + pointerSize < container.clientWidth - posRight && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
+                                    if (calloutWidth + pointerSize <= container.clientWidth - posRight && posAbove >= pointerMinDistanceFromEdge && posBelow <= container.clientHeight) {
                                         position = CalloutPosition.RIGHT;
                                     }
                                     break;
@@ -1828,17 +1856,17 @@ var SDL;
 
                     $element.addClass("sdl-dialog");
 
+                    if (p.options.title) {
+                        this.createHeaderBar();
+                    }
+
+                    if (p.options.actions && p.options.actions.length || p.options.actionFlag) {
+                        this.createActionBar();
+                    }
+
                     if (p.options.visible != null && p.options.visible.toString() == "false") {
                         this.hide();
                     } else {
-                        if (p.options.title) {
-                            this.createHeaderBar();
-                        }
-
-                        if (p.options.actions && p.options.actions.length || p.options.actionFlag) {
-                            this.createActionBar();
-                        }
-
                         this.show();
                     }
                 };
@@ -1880,7 +1908,7 @@ var SDL;
                         SDL.UI.Core.Css.ZIndexManager.setNextZIndex(this.properties.element, true);
                         Dialog.shownDialogs.push(this);
 
-                        this.updateScreen();
+                        Dialog.updateScreen();
 
                         setTimeout(function () {
                             _this.$element.removeClass("sdl-dialog-hidden").keydown(_this.getDelegate(_this.onKeyDown));
@@ -1941,11 +1969,13 @@ var SDL;
                         Dialog.shownDialogs.splice(index, 1);
                     }
 
-                    this.updateScreen();
+                    Dialog.updateScreen();
                 };
 
                 Dialog.prototype.handleFocusOut = function () {
-                    this.$element.focus();
+                    if (Dialog.getTopmostDialog() == this) {
+                        this.$element.focus();
+                    }
                 };
 
                 Dialog.prototype.getActionsFlag = function () {
@@ -2023,34 +2053,47 @@ var SDL;
                     }
                 };
 
-                Dialog.prototype.updateScreen = function () {
+                Dialog.updateScreen = function () {
                     if (Dialog.shownDialogs.length) {
                         if (!Dialog.$screen) {
                             Dialog.$screen = SDL.jQuery("<div class='sdl-dialog-screen'></div>");
                         }
 
-                        var newZIndex = -1;
-                        var topmostDialogElement;
-                        for (var i = Dialog.shownDialogs.length - 1; i >= 0; i--) {
-                            var dialogElement = Dialog.shownDialogs[i].getElement();
-                            var zIndex = SDL.UI.Core.Css.ZIndexManager.getZIndex(dialogElement);
-                            if (zIndex > newZIndex) {
-                                topmostDialogElement = dialogElement;
-                                newZIndex = zIndex;
-                            }
-                        }
-
+                        var topmostDialogElement = Dialog.getTopmostDialog().getElement();
                         var screen = Dialog.$screen[0];
 
                         SDL.UI.Core.Css.ZIndexManager.insertZIndexBefore(screen, topmostDialogElement);
                         if (screen.parentElement != topmostDialogElement.parentElement) {
                             topmostDialogElement.parentElement.insertBefore(screen, topmostDialogElement.parentElement.firstChild);
                         }
+
+                        try  {
+                            topmostDialogElement.focus();
+                        } catch (err) {
+                        }
                     } else if (Dialog.$screen) {
                         SDL.UI.Core.Css.ZIndexManager.releaseZIndex(Dialog.$screen[0]);
                         Dialog.$screen.remove();
                         Dialog.$screen = null;
                     }
+                };
+
+                Dialog.getTopmostDialog = function () {
+                    var topmostDialog;
+                    var topmostDialogElement;
+                    if (Dialog.shownDialogs.length) {
+                        var newZIndex = -1;
+                        for (var i = Dialog.shownDialogs.length - 1; i >= 0; i--) {
+                            var dialogElement = Dialog.shownDialogs[i].getElement();
+                            var zIndex = SDL.UI.Core.Css.ZIndexManager.getZIndex(dialogElement);
+                            if (zIndex > newZIndex) {
+                                topmostDialog = Dialog.shownDialogs[i];
+                                topmostDialogElement = dialogElement;
+                                newZIndex = zIndex;
+                            }
+                        }
+                    }
+                    return topmostDialog;
                 };
 
                 Dialog.prototype.cleanUp = function () {
@@ -2430,11 +2473,13 @@ var SDL;
   width: 200%;
   height: 200%;
 }
+/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../ScrollView/ScrollView.jQuery.ts" />
 /// <reference path="../Callout/Callout.jQuery.ts" />
 /// <reference path="../ResizeTrigger/ResizeTrigger.jQuery.ts" />
+/// <reference path="../Tooltip/Tooltip.jQuery.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2445,23 +2490,38 @@ var SDL;
 (function (SDL) {
     (function (UI) {
         (function (Controls) {
-            (function (ITopBarButton) {
-                ITopBarButton[ITopBarButton["ACTIVITIES"] = "activities"] = "ACTIVITIES";
-                ITopBarButton[ITopBarButton["MESSAGES"] = "messages"] = "MESSAGES";
-                ITopBarButton[ITopBarButton["USER"] = "user"] = "USER";
-                ITopBarButton[ITopBarButton["SEARCH"] = "search"] = "SEARCH";
-                ITopBarButton[ITopBarButton["CLOSE"] = "close"] = "CLOSE";
-            })(Controls.ITopBarButton || (Controls.ITopBarButton = {}));
-            var ITopBarButton = Controls.ITopBarButton;
+            (function (TopBarButton) {
+                TopBarButton[TopBarButton["MESSAGES"] = "messages"] = "MESSAGES";
+                TopBarButton[TopBarButton["WORKFLOWS"] = "workflows"] = "WORKFLOWS";
+                TopBarButton[TopBarButton["NOTIFICATIONS"] = "notifications"] = "NOTIFICATIONS";
+                TopBarButton[TopBarButton["USER"] = "user"] = "USER";
+                TopBarButton[TopBarButton["SEARCH"] = "search"] = "SEARCH";
+                TopBarButton[TopBarButton["HELP"] = "help"] = "HELP";
+                TopBarButton[TopBarButton["CLOSE"] = "close"] = "CLOSE";
+            })(Controls.TopBarButton || (Controls.TopBarButton = {}));
+            var TopBarButton = Controls.TopBarButton;
 
-            // buttonIDs array defines the order of the buttons in the top bar
-            var buttonIDs = [ITopBarButton.ACTIVITIES, ITopBarButton.MESSAGES, ITopBarButton.USER, ITopBarButton.SEARCH, ITopBarButton.CLOSE];
+            // buttonIDs array defines the order and the gruping of the buttons in the top bar
+            var buttonIDs = [
+                [TopBarButton.SEARCH, TopBarButton.HELP],
+                [TopBarButton.MESSAGES, TopBarButton.WORKFLOWS, TopBarButton.NOTIFICATIONS, TopBarButton.USER],
+                [TopBarButton.CLOSE]];
+
+            var buttonTooltipResources = {
+                messages: "controls.topbar.messages",
+                workflows: "controls.topbar.workflows",
+                notifications: "controls.topbar.notifications",
+                search: "controls.topbar.search",
+                help: "controls.topbar.help",
+                close: "controls.topbar.close",
+                logIn: "controls.topbar.logIn"
+            };
 
             eval(SDL.Client.Types.OO.enableCustomInheritance);
             var TopBar = (function (_super) {
                 __extends(TopBar, _super);
                 function TopBar(element, options) {
-                    _super.call(this, element, options || {});
+                    _super.call(this, element, options);
                 }
                 TopBar.prototype.$initialize = function () {
                     this.callBase("SDL.UI.Core.Controls.ControlBase", "$initialize");
@@ -2495,14 +2555,20 @@ var SDL;
                     $element.addClass("sdl-topbar");
                     p.$ribbonTabsContainer = SDL.jQuery("<div class='sdl-topbar-ribbon'><div class='sdl-topbar-resize-trigger'></div><span class='sdl-topbar-ribbon-overflown-button'></span></div>").appendTo($element).click(this.getDelegate(this.onRibbonTabClick));
 
-                    p.$buttonsContainer = SDL.jQuery("<div class='sdl-topbar-buttons'><span class='sdl-topbar-button-" + buttonIDs.join("'></span><span class='sdl-topbar-button-") + "'></span></div>").appendTo($element).click(this.getDelegate(this.onButtonClick));
+                    p.$buttonsContainer = SDL.jQuery("<div class='sdl-topbar-buttons'></div>").appendTo($element).click(this.getDelegate(this.onButtonClick));
+
+                    this.populateButtons();
+
+                    SDL.Globalize.addEventListener("culturechange", this.getDelegate(this.updateButtons));
+
+                    this.updateButtons();
 
                     p.$resizeTrigger = p.$ribbonTabsContainer.children(".sdl-topbar-resize-trigger");
                     p.$resizeTriggerControl = p.$resizeTrigger.resizeTrigger();
 
                     p.$tabsOverflowButton = p.$ribbonTabsContainer.children(".sdl-topbar-ribbon-overflown-button");
 
-                    this.populateButtons();
+                    this.updateButtons();
                     this.populateRibbonTabs();
                     this.calculateRibbonTabs();
 
@@ -2514,6 +2580,7 @@ var SDL;
                 };
 
                 TopBar.prototype.update = function (options) {
+                    var _this = this;
                     if (options) {
                         var p = this.properties;
                         var prevOptions = p.options;
@@ -2541,9 +2608,7 @@ var SDL;
                             options.ribbonTabs = prevOptions.ribbonTabs;
                         }
 
-                        if (options.buttons) {
-                            // if needed, compare buttons and raise an event when changed
-                        } else {
+                        if (!options.buttons) {
                             options.buttons = prevOptions.buttons;
                         }
 
@@ -2559,13 +2624,9 @@ var SDL;
                             changedProperties.push("selectedRibbonTabId");
                         }
 
-                        this.populateButtons();
+                        this.updateButtons();
                         this.populateRibbonTabs();
                         this.calculateRibbonTabs();
-
-                        for (var i = 0, len = changedProperties.length; i < len; i++) {
-                            this.fireEvent("propertychange", { property: changedProperties[i], value: options[changedProperties[i]] });
-                        }
 
                         if (options.ribbonTabsFlyoutMenuShown != null) {
                             options.ribbonTabsFlyoutMenuShown = options.ribbonTabsFlyoutMenuShown && options.ribbonTabsFlyoutMenuShown.toString() == "true" || false;
@@ -2576,6 +2637,53 @@ var SDL;
                             } else {
                                 this.hideFlyoutMenu();
                             }
+                        }
+
+                        for (var i = 0, len = changedProperties.length; i < len; i++) {
+                            this.fireEvent("propertychange", { property: changedProperties[i], value: options[changedProperties[i]] });
+                            switch (changedProperties[i]) {
+                                case "selectedRibbonTabId":
+                                    this.fireEvent("ribbonselectionchange", { id: options.selectedRibbonTabId });
+                                    break;
+                            }
+                        }
+
+                        if (options.buttons != prevOptions.buttons) {
+                            buttonIDs.forEach(function (buttonGroup, index) {
+                                buttonGroup.forEach(function (buttonId, index) {
+                                    var buttonOptions = options.buttons[buttonId];
+                                    var buttonHidden = !buttonOptions || buttonOptions.toString() == "false" || (buttonOptions.hidden && buttonOptions.hidden.toString() == "true") || false;
+                                    var buttonSelected = buttonOptions && buttonOptions.selected && buttonOptions.selected.toString() == "true" || false;
+
+                                    var prevButtonOptions = prevOptions.buttons[buttonId];
+                                    var prevButtonHidden = !prevButtonOptions || prevButtonOptions.toString() == "false" || (prevButtonOptions.hidden && prevButtonOptions.hidden.toString() == "true") || false;
+                                    var prevButtonSelected = prevButtonOptions && prevButtonOptions.selected && prevButtonOptions.selected.toString() == "true" || false;
+
+                                    if (buttonHidden != prevButtonHidden) {
+                                        _this.fireEvent("propertychange", { property: "buttons." + buttonId + ".hidden", value: buttonHidden });
+                                        if (buttonHidden) {
+                                            _this.fireEvent("hidebutton", { button: buttonId });
+                                        } else {
+                                            _this.fireEvent("showbutton", { button: buttonId });
+                                        }
+                                    }
+
+                                    if (buttonSelected != prevButtonSelected) {
+                                        if (buttonSelected) {
+                                            var $button = p.$buttonsContainer.find(".sdl-topbar-button-" + buttonId);
+                                            var buttonPosition = _this.getButtonPosition($button);
+                                            _this.fireEvent("propertychange", { property: "buttons." + buttonId + ".position.left", value: buttonPosition.left });
+                                            _this.fireEvent("propertychange", { property: "buttons." + buttonId + ".position.right", value: buttonPosition.right });
+                                            _this.fireEvent("positionbutton", { button: buttonId, position: buttonPosition });
+                                            _this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: true });
+                                            _this.fireEvent("selectbutton", { button: buttonId });
+                                        } else {
+                                            _this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: false });
+                                            _this.fireEvent("unselectbutton", { button: buttonId });
+                                        }
+                                    }
+                                });
+                            });
                         }
                     }
                 };
@@ -2621,12 +2729,66 @@ var SDL;
                 };
 
                 TopBar.prototype.populateButtons = function () {
+                    var _this = this;
+                    buttonIDs.forEach(function (buttonGroup, index) {
+                        var $buttonsGroup = SDL.jQuery("<span></span>").appendTo(_this.properties.$buttonsContainer);
+
+                        buttonGroup.forEach(function (buttonId, index) {
+                            var $button = SDL.jQuery("<span><span></span></span>").addClass("sdl-topbar-button-" + buttonId).appendTo($buttonsGroup);
+
+                            switch (buttonId) {
+                                case TopBarButton.MESSAGES:
+                                case TopBarButton.WORKFLOWS:
+                                case TopBarButton.NOTIFICATIONS:
+                                    $button.append("<span class='sdl-topbar-bubble'></span>");
+                                    break;
+                            }
+                            //$button.tooltip({ relativeTo: "element" });
+                        });
+                    });
+                };
+
+                TopBar.prototype.updateButtons = function () {
                     var p = this.properties;
                     var buttonsOptions = p.options.buttons;
-                    var $prevButton;
 
-                    buttonIDs.forEach(function (button, index, array) {
-                        p.$buttonsContainer.find(".sdl-topbar-button-" + button).toggleClass("sdl-topbar-button-hidden", !buttonsOptions[button] || (buttonsOptions[button].hidden && buttonsOptions[button].hidden.toString() == "true") || false).toggleClass("sdl-topbar-button-selected", buttonsOptions[button] && buttonsOptions[button].selected && buttonsOptions[button].selected.toString() == "true" || false);
+                    buttonIDs.forEach(function (buttonGroup, index) {
+                        var groupEmpty = true;
+                        var $buttonsGroup = p.$buttonsContainer.children().eq(index);
+                        buttonGroup.forEach(function (buttonId, index) {
+                            var buttonOptions = buttonsOptions[buttonId];
+                            var buttonHidden = !buttonOptions || buttonOptions.toString() == "false" || (buttonOptions.hidden && buttonOptions.hidden.toString() == "true") || false;
+                            var buttonSelected = buttonOptions && buttonOptions.selected && buttonOptions.selected.toString() == "true" || false;
+
+                            var $button = $buttonsGroup.children(".sdl-topbar-button-" + buttonId).toggleClass("sdl-topbar-button-hidden", buttonHidden).toggleClass("sdl-topbar-button-selected", buttonSelected);
+
+                            if (!buttonHidden) {
+                                switch (buttonId) {
+                                    case TopBarButton.MESSAGES:
+                                    case TopBarButton.WORKFLOWS:
+                                    case TopBarButton.NOTIFICATIONS:
+                                        var actualValue = (buttonOptions.value || 0) + "";
+                                        var value = actualValue > 99 ? "99+" : ((actualValue | 0) == actualValue ? (actualValue.replace(/^0+/, "") || 0) : actualValue);
+                                        $button.attr("title", SDL.Globalize.localize(buttonTooltipResources[buttonId])).children(":last-child").text(value).toggleClass("sdl-topbar-bubble-empty", value == "0");
+                                        break;
+                                    case TopBarButton.USER:
+                                        var userButtonOptions = buttonOptions;
+                                        var isLoggedIn = userButtonOptions.isLoggedIn && userButtonOptions.isLoggedIn.toString() == "true" || false;
+                                        var isPicture = userButtonOptions.isPicture && userButtonOptions.isPicture.toString() == "true" || false;
+                                        var hasPicture = !!userButtonOptions.pictureUrl;
+                                        $button.attr("title", isLoggedIn ? (userButtonOptions.userName || null) : SDL.Globalize.localize(buttonTooltipResources.logIn)).toggleClass("sdl-topbar-button-userloggedin", !isPicture && isLoggedIn).toggleClass("sdl-topbar-button-userpicture", isPicture && hasPicture).toggleClass("sdl-topbar-button-userdefaultpicture", isPicture && !hasPicture).children(":first-child").css("background-image", isPicture && hasPicture ? "url(\"" + encodeURI(userButtonOptions.pictureUrl) + "\")" : "");
+                                        break;
+                                    default:
+                                        $button.attr("title", SDL.Globalize.localize(buttonTooltipResources[buttonId]));
+                                        break;
+                                }
+                            }
+
+                            if (!buttonHidden && groupEmpty) {
+                                groupEmpty = false;
+                            }
+                        });
+                        $buttonsGroup.toggleClass("sdl-topbar-buttongroup-empty", groupEmpty);
                     });
 
                     p.$element.css("paddingRight", p.$buttonsContainer[0].offsetWidth + 30);
@@ -2766,9 +2928,21 @@ var SDL;
                     var p = this.properties;
                     if (p.$buttonsContainer[0].contains(e.target)) {
                         var $button = SDL.jQuery(e.target);
+                        if ($button[0].className.indexOf("sdl-topbar-button") == -1) {
+                            $button = $button.parent();
+                        }
+
                         for (var i = 0, len = buttonIDs.length; i < len; i++) {
-                            if ($button.hasClass("sdl-topbar-button-" + buttonIDs[i])) {
-                                this.fireEvent(buttonIDs[i] + "click");
+                            var buttonsGroup = buttonIDs[i];
+                            for (var j = 0, lenj = buttonsGroup.length; j < lenj; j++) {
+                                if ($button.hasClass("sdl-topbar-button-" + buttonsGroup[j])) {
+                                    if (buttonsGroup[j] == TopBarButton.CLOSE) {
+                                        this.fireEvent("clickbutton", { button: buttonsGroup[j] });
+                                    } else {
+                                        this.toggleButton(buttonsGroup[j]);
+                                    }
+                                    return;
+                                }
                             }
                         }
                     }
@@ -2844,7 +3018,7 @@ var SDL;
                     if (p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
                         var $listItems = SDL.jQuery(p.flyoutMenuListElement).children();
                         var skippedTabsCount = 0;
-                        p.options.ribbonTabs.forEach(function (tab, index, array) {
+                        p.options.ribbonTabs.forEach(function (tab, index) {
                             if (tab.hidden) {
                                 skippedTabsCount++;
                             } else {
@@ -3087,9 +3261,9 @@ var SDL;
                     var button = this.properties.options.buttons[buttonId];
                     if (button && button.hidden) {
                         button.selected = true;
-                        this.populateButtons();
+                        this.updateButtons();
                         this.fireEvent("propertychange", { property: "buttons." + buttonId + ".hidden", value: false });
-                        this.fireEvent("show" + buttonId);
+                        this.fireEvent("showbutton", { button: buttonId });
                     }
                 };
 
@@ -3097,9 +3271,9 @@ var SDL;
                     var button = this.properties.options.buttons[buttonId];
                     if (button && !button.hidden) {
                         button.selected = true;
-                        this.populateButtons();
+                        this.updateButtons();
                         this.fireEvent("propertychange", { property: "buttons." + buttonId + ".hidden", value: true });
-                        this.fireEvent("hide" + buttonId);
+                        this.fireEvent("hidebutton", { button: buttonId });
                     }
                 };
 
@@ -3107,9 +3281,14 @@ var SDL;
                     var button = this.properties.options.buttons[buttonId];
                     if (button && !button.selected) {
                         button.selected = true;
-                        this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId).addClass("sdl-topbar-button-selected");
+                        var $button = this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId).addClass("sdl-topbar-button-selected");
+                        var buttonPosition = this.getButtonPosition($button);
+
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".position.left", value: buttonPosition.left });
+                        this.fireEvent("propertychange", { property: "buttons." + buttonId + ".position.right", value: buttonPosition.right });
+                        this.fireEvent("positionbutton", { button: buttonId, position: buttonPosition });
                         this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: button.selected });
-                        this.fireEvent("select" + buttonId);
+                        this.fireEvent("selectbutton", { button: buttonId });
                     }
                 };
 
@@ -3119,8 +3298,44 @@ var SDL;
                         button.selected = false;
                         this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId).removeClass("sdl-topbar-button-selected");
                         this.fireEvent("propertychange", { property: "buttons." + buttonId + ".selected", value: button.selected });
-                        this.fireEvent("unselect" + buttonId);
+                        this.fireEvent("unselectbutton", { button: buttonId });
                     }
+                };
+
+                TopBar.prototype.toggleButton = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button) {
+                        if (button.selected) {
+                            this.unselectButton(buttonId);
+                        } else {
+                            this.selectButton(buttonId);
+                        }
+                    }
+                };
+
+                TopBar.prototype.getButtonSelectionState = function (buttonId) {
+                    var button = this.properties.options.buttons[buttonId];
+                    if (button) {
+                        if (button.selected) {
+                            return {
+                                selected: (button.selected && true) || false,
+                                position: this.getButtonPosition(this.properties.$buttonsContainer.find(".sdl-topbar-button-" + buttonId))
+                            };
+                        } else {
+                            return { selected: false };
+                        }
+                    } else {
+                        return null;
+                    }
+                };
+
+                TopBar.prototype.getButtonPosition = function ($button) {
+                    var buttonsContainer = this.properties.$buttonsContainer[0];
+                    var buttonPosition = $button[0].offsetLeft + 15;
+                    return {
+                        right: buttonsContainer.offsetWidth - buttonPosition,
+                        left: buttonsContainer.offsetLeft + buttonPosition
+                    };
                 };
                 return TopBar;
             })(SDL.UI.Core.Controls.ControlBase);
@@ -3131,6 +3346,7 @@ var SDL;
                 var p = _this.properties;
 
                 if (p.$element) {
+                    SDL.Globalize.removeEventListener("culturechange", this.removeDelegate(this.updateButtons));
                     p.$resizeTriggerControl.dispose();
                     p.$ribbonTabsContainer.off("click", this.removeDelegate(this.onRibbonTabClick));
                     p.$buttonsContainer.off("click", this.removeDelegate(this.onButtonClick));
@@ -3146,6 +3362,7 @@ var SDL;
                         p.flyoutCallout = p.flyoutMenuElement = p.flyoutMenuListElement = p.flyoutScrollView = null;
                     }
 
+                    //p.$buttonsContainer.children().children().tooltip().dispose();
                     p.$element.removeClass("sdl-topbar").empty();
                     p.$element = p.$buttonsContainer = p.$ribbonTabsContainer = p.$resizeTrigger = p.$resizeTriggerControl = p.$tabsOverflowButton = null;
 
@@ -3161,7 +3378,15 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-html.sdl-topbar-page {
+{
+	"controls.topbar.workflows": "Things to do",
+	"controls.topbar.notifications": "Notifications",
+	"controls.topbar.messages": "Messages",
+	"controls.topbar.search": "Search",
+	"controls.topbar.help": "Help",
+	"controls.topbar.close": "Close",
+	"controls.topbar.logIn": "Login"
+}html.sdl-topbar-page {
   overflow: hidden;
   margin: 31px 0 0;
   padding: 0;
@@ -3188,11 +3413,6 @@ html.sdl-topbar-page body {
   height: 29px;
   -webkit-box-shadow: inset 0 1px 0 0 #5c636d;
   box-shadow: inset 0 1px 0 0 #5c636d;
-  font-size: 11px;
-  font-family: Verdana;
-  text-shadow: #262C36 0 1px;
-  font-weight: normal;
-  color: #FFF;
   padding: 0 120px 0 31px;
   line-height: 30px;
   cursor: default;
@@ -3215,6 +3435,11 @@ html.sdl-topbar-page .sdl-topbar {
   overflow: hidden;
   position: relative;
   white-space: nowrap;
+  font-size: 12px;
+  font-family: Arial;
+  text-shadow: #262c39 0 1px;
+  font-weight: bold;
+  color: #ffffff;
 }
 .sdl-topbar > .sdl-topbar-ribbon > .sdl-topbar-resize-trigger {
   position: absolute;
@@ -3244,6 +3469,10 @@ html.sdl-topbar-page .sdl-topbar {
 .sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-tab-hidden {
   display: none;
 }
+.sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-tab-selected {
+  color: #bfd2ec;
+  cursor: default;
+}
 .sdl-topbar > .sdl-topbar-ribbon > span.sdl-topbar-ribbon-tab-selected:after {
   content: "";
   position: absolute;
@@ -3262,22 +3491,26 @@ html.sdl-topbar-page .sdl-topbar {
   display: none;
 }
 .sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button {
-  background-color: green;
   width: 30px;
-  text-align: center;
   white-space: nowrap;
   display: inline-block;
   position: relative;
   height: 100%;
-  padding: 0;
+  padding: 0 0 0 5px;
   margin: 0;
   cursor: pointer;
+  color: #c8cace;
+  font-family: serif;
+  font-size: 31px;
+  letter-spacing: 0;
+  text-align: center;
+  line-height: 14px;
 }
 .sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button:hover {
-  background-color: lightgreen;
+  color: #ffffff;
 }
 .sdl-topbar > .sdl-topbar-ribbon-overflown > .sdl-topbar-ribbon-overflown-button-pressed {
-  background-color: blue !important;
+  color: #bfd2ec !important;
 }
 .sdl-topbar .sdl-topbar-ribbon-overflown-button:after {
   content: "...";
@@ -3336,49 +3569,145 @@ html.sdl-topbar-page .sdl-topbar {
   overflow: hidden;
   white-space: nowrap;
 }
-.sdl-topbar > .sdl-topbar-buttons > span {
+.sdl-topbar-buttons > span {
   box-sizing: content-box;
   white-space: nowrap;
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  height: 29px;
   border-left: 1px solid #353b46;
-  padding: 6px 8px 7px 8px;
+  padding: 0 7px 0 8px;
   -webkit-box-shadow: inset 0 1px 0 0 #5c636d;
   box-shadow: inset 0 1px 0 0 #5c636d;
 }
-.sdl-topbar > .sdl-topbar-buttons > span:hover {
-  background: #576172;
+.sdl-topbar-buttons > span:first-child {
+  border-left: none;
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-hidden {
+.sdl-topbar-buttons > span.sdl-topbar-buttongroup-empty {
   display: none;
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-selected {
-  background: #296cd4 !important;
+.sdl-topbar-buttons > span.sdl-topbar-buttongroup-empty:last-child {
+  border-left-color: transparent;
+  padding-top: 0;
+  display: inline-block;
+  visibility: hidden;
 }
-.sdl-topbar > .sdl-topbar-buttons > span:before {
-  content: "";
-  display: block;
+.sdl-topbar-buttons > span > span {
+  box-sizing: content-box;
+  display: inline-block;
+  height: 20px;
+  padding: 5px 8px 4px 7px;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-hidden {
+  display: none;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-close.sdl-topbar-button-hidden {
+  display: inline-block;
+  visibility: hidden;
+}
+.sdl-topbar-buttons > span > span > :first-child {
+  display: inline-block;
   width: 16px;
   height: 16px;
+  margin-top: 2px;
+  background-repeat: repeat;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMCIgeT0iMCIgd2lkdGg9IjUzIiBoZWlnaHQ9Ijc0LjEiIHZpZXdCb3g9Ii0xIC0xIDUzIDc0LjEiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgLTEgLTEgNTMgNzQuMSI+PHBhdGggZmlsbD0iIzQ2NEI1MyIgZD0iTS0xLTF2NzQuMWg1M1YtMUgtMXpNNi40LDguMmwwLTBMMS44LDMuNUMxLjMsMy4xLDEuNCwyLjMsMS45LDEuOGwwLjUtMC40QzIuOCwwLjksMy42LDAuOSw0LjEsMS40TDguNSw2LjFsNC40LTQuOGMwLjUtMC41LDEuMy0wLjUsMS44LTBsMC41LDAuNGMwLjUsMC41LDAuNSwxLjMsMCwxLjdMMTAuNSw4LjJsMCwwbC0wLDBsNC42LDQuN2MwLjUsMC41LDAuNSwxLjMtMCwxLjdsLTAuNSwwLjRjLTAuNSwwLjUtMS4zLDAuNS0xLjgtMEw4LjUsMTAuM2wtNC40LDQuOGMtMC41LDAuNS0xLjMsMC41LTEuOCwwTDEuOSwxNC42Yy0wLjUtMC41LTAuNS0xLjMtMC0xLjdsNC42LTQuN0w2LjQsOC4yek0xNiwyOC42SDguMmwtNC44LDQuNEwzLjMsMjguNkgxdi0xMC4xaDE1VjI4LjZ6TTI1LjcsMzIuNGMwLjIsMC41LTAuOCwxLjEtMS4yLDAuNGwtNC43LTEyLjJjLTAuOC0wLTEuNS0wLjctMS41LTEuNGMwLTAuOCwwLjctMS40LDEuNi0xLjRjMC45LDAsMS42LDAuNiwxLjYsMS40YzAsMC40LTAuMSwwLjctMC40LDAuOUwyNS43LDMyLjR6TTE1LjQsNDkuNWMwLDAuMy0wLjIsMC41LTAuNSwwLjVIMmMtMC4zLDAtMC41LTAuMi0wLjUtMC41VjM2LjFjMC0wLjMsMC4yLTAuNSwwLjUtMC41aDMuNXYtMC41YzAtMC4zLDAuMi0wLjUsMC41LTAuNWg1YzAuMywwLDAuNSwwLjIsMC41LDAuNXYwLjVoMy40YzAuMywwLDAuNSwwLjIsMC41LDAuNVY0OS41ek0zMSwyNS40Yy0yLDEuMS0xLjctMC41LTQsMC4xYy0wLjgsMC4yLTEuNywwLjgtMi40LDEuNWwtMi42LTcuM2MwLjUtMC4xLDEuMS0wLjEsMS44LDAuMWMzLDAuNiwzLjEsMS45LDUuMSwxLjhjMi0wLjEsNC0xLjEsNC0xLjFTMzMsMjQuMywzMSwyNS40ek0zMiwxNS45aC0wLjdoLTAuOUgyNS41aC01aC0wLjloLTAuN0gxOHYtMC4zYzAuNy0xLjcsMi4zLTIuNiwyLjMtMi42YzAuMS0wLjEsMi41LTEuNSwyLjktMS44bDAuMS0wLjFjMC41LTAuNCwwLjctMC45LDAuNi0xLjRjLTAtMC4xLTAuMS0wLjMtMC4yLTAuNWMtMC41LTAuNS0wLjgtMS4xLTEuMS0xLjljLTAuMS0wLjItMC4yLTAuNC0wLjQtMC42Yy0wLjMtMC4zLTAuNC0wLjctMC4xLTEuMWMwLjEtMC4yLDAuMi0wLjQsMC4yLTAuNkMyMi4zLDQuOCwyMi4zLDQuNSwyMi4zLDQuMmMtMC0wLjQtMC0wLjgsMC0xLjJjMC4xLTEuNCwxLTIuMywyLjQtMi41YzAuMy0wLDAuNS0wLjEsMC44LTAuMWMwLjMsMCwwLjUsMCwwLjgsMC4xYzEuNSwwLjIsMi4zLDEuMSwyLjQsMi41QzI4LjcsMy40LDI4LjcsMy44LDI4LjcsNC4yYzAsMC4zLDAsMC42LDAsMC44YzAsMC4yLDAuMSwwLjQsMC4yLDAuNmMwLjIsMC40LDAuMiwwLjgtMC4xLDEuMWMtMC4yLDAuMS0wLjMsMC4zLTAuNCwwLjZjLTAuMywwLjgtMC42LDEuNC0xLjEsMS45Yy0wLjIsMC4yLTAuMiwwLjQtMC4yLDAuNWMtMC4xLDAuNiwwLjEsMS4xLDAuNiwxLjRsMC4xLDAuMWMwLjQsMC4zLDIuOCwxLjgsMi45LDEuOGMwLDAsMS44LDAuOSwyLjQsMi45TDMyLDE1LjlMMzIsMTUuOXpNNDQsMjkuOGMtMS4xLDAtMi4xLTAuMy0yLjktMC44bC0zLjksMy45TDM1LjMsMzFsMy45LTMuOWMtMC42LTAuOS0wLjktMS45LTAuOS0zLjFjMC0zLjIsMi42LTUuOCw1LjgtNS44czUuOCwyLjYsNS44LDUuOEM0OS44LDI3LjIsNDcuMiwyOS44LDQ0LDI5Ljh6TTQyLjUsMTUuOWMtNC4xLDAtNy4zLTMuMy03LjMtNy4zczMuMy03LjMsNy4zLTcuM3M3LjMsMy4zLDcuMyw3LjNTNDYuNiwxNS45LDQyLjUsMTUuOXoiLz48cG9seWdvbiBmaWxsPSIjNDY0QjUzIiBwb2ludHM9IjYuMyw0MC44IDcuNCw0MC44IDguNSw0MC44IDExLjcsNDAuOCAxMS43LDM5LjcgOC41LDM5LjcgNy40LDM5LjcgNi4zLDM5LjcgNS44LDM5LjcgNS4yLDM5LjcgNS4yLDQwLjggNS44LDQwLjgiLz48cG9seWdvbiBmaWxsPSIjNDY0QjUzIiBwb2ludHM9IjEwLjQsMzYuMSAxMC40LDM2LjEgMTAuNCwzNS43IDEwLjQsMzUuNyA2LjQsMzUuNyA2LjQsMzYuMSA2LjQsMzYuNyAxMC40LDM2LjciLz48cG9seWdvbiBmaWxsPSIjNDY0QjUzIiBwb2ludHM9IjYuMyw0Mi45IDcuNCw0Mi45IDguNSw0Mi45IDExLjcsNDIuOSAxMS43LDQxLjggOC41LDQxLjggNy40LDQxLjggNi4zLDQxLjggNS44LDQxLjggNS4yLDQxLjggNS4yLDQyLjkgNS44LDQyLjkiLz48cGF0aCBmaWxsPSIjNDY0QjUzIiBkPSJNMTQuMSwzNi43aC0xLjJ2MTAuN2MwLDAuMy0wLjIsMC41LTAuNSwwLjVoLThjLTAuMywwLTAuNS0wLjItMC41LTAuNVYzNi43SDIuN3YxMi4yaDExLjRWMzYuN3oiLz48cG9seWdvbiBmaWxsPSIjNDY0QjUzIiBwb2ludHM9IjYuMyw0NS4xIDcuNCw0NS4xIDgsNDUuMSAxMS43LDQ1LjEgMTEuNyw0NCA4LDQ0IDcuNCw0NCA2LjMsNDQgNiw0NCA1LjIsNDQgNS4yLDQ1LjEgNiw0NS4xIi8+PHBhdGggZmlsbD0iIzQxQjY0OSIgZD0iTTI0LjgsMTIuOCIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0yOC40LDcuM2MtMC4zLDAuOC0wLjYsMS40LTEuMSwxLjljLTAuMiwwLjItMC4yLDAuNC0wLjIsMC41Yy0wLDAuMi0wLDAuNCwwLDAuNWMwLTAuMSwwLjEtMC4zLDAuMi0wLjVjMC41LTAuNSwwLjgtMS4xLDEuMS0xLjljMC4xLTAuMiwwLjItMC40LDAuNC0wLjZjMC4zLTAuMiwwLjMtMC42LDAuMi0wLjljLTAsMC4xLTAuMSwwLjItMC4yLDAuM0MyOC42LDYuOSwyOC41LDcuMSwyOC40LDcuM3oiLz48cGF0aCBmaWxsPSIjMjcyRDNBIiBkPSJNMzIsMTUuOWgtMC43aC0wLjlIMjUuNWgtNWgtMC45aC0wLjdoLTAuOWMtMC4xLDAuMi0wLjIsMC40LTAuMiwwLjZoMS4xaDAuN2gwLjlIMjUuNWg1aDAuOWgwLjd2MGgxLjFjLTAuMS0wLjItMC4yLTAuNC0wLjItMC42SDMyeiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0yMi42LDcuOWMwLjMsMC44LDAuNiwxLjQsMS4xLDEuOWMwLjEsMC4yLDAuMiwwLjMsMC4yLDAuNWMwLTAuMiwwLTAuNCwwLTAuNWMtMC0wLjEtMC4xLTAuMy0wLjItMC41Yy0wLjUtMC41LTAuOC0xLjEtMS4xLTEuOWMtMC4xLTAuMi0wLjItMC40LTAuNC0wLjZjLTAuMS0wLjEtMC4yLTAuMi0wLjItMC4zYy0wLjEsMC4zLTAsMC43LDAuMiwwLjlDMjIuNCw3LjUsMjIuNSw3LjcsMjIuNiw3Ljl6Ii8+PHBhdGggZmlsbD0iIzI3MkQzQSIgZD0iTTEwLjUsOC4ybDAsMGwtMCwwbDAuMywwLjNsNC40LTQuNGMwLjMtMC4zLDAuNC0wLjcsMC4zLTEuMWMtMCwwLjItMC4xLDAuNC0wLjMsMC41TDEwLjUsOC4yeiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0xNS4xLDE0LjZsLTAuNSwwLjRjLTAuNSwwLjUtMS4zLDAuNS0xLjgtMEw4LjUsMTAuM2wtNC40LDQuOGMtMC41LDAuNS0xLjMsMC41LTEuOCwwTDEuOSwxNC42Yy0wLjItMC4yLTAuMy0wLjQtMC4zLTAuNmMtMC4xLDAuNC0wLDAuOSwwLjMsMS4ybDAuNSwwLjRjMC41LDAuNSwxLjMsMC41LDEuOC0wTDguNSwxMC45bDQuNCw0LjhjMC41LDAuNSwxLjMsMC41LDEuOCwwbDAuNS0wLjRjMC4zLTAuMywwLjQtMC44LDAuMy0xLjJDMTUuNCwxNC4yLDE1LjMsMTQuNSwxNS4xLDE0LjZ6Ii8+PHBhdGggZmlsbD0iIzI3MkQzQSIgZD0iTTYuMiw4LjVsMC4zLTAuM0w2LjQsOC4ybDAtMEwxLjgsMy41QzEuNywzLjQsMS42LDMuMiwxLjUsM0MxLjQsMy40LDEuNSwzLjgsMS44LDQuMUw2LjIsOC41eiIvPjxyZWN0IHg9IjAuNSIgeT0iMzQuNyIgZmlsbD0ibm9uZSIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ii8+PHJlY3QgeD0iMi43IiB5PSIzNi43IiBmaWxsPSIjMjcyRDNBIiB3aWR0aD0iMS4yIiBoZWlnaHQ9IjAuNiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0xMi40LDQ3LjloLThjLTAuMywwLTAuNS0wLjItMC41LTAuNXYwLjZjMCwwLjMsMC4yLDAuNSwwLjUsMC41aDhjMC4zLDAsMC41LTAuMiwwLjUtMC41di0wLjZDMTIuOSw0Ny42LDEyLjcsNDcuOSwxMi40LDQ3Ljl6Ii8+PHBvbHlnb24gZmlsbD0iIzI3MkQzQSIgcG9pbnRzPSIxMC40LDM1LjcgMTAuNCwzNS43IDYuNCwzNS43IDYuNCwzNi4xIDYuNCwzNi4zIDEwLjQsMzYuMyAxMC40LDM2LjEgMTAuNCwzNi4xIi8+PHBhdGggZmlsbD0iIzI3MkQzQSIgZD0iTTE0LjksNTAuMUgyYy0wLjMsMC0wLjUtMC4yLTAuNS0wLjV2MC42YzAsMC4zLDAuMiwwLjUsMC41LDAuNWgxMi45YzAuMywwLDAuNS0wLjIsMC41LTAuNXYtMC42QzE1LjQsNDkuOSwxNS4xLDUwLjEsMTQuOSw1MC4xeiIvPjxyZWN0IHg9IjEyLjkiIHk9IjM2LjciIGZpbGw9IiMyNzJEM0EiIHdpZHRoPSIxLjIiIGhlaWdodD0iMC42Ii8+PHBvbHlnb24gZmlsbD0iIzI3MkQzQSIgcG9pbnRzPSIzLjQsMzIuOSAzLjMsMjguNiAxLDI4LjYgMSwyOS4yIDMuMywyOS4yIDMuNCwzMy41IDguMiwyOS4yIDE2LDI5LjIgMTYsMjguNiA4LjIsMjguNiIvPjxwYXRoIGZpbGw9IiM0NjRCNTMiIGQ9Ik00Mi41LDIuOGMtMi45LDAtMy41LDIuMi0zLjYsMy43aDJjMC0wLjMsMC4xLTEuOCwxLjYtMS44YzAuOSwwLDEuNSwwLjUsMS41LDEuNWMwLDAuOS0wLjksMS41LTEuNywyLjJjLTAuNywwLjctMC44LDEuNS0wLjgsMi4ydjAuMmMwLjIsMCwyLjEsMCwyLjEsMHYtMC4yYzAtMS42LDIuNS0yLDIuNS00LjVDNDYuMSw0LjUsNDUsMi44LDQyLjUsMi44eiIvPjxjaXJjbGUgZmlsbD0iIzQ2NEI1MyIgY3g9IjQyLjU5NiIgY3k9IjEyLjk2NCIgcj0iMS4yNDUiLz48cGF0aCBmaWxsPSIjMjcyRDNBIiBkPSJNNDIuNSwxNS45Yy0zLjksMC03LjItMy4xLTcuMy03Yy0wLDAuMS0wLDAuMi0wLDAuM2MwLDQuMSwzLjMsNy4zLDcuMyw3LjNzNy4zLTMuMyw3LjMtNy4zYzAtMC4xLTAtMC4yLTAtMC4zQzQ5LjcsMTIuNyw0Ni40LDE1LjksNDIuNSwxNS45eiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0yNS41LDMyLjhjLTAuMywwLjMtMC44LDAuNC0xLjEtMC4xbC00LjctMTIuMmMtMC44LTAtMS40LTAuNS0xLjUtMS4yYy0wLDAuMS0wLjEsMC4zLTAuMSwwLjRjMCwwLjgsMC43LDEuNCwxLjUsMS40bDQuNywxMi4yYzAuMywwLjcsMS40LDAuMiwxLjItMC40TDI1LjUsMzIuOHoiLz48cGF0aCBmaWxsPSIjMjcyRDNBIiBkPSJNMjEuMywxOS41Yy0wLjEsMC4yLTAuMSwwLjQtMC4zLDAuNWwwLjEsMC40YzAuMS0wLjIsMC4yLTAuNCwwLjItMC42QzIxLjMsMTkuNywyMS4zLDE5LjYsMjEuMywxOS41eiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0zMSwyNS40Yy0yLDEuMS0xLjctMC41LTQsMC4xYy0wLjgsMC4yLTEuNywwLjgtMi40LDEuNWwtMi40LTYuN2MtMC4xLDAtMC4yLDAtMC4zLDBsMi42LDcuM2MwLjctMC42LDEuNi0xLjMsMi40LTEuNWMyLjMtMC42LDIuMSwwLjksNC0wLjFjMS43LTAuOSwxLjgtMy44LDEuOS00LjdDMzIuNywyMi41LDMyLjQsMjQuNiwzMSwyNS40eiIvPjxwYXRoIGZpbGw9IiM0NjRCNTMiIGQ9Ik00NCwyMC40Yy0yLDAtMy42LDEuNi0zLjYsMy42czEuNiwzLjYsMy42LDMuNnMzLjYtMS42LDMuNi0zLjZTNDYsMjAuNCw0NCwyMC40eiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik00NCwyMC40Yy0yLDAtMy42LDEuNi0zLjYsMy42YzAsMC4xLDAsMC4yLDAsMC4zYzAuMi0xLjgsMS43LTMuMywzLjYtMy4zczMuNCwxLjQsMy42LDMuM2MwLTAuMSwwLTAuMiwwLTAuM0M0Ny42LDIyLjEsNDYsMjAuNCw0NCwyMC40eiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik00NCwyOS44Yy0xLjEsMC0yLjEtMC4zLTIuOS0wLjhsLTMuOSwzLjlsLTEuNi0xLjZsLTAuMywwLjNsMS45LDEuOWwzLjktMy45YzAuOSwwLjUsMS45LDAuOCwyLjksMC44YzMuMiwwLDUuOC0yLjYsNS44LTUuOGMwLTAuMS0wLTAuMi0wLTAuM0M0OS42LDI3LjQsNDcsMjkuOCw0NCwyOS44eiIvPjxwYXRoIGZpbGw9IiMyNzJEM0EiIGQ9Ik0zOS4xLDI3LjFjLTAuNS0wLjgtMC44LTEuOC0wLjktMi44Yy0wLDAuMS0wLDAuMy0wLDAuNGMwLDEsMC4yLDEuOCwwLjcsMi42TDM5LjEsMjcuMXoiLz48cmVjdCB4PSIyMiIgeT0iNTIuMSIgZmlsbD0iIzk2QjVERiIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIi8+PHBhdGggb3BhY2l0eT0iMC40IiBmaWxsPSIjM0E0ODU2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IiBkPSJNNDIsNzEuNWMtMS0yLjItMy0zLjMtMy4xLTMuNGwtMC4zLTAuMmMtMC43LTAuNC0zLTEuOC0zLjUtMi4xbC0wLjEtMC4xYy0wLjQtMC4zLTAuOC0wLjgtMC43LTEuNWMwLTAuMSwwLjEtMC4zLDAuMi0wLjVjMC42LTAuNywxLjEtMS41LDEuNC0yLjVjMC4xLTAuMiwwLjItMC40LDAuNC0wLjZjMC41LTAuNSwwLjYtMS4yLDAuMi0xLjhjLTAuMS0wLjItMC4yLTAuNC0wLjItMC42Yy0wLTAuNC0wLTAuNy0wLTEuMWMwLTAuNSwwLTEtMC0xLjZjLTAuMS0xLjktMS40LTMuMi0zLjQtMy40Yy0wLjQtMC0wLjctMC4xLTEtMC4xYy0wLjMsMC0wLjcsMC0xLDAuMWMtMiwwLjItMy4zLDEuNS0zLjQsMy40Yy0wLDAuNS0wLDEtMCwxLjZjMCwwLjQsMCwwLjctMCwxLjFjLTAsMC4yLTAuMSwwLjQtMC4yLDAuNmMtMC40LDAuNi0wLjMsMS4zLDAuMiwxLjhjMC4yLDAuMiwwLjMsMC40LDAuNCwwLjZjMC40LDEsMC44LDEuOCwxLjQsMi41YzAuMiwwLjIsMC4yLDAuNCwwLjIsMC41YzAuMiwwLjctMC4zLDEuMi0wLjcsMS41bC0wLjEsMC4xYy0wLjUsMC4zLTIuNywxLjctMy41LDIuMmwtMC4zLDAuMmMtMC4xLDAtMiwxLjEtMywzLjJ2MC44aDIwVjcxLjV6TTI1LjMsNjguN2wwLjMtMC4yYzEuMy0wLjgsMy4xLTEuOSwzLjUtMi4ybDAuMS0wLjFjMC44LTAuNSwxLjEtMS4zLDAuOS0yLjJjLTAtMC4xLTAuMS0wLjUtMC40LTAuOGMtMC42LTAuNi0xLTEuMy0xLjMtMi4zYy0wLjEtMC4zLTAuMy0wLjYtMC42LTAuOGMtMC4zLTAuMi0wLjMtMC43LTAuMS0xYzAuMi0wLjMsMC4zLTAuNiwwLjMtMC45YzAtMC40LDAtMC43LDAtMS4xYy0wLTAuNS0wLTEsMC0xLjVjMC4xLTEuNiwxLjEtMi42LDIuOS0yLjhjMC4zLTAsMC43LTAuMSwxLTAuMWMwLjMsMCwwLjYsMCwxLDAuMWMxLjgsMC4yLDIuOCwxLjIsMi45LDIuOGMwLDAuNSwwLDEsMCwxLjVjMCwwLjQsMCwwLjcsMCwxLjFjMCwwLjMsMC4xLDAuNywwLjMsMWMwLjIsMC4zLDAuMiwwLjctMC4xLDFjLTAuMywwLjItMC41LDAuNS0wLjYsMC44Yy0wLjMsMC45LTAuOCwxLjctMS4zLDIuM2MtMC4zLDAuMy0wLjMsMC42LTAuNCwwLjhjLTAuMiwwLjgsMC4yLDEuNiwwLjksMi4xbDAuMSwwLjFjMC40LDAuMywyLjIsMS40LDMuNSwyLjJsMC4zLDAuMmMwLDAsMS43LDEsMi42LDMuMUgyM0MyMy44LDY5LjcsMjUuMyw2OC43LDI1LjMsNjguN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNDAuMiw3Mi4xaC0wLjloLTEuMWgtNi4yaC02LjJoLTEuMWgtMC45aC0xLjRjMC44LTIuNCwzLTMuNiwzLTMuNmMwLjEtMC4xLDMuMS0xLjksMy42LTIuM2wwLjEtMC4xYzAuNi0wLjUsMC45LTEuMSwwLjgtMS44Yy0wLTAuMS0wLjEtMC40LTAuMy0wLjZjLTAuNi0wLjYtMS0xLjQtMS4zLTIuM2MtMC4xLTAuMy0wLjMtMC41LTAuNS0wLjdjLTAuNC0wLjMtMC41LTAuOS0wLjItMS40YzAuMS0wLjIsMC4yLTAuNSwwLjItMC44YzAtMC40LDAtMC43LDAtMS4xYy0wLTAuNS0wLTEsMC0xLjVjMC4xLTEuNywxLjItMi45LDMtMy4xYzAuMy0wLDAuNi0wLjEsMS0wLjFjMC4zLDAsMC42LDAsMSwwLjFjMS44LDAuMiwyLjksMS4zLDMsMy4xYzAsMC41LDAsMSwwLDEuNWMwLDAuNCwwLDAuNywwLDEuMWMwLDAuMywwLjEsMC41LDAuMiwwLjhjMC4zLDAuNCwwLjIsMS0wLjIsMS40Yy0wLjIsMC4yLTAuNCwwLjQtMC41LDAuN2MtMC4zLDEtMC44LDEuNy0xLjMsMi4zYy0wLjIsMC4yLTAuMywwLjUtMC4zLDAuNmMtMC4xLDAuNywwLjEsMS4zLDAuOCwxLjhsMC4xLDAuMWMwLjUsMC40LDMuNSwyLjIsMy42LDIuM2MwLDAsMi4zLDEuMiwzLDMuNkg0MC4yeiIvPjxwYXRoIG9wYWNpdHk9IjAuMSIgZmlsbD0iIzNCNDk1NyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyIgZD0iTTMyLjEsNjQuMmMtMC41LDAtMS0wLjItMS4zLTAuNWMwLjEsMC41LDAuNiwwLjgsMS4zLDAuOHMxLjItMC40LDEuMy0wLjhDMzMuMSw2NCwzMi42LDY0LjIsMzIuMSw2NC4yeiIvPjxyZWN0IHg9IjEiIHk9IjUyLjEiIGZpbGw9IiM1QzZFN0YiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIvPjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xOS4yLDcyLjFoLTAuOWgtMS4xSDExSDQuOEgzLjdIMi44SDEuNWMwLjgtMi40LDMtMy42LDMtMy42YzAuMS0wLjEsMy4xLTEuOSwzLjYtMi4zbDAuMS0wLjFjMC42LTAuNSwwLjktMS4xLDAuOC0xLjhjLTAtMC4xLTAuMS0wLjQtMC4zLTAuNmMtMC42LTAuNi0xLTEuNC0xLjMtMi4zYy0wLjEtMC4zLTAuMy0wLjUtMC41LTAuN2MtMC40LTAuMy0wLjUtMC45LTAuMi0xLjRjMC4xLTAuMiwwLjItMC41LDAuMi0wLjhjMC0wLjQsMC0wLjcsMC0xLjFDNyw1Nyw3LDU2LjQsNyw1NS45YzAuMS0xLjcsMS4yLTIuOSwzLTMuMWMwLjMtMCwwLjYtMC4xLDEtMC4xYzAuMywwLDAuNiwwLDEsMC4xYzEuOCwwLjIsMi45LDEuMywzLDMuMWMwLDAuNSwwLDEsMCwxLjVjMCwwLjQsMCwwLjcsMCwxLjFjMCwwLjMsMC4xLDAuNSwwLjIsMC44YzAuMywwLjQsMC4yLDEtMC4yLDEuNGMtMC4yLDAuMi0wLjQsMC40LTAuNSwwLjdjLTAuMywxLTAuOCwxLjctMS4zLDIuM2MtMC4yLDAuMi0wLjMsMC41LTAuMywwLjZjLTAuMSwwLjcsMC4xLDEuMywwLjgsMS44bDAuMSwwLjFjMC41LDAuNCwzLjUsMi4yLDMuNiwyLjNjMCwwLDIuMywxLjIsMywzLjZIMTkuMnoiLz48L3N2Zz4=");
+  background-color: #c8cace;
+  vertical-align: top;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userloggedin,
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userpicture,
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userdefaultpicture {
+  padding-left: 5px;
+  padding-right: 6px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-userloggedin > :first-child,
+.sdl-topbar-buttons .sdl-topbar-button-userpicture > :first-child,
+.sdl-topbar-buttons .sdl-topbar-button-userdefaultpicture > :first-child {
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+}
+.sdl-topbar-buttons > span > span:hover > :first-child {
+  background-color: #ffffff;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-selected > :first-child,
+.sdl-topbar-buttons > span > span.sdl-topbar-button-selected:hover > :first-child {
+  background-color: #bfd2ec;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-close > :first-child,
+.sdl-topbar-buttons > span > span.sdl-topbar-button-close:hover > :first-child {
+  background-position: -1px -1px;
+  background-color: #ffffff;
+}
+.sdl-topbar-buttons .sdl-topbar-button-user > :first-child {
+  background-position: -18px -1px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-help > :first-child {
+  background-position: -35px -1px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-messages > :first-child {
+  background-position: -1px -18px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-notifications > :first-child {
+  background-position: -18px -18px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-search > :first-child {
+  background-position: -35px -18px;
+}
+.sdl-topbar-buttons .sdl-topbar-button-workflows > :first-child {
+  background-position: -1px -35px;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userloggedin > :first-child {
+  background-position: -2px -53px;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userdefaultpicture > :first-child {
+  background-position: -23px -53px;
+}
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userpicture > :first-child,
+.sdl-topbar-buttons > span > span.sdl-topbar-button-userpicture:hover > :first-child {
+  background-color: #454b53;
+}
+.sdl-topbar-buttons .sdl-topbar-button-userpicture > :first-child {
+  background-position: 0 0;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-color: #576172;
-  __background-image: url("data:image/png;base64, [**********] ==");
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-search:before {
-  background-position: left 0px;
+/* BUTTON BUBBLE */
+.sdl-topbar-buttons .sdl-topbar-bubble {
+  display: inline-block;
+  position: relative;
+  height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 3px;
+  background: #407cc9;
+  padding: 0 5px;
+  margin-left: 9px;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 14px;
+  color: #FFF;
+  vertical-align: top;
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-close:before {
-  background-position: left 17px;
+.sdl-topbar-buttons span.sdl-topbar-bubble-empty {
+  background: #6b717b;
+  color: #c8cace;
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-user:before {
-  background-position: left 34px;
+.sdl-topbar-buttons .sdl-topbar-bubble:before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 6px;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border-left: none;
+  border-right: solid 5px #407cc9;
+  border-top: solid 4px transparent;
+  border-bottom: solid 4px transparent;
 }
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-messages:before {
-  background-position: left 51px;
-}
-.sdl-topbar > .sdl-topbar-buttons > span.sdl-topbar-button-activities:before {
-  background-position: left 68px;
+.sdl-topbar-buttons span.sdl-topbar-bubble-empty:before {
+  border-right-color: #6b717b;
 }
 /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
@@ -4367,16 +4696,6 @@ var SDL;
   border: none;
   border-radius: 3px;
   overflow: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.sdl-tabs-container > * {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
 }
 .sdl-tabs-container:focus {
   outline: none;
@@ -5258,49 +5577,65 @@ var SDL;
                     var scrollChild = this.$scrollChild[0];
                     var $scrollBar;
 
+                    this.scrollChildLastScrollLeftPosition = scrollChild.scrollLeft;
                     if (this.scrollXEnabled) {
                         $scrollBar = this.getSecondaryScrollBar("X");
-                        var newSecondatryScrollLeft = Math.round(scrollChild.scrollLeft * this.secondaryToMainRatioX);
-                        if ($scrollBar.scrollLeft() != newSecondatryScrollLeft) {
-                            $scrollBar.scrollLeft(newSecondatryScrollLeft);
+                        var scrollBarScrollLeftPosition = $scrollBar.scrollLeft();
+                        if (!scrollBarScrollLeftPosition || this.scrollBarLastScrollLeftPosition == scrollBarScrollLeftPosition) {
+                            var newSecondatryScrollLeft = Math.round(scrollChild.scrollLeft * this.secondaryToMainRatioX);
+                            if (scrollBarScrollLeftPosition != newSecondatryScrollLeft) {
+                                $scrollBar.scrollLeft(newSecondatryScrollLeft);
+                            }
                         }
                     }
 
+                    this.scrollChildLastScrollTopPosition = scrollChild.scrollTop;
                     if (this.scrollYEnabled) {
                         $scrollBar = this.getSecondaryScrollBar("Y");
-                        var newSecondatryScrollTop = Math.round(scrollChild.scrollTop * this.secondaryToMainRatioY);
-                        if ($scrollBar.scrollTop() != newSecondatryScrollTop) {
-                            $scrollBar.scrollTop(newSecondatryScrollTop);
+                        var scrollBarScrollTopPosition = $scrollBar.scrollTop();
+                        if (!scrollBarScrollTopPosition || this.scrollBarLastScrollTopPosition == scrollBarScrollTopPosition) {
+                            var newSecondatryScrollTop = Math.round(scrollChild.scrollTop * this.secondaryToMainRatioY);
+                            if (scrollBarScrollTopPosition != newSecondatryScrollTop) {
+                                $scrollBar.scrollTop(newSecondatryScrollTop);
+                            }
                         }
                     }
                 };
 
                 ScrollView.prototype.onSecondaryScrollX = function () {
+                    var scrollBar = this.getSecondaryScrollBar("X")[0];
+                    this.scrollBarLastScrollLeftPosition = scrollBar.scrollLeft;
                     if (this.scrollXEnabled) {
-                        var scrollBar = this.getSecondaryScrollBar("X")[0];
+                        var childScrollLeftPosition = this.$scrollChild.scrollLeft();
 
-                        // updating scroll handle position
-                        this.scrollBarHandleXLeftPosition = scrollBar.scrollLeft * this.scrollHandleLeftPositionCoefficientX + this.scrollButtonSize;
-                        scrollBar.previousSibling.style.left = this.scrollBarHandleXLeftPosition + "px";
+                        if (!childScrollLeftPosition || this.scrollChildLastScrollLeftPosition == childScrollLeftPosition) {
+                            // updating scroll handle position
+                            this.scrollBarHandleXLeftPosition = scrollBar.scrollLeft * this.scrollHandleLeftPositionCoefficientX + this.scrollButtonSize;
+                            scrollBar.previousSibling.style.left = this.scrollBarHandleXLeftPosition + "px";
 
-                        var newScrollLeft = Math.round(scrollBar.scrollLeft / this.secondaryToMainRatioX);
-                        if (this.$scrollChild.scrollLeft() != newScrollLeft) {
-                            this.$scrollChild.scrollLeft(newScrollLeft);
+                            var newScrollLeft = Math.round(scrollBar.scrollLeft / this.secondaryToMainRatioX);
+                            if (childScrollLeftPosition != newScrollLeft) {
+                                this.$scrollChild.scrollLeft(newScrollLeft);
+                            }
                         }
                     }
                 };
 
                 ScrollView.prototype.onSecondaryScrollY = function () {
+                    var scrollBar = this.getSecondaryScrollBar("Y")[0];
+                    this.scrollBarLastScrollTopPosition = scrollBar.scrollTop;
+
                     if (this.scrollYEnabled) {
-                        var scrollBar = this.getSecondaryScrollBar("Y")[0];
+                        var childScrollTopPosition = this.$scrollChild.scrollTop();
+                        if (!childScrollTopPosition || this.scrollChildLastScrollTopPosition == childScrollTopPosition) {
+                            // updating scroll handle position
+                            this.scrollBarHandleYTopPosition = scrollBar.scrollTop * this.scrollHandleTopPositionCoefficientY + this.scrollButtonSize;
+                            scrollBar.previousSibling.style.top = this.scrollBarHandleYTopPosition + "px";
 
-                        // updating scroll handle position
-                        this.scrollBarHandleYTopPosition = scrollBar.scrollTop * this.scrollHandleTopPositionCoefficientY + this.scrollButtonSize;
-                        scrollBar.previousSibling.style.top = this.scrollBarHandleYTopPosition + "px";
-
-                        var newScrollTop = Math.round(scrollBar.scrollTop / this.secondaryToMainRatioY);
-                        if (this.$scrollChild.scrollTop() != newScrollTop) {
-                            this.$scrollChild.scrollTop(newScrollTop);
+                            var newScrollTop = Math.round(scrollBar.scrollTop / this.secondaryToMainRatioY);
+                            if (childScrollTopPosition != newScrollTop) {
+                                this.$scrollChild.scrollTop(newScrollTop);
+                            }
                         }
                     }
                 };
@@ -5471,7 +5806,7 @@ body.sdl-scrollview {
   margin: 0 !important;
 }
 .sdl-scrollview > [data-sdl-scrollview-child=true] {
-  position: absolute;
+  position: absolute !important;
   top: 0 !important;
   left: 0 !important;
   width: auto !important;
@@ -5823,9 +6158,12 @@ var SDL;
                 };
 
                 TextInput.prototype.setInvalid = function (value) {
+                    var oldValue = this.properties.options.invalid;
                     this.properties.options.invalid = value = value != undefined ? value.toString() == "true" : false;
-                    this._updateInvalidState();
-                    this.fireEvent("propertychange", { property: "invalid", value: value });
+                    if (oldValue != value) {
+                        this._updateInvalidState();
+                        this.fireEvent("propertychange", { property: "invalid", value: value });
+                    }
                 };
 
                 TextInput.prototype.isInvalid = function () {
@@ -5861,7 +6199,7 @@ var SDL;
             Controls.TextInput = TextInput;
 
             TextInput.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$TextInput$disposeInterface() {
-                SDL.jQuery(this._$elem).removeClass("sdl-textinput");
+                this._$elem.removeClass("sdl-textinput invalid");
                 this._$elem = undefined;
             });
 
@@ -5872,6 +6210,20 @@ var SDL;
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
 /* An elliptical shadow  for use on the bottom edge of containers/elements, can be positioned with a combination of shadowMargin, x and y offsets */
+.textShadowBright {
+  -webkit-text-shadow: 0px 1px #ffffff;
+  -moz-text-shadow: 0px 1px #ffffff;
+  -ms-text-shadow: 0px 1px #ffffff;
+  -o-text-shadow: 0px 1px #ffffff;
+  text-shadow: 0px 1px #ffffff;
+}
+.textShadowDark {
+  -webkit-text-shadow: 0px 1px #262c39;
+  -moz-text-shadow: 0px 1px #262c39;
+  -ms-text-shadow: 0px 1px #262c39;
+  -o-text-shadow: 0px 1px #262c39;
+  text-shadow: 0px 1px #262c39;
+}
 .sdl-textinput {
   height: 27px;
   width: 200px;
@@ -7640,7 +7992,1075 @@ input.pikaday.invalid {
     SDL.UI = SDL.UI || {};
     SDL.UI.Controls = SDL.UI.Controls || {};
     SDL.UI.Controls.DatePicker = DatePicker;
-}());/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+}());.sdl-library-selector {
+  overflow: hidden;
+  border-radius: 3px;
+  text-shadow: 0 1px #fff;
+  outline: none;
+  position: relative;
+  height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.sdl-library-selector > header {
+  height: 46px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #aaa;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 46px;
+}
+.sdl-library-selector > header > span {
+  vertical-align: middle;
+  margin: 0 40px 0 10px;
+}
+.sdl-library-selector > header > button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.sdl-library-selector > header > button > span.small.close.mono-dark {
+  background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+}
+.sdl-library-selector > header > button > span.small.close.mono-bright {
+  background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+}
+.sdl-library-selector > .main-container {
+  height: calc(100% - 47px);
+}
+.sdl-library-selector > .main-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  cursor: default;
+}
+.sdl-library-selector > .main-container ul > li {
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+  color: #262c39;
+}
+.sdl-library-selector > .main-container ul > li > div {
+  display: inline-block;
+  height: 100%;
+  width: calc(100% - 61px);
+  padding-left: 35px;
+}
+.sdl-library-selector > .main-container ul > li > div > i.radio-button {
+  position: absolute;
+  top: 17px;
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #aaa;
+  vertical-align: middle;
+  margin-right: 6px;
+  background-color: #fff;
+}
+.sdl-library-selector > .main-container ul > li span {
+  vertical-align: middle;
+  line-height: 16px;
+  margin-left: 5px;
+}
+.sdl-library-selector > .main-container ul > li > i.arrow-right {
+  position: absolute;
+  height: 47px;
+  width: 26px;
+  margin-top: 0;
+  right: 0;
+  background-position-y: 15px;
+  background: url("{PATH}../Images/panel-arrow.right.16.mono-dark.svg") no-repeat center center;
+  background-size: 16px 16px;
+}
+.sdl-library-selector > .main-container ul > li > i.arrow-right:hover {
+  background-color: #e9f0fa;
+}
+.sdl-library-selector > .main-container ul > li.selected {
+  background-color: #ddd;
+  border-color: #cfcfcf;
+}
+.sdl-library-selector > .main-container ul > li.selected > div > i.radio-button:before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 2px 0 0 2px;
+  background-color: #296acc;
+}
+.sdl-library-selector > .main-container > .select-row {
+  position: relative;
+  height: 46px;
+  line-height: 46px;
+  border-bottom: 1px solid #aaa;
+}
+.sdl-library-selector > .main-container > .select-row > span.sub-heading {
+  margin-left: 10px;
+  vertical-align: middle;
+  color: #878787;
+}
+.sdl-library-selector > .main-container > .select-row button.sdl-button-purpose-confirm {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon {
+  position: relative;
+  height: 55px;
+  line-height: 46px;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background-color: #fff;
+}
+.sdl-library-selector > .main-container > .button-ribbon .bottom-border {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  bottom: 0;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAArrAAAK6wGCiw1aAAAAB3RJTUUH3gcOEBINrHzTwgAAABBJREFUCNdjuHPnzn8GZAAAN0QDlESRSMQAAAAASUVORK5CYII=) repeat bottom left #fafafa;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.heirarchy-button {
+  margin-right: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.heirarchy-button > span {
+  background: url({PATH}../Images/hierarchy-open.16.mono-dark.svg) no-repeat center center;
+  background-size: 16px 16px;
+  left: 1px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > .small.back {
+  background: url({PATH}../Images/campaign-calendar-icons.svg) no-repeat;
+  background-position: -2px -1px;
+  background-size: 162px 36px;
+  vertical-align: middle;
+  top: 0;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > .small.back.mono-bright {
+  background-position: -2px -19px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > span {
+  vertical-align: middle;
+  line-height: 16px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > span {
+  vertical-align: middle;
+  margin-left: 5px;
+  font-size: 14px;
+}
+.sdl-library-selector > .main-container div.main-list {
+  position: relative;
+  left: 0;
+  height: calc(100% - 102px);
+  overflow: auto;
+  outline: none;
+}
+.sdl-library-selector > .main-container div.main-list:focus ul > li.selected,
+.sdl-library-selector > .main-container div.main-list:focus ul > li.focused.selected {
+  background-color: #bed2f0;
+  border-color: #94b5e5;
+}
+.sdl-library-selector > .main-container div.main-list:focus ul > li.focused {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list ul > li {
+  position: relative;
+  line-height: 47px;
+  font-weight: bold;
+}
+.sdl-library-selector > .main-container div.main-list ul > li.is-drillable:not(.selected):hover {
+  background-color: transparent;
+}
+.sdl-library-selector > .main-container div.main-list ul > li.is-drillable:not(.selected) > div:hover {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list ul > li:not(.is-drillable):not(.selected):hover {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list.transit {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container div.main-list.transit-back {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container > div.previous-list {
+  position: absolute;
+  top: 149px;
+  width: 100%;
+  height: calc(100% - 102px);
+  overflow: auto;
+}
+.sdl-library-selector > .main-container > div.previous-list > ul > li {
+  line-height: 47px;
+  font-weight: bold;
+}
+.sdl-library-selector > .main-container > div.previous-list.transit-back {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container > div.previous-list.transit {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container div.heirarchy-list {
+  position: absolute;
+  top: 137px;
+  left: 90px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul {
+  width: 125px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li {
+  padding: 0 10px;
+  border-bottom: none;
+  height: 37px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li:hover,
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li.focused {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li > span {
+  vertical-align: middle;
+  line-height: 37px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li > i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up {
+  position: absolute;
+  z-index: 9999;
+  left: 8px;
+  top: -5px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-bottom: 7px solid #aaa;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+  top: -1px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-bottom: 7px solid #fff;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+}
+(function () {
+    /**
+     * Initializes a new instance of the Library Panel control
+     * 
+     * @param {object} element The DOM element on which to apply the control
+     * @param {object} options Configuration options for the control
+     * {
+     *      
+     * }
+     */
+    var LibraryPanel = function (element, options) {
+        var self = this;
+        options = options || {};
+        this._isDisposed = false;
+
+        /**
+         * Used for managing the adding and disposing of event listeners
+         */
+        this.eventCoordinator = new EventCoordinator(this);
+
+        this.element = element;
+        this.previousData = [];
+        this.previouslySelectedItems = [];
+        this.onSelectionCallback = options.onSelectionCallback;
+        this.rawData = [];
+        this.rootName = options.rootName || '';
+        this.element = element;
+        this.onCloseCallback = options.onClose;
+        this.isClosable = options.isClosable;
+        this.useCommonUILibraryScrollView = options.useCommonUILibraryScrollView === false ? false : true;
+        this.panelWidth = this.element.offsetWidth;
+
+        element.classList.add('sdl-library-selector');
+        this._createHeaderHTML(element, options.title);
+
+        this.mainListContainer = this._createBodyHTML(element, options.subTitle || SDL.Globalize.culture().messages['LibraryPanel.SelectItem']);
+
+        if (this.useCommonUILibraryScrollView) {
+            this.commonUILibraryScrollView = new SDL.UI.Controls.ScrollView(this.mainListContainer, {});
+        }
+
+        var closeButton = this.mainContainer.parentElement.querySelector('header > button');
+        if (this.isClosable) {
+            this.eventCoordinator.register(closeButton, 'click', this._closeButtonHandler);
+            this.closeButton = new SDL.UI.Controls.Button(closeButton, {  //ignore jslint
+                iconClass: {
+                    light: 'small close mono-bright',
+                    dark: 'small close mono-dark'
+                },
+                purpose: 'general',
+                style: 'icon'
+            });
+        }
+
+        this.eventCoordinator.register(this.mainListContainer, 'click', this._listClickHandler);
+
+        var backButton = this.mainContainer.querySelector('.back-button');
+        this.eventCoordinator.register(backButton, 'click', this._backClickHandler);
+        this.backButton = new SDL.UI.Controls.Button(backButton, {  //ignore jslint
+            iconClass: {
+                light: 'small back mono-bright',
+                dark: 'small back mono-dark'
+            },
+            purpose: 'general'
+        });
+
+        var heirarchyButton = this.mainContainer.querySelector('.heirarchy-button');
+        this.eventCoordinator.register(heirarchyButton, 'click', this._toggleHeirarchyMenu);
+        this.heirarchyButton = new SDL.UI.Controls.Button(heirarchyButton, {  //ignore jslint
+            iconClass: {
+                light: 'heirarchy-button',
+                dark: 'heirarchy-button'
+            },
+            purpose: 'general',
+            style: 'icon'
+        });
+
+        var confirmationButton = this.mainContainer.querySelector('button.confirmation');
+        this.eventCoordinator.register(confirmationButton, 'click', this._itemSelectConfirmation);
+        this.confirmationButton = new SDL.UI.Controls.Button(confirmationButton, {  //ignore jslint
+            purpose: 'confirm',
+            disabled: true
+        });
+
+        this.eventCoordinator.register(element, 'keydown', this._keyHandler);
+
+        this.eventCoordinator.register(element, 'click', this._closeOpenedMenu);
+
+        this.eventCoordinator.register(this.heirarchyList, 'click', this._heirarchyListClickHandler);
+
+        //run the update to kick off list rendering
+        this.update(options);
+    };
+
+    /**
+     * This render method is required by Lucia/Catalina, see http://jira.global.sdl.corp:8090/confluence/display/DEV/Views+and+controls
+     */
+    LibraryPanel.prototype.render = function (callback) {
+        if (typeof callback === 'function') {
+            callback();
+        }
+    };
+
+    /**
+     * Updates the options for the control 
+     * 
+     * @param {object} options Configuration options for the control
+     */
+    LibraryPanel.prototype.update = function (options) {
+        this.selectedItemId = options.data.selectedItemId;
+        this.rootName = options.rootName;
+
+        this._findSelectedItemLevelData(options.data);
+
+        if (this.currentData) {
+            this._renderList(this.currentData, this.mainListContainer);
+        }
+    };
+
+    var EventCoordinator = function (context) {
+        this.context = context;
+        this.registeredEventListeners = [];
+    }
+
+    EventCoordinator.prototype.register = function (element, type, listener, useCapture) {
+        var listenerDefinition = {
+            element: element,
+            type: type,
+            listener: listener.bind(this.context),
+            useCapture: useCapture
+        };
+        this.registeredEventListeners.push(listenerDefinition);
+        listenerDefinition.element.addEventListener(listenerDefinition.type, listenerDefinition.listener, listenerDefinition.useCapture);
+    };
+
+    EventCoordinator.prototype.dispose = function () {
+        var listenerDefinition;
+        while (this.registeredEventListeners.length > 0) {
+            listenerDefinition = this.registeredEventListeners.pop();
+            listenerDefinition.element.removeEventListener(listenerDefinition.type, listenerDefinition.listener, listenerDefinition.useCapture);
+        }
+    };
+
+    /**
+     * Disposes of the control
+     */
+    LibraryPanel.prototype.dispose = function () {
+        //clear up all event handlers
+        this.eventCoordinator.dispose();
+
+        //call dispose on buttons
+        if (this.closeButton) {
+            this.closeButton.dispose();
+        }
+        this.backButton.dispose();
+        this.heirarchyButton.dispose();
+        this.confirmationButton.dispose();
+
+        if (this.useCommonUILibraryScrollView) {
+            this.commonUILibraryScrollView.dispose();
+        }
+
+        this.element.classList.remove('sdl-library-selector');
+
+        this._isDisposed = true;
+    };
+
+    /**
+     * Returns true if this control has been diposed, otherwise false
+     */
+    LibraryPanel.prototype.getDisposed = function () {
+        return this._isDisposed;
+    };
+
+    /**
+     * Parses the data passed in to the component and detrmines the currently selected item and it's sibling list items, parent items and builds the heirarchy state from it.
+     * 
+     * @param {object} options The full options object passed in to the library component
+     */
+    LibraryPanel.prototype._findSelectedItemLevelData = function (data) {
+
+        //clear down the previous data to rebuild from what was passed in
+        this.previousData.length = 0;
+        this.heirarchyList.querySelector('ul').innerHTML = '';
+
+        this._getLevelItems(data, this.rootName);
+
+        if (this.previousData.length === 0) {
+            this.backButton.disable();
+            this.heirarchyButton.disable();
+            this.mainContainer.querySelector('.current-level').innerHTML = this.rootName;
+        }
+    };
+
+    LibraryPanel.prototype._getLevelItems = function (data, levelName) {
+        var items = [], isCurrentData = false, levelHasNoChildren = true;
+
+        this.mainContainer.querySelector('.current-level').innerHTML = levelName;
+
+        for (var i = 0; i < data.length; i++) {
+            items.push(data[i]);
+            if (data[i].children && data[i].children.length > 0) {
+                this._addToHeirarchy({
+                    name: levelName
+                });
+                
+                this.mainContainer.querySelector('.button-ribbon > i').setAttribute('data-type', data[i].dataType || '');
+                this.backButton.enable();
+                levelHasNoChildren = false;
+
+                this.previousData.push(items);
+
+                this._getLevelItems(data[i].children, data[i].name);
+            }
+
+            if (data[i].isSelected) {
+                isCurrentData = true;
+            }
+        }
+
+        if (isCurrentData || levelHasNoChildren) {
+            this.currentData = items;
+        }
+    };
+
+    /**
+     * Creates the HTML elements for the header portion of the library component
+     * 
+     * @param {object} element The containing element in which to insert the HTML
+     * @param {string} title The title to be rendered in the header
+     */
+    LibraryPanel.prototype._createHeaderHTML = function (element, title) {
+        var header = document.createElement('header');
+        var headerHtml = '<span>' + title + '</span>';
+        if (this.isClosable) {
+            headerHtml += '<button></button>';
+        }
+        header.innerHTML = headerHtml;
+
+        element.appendChild(header);
+    };
+
+    /**
+     * Creates the HTML elements for the body of the library component
+     * 
+     * @param {object} element The containing element in which to insert the HTML
+     * @param {string} subTitle A sub-title string which will be rendered under the main header element
+     */
+    LibraryPanel.prototype._createBodyHTML = function (element, subTitle) {
+        this.mainContainer = document.createElement('div');
+        this.mainContainer.classList.add('main-container');
+        this.mainContainer.innerHTML = '<div class="select-row">' +
+                '<span class="sub-heading">' + subTitle + '</span>' +
+                '<button class="confirmation">' + SDL.Globalize.culture().messages['LibraryPanel.Select'] + '</button>' +
+            '</div>' +
+            '<div class="button-ribbon">' +
+                '<button class="text-button back-button">' +
+                    '<span>' + SDL.Globalize.culture().messages['LibraryPanel.Back'] + '</span>' +
+                '</button>' +
+                '<button class="icon-button heirarchy-button">' +
+                '</button>' +
+                '<i class="large"></i>' +
+                '<span class="current-level"></span>' +
+                '<div class="bottom-border"></div>' +
+            '</div>';
+
+        var mainList = document.createElement('div');
+        mainList.setAttribute("tabIndex", 0);
+        mainList.innerHTML = '<ul></ul>';
+        mainList.classList.add('main-list');
+
+        this.mainContainer.appendChild(mainList);
+
+        //create a second list container in order to facilitate the "sliding" effect
+        this.previousListContainer = document.createElement('div');
+        this.previousListContainer.innerHTML = '<ul></ul>';
+        this.previousListContainer.classList.add('previous-list');
+        this.previousListContainer.style.left = -this.panelWidth + 'px';
+
+        this.mainContainer.appendChild(this.previousListContainer);
+
+        //create the heirarchy menu html
+        this.heirarchyList = document.createElement('div');
+        this.heirarchyList.style.display = 'none';
+        this.heirarchyList.classList.add('heirarchy-list');
+        this.heirarchyList.innerHTML = '<div class="arrow-up"></div><ul></ul>';
+
+        this.mainContainer.appendChild(this.heirarchyList);
+
+        //append the main body container to the root element
+        element.appendChild(this.mainContainer);
+
+        return mainList;
+    };
+
+    /**
+     * Renders a list of items with the given data inside the passed in container
+     * 
+     * @param {array} data The data to render as dom li elements
+     * @param {object} listContainer The containing element to render the list inside
+     */
+    LibraryPanel.prototype._renderList = function (data, listContainer) {
+        var listElement = listContainer.querySelector('ul');
+        var htmlString = '';
+        for (var i = 0; i < data.length; i++) {
+            htmlString += '<li data-id="' + data[i].id + '" class="';
+
+            if (data[i].id === this.selectedItemId || (this.selectedItem && data[i].id === this.selectedItem.id)) {
+                htmlString += 'selected';
+            }
+
+            if (data[i].isDrillable & data[i].isSelectable) {
+                htmlString += ' is-drillable';
+            }
+
+            htmlString += '"><div><i class="large" data-type="' + data[i].dataType + '"></i><span>' + data[i].name + '</span>';
+
+            if (data[i].isSelectable) {
+                htmlString += '<i class="radio-button"></i>';
+            }
+
+            htmlString += '</div>';
+
+            if (!data[i].isSelectable) {
+                htmlString += '<i class="arrow-right small mono-dark"></i>';
+            } else if (data[i].isDrillable) {
+                htmlString += '<i class="arrow-right small mono-dark drill-button"></i>';
+            }
+            htmlString += '</li>';
+        }
+
+        listElement.innerHTML = htmlString;
+    };
+
+    /**
+     * Click handler for the current list of items
+     * 
+     * @param {object} event The click event
+     */
+    LibraryPanel.prototype._listClickHandler = function (event) {
+        var clickedElement = event.target;
+        var selectedId;
+
+        var isDrillDown = clickedElement.classList.contains('drill-button');
+
+        if (clickedElement.getAttribute('data-id')) {
+            selectedId = clickedElement.getAttribute('data-id');
+        } else {
+            //traverse up the dom, looking for the li element. Stop when reaching the ul the handler is attached to
+            while (!clickedElement.getAttribute('data-id') && clickedElement !== event.currentTarget) {
+                clickedElement = clickedElement.parentElement;
+            }
+            if (clickedElement.getAttribute('data-id')) {
+                selectedId = clickedElement.getAttribute('data-id');
+            }
+        }
+
+        if (selectedId) {
+            this._selectItemById(clickedElement, parseInt(selectedId, 10), isDrillDown);
+        }
+
+    };
+
+    /**
+     * Selects an item at the current level by id
+     * 
+     * @param {string} itemId The id of the item to select
+     * @param {isDrillAction} isDrillAction True if the selection is a drill down, false if it is a plain item selection.
+     */
+    LibraryPanel.prototype.selectItemById = function (itemId, isDrillAction) {
+        var listElement = this.mainListContainer.querySelector('[data-id="' + itemId + '"]');
+
+        if (listElement) {
+            this._selectItemById(listElement, itemId, isDrillAction);
+        }
+    };
+
+    /**
+     * Selects an item in the current list by it's id property
+     * 
+     * @param {object} listElement The dom li element which was selected
+     * @param {number} selectedId The id of the selected item
+     * @param {boolean} isDrillAction Boolean to indicate whether the selection was a drill down or standard selection
+     */
+    LibraryPanel.prototype._selectItemById = function (listElement, selectedId, isDrillAction) {
+        //find the data item by id
+        var selectedItem = null;
+        for (var i = 0; i < this.currentData.length; i++) {
+            if (this.currentData[i].id === selectedId) {
+                selectedItem = this.currentData[i];
+                break;
+            }
+        }
+
+        if (selectedItem && selectedItem.isSelectable && !isDrillAction) {
+            //if item is selectable, select it and enable select button
+            this.selectedItem = selectedItem;
+            var previouslySelectedElement = listElement.parentElement.querySelector('.selected');
+            if (previouslySelectedElement) {
+                previouslySelectedElement.classList.remove('selected');
+            }
+            listElement.classList.add('selected');
+
+            this.confirmationButton.enable();
+        } else {
+
+            listElement.classList.add('selected');
+
+            //otherwise get the next level of data
+            this._getNextLevel(selectedItem);
+        }
+    };
+
+    /**
+     * Gets the next level of data given the passed in item
+     * 
+     * @param {object} selectedItem The selected item for which the next level of data should be retrieved
+     */
+    LibraryPanel.prototype._getNextLevel = function (selectedItem) {
+        var self = this;
+
+        if (selectedItem.getDataFor) {
+            //use the previous list container to slide in the next list of items
+            self.previousListContainer.style.left = this.panelWidth + 'px';
+
+            //ensure there is time for the ui to update with the class applied in the previous line
+            setTimeout(function () {
+                selectedItem.getDataFor(selectedItem.id, function (data) {
+                    self.confirmationButton.disable();
+                    self._renderList(data, self.previousListContainer);
+
+                    self.mainListContainer.classList.add('transit');
+                    self.mainListContainer.style.left = -self.panelWidth + 'px';
+                    self.previousListContainer.classList.add('transit');
+                    self.previousListContainer.style.left = 0;
+
+                    var transitionEnd = function () {
+                        self._renderList(data, self.mainListContainer);
+                        self.mainListContainer.classList.remove('transit');
+                        self.mainListContainer.style.left = 0;
+                        self.previousListContainer.classList.remove('transit');
+                        self.previousListContainer.style.left = -self.panelWidth + 'px';
+
+                        var nameSpan = self.mainContainer.querySelector('.current-level');
+                        nameSpan.innerHTML = selectedItem.name;
+                        nameSpan.previousSibling.setAttribute("data-type", selectedItem.dataType);
+                        self.currentData = data;
+                        self.mainListContainer.removeEventListener('transitionend', transitionEnd);
+                        self.backButton.enable();
+                        self.heirarchyButton.enable();
+                    };
+
+                    self.mainListContainer.addEventListener('transitionend', transitionEnd);
+                    self.previousData.push(self.currentData);
+                    if (self.previouslySelectedItems.length > 0) {
+                        self._addToHeirarchy(self.previouslySelectedItems[self.previouslySelectedItems.length - 1]);
+                    } else {
+                        self._addToHeirarchy({
+                            name: self.rootName
+                        });
+                    }
+
+                    self.previouslySelectedItems.push(selectedItem);
+                });
+            }, 1);
+        }
+    };
+
+    /**
+     * Adds the passed in item to the heirarchy menu
+     * 
+     * @param {object} item The item object which is to be added to the heirarchy
+     */
+    LibraryPanel.prototype._addToHeirarchy = function (item) {
+        var newListElement = document.createElement('li');
+        newListElement.innerHTML = '<i class="small" data-type="' + item.dataType + '"></i><span>' + item.name + '</span>';
+
+        this.heirarchyList.querySelector('ul').appendChild(newListElement);
+    };
+
+    /**
+     * Click handler for the back button for heirarchy navigation
+     */
+    LibraryPanel.prototype._backClickHandler = function () {
+        var self = this;
+        if (this.previousData.length > 0) {
+            this.currentData = this.previousData.pop();
+            this._renderList(this.currentData, this.previousListContainer);
+            this.previousListContainer.classList.add('transit-back');
+            this.previousListContainer.style.left = 0;
+            this.mainListContainer.classList.add('transit-back');
+            this.mainListContainer.style.left = this.panelWidth + 'px';
+
+            this.confirmationButton.disable();
+            var heirarchyListElement = this.heirarchyList.querySelector('ul');
+
+            var transitionEnd = function () {
+                self._renderList(self.currentData, self.mainListContainer);
+                self.mainListContainer.classList.remove('transit-back');
+                self.mainListContainer.style.left = 0;
+                self.previousListContainer.classList.remove('transit-back');
+                self.previousListContainer.style.left = -self.panelWidth + 'px';
+
+                if (heirarchyListElement.children.length > 0) {
+                    self.previouslySelectedItems.pop();
+                    self.mainContainer.querySelector('.current-level').innerHTML = heirarchyListElement.lastChild.querySelector('span').innerHTML;
+                    self.mainContainer.querySelector('.button-ribbon > i').setAttribute('data-type', heirarchyListElement.lastChild.querySelector('i').getAttribute('data-type'));
+                    heirarchyListElement.removeChild(heirarchyListElement.lastChild);
+                } else {
+                    self.mainContainer.querySelector('.current-level').innerHTML = self.rootName;
+                    self.mainContainer.querySelector('.button-ribbon > i').setAttribute('data-type', '');
+                }
+
+                if (heirarchyListElement.children.length === 0) {
+                    self.backButton.disable();
+                    self.heirarchyButton.disable();
+                }
+
+                self.mainListContainer.removeEventListener('transitionend', transitionEnd);
+            };
+
+            this.mainListContainer.addEventListener('transitionend', transitionEnd);
+        }
+    };
+
+    /**
+     * Toggles the heirarchy menu open or closed (visible or not)
+     */
+    LibraryPanel.prototype._toggleHeirarchyMenu = function () {
+        if (this.heirarchyList.offsetParent === null && this.heirarchyList.querySelector('ul').children.length > 0) {
+            this.heirarchyList.style.display = 'block';
+        } else {
+            //de-select any keyboard selection
+            var selectedItem = this.heirarchyList.querySelector('li.focused');
+            if (selectedItem) {
+                selectedItem.classList.remove('focused');
+            }
+            this.heirarchyList.style.display = 'none';
+        }
+
+    };
+
+    /**
+     * Click handler for the heirarchy list
+     * 
+     * @param {object} event The click event. 
+     */
+    LibraryPanel.prototype._heirarchyListClickHandler = function (event) {
+        var clickedElement = event.target;
+
+        while (clickedElement.tagName !== 'LI') {
+            clickedElement = clickedElement.parentElement;
+        }
+
+        //get the index of the clicked item in the list
+        var clickedLevel = Array.prototype.indexOf.call(clickedElement.parentElement.childNodes, clickedElement);
+        var heirarchyListElement = this.heirarchyList.querySelector('ul');
+
+        //remove all items after the clicked level
+        for (var i = this.previousData.length; i > clickedLevel; i--) {
+            this.currentData = this.previousData.pop();
+            if (heirarchyListElement.children.length > 0) {
+                heirarchyListElement.removeChild(heirarchyListElement.lastChild);
+                this.previouslySelectedItems.pop();
+            }
+        }
+
+        //clear any existing selection
+        this.confirmationButton.disable();
+
+        //re-render the lists with the clicked level data
+        this._renderList(this.currentData, this.previousListContainer);
+
+        var self = this;
+        var transitionEnd = function () {
+            self._renderList(self.currentData, self.mainListContainer);
+            self.mainListContainer.classList.remove('transit-back');
+            self.mainListContainer.style.left = 0;
+            self.previousListContainer.classList.remove('transit-back');
+            self.previousListContainer.style.left = -self.panelWidth + 'px';
+            var currentLevelElement = heirarchyListElement.lastChild;
+            if (currentLevelElement) {
+                self.mainContainer.querySelector('.current-level').innerHTML = currentLevelElement.querySelector('span').innerHTML;
+                self.mainContainer.querySelector('.button-ribbon > i').setAttribute('data-type', currentLevelElement.querySelector('i').getAttribute('data-type'));
+            } else {
+                self.mainContainer.querySelector('.current-level').innerHTML = self.rootName;
+                self.mainContainer.querySelector('.button-ribbon > i').setAttribute('data-type', '');
+            }
+
+            self.mainListContainer.removeEventListener('transitionend', transitionEnd);
+
+            if (heirarchyListElement.children.length === 0) {
+                self.backButton.disable();
+                self.heirarchyButton.disable();
+            }
+        };
+
+        this.previousListContainer.classList.add('transit-back');
+        this.previousListContainer.style.left = 0;
+        this.mainListContainer.classList.add('transit-back');
+        this.mainListContainer.style.left = this.panelWidth + 'px';
+
+        this.mainListContainer.addEventListener('transitionend', transitionEnd);
+
+    };
+
+    /**
+     * Click handler for the select button
+     */
+    LibraryPanel.prototype._itemSelectConfirmation = function () {
+        this.onSelectionCallback(this.selectedItem);
+    };
+
+    /**
+     * Click handler for the library close button
+     */
+    LibraryPanel.prototype._closeButtonHandler = function () {
+        if (this.onCloseCallback) {
+            this.onCloseCallback();
+        }
+    };
+
+    /**
+     * Closes the heirarchy menu
+     * 
+     * @param {object} event The click event which triggered the close
+     */
+    LibraryPanel.prototype._closeOpenedMenu = function (event) {
+        var targetEl = event.target;
+
+        var heirarchyButton = this.mainContainer.querySelector('.heirarchy-button');
+        if (!heirarchyButton.contains(targetEl) && targetEl !== heirarchyButton) {
+            this.heirarchyList.style.display = 'none';
+        }
+    };
+
+    /**
+     * Key press handler for all library keyboard functions
+     *
+     * @param {object} event The key press event
+     */
+    LibraryPanel.prototype._keyHandler = function (event) {
+        var focusedHeirarchyItem, itemId;
+        var keyCode = event.keyCode;
+        var focusedListItem = this.mainListContainer.querySelector('.focused');
+        var mainListElement = this.mainListContainer.querySelector('ul');
+        switch (keyCode) {
+            case 36:    //home key
+                //just simulate a click on the top heirarchy list element
+                var mockEvent = { target: this.heirarchyList.querySelector('ul').firstChild };
+                this._heirarchyListClickHandler(mockEvent);
+                break;
+            case 37: //left arrow
+                this._backClickHandler();
+                break;
+            case 38: //up arrow
+                if (this.heirarchyList.offsetParent) { //if the heirarchy list is open, arrows control list selection
+                    focusedHeirarchyItem = this.heirarchyList.querySelector('li.focused');
+                    if (focusedHeirarchyItem && focusedHeirarchyItem.previousSibling) {
+                        focusedHeirarchyItem.previousSibling.classList.add('focused');
+                        focusedHeirarchyItem.classList.remove('focused');
+                    } else {
+                        this.heirarchyList.querySelector('ul').lastChild.classList.add('focused');
+                        if (focusedHeirarchyItem) {
+                            focusedHeirarchyItem.classList.remove('focused');
+                        }
+                    }
+                } else if (document.activeElement === this.mainListContainer) {
+                    if (focusedListItem) {
+                        var previousItem = focusedListItem.previousSibling || mainListElement.lastChild;
+                        previousItem.classList.add('focused');
+                        focusedListItem.classList.remove('focused');
+                        this._scrollIntoView(previousItem);
+                    } else {
+                        mainListElement.lastChild.classList.add('focused');
+                    }
+                    event.preventDefault(); //stop the scrollable area from scrolling from an up arrow press
+                }
+                break;
+            case 40: //down arrow
+                if (this.heirarchyList.offsetParent) { //if the heirarchy list is open, arrows control list selection
+                    focusedHeirarchyItem = this.heirarchyList.querySelector('li.focused');
+                    if (focusedHeirarchyItem && focusedHeirarchyItem.nextSibling) {
+                        focusedHeirarchyItem.nextSibling.classList.add('focused');
+                        focusedHeirarchyItem.classList.remove('focused');
+                    } else {
+                        this.heirarchyList.querySelector('ul').firstChild.classList.add('focused');
+                        if (focusedHeirarchyItem) {
+                            focusedHeirarchyItem.classList.remove('focused');
+                        }
+                    }
+                } else if (document.activeElement === this.mainListContainer) {
+                    if (focusedListItem) {
+                        var nextItem = focusedListItem.nextSibling || mainListElement.firstChild;
+                        nextItem.classList.add('focused');
+                        focusedListItem.classList.remove('focused');
+                        this._scrollIntoView(nextItem);
+                    } else {
+                        mainListElement.firstChild.classList.add('focused');
+                    }
+                    event.preventDefault(); //stop the scrollable area from scrolling from a down arrow press
+                }
+                break;
+            case 13: //enter
+                if (this.heirarchyList.offsetParent) { //if heirarchy list is open, enter makes a heirarchy selection, otherwise it selects a main list item
+                    focusedHeirarchyItem = this.heirarchyList.querySelector('li.focused');
+                    //use the click handler to make a selection with the focused item
+                    this._heirarchyListClickHandler({ target: focusedHeirarchyItem });
+                    this._toggleHeirarchyMenu();
+                    event.preventDefault();
+                } else if (focusedListItem) {
+                    itemId = parseInt(focusedListItem.getAttribute('data-id'), 10);
+                    this._selectItemById(focusedListItem, itemId, false);  //is a selection
+                    //after selection set focus to the select button
+                    this.mainContainer.querySelector('.select-row > button').focus();
+                }
+                break;
+            case 39: //right arrow
+                if (focusedListItem) {
+                    itemId = parseInt(focusedListItem.getAttribute('data-id'), 10);
+                    this._selectItemById(focusedListItem, itemId, true);  //is a drill down
+                    //after selection set focus to the select button
+                    this.mainContainer.querySelector('.select-row > button').focus();
+                }
+                break;
+
+            case 27:    //escape
+                //close the library selector
+                this._closeButtonHandler();
+                break;
+        }
+    };
+
+    /**
+     * Scrolls the passed in list node into the viewable area
+     *
+     * @param {object} listItem The list element to scroll into view
+     */
+    LibraryPanel.prototype._scrollIntoView = function (listItem) {
+        var nodeBounds = listItem.getBoundingClientRect();
+        var scrollableElem, bottomOffset;
+        if (this.useCommonUILibraryScrollView) {
+            scrollableElem = this.mainListContainer.firstChild;
+            bottomOffset = parseInt(scrollableElem.style.bottom);
+        } else {
+            scrollableElem = this.mainListContainer;
+            bottomOffset = 0;
+        }
+
+        var listBounds = scrollableElem.getBoundingClientRect();
+
+        if (nodeBounds.top < listBounds.top) {
+            scrollableElem.scrollTop += nodeBounds.top - listBounds.top;
+        } else if (nodeBounds.bottom > listBounds.bottom + bottomOffset) {
+            scrollableElem.scrollTop += nodeBounds.bottom - listBounds.bottom + 1 - bottomOffset;
+        }
+    };
+
+    /**
+     * Returns true if we are on a touch device, otherwise returns false
+     */
+    LibraryPanel.prototype._isTouchDevice = function () {
+        return 'ontouchstart' in window || navigator.msMaxTouchPoints;
+    };
+
+    // Lucia/Catalina namespace
+    SDL = SDL || {};
+    SDL.UI = SDL.UI || {};
+    SDL.UI.Controls = SDL.UI.Controls || {};
+    SDL.UI.Controls.LibraryPanel = LibraryPanel;
+}());SDL.Globalize.addCultureInfo('en', {
+    messages: {
+        'LibraryPanel.SelectItem': 'Select items(s)',
+        'LibraryPanel.Back':  'Back',
+        'LibraryPanel.Select': 'Select'
+    }
+});/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7728,7 +9148,7 @@ var SDL;
   height: 17px;
   overflow: hidden;
   background-repeat: no-repeat;
-  background-image: url({PATH}Images/checkboxes.svg);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOTUgNTciIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwIiB5PSIwIiB3aWR0aD0iOTUiIGhlaWdodD0iNTciPjxkZWZzPjxzeW1ib2wgaWQ9IjEiIG92ZXJmbG93PSJ2aXNpYmxlIj48cGF0aCBkPSJNNiAwQzYuNiAwIDcgMC40IDcgMUw3IDFMLTYgMUMtNiAwLjQtNS42IDAtNSAwTDYgMFoiIGZpbGw9IiNmM2YzZjMiLz48L3N5bWJvbD48c3ltYm9sIGlkPSIyIiBvdmVyZmxvdz0idmlzaWJsZSI+PHBhdGggZD0iTS0yNS03TC0xNi03Qy0xNC45LTctMTQtNi4xLTE0LTVMLTE0IDRDLTE0IDUuMS0xNC45IDYtMTYgNkwtMjUgNkMtMjYuMSA2LTI3IDUuMS0yNyA0TC0yNy01Qy0yNy02LjEtMjYuMS03LTI1LTdaIiBmaWxsPSIjZmZmZmZmIi8+PHJlY3QgeD0iLTI3IiB5PSItNyIgd2lkdGg9IjEzIiBoZWlnaHQ9IjEzIiBzdHJva2U9IiNhYWFhYWEiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIgcng9IjEiIHJ5PSIxIi8+PHBhdGggZD0iTS0xMy41IDUuNUMtMTMuNSA2LjEtMTMuOSA2LjUtMTQuNSA2LjVMLTI2LjUgNi41Qy0yNy4xIDYuNS0yNy41IDYuMS0yNy41IDUuNUwtMjcuNS02LjVDLTI3LjUtNy4xLTI3LjEtNy41LTI2LjUtNy41TC0xNC41LTcuNUMtMTMuOS03LjUtMTMuNS03LjEtMTMuNS02LjVMLTEzLjUgNS41WiIgc3Ryb2tlPSIjYTNhM2EzIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmZmZmZmYiLz48dXNlIHhsaW5rOmhyZWY9IiMxIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC0yMSwtNykiLz48L3N5bWJvbD48c3ltYm9sIGlkPSIzIiBvdmVyZmxvdz0idmlzaWJsZSI+PHBhdGggZD0iTTYuNSA1LjVDNi41IDYuMSA2LjEgNi41IDUuNSA2LjVMLTYuNSA2LjVDLTcuMSA2LjUtNy41IDYuMS03LjUgNS41TC03LjUtNi41Qy03LjUtNy4xLTcuMS03LjUtNi41LTcuNUw1LjUtNy41QzYuMS03LjUgNi41LTcuMSA2LjUtNi41TDYuNSA1LjVaIiBzdHJva2U9IiM0NTQ1NDUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIvPjx1c2UgeGxpbms6aHJlZj0iIzEiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsLTEsLTcpIi8+PC9zeW1ib2w+PHN5bWJvbCBpZD0iNCIgb3ZlcmZsb3c9InZpc2libGUiPjx1c2UgeGxpbms6aHJlZj0iIzIiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMjAsMCkiLz48cGF0aCBvcGFjaXR5PSIwLjUiIGQ9Ik02LjUgNS41QzYuNSA2LjEgNi4xIDYuNSA1LjUgNi41TC02LjUgNi41Qy03LjEgNi41LTcuNSA2LjEtNy41IDUuNUwtNy41LTYuNUMtNy41LTcuMS03LjEtNy41LTYuNS03LjVMNS41LTcuNUM2LjEtNy41IDYuNS03LjEgNi41LTYuNUw2LjUgNS41WiIgc3Ryb2tlPSIjNTQ5MWY2IiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBvcGFjaXR5PSIwLjUiIGQ9Ik03LjUgNS41QzcuNSA2LjYgNi42IDcuNSA1LjUgNy41TC02LjUgNy41Qy03LjYgNy41LTguNSA2LjYtOC41IDUuNUwtOC41LTYuNUMtOC41LTcuNi03LjYtOC41LTYuNS04LjVMNS41LTguNUM2LjYtOC41IDcuNS03LjYgNy41LTYuNUw3LjUgNS41WiIgc3Ryb2tlPSIjNTQ5MWY2IiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiLz48L3N5bWJvbD48c3ltYm9sIGlkPSI1IiBvdmVyZmxvdz0idmlzaWJsZSI+PHVzZSB4bGluazpocmVmPSIjMyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwwLDApIi8+PHBhdGggb3BhY2l0eT0iMC41IiBkPSJNNi41IDUuNUM2LjUgNi4xIDYuMSA2LjUgNS41IDYuNUwtNi41IDYuNUMtNy4xIDYuNS03LjUgNi4xLTcuNSA1LjVMLTcuNS02LjVDLTcuNS03LjEtNy4xLTcuNS02LjUtNy41TDUuNS03LjVDNi4xLTcuNSA2LjUtNy4xIDYuNS02LjVMNi41IDUuNVoiIHN0cm9rZT0iIzU0OTFmNiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZmZmZmZmIi8+PHBhdGggb3BhY2l0eT0iMC41IiBkPSJNNy41IDUuNUM3LjUgNi42IDYuNiA3LjUgNS41IDcuNUwtNi41IDcuNUMtNy42IDcuNS04LjUgNi42LTguNSA1LjVMLTguNS02LjVDLTguNS03LjYtNy42LTguNS02LjUtOC41TDUuNS04LjVDNi42LTguNSA3LjUtNy42IDcuNS02LjVMNy41IDUuNVoiIHN0cm9rZT0iIzU0OTFmNiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+PC9zeW1ib2w+PHN5bWJvbCBpZD0iNiIgb3ZlcmZsb3c9InZpc2libGUiPjxwYXRoIGQ9Ik0zIDNMLTQgM0wtNC00TDMtNEwzIDNaIiBmaWxsPSIjMmE2YmNjIi8+PC9zeW1ib2w+PHN5bWJvbCBpZD0iNyIgb3ZlcmZsb3c9InZpc2libGUiPjxwYXRoIGQ9Ik0tMi4xIDEuM0wzLjUtNC42TDQuOC00LjFMNC45LTMuMUwtMi4xIDQuMUwtNS40IDAuNEwtNS40LTFMLTQuNS0xTC0yLjEgMS4zWiIgZmlsbD0iIzJmNmRjZCIvPjwvc3ltYm9sPjwvZGVmcz48dXNlIHhsaW5rOmhyZWY9IiMyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDMwLDEwKSIvPjx1c2Ugb3BhY2l0eT0iMC41IiB4bGluazpocmVmPSIjMiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDYsMTApIi8+PHVzZSB4bGluazpocmVmPSIjMyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwyOSwxMCkiLz48dXNlIHhsaW5rOmhyZWY9IiMyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDMwLDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iIzMiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMjksNDgpIi8+PHVzZSB4bGluazpocmVmPSIjNCIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw0OCw0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiM0IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDQ4LDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzQiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNDgsMTApIi8+PHVzZSB4bGluazpocmVmPSIjMyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw2Nyw0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiMyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDMwLDI5KSIvPjx1c2Ugb3BhY2l0eT0iMC41IiB4bGluazpocmVmPSIjMiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDYsMjkpIi8+PHVzZSBvcGFjaXR5PSIwLjUiIHhsaW5rOmhyZWY9IiMyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDEwNiw0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiMzIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDI5LDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzUiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNjcsMTApIi8+PHVzZSB4bGluazpocmVmPSIjNSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw2NywyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiM1IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDY3LDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iIzYiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMTAsMjkpIi8+PHVzZSB4bGluazpocmVmPSIjNiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwyOSwyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiM2IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDQ4LDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzYiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNjcsMjkpIi8+PHVzZSB4bGluazpocmVmPSIjNyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMCw0OCkiLz48dXNlIHhsaW5rOmhyZWY9IiM3IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDI5LDQ4KSIvPjx1c2UgeGxpbms6aHJlZj0iIzciIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNDgsNDgpIi8+PHVzZSB4bGluazpocmVmPSIjNyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw2Nyw0OCkiLz48cmVjdCB4PSI4MiIgeT0iMjUiIHdpZHRoPSI3IiBoZWlnaHQ9IjciIGZpbGw9IiNjZGNkY2QiLz48cGF0aCBkPSJNODEgNDYuN0w4My45IDUwLjNMOTAuOSA0My4xTDkwLjkgNDQuOUw4My45IDUyLjFMODAuNiA0OC40TDgxIDQ2LjdaIiBmaWxsPSIjY2RjZGNkIi8+PC9zdmc+);
   margin: -1px;
 }
 .sdl-checkbox input:checked + .sdl-checkbox-img {
@@ -7849,7 +9269,7 @@ var SDL;
   height: 17px;
   overflow: hidden;
   background-repeat: no-repeat;
-  background-image: url({PATH}Images/radio-buttons.min.svg);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOTUgMzgiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwIiB5PSIwIiB3aWR0aD0iOTUiIGhlaWdodD0iMzgiPjxkZWZzPjxzeW1ib2wgaWQ9IjEiIG92ZXJmbG93PSJ2aXNpYmxlIj48cGF0aCBkPSJNLTctMC41Qy03LTQuMS00LjEtNy0wLjUtN0MzLjEtNyA2LTQuMSA2LTAuNUM2IDMuMSAzLjEgNi0wLjUgNkMtNC4xIDYtNyAzLjEtNy0wLjVaIiBzdHJva2U9IiNhYWFhYWEiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ltYm9sPjxzeW1ib2wgaWQ9IjIiIG92ZXJmbG93PSJ2aXNpYmxlIj48cGF0aCBkPSJNLTctMC41Qy03LTQuMS00LjEtNy0wLjUtN0MzLjEtNyA2LTQuMSA2LTAuNUM2IDMuMSAzLjEgNi0wLjUgNkMtNC4xIDYtNyAzLjEtNy0wLjVaIiBzdHJva2U9IiM0NTQ1NDUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ltYm9sPjxzeW1ib2wgaWQ9IjMiIG92ZXJmbG93PSJ2aXNpYmxlIj48cGF0aCBkPSJNLTQtMC41Qy00LTIuNC0yLjQtNC0wLjUtNEMxLjQtNCAzLTIuNCAzLTAuNUMzIDEuNCAxLjQgMy0wLjUgM0MtMi40IDMtNCAxLjQtNC0wLjVaIiBzdHJva2U9IiMyODZhY2MiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iIzI4NmFjYyIvPjwvc3ltYm9sPjxzeW1ib2wgaWQ9IjQiIG92ZXJmbG93PSJ2aXNpYmxlIj48cGF0aCBvcGFjaXR5PSIwLjUiIGQ9Ik0tOC0wLjVDLTgtNC42LTQuNi04LTAuNS04QzMuNi04IDctNC42IDctMC41QzcgMy42IDMuNiA3LTAuNSA3Qy00LjYgNy04IDMuNi04LTAuNVoiIHN0cm9rZT0iIzU0OTFmNiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PC9zeW1ib2w+PC9kZWZzPjx1c2UgeGxpbms6aHJlZj0iIzEiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMTAsMTApIi8+PHVzZSB4bGluazpocmVmPSIjMSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwyOSwyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiMxIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDEwLDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzEiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNDgsMTApIi8+PHVzZSB4bGluazpocmVmPSIjMiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwyOSwxMCkiLz48dXNlIHhsaW5rOmhyZWY9IiMyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDY3LDEwKSIvPjxwYXRoIGQ9Ik03OSA5LjVDNzkgNS45IDgxLjkgMyA4NS41IDNDODkuMSAzIDkyIDUuOSA5MiA5LjVDOTIgMTMuMSA4OS4xIDE2IDg1LjUgMTZDODEuOSAxNiA3OSAxMy4xIDc5IDkuNVoiIHN0cm9rZT0iI2RkZGRkZCIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZmZmZmZmIi8+PHBhdGggZD0iTTc5IDI4LjVDNzkgMjQuOSA4MS45IDIyIDg1LjUgMjJDODkuMSAyMiA5MiAyNC45IDkyIDI4LjVDOTIgMzIuMSA4OS4xIDM1IDg1LjUgMzVDODEuOSAzNSA3OSAzMi4xIDc5IDI4LjVaIiBzdHJva2U9IiNkZGRkZGQiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIvPjxwYXRoIGQ9Ik04MiAyOC41QzgyIDI2LjYgODMuNiAyNSA4NS41IDI1Qzg3LjQgMjUgODkgMjYuNiA4OSAyOC41Qzg5IDMwLjQgODcuNCAzMiA4NS41IDMyQzgzLjYgMzIgODIgMzAuNCA4MiAyOC41WiIgc3Ryb2tlPSIjZGRkZGRkIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNkZGRkZGQiLz48dXNlIHhsaW5rOmhyZWY9IiMzIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDEwLDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzMiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMjksMjkpIi8+PHVzZSB4bGluazpocmVmPSIjMSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw2NywyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiMxIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDQ4LDI5KSIvPjx1c2UgeGxpbms6aHJlZj0iIzMiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNDgsMjkpIi8+PHVzZSB4bGluazpocmVmPSIjMyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw2NywyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiM0IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDQ4LDEwKSIvPjx1c2UgeGxpbms6aHJlZj0iIzQiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNjcsMTApIi8+PHVzZSB4bGluazpocmVmPSIjNCIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw0OCwyOSkiLz48dXNlIHhsaW5rOmhyZWY9IiM0IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDY3LDI5KSIvPjwvc3ZnPg==);
   margin: -1px;
 }
 .sdl-radiobutton input:checked + .sdl-radiobutton-img {
@@ -8103,7 +9523,7 @@ var SDL;
 
                 DropdownList.prototype._onListClick = function (e) {
                     var $target = SDL.jQuery(e.target);
-                    if (!$target.hasClass("selected")) {
+                    if ($target.prop("tagName") == "LI" && !$target.hasClass("selected")) {
                         this._setSelectedOption($target);
                     }
                     this._hideOptions();
@@ -8159,12 +9579,12 @@ var SDL;
 
             DropdownList.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function SDL$UI$Controls$DropdownList$disposeInterface() {
                 this._$list.off("click", this.getDelegate(this._onListClick));
-                SDL.jQuery(window).off("scroll resize", this.getDelegate(this._hideOptions));
+                SDL.jQuery(window).off("scroll", this.getDelegate(this._hideOptions)).off("resize", this.getDelegate(this._onWindowResize));
 
                 this._$title = undefined;
                 this._$list = undefined;
 
-                this._$elem.removeClass("sdl-dropdownlist").off("click", this.getDelegate(this._onClick)).off("blur", this.getDelegate(this._onBlur)).off("keydown", this.getDelegate(this._onKeyDown)).empty();
+                this._$elem.removeClass("sdl-dropdownlist open").off("click", this.getDelegate(this._onClick)).off("blur", this.getDelegate(this._onBlur)).off("keydown", this.getDelegate(this._onKeyDown)).empty();
 
                 if (!this._initialTabIndex) {
                     this._$elem.removeAttr("tabIndex");
@@ -8182,6 +9602,20 @@ var SDL;
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
 /* An elliptical shadow  for use on the bottom edge of containers/elements, can be positioned with a combination of shadowMargin, x and y offsets */
+.textShadowBright {
+  -webkit-text-shadow: 0px 1px #ffffff;
+  -moz-text-shadow: 0px 1px #ffffff;
+  -ms-text-shadow: 0px 1px #ffffff;
+  -o-text-shadow: 0px 1px #ffffff;
+  text-shadow: 0px 1px #ffffff;
+}
+.textShadowDark {
+  -webkit-text-shadow: 0px 1px #262c39;
+  -moz-text-shadow: 0px 1px #262c39;
+  -ms-text-shadow: 0px 1px #262c39;
+  -o-text-shadow: 0px 1px #262c39;
+  text-shadow: 0px 1px #262c39;
+}
 .sdl-dropdownlist {
   height: 27px;
   width: 200px;
@@ -8225,7 +9659,7 @@ var SDL;
 }
 .sdl-dropdownlist:after {
   content: '';
-  background-image: url({PATH}Images/dropdown-arrow.16.mono-dark.svg);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjAiIHk9IjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTQgNkwxMiA2TDggMTFMNCA2WiIgZmlsbD0iIzM0M2E0NiIvPjwvc3ZnPg==);
   width: 16px;
   height: 16px;
   position: absolute;
@@ -8321,6 +9755,7 @@ var SDL;
   display: block;
 }
 /// <reference path="../../../SDL.Client.Core/Application/Application.d.ts" />
+/// <reference path="../../../SDL.Client.Core/Application/ApplicationHost.d.ts" />
 /// <reference path="../../../SDL.Client.UI.Core/Renderers/ControlRenderer.d.ts" />
 /// <reference path="../TopBar.ts" />
 var __extends = this.__extends || function (d, b) {
@@ -8405,3 +9840,1895 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
+/* An elliptical shadow  for use on the bottom edge of containers/elements, can be positioned with a combination of shadowMargin, x and y offsets */
+.textShadowBright {
+  -webkit-text-shadow: 0px 1px #ffffff;
+  -moz-text-shadow: 0px 1px #ffffff;
+  -ms-text-shadow: 0px 1px #ffffff;
+  -o-text-shadow: 0px 1px #ffffff;
+  text-shadow: 0px 1px #ffffff;
+}
+.textShadowDark {
+  -webkit-text-shadow: 0px 1px #262c39;
+  -moz-text-shadow: 0px 1px #262c39;
+  -ms-text-shadow: 0px 1px #262c39;
+  -o-text-shadow: 0px 1px #262c39;
+  text-shadow: 0px 1px #262c39;
+}
+.sdl-treeview {
+  font-family: Arial;
+  font-size: 12px;
+  -webkit-text-shadow: 0px 1px #ffffff;
+  -moz-text-shadow: 0px 1px #ffffff;
+  -ms-text-shadow: 0px 1px #ffffff;
+  -o-text-shadow: 0px 1px #ffffff;
+  text-shadow: 0px 1px #ffffff;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  /**
+     * Need to override the common ui library checkbox control so that it can't receive focus
+     * Fixes a Google Chrome bug whereby tabindex of -1 doesn't work for checkboxes contained inside a tabbable element
+     */
+}
+.sdl-treeview:focus ul.root li.active > div.node {
+  border: 1px solid #94b5e5;
+  background-color: #bed2f0;
+}
+.sdl-treeview .sdl-checkbox > input {
+  display: none;
+}
+.sdl-treeview .svg-spinner {
+  -webkit-animation: application-loading-rotate 0.5s;
+  -o-animation: application-loading-rotate 0.5s;
+  -moz-animation: application-loading-rotate 0.5s;
+  animation: application-loading-rotate 0.5s;
+  -webkit-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -o-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+.sdl-treeview .svg-spinner > .ring {
+  stroke: rgba(125, 139, 171, 0.4);
+  stroke-width: 2px;
+  fill: rgba(0, 0, 0, 0);
+}
+.sdl-treeview .svg-spinner > .arc {
+  stroke: #7d8bab;
+  stroke-width: 2px;
+  fill: rgba(0, 0, 0, 0);
+}
+@-webkit-keyframes application-loading-rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes application-loading-rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.sdl-treeview ul.root {
+  display: inline-block;
+  min-width: 100%;
+  cursor: default;
+  position: relative;
+  padding: 0 1px 1px 1px;
+  margin: 0;
+  background-color: #fff;
+  list-style: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.sdl-treeview ul.root li {
+  padding: 1px 0 0 0;
+}
+.sdl-treeview ul.root li > div.node {
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.sdl-treeview ul.root li > div.node:hover {
+  border: 1px solid #bed2f0;
+  background-color: #e9f0fa;
+}
+.sdl-treeview ul.root li > div.node > .loader {
+  height: 16px;
+  width: 16px;
+  margin-left: 5px;
+  display: none;
+  text-indent: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.sdl-treeview ul.root li > div.node > i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.sdl-treeview ul.root li > div.node > i.expand-collapse {
+  -webkit-transition: transform 200ms linear 0;
+  -moz-transition: transform 200ms linear 0;
+  -o-transition: transform 200ms linear 0;
+  transition: transform 200ms linear 0;
+  background: url({PATH}../images/arrow.collapsed.16.mono-dark.svg) no-repeat center center;
+}
+.sdl-treeview ul.root li > div.node .sdl-checkbox {
+  margin-left: 5px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.sdl-treeview ul.root li > div.node > .content {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  text-indent: 0;
+  margin-left: 5px;
+  min-height: 25px;
+  line-height: 25px;
+}
+.sdl-treeview ul.root li > div.children {
+  overflow: hidden;
+}
+.sdl-treeview ul.root li > div.children > ul {
+  list-style: none;
+  padding: 0;
+}
+.sdl-treeview ul.root li > div.children > ul.slide {
+  -webkit-transition: margin-top 200ms linear 0;
+  -moz-transition: margin-top 200ms linear 0;
+  -o-transition: margin-top 200ms linear 0;
+  transition: margin-top 200ms linear 0;
+}
+.sdl-treeview ul.root li.active > div.node {
+  border: 1px solid #cfcfcf;
+  background-color: #ddd;
+}
+.sdl-treeview ul.root li.expanded > div.node > i.expand-collapse {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.sdl-treeview ul.root li.busy > div.node > .loader {
+  display: inline-block;
+}
+.sdl-treeview ul.root li.busy > div.node > i.expand-collapse {
+  display: none;
+}
+.sdl-treeview ul.root li.leaf-node > div.node > i.expand-collapse {
+  visibility: hidden;
+}
+.sdl-treeview ul.root li[data-type=FOLDER] > div.node > i.node {
+  background: url({PATH}../images/folder-closed.16.color.svg) no-repeat center center;
+}
+.sdl-treeview ul.root li[data-type=FOLDER].expanded > div.node > i.node {
+  background: url({PATH}../images/folder-opened.16.color.svg) no-repeat center center;
+}
+var SDL = SDL || {};
+SDL.UI = SDL.UI || {};
+SDL.UI.Controls = SDL.UI.Controls || {};
+
+/**
+ * Implementation of a treeview control
+ * Author: Tony Leeper © SDL 2014
+ * 
+ * Supports:
+ *  lazy loading of nodes
+ *  lazy rendering of nodes
+ *  single-selection or multi-selection
+ *  custom node content renderers
+ *  custom node data-types for e.g. rendering different icons
+ * 
+ * Some terminology used in Trees:
+ *  Root - the top most node in a tree.
+ *  Parent - the converse notion of child.
+ *  Siblings - nodes with the same parent.
+ *  Descendant - a node reachable by repeated proceeding from parent to child.
+ *  Ancestor - a node reachable by repeated proceeding from child to parent.
+ *  Leaf - a node with no children.
+ *  Depth - The level or depth of a node is defined by 1 + the number of connections between the node and the root.
+ */
+SDL.UI.Controls.TreeView = (function () {
+
+    //#region data types
+
+    /**
+     * Represents a node in the tree
+     * 
+     * @param {string} id A Unique identifier for this node
+     * @param {string} name A localised string to display for the node
+     * @param {string} dataType Used to populate the 'data-type' attribute on an html node element so different styles can be applied
+     * @param {array} parent The parent of this node
+     * @param {array} children A preloaded collection of children of type Node
+     * @param {boolean} isLeafNode True if this is a leaf node (contains no child nodes) 
+     * @param {function(node, callback)} load A function that returns in the callback all the child nodes for the node, returns {array} of Node
+     * @param {boolean} isSelectable True if this node is selectable, otherwise false (defaults to true)
+     */
+    var Node = function (id, name, dataType, parent, children, isLeafNode, load, isSelectable) {
+        /**
+         * unique identifier for this node
+         * @type {string}
+         */
+        this.id = id;
+
+        /**
+         * the name of this node, used by the default node content renderer
+         * @type {string}
+         */
+        this.name = name;
+
+        /**
+         * the data-type of this node, rendered as a custom data-type attribute on the li element used for styling custom node type icons 
+         * with the following selector, e.g. 
+         * .sdl-treeview li[data-type=USER] > div > i.node { 
+         *    background: url(src/themes/carbon2/controls/TreeView/images/sprite.user-selection.color.min.svg) no-repeat center center;
+         *    background-position: -101px -1px;
+         * }
+         * @type {string}
+         */
+        this.dataType = dataType;
+
+        /**
+         * the parent of this node, null for a rootNode
+         * @type {Node}
+         */
+        this.parent = parent;
+
+        /**
+         * true if this node is a leaf node, otherwise false
+         * @type {boolean}
+         */
+        this.isLeafNode = isLeafNode || false;
+
+        /**
+         * a collection of child nodes associated with this node
+         * @type {array<Node>}
+         */
+        this.children = children;
+
+        /**
+         * loads the children of this node
+         * @type {function(callback)}
+         */
+        this.load = load;
+
+        /**
+         * true if this node is currently loading its children, otherwise false
+         * @type {boolean}
+         */
+        this.isLoading = false;
+
+        /**
+         * true if this node is rendering, otherwise false
+         * @type {boolean}
+         */
+        this.isRenderering = false;
+
+        /**
+         * true if this node is expanded, otherwise false
+         * @type {boolean}
+         */
+        this.isExpanded = false;
+
+        /**
+         * true if this node is selectable, otherwise false (defaults to true)
+         * @type {boolean}
+         */
+        this.isSelectable = utils.getBooleanValueOrDefault(isSelectable, true);
+
+        /**
+         * true if this node is selected, otherwise false
+         * @type {boolean}
+         */
+        this.isSelected = false;
+
+        /**
+         * true if this node is partially selected, otherwise false
+         * @type {boolean}
+         */
+        this.isPartiallySelected = false;
+
+        /**
+         * the depth of this node in the tree structure, rootNode has a depth of 0
+         * @type {number}
+         */
+        this.depth = this.parent ? this.parent.depth + 1 : 0;
+    };
+
+    /**
+     * Returns the path to this node
+     */
+    Node.prototype.getPath = function () {
+        var path = this.id;
+        var node = this.parent;
+        while (node) {
+            path = node.id + '/' + path;
+            node = node.parent;
+        }
+
+        return path;
+    };
+
+    /**
+     * True if this node has rendered, otherwise false
+     */
+    Node.prototype.hasRendered = function () {
+        return typeof this.element !== 'undefined';
+    };
+
+    /**
+     * True if this node has loaded, otherwise false
+     */
+    Node.prototype.hasLoaded = function () {
+        return this.isLeafNode || Array.isArray(this.children);
+    };
+
+    //#endregion
+
+    //#region utils
+
+    var utils = {
+        /**
+         * Delays execution of a function, cancelling execution if another function call is invoked within the delay period
+         * 
+         * @param fn The function to debounce
+         * @param delay The delay in milliseconds
+         */
+        debounce: function (fn, delay) {
+            var timeout;
+            return function () {
+                var self = this;
+                var args = arguments;
+
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+
+                timeout = setTimeout(function () {
+                    fn.apply(self, args);
+                    timeout = null;
+                }, delay || 100);
+            };
+        },
+
+        /**
+         * Scrolls the element into view
+         * 
+         * @param {HTMLElement} scrollableElement the scrollable element
+         * @param {HTMLElement} element the element to scroll into view
+         * @param {number} bottomOffset an offset for the bottom overflow calculation (required to work around an issue with the common ui library scrollview)
+         */
+        scrollIntoView: function (scrollableElement, element, bottomOffset) {
+            bottomOffset = bottomOffset || 0;
+
+            // get the client bounds of the scrollable element and the node
+            var scrollableBounds = scrollableElement.getBoundingClientRect();
+            var elementBounds = element.getBoundingClientRect();
+
+            if (elementBounds.height < scrollableBounds.height) { // element is smaller than the viewable scrollable area
+                if (elementBounds.top < scrollableBounds.top) {
+                    scrollableElement.scrollTop += elementBounds.top - scrollableBounds.top;
+                } else if (elementBounds.bottom > scrollableBounds.bottom + bottomOffset) {
+                    scrollableElement.scrollTop += elementBounds.bottom - scrollableBounds.bottom + 1 - bottomOffset;
+                }
+            } else { // element is larger than the viewable scrollable area
+                scrollableElement.scrollTop += elementBounds.top - scrollableBounds.top;
+            }
+        },
+
+        /**
+         * if obj is an array, returns the array otherwise returs a new array of length 1 with obj as the first item
+         * 
+         * @param {object} the object to convert to an array
+         */
+        convertToArray: function (obj) {
+            if (Array.isArray(obj)) {
+                return obj;
+            } else {
+                return [obj];
+            }
+        },
+
+        /**
+         * Gets the truthy/falsy of 'value' if it is of type 'boolean', otherwise returns defaultValue
+         * 
+         * @param {boolean} value the boolean value to try
+         * @param {boolean} defaultValue the default value to return if value is not a 'boolean' type, e.g. null or undefined
+         */
+        getBooleanValueOrDefault: function (value, defaultValue) {
+            if (typeof value === 'boolean') {
+                return value;
+            } else {
+                return defaultValue;
+            }
+        }
+    };
+
+    //#endregion
+
+    //#region EventCoordinator
+
+    var EventCoordinator = function (context) {
+        this.context = context;
+        this.registeredEventListeners = [];
+    }
+
+    EventCoordinator.prototype.register = function (element, type, listener, useCapture) {
+        var listenerDefinition = {
+            element: element,
+            type: type,
+            listener: listener.bind(this.context),
+            useCapture: useCapture
+        };
+        this.registeredEventListeners.push(listenerDefinition);
+        listenerDefinition.element.addEventListener(listenerDefinition.type, listenerDefinition.listener, listenerDefinition.useCapture);
+    };
+
+    EventCoordinator.prototype.dispose = function () {
+        var listenerDefinition;
+        while (this.registeredEventListeners.length > 0) {
+            listenerDefinition = this.registeredEventListeners.pop();
+            listenerDefinition.element.removeEventListener(listenerDefinition.type, listenerDefinition.listener, listenerDefinition.useCapture);
+        }
+    };
+
+    //#endregion
+
+    /**
+     * Initializes a new instance of the treeview control
+     * 
+     * @param {HTMLElement} element the html dom container element to render the treeview inside of
+     * @param {object} options configuration options for this control
+     */
+    var TreeView = function (element, options) {
+        /**
+         * True if this control has been disposed, otherwise false
+         */
+        this._isDisposed = false;
+
+        /**
+         * The DOM element that the treeview will render into
+         */
+        this.element = element;
+
+        /**
+         * Used for managing the adding and disposing of event listeners
+         */
+        this.eventCoordinator = new EventCoordinator(this);
+
+        /**
+         * A collection of callbacks to execute on disposal of this control
+         */
+        this.disposeCallbacks = [];
+
+        /**
+         * Keeps track of how many nodes are busy, used by queueSelectionChanged()
+         * @type {number}
+         */
+        this.busyCount = 0;
+
+        /**
+         * The selected nodes array returned in the onSelectionChanged event
+         * @type {array}
+         */
+        this.selectedNodes = [];
+
+        /**
+         * The selected nodes paths array used in getSelectedNodePaths()
+         * @type {array}
+         */
+        this.selectedNodePaths = [];
+
+        // add the 'sdl-treeview' class if we need to
+        this.ensureClass(element);
+
+        // make sure that this element is tabbable
+        this.ensureTabbable(element);
+
+        // init the treeview options
+        this.initializeOptions(options);
+
+        // render
+        this.renderTree(element);
+
+        // hook up event listeners
+        this.eventCoordinator.register(this.element, 'click', this.clickEventHandler);
+        this.eventCoordinator.register(this.element, 'keydown', this.keyDownHandler);
+
+        // set the active node to the activeNodeIdPath if defined, otherwise set the active node to the first root node
+        if (options.activeNodeIdPath) {
+            this.setActiveNodeByPath(options.activeNodeIdPath);
+        } else {
+            this.setActiveNode(this.rootNodes[0]);
+        }
+    };
+
+    /**
+     * Initializes the treeview options
+     * 
+     * @param {object} options configuration options for this control
+     */
+    TreeView.prototype.initializeOptions = function (options) {
+        /**
+         * Callback to fire on selection changed
+         * @type {function(selectedItems)}
+         */
+        this.onSelectionChanged = utils.debounce(options.onSelectionChanged);
+
+        /**
+         * A collection of root nodes
+         * @type {array}
+         */
+        this.rootNodes = utils.convertToArray(options.rootNodes);
+
+        /**
+         * An optional custom node content renderer to use when rendering node contents rather than just displaying the node name
+         * @type {function}
+         */
+        this.nodeContentRenderer = options.nodeContentRenderer;
+
+        /**
+         * True if multi-selection is enabled, otherwise false
+         * @type {boolean}
+         */
+        this.multiselectEnabled = utils.getBooleanValueOrDefault(options.multiselect, false);
+
+        /**
+         * True if the control should include fully selected branch nodes in a selection, otherwise false
+         * @type {boolean}
+         */
+        this.includeBranchNodesInSelection = utils.getBooleanValueOrDefault(options.includeBranchNodesInSelection, false);
+
+        /**
+         * True if the control should render a data-id attribute on each LI node containing the node id, otherwise false
+         * @type {boolean}
+         */
+        this.renderDataIdAttribute = utils.getBooleanValueOrDefault(options.renderDataIdAttribute, false);
+
+        /**
+         * True if the control should use the common ui library ScrollView to display scrollbars, otherwise false
+         * @type {boolean}
+         */
+        this.useCommonUILibraryScrollView = utils.getBooleanValueOrDefault(options.useCommonUILibraryScrollView, true);
+    };
+
+    /**
+     * Queues a selection changed event, raises only when no nodes are busy
+     */
+    TreeView.prototype.queueSelectionChanged = function () {
+        var self = this;
+        if (self.busyCount === 0) {
+            if (self.multiselectEnabled) {
+                self.selectedNodes.length = 0;
+                self.setSelectedNodes(self.rootNodes);
+            }
+            self.onSelectionChanged(self.selectedNodes);
+        } else {
+            if (self.selectionChangedTimeout === null || typeof self.selectionChangedTimeout === 'undefined') {
+                self.selectionChangedTimeout = setTimeout(function () {
+                    self.selectionChangedTimeout = null;
+                    self.queueSelectionChanged();
+                }, 25);
+            }
+        }
+    };
+
+    /**
+     * Sets the selected nodes that will be returned in an onSelectionChanged event
+     * 
+     * @param {array} nodes the list of nodes to check for selected state (also checks descendants of these nodes)
+     */
+    TreeView.prototype.setSelectedNodes = function (nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].isSelected) {
+                if (nodes[i].isLeafNode || this.includeBranchNodesInSelection) {
+                    this.selectedNodes.push(nodes[i]);
+                }
+            }
+
+            if (!nodes[i].isLeafNode && nodes[i].isSelected || nodes[i].isPartiallySelected) {
+                this.setSelectedNodes(nodes[i].children);
+            }
+        }
+    };
+
+    /**
+     * Gets a collection of currently selected node paths that can be used in future to restore the selection state of the tree with a call to selectNodesByPath(paths)
+     */
+    TreeView.prototype.getSelectedNodePaths = function () {
+        this.selectedNodePaths.length = 0;
+        this.setSelectedNodePaths(this.rootNodes);
+        return this.selectedNodePaths;
+    };
+
+    /**
+     * Gets the treeview selection state, returns a stringified array of selected node paths
+     */
+    TreeView.prototype.getTreeViewSelectionState = function () {
+        return JSON.stringify(this.getSelectedNodePaths());
+    };
+
+    /**
+     * Restores the treeview selection state from an array of selected node paths
+     * 
+     * @param {string} selectionState the selection state string returned from a call to getTreeViewSelectionState()
+     */
+    TreeView.prototype.restoreTreeViewSelectionState = function (selectionState) {
+        if (selectionState) {
+            this.selectNodesByPath(JSON.parse(selectionState));
+        }
+    };
+
+    /**
+     * Sets the selected node paths 
+     * 
+     * @param {array} nodes the list of nodes to check for selected state (also checks descendants of these nodes)
+     */
+    TreeView.prototype.setSelectedNodePaths = function (nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].isSelected) {
+                if (nodes[i].isLeafNode || this.includeBranchNodesInSelection) {
+                    this.selectedNodePaths.push(nodes[i].getPath());
+                }
+            }
+
+            if (!nodes[i].isLeafNode && nodes[i].isSelected || nodes[i].isPartiallySelected) {
+                this.setSelectedNodePaths(nodes[i].children);
+            }
+        }
+    };
+
+    /**
+     * Updates the control with new configuration options
+     * 
+     * @param {object} options configuration options for this control
+     */
+    TreeView.prototype.update = function (options) {
+        if (options.activeNodeIdPath && options.activeNodeIdPath !== this.activeNodeIdPath) {
+            this.setActiveNodeByPath(options.activeNodeIdPath);
+        }
+
+
+    };
+
+    /**
+     * Disposes of this control, releasing any added event handlers
+     */
+    TreeView.prototype.dispose = function () {
+        this.eventCoordinator.dispose();
+        this.disposeCallbacks.forEach(function (callback) {
+            callback();
+        });
+        this._isDisposed = true;
+    };
+
+    /**
+     * Returns true if this control has been diposed, otherwise false
+     */
+    TreeView.prototype.getDisposed = function () {
+        return this._isDisposed;
+    };
+
+    /**
+     * Ensures that the element has the appropriate class applied for this control
+     * 
+     * @param {HTMLElement} element the element to add the sdl-treeview class to 
+     */
+    TreeView.prototype.ensureClass = function (element) {
+        if (!element.classList.contains('sdl-treeview')) {
+            element.classList.add('sdl-treeview');
+            this.disposeCallbacks.push(function () {
+                this.element.classList.remove('sdl-treeview');
+            }.bind(this));
+        }
+    };
+
+    /**
+     * Ensures that the element is tabblable by adding a tabindex of 0 if it doesn't already have one
+     * 
+     * @param {HTMLElement} element the element to ensure tabbable
+     */
+    TreeView.prototype.ensureTabbable = function (element) {
+        var tabIndex = element.getAttribute('tabindex');
+        if (tabIndex === null) {
+            element.setAttribute('tabindex', '0');
+            this.disposeCallbacks.push(function () {
+                this.element.removeAttribute('tabindex');
+            }.bind(this));
+        }
+    };
+
+    /**
+     * This render method is required by Lucia/Catalina, see http://jira.global.sdl.corp:8090/confluence/display/DEV/Views+and+controls
+     */
+    TreeView.prototype.render = function (callback) {
+        if (typeof callback === 'function') {
+            callback();
+        }
+    };
+
+    /**
+     * Renders the tree into the container element 
+     * 
+     * @param {HTMLElement} element The html dom node to render the treeview control into
+     */
+    TreeView.prototype.renderTree = function (element) {
+        var ul = document.createElement('ul');
+        ul.classList.add('root');
+        for (var i = 0; i < this.rootNodes.length; i++) {
+            this.renderNode(this.rootNodes[i], ul);
+        }
+        element.appendChild(ul);
+
+        if (this.useCommonUILibraryScrollView) {
+            ul.setAttribute("data-sdl-scrollview-child", 'true');
+            this.commonUILibraryScrollView = new SDL.UI.Controls.ScrollView(this.element, {});
+            this.disposeCallbacks.push(function () {
+                this.commonUILibraryScrollView.dispose();
+            }.bind(this));
+        }
+    };
+
+    /**
+     * Renders markup required by the SDL common ui library checkbox CSS
+     */
+    TreeView.prototype.renderSDLCommonUILibraryCheckbox = function (node, target) {
+        var checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        if (!node.isSelectable) {
+            checkbox.disabled = true;
+        }
+        checkbox.checked = node.isSelected;
+        checkbox.indeterminate = !node.isSelected && node.isPartiallySelected;
+        node.checkbox = checkbox;
+
+        var sdlCheckboxSkin = document.createElement('span');
+        sdlCheckboxSkin.classList.add('sdl-checkbox-img');
+
+        var sdlCheckboxContainer = document.createElement('label');
+        sdlCheckboxContainer.classList.add('sdl-checkbox');
+        sdlCheckboxContainer.appendChild(checkbox);
+        sdlCheckboxContainer.appendChild(sdlCheckboxSkin);
+
+        target.appendChild(sdlCheckboxContainer);
+    };
+
+    /**
+     * Renders a tree node into the target
+     * 
+     * @param {object} node the treeview node to render
+     * @param {HTMLElement} target the target dom node
+     */
+    TreeView.prototype.renderNode = function (node, target) {
+        if (node.isRenderering) {
+            return;
+        }
+
+        node.isRenderering = true;
+        this.setBusyState(node, true);
+
+        var li = document.createElement('li');
+
+        if (this.renderDataIdAttribute) {
+            li.setAttribute('data-id', node.id);
+        }
+
+        li.setAttribute('data-type', node.dataType);
+        li.setAttribute('style', 'text-indent: ' + (node.depth * 19) + 'px');
+        if (node.isLeafNode) {
+            li.classList.add('leaf-node');
+        }
+
+        var div = document.createElement('div');
+        div.classList.add('node');
+
+        this.renderLoadingIndicator(div);
+
+        var expandIcon = document.createElement('i');
+        expandIcon.classList.add('expand-collapse');
+        div.appendChild(expandIcon);
+
+        if (this.multiselectEnabled) {
+            this.renderSDLCommonUILibraryCheckbox(node, div);
+        }
+
+        var nodeIcon = document.createElement('i');
+        nodeIcon.classList.add('node');
+        div.appendChild(nodeIcon);
+
+        var content = document.createElement('div');
+        content.classList.add('content');
+        if (typeof this.nodeContentRenderer === 'function') {
+            content.innerHTML = this.nodeContentRenderer(node);
+        } else {
+            content.textContent = node.name;
+        }
+        div.appendChild(content);
+
+        li.appendChild(div);
+
+        // set up a two way reference so we can get back to a node from a dom element, and vice versa
+        li.node = node;
+        target.appendChild(li);
+        node.element = li;
+
+        node.isRenderering = false;
+        this.setBusyState(node, false);
+    };
+
+    /**
+     * Renders a loading indicator into the target
+     * 
+     * @param {HTMLElement} target the target dom node to render into
+     */
+    TreeView.prototype.renderLoadingIndicator = function (target) {
+        var container = document.createElement('div');
+        container.classList.add('loader');
+        container.innerHTML =
+            '<svg class="svg-spinner small" height="16" width="16">' +
+                '<circle class="ring" cx="8" cy="8" r="6.5"></circle>' +
+                '<path class="arc" d="M8,1.5 a6.5,6.5 0 0,1 6.5,6.5"></path>' +
+            '</svg>';
+
+        target.appendChild(container);
+    };
+
+    /**
+     * Renders the child nodes of a node
+     * 
+     * @param {Node} node the node to render the children for
+     * @param {function} onRendered callback that will fire once the children have rendered
+     */
+    TreeView.prototype.renderChildNodes = function (node, onRendered) {
+        if (!node.hasRendered()) {
+            var self = this;
+            setTimeout(function () {
+                self.renderChildNodes(node, onRendered);
+            }, 25);
+            return;
+        }
+
+        if (node.element.childNodes[1]) {
+            if (typeof onRendered === 'function') {
+                onRendered();
+            }
+            return;
+        }
+
+        this.setBusyState(node, true);
+
+        if (!node.element.childNodes[1]) {
+            var div = document.createElement('div');
+            div.classList.add('children');
+            var ul = document.createElement('ul');
+            for (var i = 0; i < node.children.length; i++) {
+                this.renderNode(node.children[i], ul);
+            }
+            div.appendChild(ul);
+            node.element.appendChild(div);
+            ul.style.marginTop = -ul.getBoundingClientRect().height + 'px';
+        }
+
+        var self = this;
+        self.waitForChildren(node, function () {
+            self.setBusyState(node, false);
+            if (typeof onRendered === 'function') {
+                onRendered();
+            }
+        });
+    };
+
+    /**
+     * Gets the source element that initiated the DOM event
+     * 
+     * @param {object} event The DOM event to get the source element for
+     */
+    TreeView.prototype.getSourceElementFromEvent = function (event) {
+        return event.target || event.srcElement;
+    };
+
+    /**
+     * Gets the LI node corresponding to the row in the treeview containing the element that raised the DOM event
+     * 
+     * @param {object} event The DOM event to get the LI node for
+     */
+    TreeView.prototype.getLiNodeElementFromEvent = function (event) {
+        var element = this.getSourceElementFromEvent(event);
+        while (element && element.nodeName !== "LI") {
+            if (element.nodeName === "UL") {
+                return null;
+            }
+
+            element = element.parentElement;
+        }
+
+        return element;
+    };
+
+    /**
+     * Handles click events in the treeview
+     * 
+     * @param {object} event The DOM click event
+     */
+    TreeView.prototype.clickEventHandler = function (event) {
+        var source = this.getSourceElementFromEvent(event);
+        var li = this.getLiNodeElementFromEvent(event);
+        if (li === null) return;
+        var node = li.node;
+
+        if (source.classList[0] === 'expand-collapse') {
+            this.toggleNode(node);
+            return;
+        }
+
+        if (source.getAttribute('type') === 'checkbox') {
+            if (source.checked) {
+                // select this node and all its descendants
+                this.selectNode(node);
+            } else {
+                this.deselectNode(node);
+            }
+            return;
+        }
+
+        // if this is a double click on a node, then toggle the node
+        if (this.isDoubleClick(node)) {
+            this.toggleNode(node);
+        } else {
+            // otherwise single click, set this node to the active node    
+            this.setActiveNode(node);
+        }
+    };
+
+    /**
+     * True if this node was double clicked, otherwise false
+     * 
+     * @param {Node} node the node to test
+     */
+    TreeView.prototype.isDoubleClick = function (node) {
+        var doubleClickSpeed = 300;
+        var isDoubleClick = false;
+        var now = Date.now();
+        if (this.lastNodeClicked === node && now - this.lastClicked < doubleClickSpeed) {
+            isDoubleClick = true;
+            this.lastClicked = null;
+        } else {
+            this.lastNodeClicked = node;
+            this.lastClicked = now;
+        }
+
+        return isDoubleClick;
+    };
+
+    /**
+     * Collapses the parent of this node, or if already collapsed, activates the parent node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.collapseOrActivateParentNode = function (node) {
+        if (node.isExpanded) {
+            this.collapseNode(node);
+        } else {
+            this.activateParentNode(node);
+        }
+    };
+
+    /**
+     * Expands the node, or if already expanded, activates the first child node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.expandOrActivateFirstChild = function (node) {
+        if (!node.isExpanded) {
+            this.expandNode(node);
+        } else {
+            if (!node.isLeafNode) {
+                this.setActiveNode(node.children[0]);
+            }
+        }
+    };
+
+    /**
+     * Gets the next sibling of this node, if no next sibling returns null
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.getNextSibling = function (node) {
+        if (!node.parent) {
+            return null;
+        }
+
+        for (var i = 0; i < node.parent.children.length - 1; i++) {
+            if (node.parent.children[i] === node) {
+                return node.parent.children[i + 1];
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Gets the previous sibling of this node, if no previous sibling returns null
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.getPreviousSibling = function (node) {
+        if (!node.parent) {
+            return null;
+        }
+
+        for (var i = 1; i < node.parent.children.length; i++) {
+            if (node.parent.children[i] === node) {
+                return node.parent.children[i - 1];
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Gets the closest anscestor to this node that has a next sibling
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.getClosestAnscestorNextSibling = function (node) {
+        if (!node.parent) {
+            return null;
+        }
+
+        var parentNextSibling = this.getNextSibling(node.parent);
+        if (parentNextSibling) {
+            return parentNextSibling;
+        }
+
+        return this.getClosestAnscestorNextSibling(node.parent);
+    };
+
+    /**
+     * Activates the next visible node in the treeview
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.activateNextNode = function (node) {
+        // if expanded, select first child
+        if (node.isExpanded) {
+            this.setActiveNode(node.children[0]);
+            return;
+        }
+
+        // otherwise, look for subsequent siblings
+        var nextSibling = this.getNextSibling(node);
+        if (nextSibling) {
+            this.setActiveNode(nextSibling);
+            return;
+        }
+
+        // otherwise look for the closest anscestor with a subsequent sibling
+        var parentNextSibling = this.getClosestAnscestorNextSibling(node);
+        if (parentNextSibling) {
+            this.setActiveNode(parentNextSibling);
+            return;
+        }
+    };
+
+    /**
+     * Gets the last visible descendant of this node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.getLastVisibleDescendant = function (node) {
+        var lastChild = node.children[node.children.length - 1];
+        if (!lastChild.isLeafNode && lastChild.isExpanded) {
+            return this.getLastVisibleDescendant(lastChild);
+        } else {
+            return lastChild;
+        }
+    };
+
+    /**
+     * Activates the previous visible node in the treeview
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.activatePreviousNode = function (node) {
+        // look for previous siblings
+        var previousSibling = this.getPreviousSibling(node);
+        if (previousSibling) {
+            // select the last descendant of this sibling that is visible, else select this sibling
+            if (!previousSibling.isLeafNode && previousSibling.isExpanded) {
+                var lastVisibleDescendant = this.getLastVisibleDescendant(previousSibling);
+                this.setActiveNode(lastVisibleDescendant);
+            } else {
+                this.setActiveNode(previousSibling);
+            }
+
+            return;
+        }
+
+        // otherwise look for a parent
+        this.activateParentNode(node);
+    };
+
+    /**
+     * Activates the parent node of this node if any
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.activateParentNode = function (node) {
+        if (node.parent) {
+            this.setActiveNode(node.parent);
+        }
+    };
+
+    /**
+     * Handles keydown events for the treeview control
+     * 
+     * @param {object} event the DOM event to handle
+     */
+    TreeView.prototype.keyDownHandler = function (event) {
+        switch (event.keyCode) {
+            case 37: // left
+                this.collapseOrActivateParentNode(this.activeNode);
+                event.preventDefault();
+                break;
+            case 39: // right
+                this.expandOrActivateFirstChild(this.activeNode);
+                event.preventDefault();
+                break;
+            case 40: // down
+                this.activateNextNode(this.activeNode);
+                event.preventDefault();
+                break;
+            case 38: // up
+                this.activatePreviousNode(this.activeNode);
+                event.preventDefault();
+                break;
+            case 8: // backspace
+                this.activateParentNode(this.activeNode);
+                event.preventDefault();
+                break;
+            case 13: // enter
+                this.toggleNode(this.activeNode);
+                event.preventDefault();
+                break;
+            case 32: // space
+                if (this.multiselectEnabled) {
+                    if (!this.activeNode.isBusy) {
+                        this.toggleSelectedState(this.activeNode);
+                    }
+                } else {
+                    this.toggleNode(this.activeNode);
+                }
+                event.preventDefault();
+                break;
+        }
+    };
+
+    /**
+     * Removes all event listeners added by this treeview control
+     */
+    TreeView.prototype.removeEventListeners = function () {
+        this.element.removeEventListener('click', this.clickEventHandler);
+        this.element.removeEventListener('keydown', this.keyDownHandler);
+    };
+
+    /**
+     * Toggles the selected state of this node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.toggleSelectedState = function (node) {
+        if (node.isSelected) {
+            this.deselectNode(node);
+        } else {
+            this.selectNode(node);
+        }
+    };
+
+    /**
+     * Toggles the expanded/collapsed state of this node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.toggleNode = function (node) {
+        if (node.isExpanded) {
+            this.collapseNode(node);
+        } else {
+            this.expandNode(node);
+        }
+    };
+
+    /**
+     * Expands the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {function} onExpanded callback that fires once the node is expanded
+     */
+    TreeView.prototype.expandNode = function (node, onExpanded) {
+        var self = this;
+
+        if (node.isLeafNode) {
+            if (typeof onExpanded === 'function') {
+                onExpanded();
+            }
+            return;
+        }
+
+        if (node.hasLoaded()) {
+            if (node.children[0].hasRendered()) {
+                self.doNodeExpansion(node, onExpanded);
+            } else {
+                // render children
+                self.renderChildNodes(node, function () {
+                    self.doNodeExpansion(node, onExpanded);
+                });
+            }
+        } else {
+            // load children
+            self.loadChildren(node, function () {
+                // render children
+                self.renderChildNodes(node, function () {
+                    self.doNodeExpansion(node, onExpanded);
+                });
+            });
+        }
+    };
+
+    TreeView.prototype.doNodeExpansion = function (node, onExpanded) {
+        setTimeout(function () {
+            node.isExpanded = true;
+            node.element.classList.add('expanded');
+            var ul = node.element.children[1].children[0];
+            ul.classList.add('slide');
+            ul.style.marginTop = 0;
+            if (typeof onExpanded === 'function') {
+                onExpanded();
+            }
+        }, 25);
+    };
+
+    /**
+     * Loads the children of the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {function} onLoaded callback that fires once the children have loaded
+     */
+    TreeView.prototype.loadChildren = function (node, onLoaded) {
+        var self = this;
+
+        if (node.isLeafNode || node.hasLoaded()) {
+            if (typeof onLoaded === 'function') {
+                onLoaded();
+            }
+            return;
+        }
+
+        if (node.isLoading) {
+            setTimeout(function () {
+                self.loadChildren(node, onLoaded);
+            }, 25);
+            return;
+        }
+        node.isLoading = true;
+        this.setBusyState(node, true);
+
+        node.load(node, function (children) {
+            if (children && children.length > 0) {
+                node.children = children;
+            } else {
+                node.children = [];
+                node.isLeafNode = true;
+                if (node.hasRendered()) {
+                    node.element.classList.add('leaf-node');
+                }
+            }
+
+            if (typeof onLoaded === 'function') {
+                onLoaded();
+            }
+
+            self.waitForChildren(node, function () {
+                node.isLoading = false;
+                self.setBusyState(node, false);
+            });
+        });
+    };
+
+    /**
+     * Recursively loads all the descendants of the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {function} onLoaded callback that fires once all the descendants have loaded
+     */
+    TreeView.prototype.loadDescendants = function (node, onLoaded) {
+        var self = this;
+        if (node.isLoading) {
+            setTimeout(function () {
+                self.loadDescendants(node, onLoaded);
+            }, 25);
+            return;
+        }
+
+        if (node.isLeafNode || node.hasLoaded()) {
+            node.isLoading = false;
+            if (typeof onLoaded === 'function') {
+                onLoaded();
+            }
+            return;
+        }
+
+        node.isLoading = true;
+        this.setBusyState(node, true);
+
+        var self = this;
+        node.load(node, function (children) {
+            if (children && children.length > 0) {
+                node.children = children;
+                for (var i = 0; i < children.length; i++) {
+                    if (!children[i].hasLoaded() && !children[i].isLeafNode) {
+                        self.loadDescendants(children[i], function () {
+                            node.isLoading = false;
+                            self.setBusyState(node, false);
+                        });
+                    }
+                }
+
+                self.waitForChildren(node, function () {
+                    node.isLoading = false;
+                    self.setBusyState(node, false);
+                    if (typeof onLoaded === 'function') {
+                        onLoaded();
+                    }
+                });
+            } else {
+                node.children = [];
+                node.isLeafNode = true;
+                if (node.hasRendered()) {
+                    node.element.classList.add('leaf-node');
+                }
+
+                node.isLoading = false;
+                self.setBusyState(node, false);
+                if (typeof onLoaded === 'function') {
+                    onLoaded();
+                }
+            }
+        });
+    };
+
+    /**
+     * Sets the busy state of the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {boolean} busy the busy state to set
+     */
+    TreeView.prototype.setBusyState = function (node, busy) {
+        if (busy) {
+            if (this.multiselectEnabled && node.checkbox) {
+                node.checkbox.disabled = true;
+            }
+
+            if (!node.isBusy) {
+                if (node.element) {
+                    node.element.classList.add('busy');
+                }
+
+                this.busyCount++;
+                node.isBusy = true;
+            }
+        } else {
+            if (this.multiselectEnabled && node.checkbox && node.isSelectable) {
+                node.checkbox.disabled = false;
+            }
+
+            if (node.isBusy) {
+                if (node.element) {
+                    node.element.classList.remove('busy');
+                }
+
+                this.busyCount--;
+                node.isBusy = false;
+            }
+        }
+    };
+
+    /**
+     * Waits for all the children of the node to be ready, then fires onReady
+     * 
+     * @param {Node} node the treeview node
+     * @param {function} onReady callback that fires once all the children are ready
+     */
+    TreeView.prototype.waitForChildren = function (node, onReady) {
+        var ready = true;
+        for (var i = 0; i < node.children.length; i++) {
+            if (node.children[i].isBusy) {
+                ready = false;
+                break;
+            }
+        }
+
+        if (ready) {
+            onReady();
+        } else {
+            var self = this;
+            setTimeout(function () {
+                self.waitForChildren(node, onReady);
+            }, 25);
+        }
+    };
+
+    /**
+     * Collapses the node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.collapseNode = function (node) {
+        if (node.isLoading) {
+            return;
+        }
+
+        node.element.classList.remove('expanded');
+        var ul = node.element.children[1].children[0];
+        ul.style.marginTop = -ul.getBoundingClientRect().height + 'px';
+        node.isExpanded = false;
+
+        // if this node contains the active node, then activate this node instead
+        if (this.activeNodeIdPath.indexOf(node.getPath()) > -1) {
+            this.setActiveNode(node);
+        }
+    };
+
+    /**
+     * Sets the selected state of the ancestors of the node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.setSelectedStateOfAncestors = function (node) {
+        var parent = node.parent;
+        if (!parent) {
+            return;
+        }
+
+        var parentIsFullySelected = true;
+        var parentIsPartiallySelected = false;
+        for (var i = 0; i < parent.children.length; i++) {
+            if (parent.children[i].isSelected || parent.children[i].isPartiallySelected) {
+                parentIsPartiallySelected = true;
+            }
+
+            if (!parent.children[i].isSelected) {
+                parentIsFullySelected = false;
+            }
+        }
+
+        if (parentIsFullySelected !== parent.isSelected || parentIsPartiallySelected !== parent.isPartiallySelected) {
+            parent.isSelected = parentIsFullySelected;
+            parent.isPartiallySelected = parentIsPartiallySelected;
+            this.setCheckboxState(parent);
+            this.queueSelectionChanged();
+            this.setSelectedStateOfAncestors(parent);
+        }
+    };
+
+    /**
+     * Sets the associated checkbox state for this node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.setCheckboxState = function (node) {
+        if (!node.hasRendered()) {
+            return;
+        }
+
+        node.checkbox.checked = node.isSelected;
+        node.checkbox.indeterminate = !node.isSelected && node.isPartiallySelected;
+    };
+
+    /**
+     * Selects a collection of nodes by path
+     * 
+     * @param {array} paths the collection of paths to select
+     */
+    TreeView.prototype.selectNodesByPath = function (paths) {
+        for (var i = 0; i < paths.length; i++) {
+            this.selectNodeByPath(paths[i]);
+        }
+    };
+
+    /**
+     * Selects a node by path
+     * 
+     * @param {string} path the path to the node to select
+     */
+    TreeView.prototype.selectNodeByPath = function (path) {
+        var self = this;
+        this.loadPath(path, function (node) {
+            self.selectNode(node);
+        });
+    };
+
+    /**
+     * Loads the path
+     * 
+     * @param {string} path the path to load
+     * @param {function} onComplete callback to invoke once the path has fully loaded
+     */
+    TreeView.prototype.loadPath = function (path, onComplete) {
+        this.loadDescendantsByIds(null, path.split('/'), onComplete);
+    };
+
+    /**
+     * Recursively loads the descendants of the node
+     * 
+     * @param {Node} node the node to start at (if null, starts at the collection of rootNodes)
+     * @param {array} descendantIds ids of the descendants of the node to load
+     * @param {function} onComplete callback to invoke once the descendants have fully loaded
+     */
+    TreeView.prototype.loadDescendantsByIds = function (node, descendantIds, onComplete) {
+        var self = this;
+
+        var children;
+        if (node) {
+            if (node.isLeafNode) {
+                return;
+            }
+
+            if (node.hasLoaded()) {
+                children = node.children;
+            } else {
+                self.loadChildren(node, function () {
+                    self.loadDescendantsByIds(node, descendantIds, onComplete);
+                });
+                return;
+            }
+        } else {
+            children = self.rootNodes;
+        }
+
+        var match;
+        var id = descendantIds.shift();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].id === id) {
+                match = children[i];
+                break;
+            }
+        }
+
+        if (match) {
+            if (descendantIds.length > 0) {
+                self.loadDescendantsByIds(match, descendantIds, onComplete);
+            } else {
+                if (typeof onComplete === 'function') {
+                    onComplete(match);
+                }
+            }
+        }
+    };
+
+    /**
+     * Selects a collection of nodes when in multiselect mode
+     * 
+     * @param {array} nodes the collection of nodes to select
+     */
+    TreeView.prototype.selectNodes = function (nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            this.selectNode(nodes[i]);
+        }
+    };
+
+    /**
+     * Selects the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {boolean} suppressAncestorSelectionStateCheck true if we should suppress the ancestor selection state check for this operation, otherwise false
+     */
+    TreeView.prototype.selectNode = function (node, suppressAncestorSelectionStateCheck) {
+        if (this.multiselectEnabled) {
+            if (!node.isSelectable || node.isSelected) {
+                return;
+            }
+
+            this.setBusyState(node, true);
+
+            // select this node and all its descendants
+            node.isSelected = true;
+            this.setCheckboxState(node);
+            this.queueSelectionChanged();
+
+            // correct ancestor checked states (partial checked, fully checked, etc)
+            if (!suppressAncestorSelectionStateCheck) {
+                this.setSelectedStateOfAncestors(node);
+            }
+
+            var self = this;
+            if (node.hasLoaded()) {
+                if (node.isLeafNode) {
+                    self.setBusyState(node, false);
+                } else {
+                    for (var i = 0; i < node.children.length; i++) {
+                        self.selectNode(node.children[i], true); // don't check anscestors because the parent node intiated this chain of events so the parent node will already have checked them for us
+                    }
+
+                    self.waitForChildren(node, function () {
+                        self.setBusyState(node, false);
+                    });
+                }
+            } else {
+                self.loadDescendants(node, function () {
+                    if (node.isLeafNode) {
+                        self.setBusyState(node, false);
+                    } else {
+                        for (var i = 0; i < node.children.length; i++) {
+                            self.selectNode(node.children[i], true); // don't check anscestors because the parent node intiated this chain of events so the parent node will already have checked them for us
+                        }
+
+                        self.waitForChildren(node, function () {
+                            self.setBusyState(node, false);
+                        });
+                    }
+                });
+            }
+        } else {
+            this.setActiveNode(node);
+        }
+    };
+
+    /**
+     * Deselects a collection of nodes
+     * 
+     * @param {array} nodes the collection of treeview nodes to deselect
+     */
+    TreeView.prototype.deselectNodes = function (nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            this.deselectNode(nodes);
+        }
+    };
+
+    /**
+     * Deselects the node
+     * 
+     * @param {Node} node the treeview node
+     * @param {boolean} suppressAncestorSelectionStateCheck true if we should suppress the ancestor selection state check for this operation, otherwise false
+     */
+    TreeView.prototype.deselectNode = function (node, suppressAncestorSelectionStateCheck) {
+        if (!this.multiselectEnabled) {
+            return;
+        }
+
+        this.setBusyState(node, true);
+        node.isSelected = false;
+        node.isPartiallySelected = false;
+        this.setCheckboxState(node);
+        this.queueSelectionChanged();
+
+        if (!node.isLeafNode) {
+            // also deselect all the descendants of this node
+            for (var i = 0; i < node.children.length; i++) {
+                this.deselectNode(node.children[i], true); // don't check anscestors because the parent node intiated this chain of events so the parent node will already have checked them for us
+            }
+        }
+
+        if (!suppressAncestorSelectionStateCheck) {
+            this.setSelectedStateOfAncestors(node);
+        }
+
+        if (node.isLeafNode) {
+            this.setBusyState(node, false);
+        } else {
+            var self = this;
+            self.waitForChildren(node, function () {
+                self.setBusyState(node, false);
+            });
+        }
+    };
+
+    /**
+     * Expands all the descendants of the node that match the list of descendantIds where the index of the descendantIds array corresponds to the depth from this node
+     * 
+     * @param {Node} node the treeview node
+     * @param {array} descendantIds an array of ids that will be used to match recursively against children of this node to do the expansion
+     * @param {function} onComplete a callback that will fire once all the nodes have been expanded
+     */
+    TreeView.prototype.expandDescendantsByIds = function (node, descendantIds, onComplete) {
+        var self = this;
+
+        var children;
+        if (node) {
+            if (node.isLeafNode) {
+                return;
+            }
+
+            if (node.hasLoaded()) {
+                if (node.hasRendered()) {
+                    children = node.children;
+                } else {
+                    setTimeout(function () {
+                        self.expandDescendantsByIds(node, descendantIds, onComplete);
+                    }, 25);
+                    return;
+                }
+            } else {
+                self.loadChildren(node, function () {
+                    self.expandDescendantsByIds(node, descendantIds, onComplete);
+                });
+                return;
+            }
+        } else {
+            children = self.rootNodes;
+        }
+
+        var match;
+        var id = descendantIds.shift();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].id === id) {
+                match = children[i];
+                break;
+            }
+        }
+
+        if (match) {
+            self.setActiveNode(match);
+            if (descendantIds.length > 0) {
+                self.expandNode(match, function () {
+                    self.expandDescendantsByIds(match, descendantIds, onComplete);
+                });
+            } else {
+                if (typeof onComplete === 'function') {
+                    onComplete(match);
+                }
+            }
+        }
+    };
+
+    /**
+     * Sets the active node to the node whose id matches the final value in the ancestryIds array
+     * 
+     * @param {array} ancestryIds an array of ids to use to find the node in the tree to activate, starting at the root nodes
+     */
+    TreeView.prototype.setActiveNodeByAncestryIds = function (ancestryIds) {
+        var self = this;
+
+        if (self.settingActiveNodeByAncestryIds) {
+            // prevent key board rattling, fast clicks and code loops calling setActiveNodeByAncestryIds...
+            return;
+        }
+
+        self.settingActiveNodeByAncestryIds = true;
+        self.expandDescendantsByIds(null, ancestryIds, function (node) {
+            self.setActiveNode(node);
+            self.settingActiveNodeByAncestryIds = false;
+        });
+    };
+
+    /**
+     * Sets the active node by path
+     * 
+     * @param {string} path the path to the node to activate
+     */
+    TreeView.prototype.setActiveNodeByPath = function (path) {
+        var ancestryIds = path.split('/');
+        this.setActiveNodeByAncestryIds(ancestryIds);
+    };
+
+    /**
+     * Sets the currently active node to be the specified node
+     * 
+     * @param {Node} node the treeview node
+     */
+    TreeView.prototype.setActiveNode = function (node) {
+        var self = this;
+
+        if (!node.hasRendered()) {
+            if (node.expandingAncestry) {
+                // prevent key board rattling, fast clicks and code loops calling setActiveNode...
+                return;
+            }
+
+            node.expandingAncestry = true;
+            var ancestryIds = [];
+            ancestryIds.push(node.id);
+            var parent = node.parent;
+            while (parent) {
+                ancestryIds.unshift(parent.id);
+                parent = parent.parent;
+            }
+            this.expandDescendantsByIds(null, ancestryIds, function () {
+                self.setActiveNode(node);
+                node.expandingAncestry = false;
+            });
+            return;
+        }
+
+        var activeNodeChanged = this.activeNode !== node;
+        if (activeNodeChanged) {
+            if (typeof this.activeNode !== 'undefined') {
+                this.activeNode.element.classList.remove('active');
+            }
+
+            this.activeNode = node;
+            this.activeNode.element.classList.add('active');
+            this.activeNodeIdPath = node.getPath();
+
+            if (!this.multiselectEnabled) {
+                this.selectedNodes[0] = node;
+                this.queueSelectionChanged();
+            }
+
+            if (this.useCommonUILibraryScrollView) {
+                utils.scrollIntoView(this.element.childNodes[0], node.element.childNodes[0], parseInt(this.element.childNodes[0].style.bottom));
+            } else {
+                utils.scrollIntoView(this.element, node.element.childNodes[0]);
+            }
+        }
+    };
+
+    /**
+     * Creates a node
+     * 
+     * @param {string} id A Unique identifier for this node
+     * @param {string} name A localised string to display for the node
+     * @param {string} dataType Used to populate the 'data-type' attribute on an html node element so different styles can be applied
+     * @param {array} parent The parent of this node
+     * @param {boolean} isLeafNode True if this is a leaf node (contains no child nodes) 
+     * @param {array} children A preloaded collection of children of type Node
+     * @param {function(callback)} load A function that returns in the callback all the child nodes for the node, returns {array} of Node
+     * @param {boolean} isSelectable true if this node is selectable, otherwise false (defaults to true)
+     */
+    TreeView.prototype.createNode = function (id, name, dataType, parent, children, isLeafNode, load, isSelectable) {
+        return new Node(id, name, dataType, parent, children, isLeafNode, load, isSelectable);
+    };
+
+    /**
+     * Convenience method for creating a node from an object definition instead of passing a parameter list
+     * 
+     * @param {object} data the data object containing the required properties of a node, c.f. TreeView.prototype.createNode
+     */
+    TreeView.prototype.createNodeFromObject = function (data) {
+        return this.createNode(data.id, data.name, data.dataType, data.parent, data.children, data.isLeafNode, data.load, data.isSelectable);
+    };
+
+    return TreeView;
+}());

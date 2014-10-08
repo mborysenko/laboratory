@@ -1,0 +1,206 @@
+@import "../../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+
+// The below class can be applied to the html input element
+input.pikaday {
+    .box-sizing(border-box);
+    height: 27px;
+    width: 145px;
+    padding-left: 5px;
+    padding-right: 25px;
+
+    .background-size(16px, 16px);
+    background: url({PATH}../images/calendar.16.color.svg) no-repeat right 4px center;
+    background-color: #fff;
+    
+    border: 1px solid #aaa;
+    .box-shadow-inset(1px, 1px, 0, 0, #ebebeb);
+    .border-radius(2px);
+    
+    &::-ms-clear {
+        display: none;
+    }
+
+    &[disabled] {
+        opacity: 0.5;
+        background-color: #f4f4f4;
+    }
+
+    &.invalid {
+        border: 1px solid red;
+        background-color: rgba(255, 0, 0, 0.2);
+        .box-shadow-inset(0, 0, 0, 0, #ebebeb);
+    }
+}
+
+// Below is for the pikaday date selector flyout
+.pika-single {
+    width: auto;
+    border: 1px solid #aaa;
+
+    .pika-lendar {
+        width: auto;
+        float: none;
+        margin: 0;
+    }
+
+    &.is-bound {
+        padding: 0;
+        border-radius: 3px;
+        height: 330px;
+
+        .pika-title {
+            height: 47px;
+            line-height: 47px;
+            background-color: #fafafa;
+            border-bottom: 1px solid #aaa;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+
+            .pika-label {
+                position: absolute;
+                overflow: visible; // SDLUI-761: fixes a zoom rendering issue whereby the borders aren't rendered
+                top: 50%;
+                .transform(translateY(-50%));
+
+                &:nth-child(1) {
+                    left: 78px;
+                    min-width: 75px;
+                }
+
+                &:nth-child(2) {
+                    right: 77px;
+                }
+
+                height: 22px;
+                line-height: 22px;
+                text-align: left;
+                
+                border: 1px solid #aaa;
+                .box-shadow-inset(1px, 1px, 0, 0, #ebebeb);
+                border-radius: 3px;
+                font-size: 12px;
+                padding: 2px 24px 2px 5px;
+                background: url({PATH}../images/combobox-arrow.16.mono-dark.svg) no-repeat right 4px center;
+                background-color: white;
+
+                + .pika-label {
+                    margin-left: 10px;
+                }
+
+                select {
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: calc(~"100% + 2px");
+                }
+            }
+
+            & button {
+                height: 22px;
+                min-height: 22px;
+                max-height: 22px;
+
+                width: 22px;
+                min-width: 22px;
+                max-width: 22px;
+
+                border: 1px solid #aaa;
+                border-radius: 50%;
+                background-color: #e2e2e2;
+                
+                .background-size(45px, 60px);
+                box-shadow: inset 0 1px 0 #f4f4f4, inset 0 -1px 0 #d6d6d6;
+                opacity: 1;
+            }
+
+            .pika-prev {
+                margin-left: 20px;
+                margin-top: 13px;
+                background: url({PATH}../images/panel-arrow.left.16.mono-dark.svg) no-repeat center center;
+                background-size: 16px 16px;
+
+                &:not(.is-disabled):hover {
+                    background-color: #f4f4f4;
+                }
+
+                &.is-disabled {
+                    opacity: 0.5;
+                }
+            }
+
+            .pika-next {
+                margin-right: 20px;
+                margin-top: 13px;
+                background: url({PATH}../images/panel-arrow.right.16.mono-dark.svg) no-repeat center center;
+                background-size: 16px 16px;
+
+                &:not(.is-disabled):hover {
+                    background-color: #f4f4f4;
+                }
+
+                &.is-disabled {
+                    opacity: 0.5;
+                }
+            }
+        }
+
+        .pika-table {
+            width: auto;
+            margin: 0 20px 5px 20px;
+            border-spacing: 10px;
+            border-collapse: separate;
+
+            th {
+                text-shadow: 0 1px white;
+                color: #454b53;
+
+                abbr {
+                    border-bottom: none;
+                }
+            }
+
+            td {
+                .pika-button {
+                    width: 30px;
+                    height: 27px;
+
+                    border: 1px solid #ddd;
+                    .border-radius(0) !important;
+                    background-color: #fafafa;
+
+                    color: #262c39 !important;
+                    font-weight: bold;
+                    text-shadow: 0 1px white;
+                    text-align: center;
+
+                    &:hover {
+                        border: 1px solid #bed2f0;
+                        background-color: #e9f0f2 !important;
+                    }
+                }
+
+                &.is-today > .pika-button {
+                    text-decoration: underline;
+                }
+
+                &.is-disabled > .pika-button {
+                    border: none;
+                    background-color: white;
+                    color: #aaa !important;
+                    opacity: 1;
+                }
+
+                &.is-selected > .pika-button {
+                    border: 1px solid #94b5e5;
+                    background-color: #bed2f0;
+                    box-shadow: none;
+
+                    &:hover {
+                        border: 1px solid #94b5e5;
+                        background-color: #bed2f0 !important;
+                    }
+                }
+            }
+        }
+    }
+}

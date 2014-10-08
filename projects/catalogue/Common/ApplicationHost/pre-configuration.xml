@@ -3,7 +3,7 @@
 	<appSettings>
 		<setting name="version" value="0.0.0.0" />
 		<setting name="debug" value="false"/>
-		<setting name="corePath" value="../" />
+		<setting name="corePath" type="url" value="../" />
 		<setting name="coreVersion" value="0.0.0.0" />
 	</appSettings>
 

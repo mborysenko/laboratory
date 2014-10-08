@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1804" />
+    <setting name="version" value="1.5.0.1883" />
     <setting name="debug" value="false" />
-    <setting name="corePath" value="../" />
-    <setting name="coreVersion" value="1.4.0.1804" />
+    <setting name="corePath" type="url" value="../" />
+    <setting name="coreVersion" value="1.5.0.1883" />
   </appSettings>
   <locales>
     <locale>en</locale>

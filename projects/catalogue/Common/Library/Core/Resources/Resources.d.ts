@@ -7,6 +7,7 @@ declare module SDL.Client.Resources
 		url: string;
 		version?: string;
 		locales?: {[locale: string]: boolean;};
+		fileType?: string;
 	}
 
 	export interface IPreloadPackageFileResource extends IFileResourceDefinition

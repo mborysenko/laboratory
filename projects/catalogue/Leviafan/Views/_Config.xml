@@ -1,4 +1,4 @@
-﻿<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../configuration.xsd">
+﻿<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
     <resourceGroups>
         <resourceGroup name="LVF.Views.Dashboard">
             <files>
@@ -8,6 +8,7 @@
             <dependencies>
                 <dependency name="SDL.UI.Core.Init"/>
                 <dependency name="SDL.UI.Core.Views.ViewBase"/>
+                <dependency name="LVF.Themes.Default"/>
             </dependencies>
         </resourceGroup>
     </resourceGroups>

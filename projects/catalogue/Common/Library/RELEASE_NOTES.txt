@@ -1,0 +1,53 @@
+﻿SDL Common UI Library v.1.4 Release Notes
+
+Changes between 1.3 and 1.4
+
+Added views and controls
+	TopBar control (SDLUI-691)
+	DropdownList control (SDLUI-622)
+	RadioButton control (SDLUI-623)
+	Error Page view (SDLUI-707)
+
+Added features
+	Add support for app setting type "url" (SDLUI-561)
+	Add methods 'setting' and 'path' to SDL.UI.Core.Knockout.ViewModels.ViewModelBase (SDLUI-562)
+	Support placeholders of format: {SETTING:appsetting} (SDLUI-563)
+	Configure file resources with an arbitrary file extension (SDLUI-833)
+
+Removed features
+	jQuery parameter in IControl is redundant (SDLUI-788)
+	Removed SDL.Client.Types.Date.toString() method, SDL.Globalize.format can be used instead (SDLUI-736)
+
+Third party libraries
+	Upgraded to knockout 3.2.0 (SDLUI-779)
+	Upgraded knockout deferred updates 3.2.0 (SDLUI-790)
+	Upgraded to jQuery 2.1.1 (SDLUI-786)
+
+Defect fixes
+	Globalize locale files are not loaded (SDLUI-725)
+	Problem bootstrapping Catalina application from nested IFrame (SDLUI-765)
+	Application thinks it is hosted when running inside a test runner (SDLUI-711)
+	TextInput text is not centered correctly (SDLUI-793)
+	Unable to create TextInput control with empty options object (SDLUI-792)
+	'Attr.textContent' is deprecated. Use 'value' instead. (SDLUI-775)
+	'Attr.nodeValue' is deprecated. Use 'value' instead. (SDLUI-776)
+	ActionBar doesn't correctly update Button's iconClass (SDLUI-815)
+	ActionBar doesn't work correctly on update (SDLUI-794)
+	ApplicationHost.stopCaptureDomEvents breaks (SDLUI-789)
+	Long title in the Dialog control header has to be cut off (SDLUI-803)
+	Date formatting validation considers date and month with one number as invalid format (SDLUI-766)
+	Years "0099"-"0000" are transformed to "1999"-"1900" when modifying month/date from calendar popup (SDLUI-762)
+	Chrome 36: some borders in calendar dropdowns are not shown when zoom is not 100% (SDLUI-761)
+	IE9: Calendar popup blinks and disappears if click on placeholder text (SDLUI-760)
+	Enforce position:absolute for data-sdl-scrollview-child (SDLUI-828)
+	Dialog controls works incorrectly in some scenarios (SDLUI-829)
+	Issues with multiple Dialogs (SDLUI-846)
+	ScrollView control: can't set scroll position using js (SDLUI-831)
+
+Corrected TypeScript definitions
+	LoadableObject TypeScript interface missing "isLoading" method (SDLUI-808)
+	Missing Typescript definitions describing DatePicker control API (SDLUI-754)
+
+Beta controls
+	TreeView control
+	LibraryPanel control

@@ -10,9 +10,9 @@ module SDL.UI.Core.Knockout.ViewModels
 	{
 		item: ViewModelItem;
 
-		constructor(item: ViewModelItem)
+		constructor(item: ViewModelItem, view?: SDL.UI.Core.Views.ViewBase)
 		{
-			super();
+			super(view);
 			this.item = item;
 		}
 	}

@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1804" />
+    <setting name="version" value="1.5.0.1883" />
     <setting name="activityIndicatorLegacyMode" value="true" />
   </appSettings>
   <!-- SDL.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
+  <locales>
+    <locale>de</locale>
+    <locale>es</locale>
+    <locale>fr</locale>
+    <locale>ja</locale>
+    <locale>nl</locale>
+  </locales>
   <!-- Controls -->
   <include src="ActionBar/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -198,14 +205,18 @@
         <resourceGroup name="SDL.UI.Controls.TopBar">
           <files>
             <file name="TopBar/TopBar.js" />
+            <file name="TopBar/Resources/resources.default.resjson" />
+            <file name="TopBar/Resources/resources.{CULTURE}.resjson" />
             <file name="TopBar/TopBar.css" />
           </files>
           <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.Globalize" />
             <dependency name="SDL.UI.Core.Controls.ControlBase" />
             <dependency name="SDL.UI.Core.Event.Constants" />
             <dependency name="SDL.UI.Controls.JQuery.ResizeTrigger" />
             <dependency name="SDL.UI.Controls.JQuery.ScrollView" />
             <dependency name="SDL.UI.Controls.JQuery.Callout" />
+            <!--dependency name="SDL.UI.Controls.JQuery.Tooltip"/-->
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Controls.JQuery.TopBar">
@@ -342,6 +353,35 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="LibraryPanel/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.LibraryPanel">
+          <files>
+            <file name="LibraryPanel/Styles/sdl.carbon2.library-panel.css" />
+            <file name="LibraryPanel/SDL.UI.Controls.LibraryPanel.js" />
+            <file name="LibraryPanel/Resource/resources.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Controls.ScrollView" />
+            <dependency name="SDL.UI.Controls.Button" />
+            <dependency name="SDL.Client.UI.Core.Libraries.Polyfills" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.LibraryPanel">
+          <files>
+            <file name="LibraryPanel/SDL.UI.Controls.LibraryPanel.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.LibraryPanel" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <include src="TextInput/_Config.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <resourceGroups>
@@ -444,6 +484,35 @@
       </resourceGroups>
     </configuration>
   </include>
+  <include src="TreeView/_Config.xml">
+    <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <resourceGroups>
+        <resourceGroup name="SDL.UI.Controls.TreeView">
+          <files>
+            <file name="TreeView/Styles/treeview.css" />
+            <file name="TreeView/SDL.UI.Controls.TreeView.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.UI.Core.Controls.ControlBase" />
+            <dependency name="SDL.UI.Controls.ScrollView" />
+            <dependency name="SDL.UI.Controls.Checkbox" />
+            <dependency name="SDL.UI.Core.Event.Constants" />
+            <dependency name="SDL.Client.UI.Core.Libraries.Polyfills" />
+          </dependencies>
+        </resourceGroup>
+        <resourceGroup name="SDL.UI.Controls.JQuery.TreeView">
+          <files>
+            <file name="TreeView/SDL.UI.Controls.TreeView.jQuery.js" />
+          </files>
+          <dependencies>
+            <dependency name="SDL.Client.Libraries.SDL.JQuery" />
+            <dependency name="SDL.UI.Core.Controls.JQuery" />
+            <dependency name="SDL.UI.Controls.TreeView" />
+          </dependencies>
+        </resourceGroup>
+      </resourceGroups>
+    </configuration>
+  </include>
   <!-- Packages -->
   <include src="packages.xml">
     <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -463,10 +532,12 @@
             <resourceGroup name="SDL.UI.Controls.ScrollView" />
             <resourceGroup name="SDL.UI.Controls.TextInput" />
             <resourceGroup name="SDL.UI.Controls.DatePicker" />
+            <resourceGroup name="SDL.UI.Controls.LibraryPanel" />
             <resourceGroup name="SDL.UI.Controls.Checkbox" />
             <resourceGroup name="SDL.UI.Controls.RadioButton" />
             <resourceGroup name="SDL.UI.Controls.DropdownList" />
             <resourceGroup name="SDL.UI.Controls.Application.TopBar" />
+            <resourceGroup name="SDL.UI.Controls.TreeView" />
           </resourceGroups>
         </package>
         <package name="SDL.UI.Controls.JQuery" src="Packages/SDL.UI.Controls.JQuery.js">
@@ -484,9 +555,11 @@
             <resourceGroup name="SDL.UI.Controls.JQuery.ScrollView" />
             <resourceGroup name="SDL.UI.Controls.JQuery.TextInput" />
             <resourceGroup name="SDL.UI.Controls.JQuery.DatePicker" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.LibraryPanel" />
             <resourceGroup name="SDL.UI.Controls.JQuery.Checkbox" />
             <resourceGroup name="SDL.UI.Controls.JQuery.RadioButton" />
             <resourceGroup name="SDL.UI.Controls.JQuery.DropdownList" />
+            <resourceGroup name="SDL.UI.Controls.JQuery.TreeView" />
           </resourceGroups>
         </package>
       </packages>

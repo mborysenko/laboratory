@@ -15,6 +15,7 @@ declare module SDL.UI.Core.Views
 		render(callback?: () => void): void;
 		getRenderOptions(): any;
 		getTemplateData(): any;
+		getTemplateResource(): SDL.Client.Resources.IFileResource;
 		getTemplateRenderer(): SDL.UI.Core.Renderers.ITemplateRenderer;
 		getTemplateName(): string;
 		getElement(): HTMLElement;

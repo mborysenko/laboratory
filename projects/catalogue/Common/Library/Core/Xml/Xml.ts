@@ -181,8 +181,8 @@ module SDL.Client.Xml
 					}
 					(<any>doc).setProperty("SelectionNamespaces", nsList.join(" "));
 				}
-				var result = (<any>parent).selectSingleNode(xPath);
-				return result ? result.nodeValue : null;
+				var node: Node = (<any>parent).selectSingleNode(xPath);
+				return node ? (node.nodeType == 2 ? (<Attr>node).value : node.nodeValue) : null;
 			}
 		}
 	};
@@ -218,18 +218,25 @@ module SDL.Client.Xml
 			return null;
 		}
 
-		if (node.nodeType == 9)
+		if (node.nodeType == 2)
 		{
-			node = (<Document>node).documentElement;
-		}
-
-		if (node.textContent != undefined)
-		{
-			node.textContent = value;
+			(<Attr>node).value = value;
 		}
 		else
 		{
-			(<any>node).text = value;
+			if (node.nodeType == 9)
+			{
+				node = (<Document>node).documentElement;
+			}
+
+			if (node.textContent != undefined)
+			{
+				node.textContent = value;
+			}
+			else
+			{
+				(<any>node).text = value;
+			}
 		}
 	};
 

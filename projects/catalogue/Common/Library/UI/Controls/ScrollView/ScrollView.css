@@ -1,0 +1,327 @@
+.sdl-scrollview {
+  position: relative;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+body.sdl-scrollview {
+  margin: 0 !important;
+}
+.sdl-scrollview > [data-sdl-scrollview-child=true] {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  border: none !important;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden !important;
+  right: 0;
+  bottom: 0;
+}
+.sdl-scrollview-X-scroll > [data-sdl-scrollview-child=true] {
+  bottom: -17px;
+  overflow-x: scroll !important;
+}
+.sdl-scrollview-Y-scroll > [data-sdl-scrollview-child=true] {
+  right: -17px;
+  overflow-y: scroll !important;
+}
+/* styling chrome's scrollbar to increase with zooming and be invisible */
+.sdl-scrollview-X-scroll > [data-sdl-scrollview-child=true]::-webkit-scrollbar,
+.sdl-scrollview-Y-scroll > [data-sdl-scrollview-child=true]::-webkit-scrollbar {
+  width: 17px !important;
+  height: 17px !important;
+}
+/* semi-transparent corner shown when both scrollbars are present */
+.sdl-scrollview-corner {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 15px !important;
+  height: 15px !important;
+  background: #eeeeee !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+  display: none !important;
+  padding: 0 !important;
+}
+.sdl-scrollview-overlay > .sdl-scrollview-corner {
+  background: #dddddd !important;
+  opacity: 0.5 !important;
+}
+.sdl-scrollview-X-scroll.sdl-scrollview-Y-scroll:not(.sdl-scrollview-X-scroll-hidden):not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-corner {
+  display: block !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-corner {
+  background: #3c434b !important;
+}
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-corner {
+  background: #454b53 !important;
+}
+/*	scrollbars */
+.sdl-scrollview-X-scroll-wrapper,
+.sdl-scrollview-Y-scroll-wrapper {
+  display: block !important;
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+}
+.sdl-scrollview-X-scroll-wrapper {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: -15px !important;
+  top: auto !important;
+  height: 15px !important;
+  width: auto !important;
+}
+.sdl-scrollview-Y-scroll:not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-X-scroll-wrapper {
+  right: 15px !important;
+}
+.sdl-scrollview-X-scroll:not(.sdl-scrollview-X-scroll-hidden) > .sdl-scrollview-X-scroll-wrapper {
+  bottom: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper {
+  top: 0 !important;
+  left: auto !important;
+  height: auto !important;
+  bottom: 0 !important;
+  right: -15px !important;
+  width: 15px !important;
+}
+.sdl-scrollview-X-scroll:not(.sdl-scrollview-X-scroll-hidden) > .sdl-scrollview-Y-scroll-wrapper {
+  bottom: 15px !important;
+}
+.sdl-scrollview-Y-scroll:not(.sdl-scrollview-Y-scroll-hidden) > .sdl-scrollview-Y-scroll-wrapper {
+  right: 0 !important;
+}
+/* semi-transparent background of the custom scrollbar */
+.sdl-scrollview-X-scroll-wrapper:before,
+.sdl-scrollview-Y-scroll-wrapper:before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: #eeeeee !important;
+  z-index: inherit  !important;
+}
+.sdl-scrollview-overlay > .sdl-scrollview-X-scroll-wrapper:before,
+.sdl-scrollview-overlay > .sdl-scrollview-Y-scroll-wrapper:before {
+  background: #dddddd !important;
+  opacity: 0.5 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper:before,
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper:before {
+  background: #3c434b !important;
+}
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-Y-scroll-wrapper:before,
+.sdl-scrollview-style-dark.sdl-scrollview-overlay > .sdl-scrollview-X-scroll-wrapper:before {
+  background: #454b53 !important;
+}
+/* up/down buttons */
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1),
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  position: absolute !important;
+  height: 17px !important;
+  width: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-repeat: no-repeat !important;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAA9CAMAAAAOEhAzAAAAb1BMVEUAAACBi5nCx861vMSBi5nCx86Bi5nCx860vMSBi5nCx86Bi5nCx860u8OBi5nCx860u8Ozu8OBi5nCx86zu8OBi5nCx86yucGBi5nCx86xucGBi5nCx86Bi5nCx86vuMCut7+ttr6Bi5mttr7Cx872rDpVAAAAInRSTlMAEBAfICAwMDxAQFBQV2BgcIeQkJygoM/Q0Nzg4PDw9vv+K/XehQAAAThJREFUeNrt1duOgjAQgGFU2gJa8IAK7s5gD+//jBsaIjNzs+nebLJrL9r86RdvmMbiPy3zaVjbp2WtPzTBGNFQ7IKzFIMHvWLsEA3BrnfOEgwtgH5hk7YV27StWKctFcbZmYjLrQuzs8EtDX522kMqdUjHQS231Skdp2rpcp+OfVm8159ZeV8+b6ryJjbrNWS9tLxX/F6/tUbDe7K8B03CRGTcsg+f5o/yBjk/Os5rYNwIbgXXnDcRFfv14CratYfyFdsx3ujlbgoP2pvBXym+CHwX+ExxJ3AvcLuWQoaLyvWsS2hpKhozF/3+W/h2mZG3nXjrgWKMYgSDGEGvCcaGY3fkGOqfDbfC2PApCUc+Jb4meYvjll4/wrSjffXDhuRF8LvgZ847wXvBW8FRFYy7inULZfaEfwHTFh8xvwuFkQAAAABJRU5ErkJggg==");
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  left: 0 !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  right: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  top: 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  bottom: 0 !important;
+}
+/* DEFAULT/BRIGHT BUTTONS*/
+.sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  background-position: 0 -48px;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  background-position: 0 -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  background-position: 0 0;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  background-position: 0 -16px;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-left > :nth-child(1) {
+  background-position: -16px -48px;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-right > :nth-child(2) {
+  background-position: -16px -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper.hover-up > :nth-child(1) {
+  background-position: -16px 0;
+}
+.sdl-scrollview-Y-scroll-wrapper.hover-down > :nth-child(2) {
+  background-position: -16px -16px;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-left > :nth-child(1) {
+  background-position: -32px -48px;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-right > :nth-child(2) {
+  background-position: -32px -32px;
+}
+.sdl-scrollview-Y-scroll-wrapper.pressed-up > :nth-child(1) {
+  background-position: -32px 0;
+}
+.sdl-scrollview-Y-scroll-wrapper.pressed-down > :nth-child(2) {
+  background-position: -32px -16px;
+}
+/* DARK BUTTONS*/
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(1) {
+  background-position: -32px -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(2) {
+  background-position: -32px -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(1) {
+  background-position: -32px 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(2) {
+  background-position: -32px -16px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-left > :nth-child(1) {
+  background-position: -16px -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-right > :nth-child(2) {
+  background-position: -16px -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-up > :nth-child(1) {
+  background-position: -16px 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-down > :nth-child(2) {
+  background-position: -16px -16px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-left > :nth-child(1) {
+  background-position: 0 -48px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-right > :nth-child(2) {
+  background-position: 0 -32px;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-up > :nth-child(1) {
+  background-position: 0 0;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-down > :nth-child(2) {
+  background-position: 0 -16px;
+}
+/* 'draggable' handle of the scrollbar */
+.sdl-scrollview-X-scroll-wrapper > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  position: absolute !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #c2c7ce !important;
+  overflow: hidden !important;
+  z-index: inherit !important;
+}
+.sdl-scrollview-X-scroll-wrapper.hover-handle > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper.hover-handle > :nth-child(3) {
+  background: #adb6be !important;
+}
+.sdl-scrollview-X-scroll-wrapper.pressed-handle > :nth-child(3),
+.sdl-scrollview-Y-scroll-wrapper.pressed-handle > :nth-child(3) {
+  background: #818b99 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  background: #818b99 !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.hover-handle > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.hover-handle > :nth-child(3) {
+  background: #adb6be !important;
+}
+.sdl-scrollview-style-dark > .sdl-scrollview-X-scroll-wrapper.pressed-handle > :nth-child(3),
+.sdl-scrollview-style-dark > .sdl-scrollview-Y-scroll-wrapper.pressed-handle > :nth-child(3) {
+  background: #c2c7ce !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :nth-child(3) {
+  width: 0;
+  height: auto !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: 3px 0 !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :nth-child(3) {
+  height: 0;
+  width: auto !important;
+  right: 0 !important;
+  left: 0 !important;
+  margin: 0 3px !important;
+}
+/* transparent area with native scroll bar (placed in front of the custom bar to do the actual scrolling) */
+.sdl-scrollview-X-scroll-wrapper > :last-child,
+.sdl-scrollview-Y-scroll-wrapper > :last-child {
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  opacity: 0 !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :last-child {
+  bottom: 1px !important;
+  height: 50px !important;
+  width: 100% !important;
+  overflow-x: scroll !important;
+  overflow-y: hidden !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :last-child {
+  right: 1px !important;
+  height: 100% !important;
+  width: 50px !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+}
+/* styling chrome's scrollbar to increase with zooming */
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar {
+  width: 17px !important;
+  height: 17px !important;
+}
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-button {
+  width: 17px !important;
+  height: 18px !important;
+}
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-button {
+  width: 18px !important;
+  height: 17px !important;
+}
+/* useful for debugging */
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-button,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-button,
+.sdl-scrollview-X-scroll-wrapper > :last-child::-webkit-scrollbar-thumb,
+.sdl-scrollview-Y-scroll-wrapper > :last-child::-webkit-scrollbar-thumb {
+  background: #CCC !important;
+}
+/* content that exceeds the scrollable area (causes the native scrollbar to appear) */
+.sdl-scrollview-X-scroll-wrapper > :last-child > :first-child,
+.sdl-scrollview-Y-scroll-wrapper > :last-child > :first-child {
+  height: 1px;
+  width: 1px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
+}

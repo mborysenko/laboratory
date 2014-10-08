@@ -17,8 +17,8 @@ var SDL;
                     eval(SDL.Client.Types.OO.enableCustomInheritance);
                     var ViewModel = (function (_super) {
                         __extends(ViewModel, _super);
-                        function ViewModel(item) {
-                            _super.call(this);
+                        function ViewModel(item, view) {
+                            _super.call(this, view);
                             this.item = item;
                         }
                         return ViewModel;

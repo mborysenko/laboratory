@@ -1,0 +1,9 @@
+{
+  "controls.topbar.workflows": "Things to do",
+  "controls.topbar.notifications": "Notifications",
+  "controls.topbar.messages": "Messages",
+  "controls.topbar.search": "Search",
+  "controls.topbar.help": "Help",
+  "controls.topbar.close": "Cerrar",
+  "controls.topbar.logIn": "Login"
+}

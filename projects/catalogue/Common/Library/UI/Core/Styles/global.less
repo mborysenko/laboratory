@@ -1,0 +1,29 @@
+﻿/**
+    Correct default cursor behaviour across the site
+    relies on body having cursor: default below.
+*/
+
+*
+{
+	cursor: inherit;
+}
+
+html, body, #main-view-target
+{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	cursor: default;
+}
+
+input, textarea
+{
+	cursor: auto;
+}
+
+	input[type="button"], button
+	{
+		cursor: pointer;
+	}

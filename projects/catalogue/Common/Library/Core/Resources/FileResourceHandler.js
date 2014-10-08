@@ -19,10 +19,12 @@ var SDL;
                 };
                 FileResourceHandler.prototype._render = function (file) {
                 };
-                FileResourceHandler.prototype.supports = function (url) {
-                    var m = url.match(/\.([^\.\/\?\#]+)(\?|\#|$)/);
-                    var ext = m ? m[1].toLowerCase() : "";
-                    return this._supports(ext);
+                FileResourceHandler.prototype.supports = function (url, fileType) {
+                    if (!fileType || fileType == "auto") {
+                        var m = url.match(/\.([^\.\/\?\#]+)(\?|\#|$)/);
+                        fileType = m ? m[1].toLowerCase() : "";
+                    }
+                    return this._supports(fileType);
                 };
 
                 FileResourceHandler.prototype.render = function (url) {
@@ -185,7 +187,7 @@ var SDL;
 
                                 FileResourceHandler.loadPackage(FileResourceHandler.getPreferedPackage(fileResource.parentPackages), null, null, sync, caller);
                             } else {
-                                Resources.ResourceLoader.load({ url: fileResource.url, version: fileResource.version }, FileResourceHandler.corePath, sync, function (data, isShared) {
+                                Resources.ResourceLoader.load({ url: fileResource.url, version: fileResource.version, fileType: fileResource.fileType }, FileResourceHandler.corePath, sync, function (data, isShared) {
                                     fileResource.data = data;
                                     fileResource.isShared = isShared;
                                     fileResource.loaded = true;
@@ -292,7 +294,7 @@ var SDL;
                             } else {
                                 for (var i = 0; i < FileResourceHandler.registeredResourceHandlers.length; i++) {
                                     var handler = FileResourceHandler.registeredResourceHandlers[i];
-                                    if (handler.supports(file.url)) {
+                                    if (handler.supports(file.url, file.fileType)) {
                                         if (errorcallback) {
                                             try  {
                                                 handler.render(file.url);

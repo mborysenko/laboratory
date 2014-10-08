@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+	<resourceGroups>
+		<resourceGroup name="SDL.Client.Application.Localization">
+			<files>
+				<file name="ApplicationLocalization.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Application"/>
+				<dependency name="SDL.Client.Localization"/>
+				<dependency name="SDL.Client.Event.EventRegister"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+	<extensions>
+		<resourceExtension for="SDL.Client.Application">
+			<insert name="SDL.Client.Application.Localization"/>
+		</resourceExtension>
+	</extensions>
+</configuration>

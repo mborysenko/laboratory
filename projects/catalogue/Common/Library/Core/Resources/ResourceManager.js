@@ -204,10 +204,12 @@ var SDL;
                             if (fileElement.nodeType == 1 && Client.Xml.getLocalName(fileElement) == "file" && !fileElement.namespaceURI) {
                                 var modification = fileElement.getAttribute("modification");
                                 var url = fileElement.getAttribute("name");
+                                var type = fileElement.getAttribute("type");
                                 var file = {
                                     url: url.indexOf("~/") == 0 ? url : Client.Types.Url.combinePath(baseUrl, url),
                                     version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
-                                    locales: locales
+                                    locales: locales,
+                                    fileType: type
                                 };
                                 resourceGroup.files.push(file);
                             }

@@ -7,7 +7,8 @@ declare module SDL.Client.Models
     {
         load(reload?: boolean): boolean;
         unload(): void;
-        isLoaded(): boolean;
+		isLoaded(): boolean;
+		isLoading(): boolean;
         registerError(errorCode: any, errorMessage: string): void;
     }
     export interface ILoadableObjectProperties extends ICacheableObjectProperties
@@ -21,7 +22,8 @@ declare module SDL.Client.Models
         _invalidateCachedState(): void;
         load(reload?: boolean): boolean;
         unload(): void;
-        isLoaded(): boolean;
+		isLoaded(): boolean;
+		isLoading(): boolean;
 		private beforeSetLoaded(): void;
         _setLoaded(): void;
 		_setLoading(): void;

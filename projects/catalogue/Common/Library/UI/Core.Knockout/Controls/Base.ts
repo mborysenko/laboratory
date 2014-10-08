@@ -11,11 +11,12 @@ module SDL.UI.Core.Knockout.Controls
 		ko.bindingHandlers[name] = new KnockoutBindingHandler(control, name);
 	}
 
-	class KnockoutBindingHandler
+	export class KnockoutBindingHandler
 	{
 		private control: Core.Controls.IControlType;
 		private name: string;
 		private static eventHandlersAttributeName = "data-__knockout_binding_events__";
+		private koDisposeCallbackHandler: () => void;
 
 		constructor(control: Core.Controls.IControlType, name: string)
 		{
@@ -56,21 +57,8 @@ module SDL.UI.Core.Knockout.Controls
 				// create a control instance
 				(<any>element)[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values));
 				instance.render();
-				ko.utils.domNodeDisposal.addDisposeCallback(element,
-					() =>
-						{
-							if ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && !(<SDL.Client.Types.IDisposableObject><any>instance).getDisposed())
-							{
-								// not disposed yet -> remove handlers and dispose
-								this.removeEventHandlers(instance);
-								Core.Renderers.ControlRenderer.disposeControl(instance);
-							}
-							else
-							{
-								// already disposed -> release references to event handlers
-								(<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = null;
-							}
-						});
+				this.koDisposeCallbackHandler = this.disposeForElement.bind(this, element);
+				ko.utils.domNodeDisposal.addDisposeCallback(element, this.koDisposeCallbackHandler);
 
 				this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
 			}
@@ -84,6 +72,30 @@ module SDL.UI.Core.Knockout.Controls
 					// Call update on the existing instance
 					instance.update(Knockout.Utils.unwrapRecursive(values));
 				}
+			}
+		}
+
+		public disposeForElement(element: HTMLElement)
+		{
+			var attrName = Core.Controls.getInstanceAttributeName(this.control);
+			var instance: Core.Controls.IControl = (<any>element)[attrName];
+
+			if (instance)
+			{
+				ko.utils.domNodeDisposal.removeDisposeCallback(element, this.koDisposeCallbackHandler);
+
+				if ((<SDL.Client.Types.IDisposableObject><any>instance).getDisposed && !(<SDL.Client.Types.IDisposableObject><any>instance).getDisposed())
+				{
+					// not disposed yet -> remove handlers and dispose
+					this.removeEventHandlers(instance);
+					Core.Renderers.ControlRenderer.disposeControl(instance);
+				}
+				else
+				{
+					// already disposed -> release references to event handlers
+					(<any>instance)[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+				}
+				(<any>element)[attrName] = null;
 			}
 		}
 

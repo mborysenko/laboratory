@@ -28,7 +28,6 @@ var SDL;
                         };
 
                         KnockoutBindingHandler.prototype.update = function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-                            var _this = this;
                             var values = valueAccessor();
                             var attrName = Core.Controls.getInstanceAttributeName(this.control);
                             var instance = element[attrName];
@@ -48,16 +47,8 @@ var SDL;
                                 // create a control instance
                                 element[attrName] = instance = new this.control(element, Knockout.Utils.unwrapRecursive(values));
                                 instance.render();
-                                ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                                    if (instance.getDisposed && !instance.getDisposed()) {
-                                        // not disposed yet -> remove handlers and dispose
-                                        _this.removeEventHandlers(instance);
-                                        Core.Renderers.ControlRenderer.disposeControl(instance);
-                                    } else {
-                                        // already disposed -> release references to event handlers
-                                        instance[KnockoutBindingHandler.eventHandlersAttributeName] = null;
-                                    }
-                                });
+                                this.koDisposeCallbackHandler = this.disposeForElement.bind(this, element);
+                                ko.utils.domNodeDisposal.addDisposeCallback(element, this.koDisposeCallbackHandler);
 
                                 this.addEventHandlers(instance, controlEvents, values, bindingContext['$data']);
                             } else {
@@ -68,6 +59,25 @@ var SDL;
                                     // Call update on the existing instance
                                     instance.update(Knockout.Utils.unwrapRecursive(values));
                                 }
+                            }
+                        };
+
+                        KnockoutBindingHandler.prototype.disposeForElement = function (element) {
+                            var attrName = Core.Controls.getInstanceAttributeName(this.control);
+                            var instance = element[attrName];
+
+                            if (instance) {
+                                ko.utils.domNodeDisposal.removeDisposeCallback(element, this.koDisposeCallbackHandler);
+
+                                if (instance.getDisposed && !instance.getDisposed()) {
+                                    // not disposed yet -> remove handlers and dispose
+                                    this.removeEventHandlers(instance);
+                                    Core.Renderers.ControlRenderer.disposeControl(instance);
+                                } else {
+                                    // already disposed -> release references to event handlers
+                                    instance[KnockoutBindingHandler.eventHandlersAttributeName] = null;
+                                }
+                                element[attrName] = null;
                             }
                         };
 
@@ -126,6 +136,7 @@ var SDL;
                         KnockoutBindingHandler.eventHandlersAttributeName = "data-__knockout_binding_events__";
                         return KnockoutBindingHandler;
                     })();
+                    Controls.KnockoutBindingHandler = KnockoutBindingHandler;
                 })(Knockout.Controls || (Knockout.Controls = {}));
                 var Controls = Knockout.Controls;
             })(Core.Knockout || (Core.Knockout = {}));

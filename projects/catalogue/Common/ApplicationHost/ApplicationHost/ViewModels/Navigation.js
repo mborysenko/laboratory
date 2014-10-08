@@ -528,7 +528,7 @@ var SDL;
                                 var isTopIconRelative = topIcon && topIcon.charAt(0) != "/" && topIcon.indexOf("~/") == -1;
                                 if (isIconRelative || isTopIconRelative) {
                                     var baseUrlNodes = Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
-                                    var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                                    var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
                                     if (isIconRelative) {
                                         icon = Url.combinePath(baseUrl, icon);

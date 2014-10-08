@@ -270,10 +270,12 @@ module SDL.Client.Resources
 						{
 							var modification = fileElement.getAttribute("modification");
 							var url = fileElement.getAttribute("name");
-							var file = {
+							var type = fileElement.getAttribute("type");
+							var file = <IFileResourceDefinition>{
 								url: url.indexOf("~/") == 0 ? url : Types.Url.combinePath(baseUrl, url),
 								version: (appVersion && modification) ? (appVersion + "." + modification) : (appVersion || modification),
-								locales: locales
+								locales: locales,
+								fileType: type
 							};
 							resourceGroup.files.push(file);
 						}

@@ -5,6 +5,6 @@
 declare module SDL.UI.Core.Knockout.ViewModels {
     class ViewModel extends ViewModelBase {
         public item: ViewModelItem;
-        constructor(item: ViewModelItem);
+        constructor(item: ViewModelItem, view?: Views.ViewBase);
     }
 }

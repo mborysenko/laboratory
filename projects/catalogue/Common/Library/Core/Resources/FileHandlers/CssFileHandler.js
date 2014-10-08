@@ -23,7 +23,7 @@ var SDL;
                             var path;
                             var version;
 
-                            return data.replace(/\{(PATH|ROOT|VERSION)\}(\/?)/g, function (substring, token, next) {
+                            return data.replace(/\{(PATH|ROOT|VERSION|SETTING:([^\}]+))\}(\/?)/g, function (substring, token, next) {
                                 switch (token) {
                                     case "PATH":
                                         if (!path) {
@@ -56,14 +56,17 @@ var SDL;
                                             version = version ? "?" + version : "";
                                         }
                                         return version;
+                                    default:
+                                        // SETTING:setting-name
+                                        return SDL.Client.Configuration.ConfigurationManager.getAppSetting(token.slice(8).trim()) || "";
                                 }
                             });
                         }
                         return data;
                     };
 
-                    CssFileHandler.supports = function (url) {
-                        return (/\.css(\?|\#|$)/i).test(url);
+                    CssFileHandler.supports = function (url, fileType) {
+                        return fileType == "css" || ((!fileType || fileType == "auto") && (/\.css(\?|\#|$)/i).test(url));
                     };
 
                     CssFileHandler.prototype._supports = function (ext) {

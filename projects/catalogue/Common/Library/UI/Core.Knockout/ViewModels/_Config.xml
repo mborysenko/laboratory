@@ -22,6 +22,7 @@
 			<dependencies>
 				<dependency name="SDL.UI.Core.Knockout.Libraries.Knockout"/>
 				<dependency name="SDL.Client.Libraries.SDL.Globalize"/>
+				<dependency name="SDL.Client.Configuration.ConfigurationManager"/>
 			</dependencies>
 		</resourceGroup>
 	

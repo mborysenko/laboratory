@@ -56,7 +56,7 @@ declare module SDL.Client.Resources {
         };
         public _supports(url: string): boolean;
         public _render(file: IFileResource): void;
-        public supports(url: string): boolean;
+        public supports(url: string, fileType?: string): boolean;
         public render(url: string): void;
         static loadIfNotRendered(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean): void;
         static load(file: IFileResourceDefinition, callback?: (file: IFileResource) => void, errorcallback?: (file: IFileResource) => void, sync?: boolean, caller?: ApplicationHost.ICallerSignature): void;

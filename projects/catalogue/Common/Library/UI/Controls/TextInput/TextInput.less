@@ -1,0 +1,26 @@
+﻿@import "../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+@import "../../SDL.Client.UI.Core/Less/inputs.less";
+
+@placeholderColor: #878787;
+
+.sdl-textinput
+{
+	.sdl-input-styles();
+	.placeholder-color(@placeholderColor);
+
+	&:not(:disabled):not(.invalid):hover,
+	&:not(:disabled):not(.invalid):focus
+	{
+		.sdl-input-hover-styles();
+	}
+
+	&:disabled
+	{
+		.sdl-input-disabled-styles();
+	}
+
+	&::-ms-clear
+	{
+		display: none;
+	}
+}

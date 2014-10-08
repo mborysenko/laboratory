@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.Knockout.Callout">
+			<files>
+				<file name="Callout.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Knockout.Controls"/>
+				<dependency name="SDL.UI.Controls.Callout"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+</configuration>

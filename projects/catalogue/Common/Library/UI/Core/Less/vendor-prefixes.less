@@ -1,0 +1,794 @@
+﻿//
+//    Defines a set of mixins for abstracting away vendor prefixes from the CSS
+//
+
+//
+//    Shorthand animation
+//    @value - The full shorthand animation property
+//
+.animation(@value) {
+    -webkit-animation: @value;
+    -o-animation: @value;
+    -moz-animation: @value;
+    animation: @value;
+}
+
+//
+//    Convenience animation function
+//    @keyframe - The name of the animation keyframe
+//    @duration - The duration of one animation cycle
+//
+.animation(@keyFrame,@duration) {
+    -webkit-animation: @keyFrame @duration;
+    -o-animation: @keyFrame @duration;
+    -moz-animation: @keyFrame @duration;
+    animation: @keyFrame @duration;
+}
+
+//
+//    Sets a delay on an animation
+//    @time - the delay length
+//
+.animation-delay(@time) {
+    -webkit-animation-delay: @time;
+    -moz-animation-delay: @time;
+    -o-animation-delay: @time;
+    animation-delay: @time;
+}
+
+//
+//    Sets the direction of the animation
+//    @direction - The direction value e.g. normal, reverse.
+//
+.animation-direction(@direction) {
+    -webkit-animation-direction: @direction;
+    -moz-animation-direction: @direction;
+    -o-animation-direction: @direction;
+    animation-direction: @direction;
+}
+
+//
+//    Set the duration of the animation
+//    @duration - The duration of one animation cycle
+//
+.animation-duration(@duration) {
+    -webkit-animation-duration: @duration;
+    -moz-animation-duration: @duration;
+    -o-animation-duration: @duration;
+    animation-duration: @duration;
+}
+
+//
+//    Sets the animation fill mode
+//    @value - The fill mode to use e.g. forwards, backwards.
+//
+.animation-fill-mode(@value) {
+    -webkit-animation-fill-mode: @value;
+    -moz-animation-fill-mode: @value;
+    -o-animation-fill-mode: @value;
+    animation-fill-mode: @value;
+}
+
+//
+//    Sets the number of times an animation will repeat
+//    @mode - A number or string e.g. infinite.
+//
+.animation-iteration-count(@mode) {
+    -webkit-animation-iteration-count: @mode;
+    -o-animation-iteration-count: @mode;
+    -moz-animation-iteration-count: @mode;
+    animation-iteration-count: @mode;
+}
+
+//
+//    Sets the name of the keyframe which defines this animation
+//    @name - The keyframe name
+//
+.animation-name(@name) {
+    -webkit-animation-name: @name;
+    -moz-animation-name: @name;
+    -o-animation-name: @name;
+    animation-name: @name;
+}
+
+//
+//    Sets the animation play state
+//    @state - The state of the animation e.g. paused, running.
+//
+.animation-play-state(@state) {
+    -webkit-animation-play-state: @state;
+    -moz-animation-play-state: @state;
+    -o-animation-play-state: @state;
+    animation-play-state: @state;
+}
+
+//
+//    Sets the animation timing function
+//    @mode - The timing function e.g. linear, ease-in-out, cubic-bezier() etc.
+//
+.animation-timing-function(@mode) {
+    -webkit-animation-timing-function: @mode;
+    -o-animation-timing-function: @mode;
+    -moz-animation-timing-function: @mode;
+    animation-timing-function: @mode;
+}
+
+//
+//    Sets the  backface visibility, defining whether the back of a rotated element should be visible
+//    @value - The visiblity of the back of a rotated element
+//
+.backface-visibility(@value) {
+    -webkit-backface-visibility: @value;
+    -moz-backface-visibility: @value;
+    -ms-backface-visibility: @value;
+    backface-visibility: @value;
+}
+
+//
+//    Sets the background clip
+//    @mode - The clipping box for the background e.g. content-box, padding-box
+//
+.background-clip(@mode) {
+    -webkit-background-clip: @mode;
+    -moz-background-clip: @mode;
+    background-clip: @mode;
+}
+
+//
+//    Creates a linear gradient background image with the defined parameters
+//    @pos - The linear gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//
+.background-image-linear-gradient(@pos, @c1, @c2) {
+    background-image: -webkit-linear-gradient(@pos, @c1, @c2);
+    background-image: -moz-linear-gradient(@pos, @c1, @c2);
+    background-image: -ms-linear-gradient(@pos, @c1, @c2);
+    background-image: -o-linear-gradient(@pos, @c1, @c2);
+    background-image: linear-gradient(@pos, @c1, @c2);
+}
+
+//
+//    Creates a 2 colour linear gradient background combined with an overlayed image
+//    @image - The image e.g. url('')
+//    @pos - The linear gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//
+.background-image-linear-gradient(@image, @pos, @c1, @c2) {
+    // Below are for IE9 which doesn't like combined image and gradient declarations//
+    background-image: @image;
+    background-image: @image, -webkit-linear-gradient(@pos, @c1, @c2);
+    background-image: @image, -moz-linear-gradient(@pos, @c1, @c2);
+    background-image: @image, -ms-linear-gradient(@pos, @c1, @c2);
+    background-image: @image, -o-linear-gradient(@pos, @c1, @c2);
+    background-image: @image, linear-gradient(@pos, @c1, @c2);
+}
+
+//
+//    Creates a 4 colour linear gradient background combined with an overlayed image
+//    @image - The image e.g. url('')
+//    @pos - The linear gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//    @c3 - The third gradient colour and position
+//    @c4 - The fourth gradient colour and position
+//
+.background-image-linear-gradient(@image, @pos, @c1, @c2, @c3, @c4) {
+    // Below are for IE9 which doesn't like combined image and gradient declarations//
+    background-image: @image;
+    background-image: @image, -webkit-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background-image: @image, -moz-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background-image: @image, -ms-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background-image: @image, -o-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background-image: @image, linear-gradient(@pos,@c1,@c2,@c3,@c4);
+}
+
+//
+//    Applies a linear gradient using the IE<10 specific filer property
+//    @GradientType - The type of gradient
+//    @c1 - The gradient start colour
+//    @c2 - The gradient end colour
+//
+.background-linear-gradient-IE(@GradientType: 0,@c1,@c2) {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType = @GradientType, startColorstr = @c1, endColorstr = @c2)";
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType = @GradientType, startColorstr = @c1, endColorstr = @c2);
+}
+
+//
+//    Applies both a standard 2 colour gradient and an IE<10 filter
+//    @pos - The standard gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//    @IEStrColor - The IE<10 specific start colour
+//    @IEEndColor - The IE<10 sepcific end colour
+//    @GradientType - The IE<10 specific gradient type
+//
+.background-linear-gradient(@pos, @c1, @c2, @IEStrColor, @IEEndColor, @GradientType) {
+    background: -webkit-linear-gradient(@pos,@c1,@c2);
+    background: -moz-linear-gradient(@pos,@c1,@c2);
+    background: -ms-linear-gradient(@pos,@c1,@c2);
+    background: -o-linear-gradient(@pos,@c1,@c2);
+    background: linear-gradient(@pos,@c1,@c2);
+    .background-linear-gradient-IE(@GradientType, @IEStrColor, @IEEndColor);
+}
+
+//
+//    Applies both a standard 3 colour gradient and an IE<10 filter
+//    @pos - The standard gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//    @c3 - The third gradient colour and position
+//    @IEStrColor - The IE<10 specific start colour
+//    @IEEndColor - The IE<10 sepcific end colour
+//    @GradientType - The IE<10 specific gradient type
+//
+.background-linear-gradient(@pos, @c1, @c2,@c3, @IEStrColor, @IEEndColor, @GradientType) {
+    background: -webkit-linear-gradient(@pos,@c1,@c2,@c3);
+    background: -moz-linear-gradient(@pos,@c1,@c2,@c3);
+    background: -ms-linear-gradient(@pos,@c1,@c2,@c3);
+    background: -o-linear-gradient(@pos,@c1,@c2,@c3);
+    background: linear-gradient(@pos,@c1,@c2,@c3);
+    .background-linear-gradient-IE(@GradientType, @IEStrColor, @IEEndColor);
+}
+
+//
+//    Applies both a standard 4 colour gradient and an IE<10 filter
+//    @pos - The standard gradient position
+//    @c1 - The first gradient colour and position
+//    @c2 - The second gradient colour and position
+//    @c3 - The third gradient colour and position
+//    @c4 - The fourth gradient colour and position
+//    @IEStrColor - The IE<10 specific start colour
+//    @IEEndColor - The IE<10 sepcific end colour
+//    @GradientType - The IE<10 specific gradient type
+//
+.background-linear-gradient(@pos, @c1, @c2,@c3,@c4, @IEStrColor, @IEEndColor, @GradientType) {
+    background: -webkit-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background: -moz-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background: -ms-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background: -o-linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    background: linear-gradient(@pos,@c1,@c2,@c3,@c4);
+    .background-linear-gradient-IE(@GradientType, @IEStrColor, @IEEndColor);
+}
+
+//
+//    Sets the background origin
+//    @value - The backgorund origin
+//
+.background-origin(@value){
+    -webkit-background-origin: @value;
+    -moz-background-origin: @value;
+    background-origin: @value;
+}
+
+//
+//    Sets the background X position
+//    @position - The x position for the background
+//
+.background-position-x(@position) {
+    -ms-background-position-x: @position;
+    background-position-x: @position;
+}
+
+//
+//    Sets the background Y position
+//    @position - The y position for the background
+//
+.background-position-y(@position) {
+    -ms-background-position-y: @position;
+    background-position-y: @position;
+}
+
+//
+//    Sets the background size
+//    @width - The background width
+//    @height - The background height
+//
+.background-size(@width, @height) {
+    -webkit-background-size: @width @height;
+    -moz-background-size: @width @height;
+    -ms-background-size: @width @height;
+    -o-background-size: @width @height;
+    background-size: @width @height;
+}
+
+//
+//    Sets an image border
+//    @url - The url of the image
+//    @slice - The inward offsets of the image
+//    @width - The border width
+//    @outset - The amount which the border image extends beyond the border box
+//    @repeat - The image repeat property
+//
+.border-image(@url, @slice, @width, @outset, @repeat) {
+    -webkit-border-image: @url @slice @width @outset @repeat;
+    -moz-border-image: @url @slice @width @outset @repeat;
+    -o-border-image: @url @slice @width @outset @repeat;
+    border-image: @url @slice @width @outset @repeat;
+}
+
+//
+//    Sets the border radius of an element (all four corners)
+//    @radius - The border radius (defaults to 5px)
+//
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+
+//
+//    Sets the border radius of the top left and top right corners
+//    @radius - The border radius (defaults to 5px)
+//
+.border-top-radius (@radius: 5px) {
+    .border-top-left-radius(@radius);
+    .border-top-right-radius(@radius);
+}
+
+//
+//    Sets the radius of the bottom left and bottom right corners
+//    @radius - The border radius (defaults to 5px)
+//
+.border-bottom-radius (@radius: 5px) {
+    .border-bottom-left-radius(@radius);
+    .border-bottom-right-radius(@radius);
+}
+
+//
+//    Sets the top left corner border radius
+//    @radius - The border radius (defaults to 5px)
+//
+.border-top-left-radius (@radius: 5px) {
+    -webkit-border-top-left-radius: @radius;
+    -moz-border-radius-topleft: @radius;
+    border-top-left-radius: @radius;
+}
+
+//
+//    Sets the bottom left corner border radius
+//    @radius - The border radius (defaults to 5px)
+//
+.border-bottom-left-radius (@radius: 5px) {
+    -webkit-border-bottom-left-radius: @radius;
+    -moz-border-radius-bottomleft: @radius;
+    border-bottom-left-radius: @radius;
+}
+
+//
+//    Sets the top right corner border radius
+//    @radius - The border radius (defaults to 5px)
+//
+.border-top-right-radius (@radius: 5px) {
+    -webkit-border-top-right-radius: @radius;
+    -moz-border-radius-topright: @radius;
+    border-top-right-radius: @radius;
+}
+
+
+//
+//    Sets the bottom right corner border radius
+//    @radius - The border radius (defaults to 5px)
+//
+.border-bottom-right-radius (@radius: 5px) {
+    -webkit-border-bottom-right-radius: @radius;
+    -moz-border-radius-bottomright: @radius;
+    border-bottom-right-radius: @radius;
+}
+
+//
+//    Sets the box alignment for flex layouts
+//    @align - The box alignment
+//
+.box-align(@align) {
+    -webkit-box-align: @align;
+    -moz-box-align: @align;
+    -ms-box-align: @align;
+}
+
+//
+//    Sets the box direction for flex layouts
+//    @value - The box direction (e.g. normal, reverse)
+//
+.box-direction(@value) {
+    -webkit-box-direction: @value;
+    -moz-box-direction: @value;
+    -ms-box-direction: @value;
+}
+
+//
+//    Sets the box flex property for flex layouts
+//    @value - The box flex value
+//
+.box-flex(@value) {
+    -webkit-box-flex: @value;
+    -moz-box-flex: @value;
+    -ms-box-flex: @value;
+}
+
+//
+//    Sets the box ordinal group for flex layouts
+//    @value - The box ordinal group
+//
+.box-ordinal-group(@value) {
+    -webkit-box-ordinal-group: @value;
+    -moz-box-ordinal-group: @value;
+    -ms-box-ordinal-group: @value;
+}
+
+//
+//    Sets the box orientation for flex layouts
+//    @value - The box orientation
+//
+.box-orient(@value) {
+    -webkit-box-orient: @value;
+    -moz-box-orient: @value;
+    -ms-box-orient: @value;
+}
+
+//
+//    Sets the box packing for flex layouts
+//    @value - The box pack (e.g. center, justify)
+//
+.box-pack(@value){
+    -webkit-box-pack: @value;
+    -moz-box-pack: @value;
+    -ms-box-pack: @value;
+}
+
+//
+//    Creates a box shadow
+//    @offsetX - The X offset for the box shadow
+//    @offsetY - The Y offset for the box shadow
+//    @blurRadius - The blur radius for the box shadow
+//    @spread - The width of the shadow
+//    @color - The colour of the shadow
+//
+.box-shadow(@offsetX, @offsetY, @blurRadius, @spread, @color) {
+    -webkit-box-shadow: @offsetX @offsetY @blurRadius @spread @color;
+    box-shadow: @offsetX @offsetY @blurRadius @spread @color;
+}
+
+//
+//    Creates an inset box shadow
+//    @offsetX - The X offset for the box shadow
+//    @offsetY - The Y offset for the box shadow
+//    @blurRadius - The blur radius for the box shadow
+//    @spread - The width of the shadow
+//    @color - The colour of the shadow
+//
+.box-shadow-inset(@offsetX, @offsetY, @blurRadius, @spread, @color) {
+    -webkit-box-shadow: inset @offsetX @offsetY @blurRadius @spread @color;
+            box-shadow: inset @offsetX @offsetY @blurRadius @spread @color;
+}
+
+//
+//    Sets the box sizing property
+//    @mode - The box sizing of the element (e.g. border-box)
+//
+.box-sizing(@mode) {
+    -webkit-box-sizing: @mode;
+    -moz-box-sizing: @mode;
+    box-sizing: @mode;
+}
+
+//
+//    Divives the element content into columns
+//    @columns - The number of columns
+//
+.column-count(@columns) {
+    -webkit-column-count: @columns;
+    -moz-column-count: @columns;
+    column-count: @columns;
+}
+
+//
+//    The gap size between an element's columns
+//    @gapSize - The gap size
+//
+.column-gap(@gapSize) {
+    -moz-column-gap: @gapSize;
+    -webkit-column-gap: @gapSize;
+    column-gap: @gapSize;
+}
+
+//
+//    Sets the style of the rule divider between element columns
+//    @width - The width of the column rule
+//    @style - The style of the column rule
+//    @colour - The colour of the column rule
+//
+.column-rule(@width, @style, @colour) {
+    -moz-column-rule: @width @style @colour;
+    -webkit-column-rule: @width @style @colour;
+    column-rule: @width @style @colour;
+}
+
+//
+//    Specifies the width of an elements columns
+//    @width - The column width
+//
+.column-width(@width) {
+    -webkit-column-width: @width;
+    -moz-column-width: @width;
+    column-width: @width;
+}
+
+//
+//    Shorthand property for creating element content columns
+//    @width - The column width
+//    @count - The number of columns
+//
+.columns(@width, @count) {
+    -webkit-columns: @width @count;
+    -moz-columns: @width @count;
+    columns: @width @count;
+}
+
+//
+//    Sets the flex property on a flex box child element
+//    @value - The flex value
+//
+.flex(@value) {
+    -ms-flex: @value;
+    -webkit-flex: @value;
+    flex: @value;
+}
+
+//
+//    The flex direction of a flex box element
+//    @direction - The direction the elements flex in e.g. column, row)
+//
+.flex-direction(@direction) {
+    -webkit-flex-direction: @direction;
+    -ms-flex-direction: @direction;
+    flex-direction: @direction;
+}
+
+//
+//    The flex growth property of a flex box child element
+//    @value - The value of the growth property
+//
+.flex-grow(@value) {
+    -webkit-flex-grow: @value;
+    flex-grow: @value;
+}
+
+//
+//    The flex shrink property of a flex box child element
+//    @value - The value of the shrink property
+//
+.flex-shrink(@value) {
+    -webkit-flex-shrink: @value;
+    flex-shrink: @value;
+}
+
+//
+//    Sets the opacity of an element, including IE<10 filter property
+//    @value - The opacity as a number from 0 to 1
+//
+.opacity(@value) {
+    -webkit-opacity: @value;
+    @IE9-value: @value * 100;
+    filter: alpha(opacity=@IE9-value);
+    opacity: @value;
+}
+
+//
+//    The order of a flex box child
+//    @order - An integer specifying the order in which the child element will be displayed
+//
+.order(@order) {
+    -webkit-order: @order;
+    order: @order;
+}
+
+//
+//    Sets perpective on a rotated element
+//    @value - An integer representing the amount of perspective
+//
+.perspective(@value) {
+    -webkit-perspective: @value;
+    -moz-perspective: @value;
+    -ms-perspective: @value;
+    perspective: @value;
+}
+
+//
+//    Sets the origin point for perpective on a rotated element
+//    @x-axis - The x position about which the perpective will rotate
+//    @y-axis - The y position about which the perpective will rotate
+//
+.perspective-origin(@x-axis, @y-axis) {
+    -webkit-perspective-origin: @x-axis @y-axis;
+    -moz-perspective-origin: @x-axis @y-axis;
+    -ms-perspective-origin: @x-axis @y-axis;
+    perspective-origin: @x-axis @y-axis;
+}
+
+//
+//    Sets placeholder text colour in an input placeholder
+//    @color - The colour to set
+//
+.placeholder-color(@color) {
+    &:-moz-placeholder {
+        color: @color;
+    }
+
+    &:-ms-input-placeholder {
+        color: @color;
+    }
+
+    &::-webkit-input-placeholder {
+        color: @color;
+    }
+}
+
+//
+//    Sets the text overflow property
+//    @mode - The text overflow behaviour
+//
+.text-overflow(@mode) {
+    -ms-text-overflow: @mode;
+    -o-text-overflow: @mode;
+    text-overflow: @mode;
+}
+
+//
+//    Sets the text shadow property
+//    @setting - The text shadow value (e.g. 1px 0 #F00)
+//
+.text-shadow(@setting) {
+    -webkit-text-shadow: @setting;
+    -moz-text-shadow: @setting;
+    -ms-text-shadow: @setting;
+    -o-text-shadow: @setting;
+    text-shadow: @setting;
+}
+
+//
+//    Sets the text shadow
+//    @x - The x offset of the text shadow
+//    @y - The y offset of the text shadow
+//    @color - The colour of the text shadow
+//
+.text-shadow (@x, @y, @color) {
+    -webkit-text-shadow: @x @y @color;
+    -moz-text-shadow: @x @y @color;
+    -ms-text-shadow: @x @y @color;
+    -o-text-shadow: @x @y @color;
+    text-shadow: @x @y @color;
+}
+
+//
+//    Sets the CSS3 transform property
+//    @value the full transform value (e.g. translate(5px, 20px), rotate(45deg) )
+//
+.transform(@value) {
+    -webkit-transform: @value;
+    -moz-transform: @value;
+    -ms-transform: @value;
+    -o-transform:@value;
+    transform: @value;
+}
+
+//
+//    Rotates an element with a CSS3 transform
+//    @deg - The amount to rotate in degrees
+//
+.transform-rotate(@deg) {
+    .transform( rotate(@deg) );
+}
+
+//
+//    Translates an element's position using a CSS3 transform
+//    @horizontal - The horizontal translate distance
+//    @vertical = The vertical translate distance
+//
+.transform-translate(@horizontal,@vertical) {
+    .transform( translate(@horizontal, @vertical) );
+}
+
+//
+//    Sets the origin point for a CSS3 transform
+//    @origin - The origin point (e.g. 10px 5px or 50% 50%)
+//
+.transform-origin(@origin){
+    -webkit-transform-origin: @origin;
+    -moz-transform-origin: @origin;
+    -ms-transform-origin: @origin;
+    -o-transform-origin: @origin;
+    transform-origin: @origin;
+}
+
+//
+//    Sets the transform style for child elements of a CSS3 transform
+//    @style - Whether the 3d position of child elements is preserved
+//
+.transform-style(@style) {
+    -webkit-transform-style: @style;
+    -moz-transform-style: @style;
+    -ms-transform-style: @style;
+    transform-style: @style;
+}
+
+//
+//    Define a CSS3 transition
+//    @property - The property to transition when the value changes
+//    @duration - The time taken to perform the transition
+//    @timing-function - A timing function defining the transition e.g. ease-in-out
+//    @delay - The delay before the transition begins
+//
+.transition(@property, @duration, @timing-function, @delay) {
+    -webkit-transition: @property @duration @timing-function @delay;
+    -moz-transition: @property @duration @timing-function @delay;
+    -o-transition: @property @duration @timing-function @delay;
+    transition: @property @duration @timing-function @delay;
+}
+
+//
+//    Sets the delay property on a CSS3 transition
+//    @delay - The amount of time to delay before the transition begins e.g. 2s
+//
+.transition-delay(@delay) {
+    -webkit-transition-delay: @delay;
+    -moz-transition-delay: @delay;
+    -o-transition-delay: @delay;
+    transition-delay: @delay;
+}
+
+//
+//    Sets the duration of a CSS3 transition
+//    @duration - How long the transition lasts e.g. 0.5s
+//
+.transition-duration(@duration) {
+    -webkit-transition-duration: @duration;
+    -moz-transition-duration: @duration;
+    -o-transition-duration: @duration;
+    transition-duration: @duration;
+}
+
+//
+//    Sets the name of the property to be transitioned
+//    @property - The property CSS name e.g. width
+//
+.transition-property(@property){
+    -webkit-transition-property: @property;
+    -moz-transition-property: @property;
+    -o-transition-property: @property;
+    transition-property: @property;
+}
+
+//
+//    Sets the transition timing function for a CSS3 transition
+//    @function - The timing function e.g. ease-out
+//
+.transition-timing-function(@function) {
+    -webkit-transition-timing-function: @function;
+    -moz-transition-timing-function: @function;
+    -o-transition-timing-function: @function;
+    transition-timing-function: @function;
+}
+
+//
+//    Set the user selection behaviour for an element
+//    @value - The selection behaviour e.g. none
+//
+.user-select(@value) {
+    -webkit-user-select: @value;
+    -moz-user-select: @value;
+    -ms-user-select: @value;
+    user-select: @value;
+}
+
+//
+//    Sets the word wrap property for wrapping text behaviour
+//    @mode - The word wrap behaviour e.g. break-word
+//
+.word-wrap(@mode) {
+    -ms-word-wrap: @mode;
+    word-wrap: @mode;
+}

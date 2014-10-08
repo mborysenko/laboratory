@@ -1,0 +1,259 @@
+﻿@import "../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+
+.sdl-activityindicator-child
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.sdl-activityindicator-child > div
+{
+	position: absolute;
+	.box-sizing(border-box);
+	padding: 0;
+}
+
+.sdl-activityindicator-child-screen-bright:before,
+.sdl-activityindicator-child-screen-dark:before
+{
+	content: "";
+	display: block;
+	opacity: .9;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+.sdl-activityindicator-child-screen-bright:before
+{
+	background-color: white;
+}
+
+.sdl-activityindicator-child-screen-dark:before
+{
+	background-color: #AAA;
+}
+
+.sdl-activityindicator-child > :first-child
+{
+	.user-select(none);
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	height: 132px;
+	margin: -66px 0 0 -150px;
+	text-align: center;
+	cursor: default;
+	text-transform: uppercase;
+	font-family: Arial;
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :first-child
+{
+	line-height: 132px;
+	font-size: 18px;
+	color: #878787;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :first-child,
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :first-child
+{
+	display: none;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child
+{
+	padding-top: 112px;
+	line-height: 15px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #5C636D;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty):before,
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty):after
+{
+	content: "";
+	.box-sizing(border-box);
+	position: absolute;
+	top: 0;
+	left: 50%;
+	padding: 0;
+	.border-radius(50%);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty):before
+{
+	width: 100px;
+	height: 100px;
+	margin: 0 0 0 -50px;
+	border: 13px solid rgba(237, 237, 237, .6);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty):after
+{
+	width: 50px;
+	height: 50px;
+	margin: 25px 0 0 -25px;
+	border: none;
+	background: white url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAVdEVYdENyZWF0aW9uIFRpbWUAOS8yMC8xM3YlVAIAAAK6SURBVFiF7ZfBbeJQEIY/0N5JB6ED6CBQQRIJnzEVhJXw0YrBRx9CKlhy9oVUsFDBmg5MB6YC9jDj+PHyAMNKm8PuLyHAjD3/zPwzb2js93u+Es0v9f6fANC4xDhM0h7gAz3g1vp5C6yARRx4q2PPsDXXCJO0HQdeXsNxBNzV5LoGxnHgZXUI7BH2C2AeB15hOY+A55qOTeyUxOIUgSYwRdLpA1GYpL7hfHGl8zWwBG7CJO2eMmzGgRcBb0oi1xtRIsMrnIOUagi8AL/CJH04ZvghQo12CHxXEhnQusL5FgkEpKzl5ywOvOKTBswvBol3oOD6DLjwGAfe0qWBD8SB5wMj4B64QUpzKTaIBtZINvv6KlzG3xzXCuAVEWWOiPQSIXaMzwdtGyZpH5kVJwk86GuuJMZIJBH1NbFRRwWipbycCbPJYQlcBNrq6Fkd+4iap0qs47jHRse2C5N0hwQVmdfPnQUvGsGrEsoQgZ7CDqn/O4caaGvLH8CVARtDJKUjJIKcSiOukrSoan9vXN+ESbpCSvqBuqdhB0ldebOvZDYOW7MLRlQZ8OPAG9vGrgyscB86t8APJK1dpCRvSFnMeeHqgh2Q6ZxZmA91ZeDTCWbhRd9LUfaU1Favb6k0MEWifwAi+2CCI/tAmKQF51tug5RhjET9inTQ/TH7OPC69iQ8JsI554dPh6qt2sAT1fQrT8AcHTzHlhSnCLVdXAKz0UJK0gUelUiEDKAbJIifWL1v4lQb+gj7OtPvTklE+v6EBNA/tZ7BmZ1Ql4m6JEqsEaVHSOdMkVK1AX82GRy04tmlVEksqDeCTYyosrFDxJoB49lk4NcmYBCJkLLY27CNLUbLWQHs1GZZkrhoLdcH9pDe7yJCg+rUW7o2Yb3PpyoLwHQ2GUQXE/hTmERmk0HjrxP4tBP+8/+OfwOa3PX2kAWjiQAAAABJRU5ErkJggg==") no-repeat center center;
+}
+
+.sdl-activityindicator-child > :last-child
+{
+	top: 50%;
+	left: 50%;
+	padding: 0;
+	width: 20px;
+	height: 20px;
+	margin: -10px 0 0 -10px;
+}
+
+.sdl-activityindicator-child > :last-child > svg
+{
+	width: 20px;
+	height: 20px;
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child
+{
+	.animation(sdl-activityindicator-rotate-legacy 1.0s linear infinite);
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg
+{
+	transform: scale(9.8);
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > circle
+{
+	stroke: #CDCDCD;
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > path
+{
+	stroke: #666666;
+}
+
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > circle,
+.sdl-activityindicator-legacy > .sdl-activityindicator-child > :last-child > svg > path
+{
+	stroke-width: 1.3px;
+	fill: none;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child
+{
+	.animation(sdl-activityindicator-rotate 0.5s linear infinite);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg
+{
+	transform: scale(3.7);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > circle
+{
+	stroke: rgba(125, 139, 171, .4);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > path:last-child
+{
+	stroke: #7D8BAB;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > circle,
+.sdl-activityindicator > .sdl-activityindicator-child > :last-child > svg > path
+{
+	stroke-width: 2.4px;
+	fill: none;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg
+{
+	transform: scale(1.8);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg > cirlce,
+.sdl-activityindicator > .sdl-activityindicator-child-size-medium > :last-child > svg > path
+{
+	stroke-width: 2.6px;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg
+{
+	transform: scale(.88);
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg > cirlce,
+.sdl-activityindicator > .sdl-activityindicator-child-size-small > :last-child > svg > path
+{
+	stroke-width: 2.2px;
+}
+
+.sdl-activityindicator > .sdl-activityindicator-child-size-large > :first-child:not(:empty) + :last-child
+{
+	margin-top: -26px;
+}
+
+@keyframes sdl-activityindicator-rotate-legacy
+{
+	from
+	{
+		transform: rotate(0deg);
+	}
+
+	to
+	{
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes sdl-activityindicator-rotate-legacy
+{
+	from
+	{
+		-webkit-transform: rotate(0deg);
+	}
+
+	to
+	{
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes sdl-activityindicator-rotate
+{
+	from
+	{
+		transform: rotate(0deg);
+	}
+
+	to
+	{
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes sdl-activityindicator-rotate
+{
+	from
+	{
+		-webkit-transform: rotate(0deg);
+	}
+
+	to
+	{
+		-webkit-transform: rotate(360deg);
+	}
+}

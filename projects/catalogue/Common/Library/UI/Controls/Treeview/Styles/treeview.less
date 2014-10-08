@@ -1,0 +1,204 @@
+﻿@import "../../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+@import "../../../SDL.Client.UI.Core/Less/shadows.less";
+
+.sdl-treeview {
+    @transition-speed: 200ms;
+
+    font-family: Arial;
+    font-size: 12px;
+    .textShadowBright;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    .user-select(none);
+    .box-sizing(border-box);
+    outline: 0;
+
+    &:focus {
+        ul.root {
+            li.active > div.node {
+                border: 1px solid #94b5e5;
+                background-color: #bed2f0;
+            }
+        }
+    }
+
+    /**
+     * Need to override the common ui library checkbox control so that it can't receive focus
+     * Fixes a Google Chrome bug whereby tabindex of -1 doesn't work for checkboxes contained inside a tabbable element
+     */
+    .sdl-checkbox {
+        > input {
+            display: none;
+        }
+    }
+
+    .svg-spinner {
+        .animation(application-loading-rotate, 0.5s);
+        .animation-iteration-count(infinite);
+        .animation-timing-function(linear);
+
+        > .ring {
+            stroke: fade(#7d8bab, 40);
+            stroke-width: 2px;
+            fill: rgba(0,0,0,0);
+        }
+
+        > .arc {
+            stroke: #7d8bab;
+            stroke-width: 2px;
+            fill: rgba(0,0,0,0);
+        }
+    }
+
+    @-webkit-keyframes application-loading-rotate {
+        from {
+            .transform(rotate(0deg));
+        }
+
+        to {
+            .transform(rotate(360deg));
+        }
+    }
+
+    @keyframes application-loading-rotate {
+        from {
+            .transform(rotate(0deg));
+        }
+
+        to {
+            .transform(rotate(360deg));
+        }
+    }
+
+    ul.root {
+        display: inline-block;
+        min-width: 100%;
+        cursor: default;
+        position: relative;
+        padding: 0 1px 1px 1px;
+        margin: 0;
+        background-color: #fff;
+        list-style: none;
+        .box-sizing(border-box);
+
+        li {
+            padding: 1px 0 0 0;
+
+            > div.node {
+                border: 1px solid transparent;
+                white-space: nowrap;
+
+                &:hover {
+                    border: 1px solid #bed2f0;
+                    background-color: #e9f0fa;
+                }
+
+                > .loader {
+                    height: 16px;
+                    width: 16px;
+                    margin-left: 5px;
+                    display: none;
+                    text-indent: 0;
+                    vertical-align: middle; // doesn't like odd numbered line heights so we need to also offset the top by -1px
+                    position: relative;
+                    top: -1px;
+                }
+
+                > i {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    background-repeat: no-repeat;
+                    margin-left: 5px;
+                    vertical-align: middle; // doesn't like odd numbered line heights so we need to also offset the top by -1px
+                    position: relative;
+                    top: -1px;
+
+                    &.expand-collapse {
+                        .transition(transform, @transition-speed, linear, 0);
+                        background: url({PATH}../images/arrow.collapsed.16.mono-dark.svg) no-repeat center center;
+                    }
+                }
+
+                .sdl-checkbox {
+                    margin-left: 5px;
+                    vertical-align: middle; // doesn't like odd numbered line heights so we need to also offset the top by -1px
+                    position: relative;
+                    top: -1px;
+                }
+
+                > .content {
+                    display: inline-block;
+                    position: relative;
+                    vertical-align: middle; // doesn't like odd numbered line heights so we need to also offset the top by -1px
+                    text-indent: 0;
+                    margin-left: 5px;
+                    min-height: 25px;
+                    line-height: 25px;
+                }
+            }
+
+            > div.children {
+                overflow: hidden;
+
+                > ul {
+                    &.slide {
+                        .transition(margin-top, @transition-speed, linear, 0);
+                    }
+                    list-style: none;
+                    padding: 0;
+                }
+            }
+
+            &.active > div.node {
+                border: 1px solid #cfcfcf;
+                background-color: #ddd;
+            }
+
+            &.expanded {
+                > div.node {
+                    > i.expand-collapse {
+                        .transform(rotate(90deg));
+                    }
+                }
+            }
+
+            &.busy {
+                > div.node {
+                    > .loader {
+                        display: inline-block;
+                    }
+
+                    > i.expand-collapse {
+                        display: none;
+                    }
+                }
+            }
+
+            &.leaf-node {
+                > div.node {
+                    > i.expand-collapse {
+                        visibility: hidden;
+                    }
+                }
+            }
+
+            &[data-type=FOLDER] {
+                > div.node {
+                    > i.node {
+                        background: url({PATH}../images/folder-closed.16.color.svg) no-repeat center center;
+                    }
+                }
+
+                &.expanded {
+                    > div.node {
+                        > i.node {
+                            background: url({PATH}../images/folder-opened.16.color.svg) no-repeat center center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

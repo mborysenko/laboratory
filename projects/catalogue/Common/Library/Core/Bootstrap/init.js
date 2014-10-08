@@ -76,10 +76,10 @@ var SDL;
                         var preloadPackages = Client.Xml.selectNodes(pageConfElements[i], "preloadPackages/package[@url]");
                         if (preloadPackages.length) {
                             var baseUrlNodes = Client.Xml.selectNodes(pageConfElements[i], "ancestor::configuration/@baseUrl");
-                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                            var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
                             var appVersionNodes = Client.Xml.selectNodes(pageConfElements[i], "ancestor::configuration/appSettings/setting[@name='version']/@value");
-                            var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+                            var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].value : "";
 
                             for (var j = 0, lenj = preloadPackages.length; j < lenj; j++) {
                                 var packageElement = preloadPackages[j];

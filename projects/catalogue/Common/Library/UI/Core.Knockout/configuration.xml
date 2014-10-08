@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SDL.Client.Core/configuration.xsd" generated="true">
   <appSettings>
-    <setting name="version" value="1.4.0.1880" />
+    <setting name="version" value="1.5.0.1883" />
   </appSettings>
   <!-- SDL.Client.UI.Core configuration -->
   <include src="../Core/configuration.xml" />
@@ -141,6 +141,7 @@
             <dependency name="SDL.UI.Core.Renderers.ControlRenderer" />
             <dependency name="SDL.UI.Core.Knockout.Libraries.Knockout" />
             <dependency name="SDL.UI.Core.Knockout.BindingHandlers.Common" />
+            <dependency name="SDL.UI.Core.Knockout.Controls" />
           </dependencies>
         </resourceGroup>
         <resourceGroup name="SDL.UI.Core.Knockout.BindingHandlers.ViewKnockoutBindingHandler">

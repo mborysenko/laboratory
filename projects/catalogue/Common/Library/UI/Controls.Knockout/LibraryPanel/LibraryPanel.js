@@ -1,0 +1,1 @@
+﻿SDL.UI.Core.Knockout.Controls.createKnockoutBinding(SDL.UI.Controls.LibraryPanel, "SDL.UI.Controls.Knockout.LibraryPanel");

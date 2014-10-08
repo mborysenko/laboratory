@@ -1,0 +1,63 @@
+.sdl-dialog {
+  position: fixed;
+  border: 1px solid #454b53;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 5px 0 rgba(38, 44, 57, 0.15);
+  box-shadow: 0 1px 5px 0 rgba(38, 44, 57, 0.15);
+  min-width: 150px;
+  min-height: 100px;
+  z-index: 100;
+  background-color: white;
+  outline: none;
+}
+.sdl-dialog-hidden {
+  visibility: hidden;
+}
+.sdl-dialog-header {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 48px;
+  white-space: nowrap;
+  padding: 10px 42px 10px 10px;
+  border-bottom: 1px solid #AAA;
+  background-color: #FAFAFA;
+  line-height: 27px;
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  -ms-border-radius: 2px 2px 0 0;
+  -o-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+}
+.sdl-dialog-header > label {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 15px;
+  float: left;
+  margin-right: 5px;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+.sdl-dialog-header > button {
+  font-size: 25px;
+  width: 27px;
+  padding: 0;
+  font-weight: normal;
+  position: absolute;
+  right: 10px;
+}
+.sdl-dialog-actionbar {
+  -webkit-border-radius: 0 0 2px 2px;
+  -moz-border-radius: 0 0 2px 2px;
+  -ms-border-radius: 0 0 2px 2px;
+  -o-border-radius: 0 0 2px 2px;
+  border-radius: 0 0 2px 2px;
+}

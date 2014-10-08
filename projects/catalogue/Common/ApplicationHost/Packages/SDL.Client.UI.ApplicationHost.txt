@@ -1,4 +1,4 @@
-/*70047,21740,17929,379,8002*//// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
+/*70043,21740,17929,379,8002*//// <reference path="../../../../SDL.Client/SDL.Client.Core/ApplicationHost/ApplicationHost.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.Core/Types/Url.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.UI.Core.Knockout/Libraries/knockout/knockout.d.ts" />
 /// <reference path="../../../../SDL.Client/SDL.Client.UI.Controls/TopBar/TopBar.d.ts" />
@@ -528,7 +528,7 @@ var SDL;
                                 var isTopIconRelative = topIcon && topIcon.charAt(0) != "/" && topIcon.indexOf("~/") == -1;
                                 if (isIconRelative || isTopIconRelative) {
                                     var baseUrlNodes = Client.Xml.selectNodes(navigationItemNode, "ancestor::configuration/@baseUrl");
-                                    var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+                                    var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
                                     if (isIconRelative) {
                                         icon = Url.combinePath(baseUrl, icon);

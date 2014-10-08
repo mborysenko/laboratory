@@ -40,10 +40,18 @@
 				<xs:complexType>
 					<xs:attribute name="name" type="xs:string" use="required" />
 					<xs:attribute name="value" type="xs:string" use="required" />
+					<xs:attribute name="type" type="typeAppSettingType" use="optional" default="string" />
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+
+	<xs:simpleType name="typeAppSettingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="string"/>
+			<xs:enumeration value="url"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:complexType name="typeLocales">
 		<xs:sequence>
@@ -119,6 +127,7 @@
 									<xs:element minOccurs="0" maxOccurs="unbounded" name="file">
 										<xs:complexType>
 											<xs:attribute name="name" type="xs:string" use="required" />
+											<xs:attribute name="type" type="typeFileType" use="optional" default="auto" />
 											<xs:attribute name="modification" type="xs:string" use="optional" />
 										</xs:complexType>
 									</xs:element>
@@ -143,6 +152,26 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+
+	<xs:simpleType name="typeFileType">
+		<xs:annotation>
+			<xs:documentation>
+				Defines the type of a resource file:
+				'auto' (default) means the type is determined based on the file name;
+				'js' the file shold be treated as a javascript resource;
+				'css' the file is css;
+				'htm' the file is an html template;
+				'resjson' the file contains string resources;
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="auto"/>
+			<xs:enumeration value="js"/>
+			<xs:enumeration value="css"/>
+			<xs:enumeration value="htm"/>
+			<xs:enumeration value="resjson"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:complexType name="typeInclude">
 		<xs:sequence>

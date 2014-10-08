@@ -17,11 +17,13 @@
 				<resourceGroup name="SDL.UI.Controls.Knockout.ScrollView"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.LineGraph"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.TextInput"/>
-                <resourceGroup name="SDL.UI.Controls.Knockout.DatePicker"/>
+        <resourceGroup name="SDL.UI.Controls.Knockout.DatePicker"/>
+        <resourceGroup name="SDL.UI.Controls.Knockout.LibraryPanel"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Checkbox"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.RadioButton"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.DropdownList"/>
 				<resourceGroup name="SDL.UI.Controls.Knockout.Application.ViewModels.TopBar"/>
+                <resourceGroup name="SDL.UI.Controls.Knockout.TreeView"/>
 			</resourceGroups>
 		</package>
 	</packages>

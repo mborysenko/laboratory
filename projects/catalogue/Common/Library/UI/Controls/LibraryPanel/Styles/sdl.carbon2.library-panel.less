@@ -1,0 +1,341 @@
+﻿@import "../../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+
+.sdl-library-selector {
+    @rowHeight: 47px;
+
+    overflow: hidden;
+    border-radius: 3px;
+    text-shadow: 0 1px #fff;
+    outline: none;
+    position: relative;
+    height: 100%;
+    .user-select(none);
+
+    > header {
+        height: @rowHeight - 1;
+        background-color: #fafafa;
+        border-bottom: 1px solid #aaa;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: @rowHeight - 1;
+
+        > span {
+            vertical-align: middle;
+            margin: 0 40px 0 10px;
+        }
+
+        > button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+
+            > span.small.close.mono-dark {
+                background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+            }
+
+            > span.small.close.mono-bright {
+                background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+            }
+        }
+    }
+
+    > .main-container {
+        height: calc(~'100%' - @rowHeight);
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            cursor: default;
+
+            > li {
+                white-space: nowrap;
+                .text-overflow(ellipsis);
+                overflow: hidden;
+                border-bottom: 1px solid #ddd;
+                color: #262c39;
+
+                > div {
+                    display: inline-block;
+                    height: 100%;
+                    width: calc(~"100% - 61px");
+                    padding-left: 35px;
+
+                    > i.radio-button {
+                        position: absolute;
+                        top: 17px;
+                        left: 10px;
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        border: 1px solid #aaa;
+                        vertical-align: middle;
+                        margin-right: 6px;
+                        background-color: #fff;
+                    }
+                }
+
+                span {
+                    vertical-align: middle;
+                    line-height: 16px;
+                    margin-left: 5px;
+                }
+
+                > i.arrow-right {
+                    position: absolute;
+                    height: @rowHeight;
+                    width: 26px;
+                    margin-top: 0;
+                    right: 0;
+                    background-position-y: 15px;
+                    background: url("{PATH}../Images/panel-arrow.right.16.mono-dark.svg") no-repeat center center;
+                    background-size: 16px 16px;
+
+                    &:hover {
+                        background-color: #e9f0fa;
+                    }
+                }
+
+                &.selected {
+                    background-color: #ddd;
+                    border-color: #cfcfcf;
+
+                    > div > i.radio-button {
+                        &:before {
+                            content: '';
+                            display: block;
+                            width: 8px;
+                            height: 8px;
+                            border-radius: 50%;
+                            margin: 2px 0 0 2px;
+                            background-color: #296acc;
+                        }
+                    }
+                }
+            }
+        }
+
+        > .select-row {
+            position: relative;
+            height: @rowHeight - 1;
+            line-height: @rowHeight - 1;
+            border-bottom: 1px solid #aaa;
+
+            > span.sub-heading {
+                margin-left: 10px;
+                vertical-align: middle;
+                color: #878787;
+            }
+
+            button.sdl-button-purpose-confirm {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+        }
+
+        > .button-ribbon {
+            position: relative;
+            height: @rowHeight + 8; //account for bottom border element height
+            line-height: @rowHeight - 1;
+            white-space: nowrap;
+            .text-overflow(ellipsis);
+            overflow: hidden;
+            background-color: #fff;
+
+            .bottom-border {
+                position: relative;
+                height: 5px;
+                width: 100%;
+                bottom: 0;
+                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAArrAAAK6wGCiw1aAAAAB3RJTUUH3gcOEBINrHzTwgAAABBJREFUCNdjuHPnzn8GZAAAN0QDlESRSMQAAAAASUVORK5CYII=) repeat bottom left #fafafa;
+                border-bottom: 1px solid #ccc;
+                border-top: 1px solid #ccc;
+            }
+
+            > button {
+                vertical-align: middle;
+                margin-left: 10px;
+
+                &.heirarchy-button {
+                    margin-right: 10px;
+
+                    > span {
+                        background: url({PATH}../Images/hierarchy-open.16.mono-dark.svg) no-repeat center center;
+                        background-size: 16px 16px;
+                        left: 1px;
+                    }
+                }
+
+                &.back-button {
+                    > .small.back {
+                        background: url({PATH}../Images/campaign-calendar-icons.svg) no-repeat;
+                        background-position: -2px -1px;
+                        background-size: 162px 36px;
+                        vertical-align: middle;
+                        top: 0;
+                    }
+
+                    > .small.back.mono-bright {
+                        background-position: -2px -19px;
+                    }
+
+                    > span {
+                        vertical-align: middle;
+                        line-height: 16px;
+                    }
+                }
+            }
+
+            > span {
+                vertical-align: middle;
+                margin-left: 5px;
+                font-size: 14px;
+            }
+        }
+
+        div.main-list {
+            position: relative;
+            left: 0;
+            height: calc(~'100%' - (2 * @rowHeight + 8) );
+            overflow: auto;
+            outline: none;
+
+            &:focus {
+                ul > li {
+
+                    &.selected, &.focused.selected {
+                        background-color: #bed2f0;
+                        border-color: #94b5e5;
+                    }
+
+                    &.focused {
+                        background-color: #e9f0fa;
+                        border-color: #bed2f0;
+                    }
+                }
+            }
+
+            ul {
+
+                > li {
+                    position: relative;
+                    line-height: @rowHeight;
+                    font-weight: bold;
+
+                    &.is-drillable {
+                        &:not(.selected):hover {
+                            background-color: transparent;
+                        }
+
+                        &:not(.selected) > div:hover {
+                            background-color: #e9f0fa;
+                            border-color: #bed2f0;
+                        }
+                    }
+
+                    &:not(.is-drillable):not(.selected):hover {
+                        background-color: #e9f0fa;
+                        border-color: #bed2f0;
+                    }
+                }
+            }
+
+            &.transit {
+                .transition(left, 0.4s, ease-out, 0);
+            }
+
+            &.transit-back {
+                .transition(left, 0.4s, ease-out, 0);
+            }
+        }
+
+        > div.previous-list {
+            position: absolute;
+            top: 149px;
+            width: 100%;
+            height: calc(~'100%' - (2 * @rowHeight + 8) );
+            overflow: auto;
+
+            > ul {
+
+                > li {
+                    line-height: @rowHeight;
+                    font-weight: bold;
+                }
+            }
+
+            &.transit-back {
+                .transition(left, 0.4s, ease-out, 0);
+            }
+
+            &.transit {
+                .transition(left, 0.4s, ease-out, 0);
+            }
+        }
+
+        div.heirarchy-list {
+            position: absolute;
+            top: 137px;
+            left: 90px;
+
+            > ul {
+                width: 125px;
+                background-color: #fff;
+                border: 1px solid #aaa;
+                border-radius: 2px;
+
+                > li {
+                    padding: 0 10px;
+                    border-bottom: none;
+                    height: 37px;
+
+                    &:hover, &.focused {
+                        background-color: #e9f0fa;
+                        border-color: #bed2f0;
+                    }
+
+                    > span {
+                        vertical-align: middle;
+                        line-height: 37px;
+                    }
+
+                    > i {
+                        display: inline-block;
+                        width: 16px;
+                        height: 16px;
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+            .arrow-up {
+                position: absolute;
+                z-index: 9999;
+                left: 8px;
+                top: -5px;
+
+                &:before {
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    border-bottom: 7px solid #aaa;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    position: absolute;
+                    top: -1px;
+                }
+
+                &:after {
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    border-bottom: 7px solid #fff;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    position: absolute;
+                }
+            }
+        }
+    }
+}

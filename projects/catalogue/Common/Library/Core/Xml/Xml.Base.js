@@ -124,14 +124,18 @@ var SDL;
                 }
 
                 if (node) {
-                    if (node.nodeType == 9) {
-                        node = node.documentElement;
-                    }
-
-                    if (node.textContent != undefined) {
-                        return node.textContent;
+                    if (node.nodeType == 2) {
+                        return node.value;
                     } else {
-                        return node.text;
+                        if (node.nodeType == 9) {
+                            node = node.documentElement;
+                        }
+
+                        if (node.textContent != undefined) {
+                            return node.textContent;
+                        } else {
+                            return node.text;
+                        }
                     }
                 }
             }

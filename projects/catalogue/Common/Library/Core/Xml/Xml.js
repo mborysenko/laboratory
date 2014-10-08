@@ -149,8 +149,8 @@ var SDL;
                             }
                             doc.setProperty("SelectionNamespaces", nsList.join(" "));
                         }
-                        var result = parent.selectSingleNode(xPath);
-                        return result ? result.nodeValue : null;
+                        var node = parent.selectSingleNode(xPath);
+                        return node ? (node.nodeType == 2 ? node.value : node.nodeValue) : null;
                     }
                 }
             }
@@ -182,14 +182,18 @@ var SDL;
                     return null;
                 }
 
-                if (node.nodeType == 9) {
-                    node = node.documentElement;
-                }
-
-                if (node.textContent != undefined) {
-                    node.textContent = value;
+                if (node.nodeType == 2) {
+                    node.value = value;
                 } else {
-                    node.text = value;
+                    if (node.nodeType == 9) {
+                        node = node.documentElement;
+                    }
+
+                    if (node.textContent != undefined) {
+                        node.textContent = value;
+                    } else {
+                        node.text = value;
+                    }
                 }
             }
             Xml.setInnerText = setInnerText;

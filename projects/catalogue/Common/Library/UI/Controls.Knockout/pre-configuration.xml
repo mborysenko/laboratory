@@ -28,10 +28,12 @@
 	<include src="ScrollView/_Config.xml"/>
 	<include src="LineGraph/_Config.xml"/>
 	<include src="DatePicker/_Config.xml"/>
+    <include src="LibraryPanel/_Config.xml"/>
 	<include src="TextInput/_Config.xml"/>
 	<include src="Checkbox/_Config.xml"/>
 	<include src="RadioButton/_Config.xml"/>
 	<include src="DropdownList/_Config.xml"/>
+    <include src="TreeView/_Config.xml"/>
 	
 	<!-- Packages -->
 	<include src="packages.xml"/>

@@ -1,0 +1,80 @@
+.line-graph svg .data-point {
+  stroke: #0066df;
+  stroke-width: 2px;
+  fill: #ffffff;
+}
+.line-graph svg .data-point:hover {
+  stroke-width: 3px;
+}
+.line-graph svg path {
+  fill: none;
+  stroke: #0066df;
+  stroke-width: 2px;
+}
+.line-graph svg .x-axis path,
+.line-graph svg .x-axis line {
+  fill: none;
+  stroke: #878787;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.line-graph svg .x-axis.with-negatives path {
+  stroke: none;
+}
+.line-graph svg .x-axis-zeroline path,
+.line-graph svg .x-axis-zeroline line {
+  fill: none;
+  stroke: #878787;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.line-graph svg .y-axis path,
+.line-graph svg .y-axis line {
+  fill: none;
+  stroke: #dddddd;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.line-graph svg .axis text {
+  font-size: 9px;
+  word-spacing: -1px;
+  fill: #878787;
+  shape-rendering: crispEdges;
+}
+.line-graph svg .y-axis-gridlines path,
+.line-graph svg .y-axis-gridlines line {
+  stroke: #dddddd;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.line-graph svg .goal-line {
+  stroke: #0066df;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+  opacity: 0.5;
+}
+.line-graph svg .goal-line.lower {
+  opacity: 0.25;
+}
+.line-graph svg .goal-shading {
+  fill: #dddddd;
+  stroke-width: 0;
+  shape-rendering: crispEdges;
+  opacity: 0.5;
+}
+.line-graph svg .goal-shading.lower {
+  opacity: 0.5;
+}
+.line-graph svg .intersection {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 3px;
+  opacity: 0.5;
+}
+.line-graph svg .intersection:hover {
+  stroke: #0066df;
+  fill: #ffffff;
+}
+.line-graph svg rect.weekend {
+  fill: #fafafa;
+}

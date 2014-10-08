@@ -90,11 +90,11 @@ module SDL.Client
 							var preloadPackages = <Element[]>Xml.selectNodes(pageConfElements[i], "preloadPackages/package[@url]");
 							if (preloadPackages.length)
 							{
-								var baseUrlNodes =  Xml.selectNodes(pageConfElements[i], "ancestor::configuration/@baseUrl");
-								var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].nodeValue : "";
+								var baseUrlNodes =  <Attr[]>Xml.selectNodes(pageConfElements[i], "ancestor::configuration/@baseUrl");
+								var baseUrl = baseUrlNodes.length ? baseUrlNodes[baseUrlNodes.length - 1].value : "";
 
-								var appVersionNodes =  Xml.selectNodes(pageConfElements[i], "ancestor::configuration/appSettings/setting[@name='version']/@value");
-								var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].nodeValue : "";
+								var appVersionNodes = <Attr[]>Xml.selectNodes(pageConfElements[i], "ancestor::configuration/appSettings/setting[@name='version']/@value");
+								var appVersion = appVersionNodes.length ? appVersionNodes[appVersionNodes.length - 1].value : "";
 
 								for (var j = 0, lenj = preloadPackages.length; j < lenj; j++)
 								{

@@ -44,13 +44,57 @@ module SDL.Client.Application
 		removeApplicationSessionData(key: string): void;
 		triggerAnalyticsEvent(event: string, object: any): void;
 		showTopBar(): void;
-		setTopBarOptions(options: any): void;
+		setTopBarOptions(options: ITopBarOptions): void;
 
 		addEventListener(event: string, handler: Function): void;
 		removeEventListener(event: string, handler: Function): void;
 		fireEvent(event: string, eventData?: any): void;
 
 		isSupported(method: string): boolean;
+	}
+
+	export interface ITopBarOptions
+	{
+		ribbonTabs?: ITopBarRibbonTab[];
+		selectedRibbonTabId?: string;
+		buttons?: ITopBarButtons;
+	}
+
+	export interface ITopBarRibbonTab
+	{
+		id: string;
+		label: string;
+		hidden?: boolean;
+	}
+
+	export interface ITopBarButtons
+	{
+		search?: ITopBarButtonOptions;
+		help?: ITopBarButtonOptions;
+		messages?: ITopBarButtonWithValueOptions;
+		workflows?: ITopBarButtonWithValueOptions;
+		notiffications?: ITopBarButtonWithValueOptions;
+		user?: ITopBarButtonUserOptions;
+		close?: boolean;
+	}
+
+	export interface ITopBarButtonOptions
+	{
+		hidden?: boolean;
+		selected?: boolean;
+	}
+
+	export interface ITopBarButtonWithValueOptions extends ITopBarButtonOptions
+	{
+		value?: number;
+	}
+
+	export interface ITopBarButtonUserOptions extends ITopBarButtonOptions
+	{
+		isLoggedIn?: boolean;
+		isPicture?: boolean;
+		pictureUrl?: string;
+		userName?: string;
 	}
 
 	export interface IApplicationData

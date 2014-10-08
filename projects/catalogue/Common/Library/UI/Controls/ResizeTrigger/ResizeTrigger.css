@@ -1,0 +1,32 @@
+.sdl-resizetrigger {
+  position: relative;
+}
+.sdl-resizetrigger-triggers {
+  visibility: hidden;
+}
+.sdl-resizetrigger-triggers,
+.sdl-resizetrigger-triggers > div,
+.sdl-resizetrigger-triggers > :last-child:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.sdl-resizetrigger-triggers {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+.sdl-resizetrigger-triggers > div {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+.sdl-resizetrigger-triggers :last-child:before {
+  content: "";
+  overflow: hidden;
+  width: 200%;
+  height: 200%;
+}

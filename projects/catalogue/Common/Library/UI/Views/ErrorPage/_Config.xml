@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Views.ErrorPage">
+			<files>
+				<file name="Views/ErrorPage.css"/>
+				<file name="Views/ErrorPage.js"/>
+				<file name="Views/ErrorPage.html"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Views.ViewBase" />
+				<dependency name="SDL.UI.Core.Knockout.ViewModels.Base" />
+				<dependency name="SDL.UI.Core.Styles.Common" />
+				<dependency name="SDL.UI.Views.Resources" />
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

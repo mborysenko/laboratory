@@ -1,0 +1,292 @@
+.sdl-library-selector {
+  overflow: hidden;
+  border-radius: 3px;
+  text-shadow: 0 1px #fff;
+  outline: none;
+  position: relative;
+  height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.sdl-library-selector > header {
+  height: 46px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #aaa;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 46px;
+}
+.sdl-library-selector > header > span {
+  vertical-align: middle;
+  margin: 0 40px 0 10px;
+}
+.sdl-library-selector > header > button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.sdl-library-selector > header > button > span.small.close.mono-dark {
+  background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+}
+.sdl-library-selector > header > button > span.small.close.mono-bright {
+  background: url("{PATH}../Images/close.16.mono-dark.svg") no-repeat center center;
+}
+.sdl-library-selector > .main-container {
+  height: calc(100% - 47px);
+}
+.sdl-library-selector > .main-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  cursor: default;
+}
+.sdl-library-selector > .main-container ul > li {
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+  color: #262c39;
+}
+.sdl-library-selector > .main-container ul > li > div {
+  display: inline-block;
+  height: 100%;
+  width: calc(100% - 61px);
+  padding-left: 35px;
+}
+.sdl-library-selector > .main-container ul > li > div > i.radio-button {
+  position: absolute;
+  top: 17px;
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #aaa;
+  vertical-align: middle;
+  margin-right: 6px;
+  background-color: #fff;
+}
+.sdl-library-selector > .main-container ul > li span {
+  vertical-align: middle;
+  line-height: 16px;
+  margin-left: 5px;
+}
+.sdl-library-selector > .main-container ul > li > i.arrow-right {
+  position: absolute;
+  height: 47px;
+  width: 26px;
+  margin-top: 0;
+  right: 0;
+  background-position-y: 15px;
+  background: url("{PATH}../Images/panel-arrow.right.16.mono-dark.svg") no-repeat center center;
+  background-size: 16px 16px;
+}
+.sdl-library-selector > .main-container ul > li > i.arrow-right:hover {
+  background-color: #e9f0fa;
+}
+.sdl-library-selector > .main-container ul > li.selected {
+  background-color: #ddd;
+  border-color: #cfcfcf;
+}
+.sdl-library-selector > .main-container ul > li.selected > div > i.radio-button:before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 2px 0 0 2px;
+  background-color: #296acc;
+}
+.sdl-library-selector > .main-container > .select-row {
+  position: relative;
+  height: 46px;
+  line-height: 46px;
+  border-bottom: 1px solid #aaa;
+}
+.sdl-library-selector > .main-container > .select-row > span.sub-heading {
+  margin-left: 10px;
+  vertical-align: middle;
+  color: #878787;
+}
+.sdl-library-selector > .main-container > .select-row button.sdl-button-purpose-confirm {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon {
+  position: relative;
+  height: 55px;
+  line-height: 46px;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background-color: #fff;
+}
+.sdl-library-selector > .main-container > .button-ribbon .bottom-border {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  bottom: 0;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAArrAAAK6wGCiw1aAAAAB3RJTUUH3gcOEBINrHzTwgAAABBJREFUCNdjuHPnzn8GZAAAN0QDlESRSMQAAAAASUVORK5CYII=) repeat bottom left #fafafa;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.heirarchy-button {
+  margin-right: 10px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.heirarchy-button > span {
+  background: url({PATH}../Images/hierarchy-open.16.mono-dark.svg) no-repeat center center;
+  background-size: 16px 16px;
+  left: 1px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > .small.back {
+  background: url({PATH}../Images/campaign-calendar-icons.svg) no-repeat;
+  background-position: -2px -1px;
+  background-size: 162px 36px;
+  vertical-align: middle;
+  top: 0;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > .small.back.mono-bright {
+  background-position: -2px -19px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > button.back-button > span {
+  vertical-align: middle;
+  line-height: 16px;
+}
+.sdl-library-selector > .main-container > .button-ribbon > span {
+  vertical-align: middle;
+  margin-left: 5px;
+  font-size: 14px;
+}
+.sdl-library-selector > .main-container div.main-list {
+  position: relative;
+  left: 0;
+  height: calc(100% - 102px);
+  overflow: auto;
+  outline: none;
+}
+.sdl-library-selector > .main-container div.main-list:focus ul > li.selected,
+.sdl-library-selector > .main-container div.main-list:focus ul > li.focused.selected {
+  background-color: #bed2f0;
+  border-color: #94b5e5;
+}
+.sdl-library-selector > .main-container div.main-list:focus ul > li.focused {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list ul > li {
+  position: relative;
+  line-height: 47px;
+  font-weight: bold;
+}
+.sdl-library-selector > .main-container div.main-list ul > li.is-drillable:not(.selected):hover {
+  background-color: transparent;
+}
+.sdl-library-selector > .main-container div.main-list ul > li.is-drillable:not(.selected) > div:hover {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list ul > li:not(.is-drillable):not(.selected):hover {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.main-list.transit {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container div.main-list.transit-back {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container > div.previous-list {
+  position: absolute;
+  top: 149px;
+  width: 100%;
+  height: calc(100% - 102px);
+  overflow: auto;
+}
+.sdl-library-selector > .main-container > div.previous-list > ul > li {
+  line-height: 47px;
+  font-weight: bold;
+}
+.sdl-library-selector > .main-container > div.previous-list.transit-back {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container > div.previous-list.transit {
+  -webkit-transition: left 0.4s ease-out 0;
+  -moz-transition: left 0.4s ease-out 0;
+  -o-transition: left 0.4s ease-out 0;
+  transition: left 0.4s ease-out 0;
+}
+.sdl-library-selector > .main-container div.heirarchy-list {
+  position: absolute;
+  top: 137px;
+  left: 90px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul {
+  width: 125px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li {
+  padding: 0 10px;
+  border-bottom: none;
+  height: 37px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li:hover,
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li.focused {
+  background-color: #e9f0fa;
+  border-color: #bed2f0;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li > span {
+  vertical-align: middle;
+  line-height: 37px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list > ul > li > i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up {
+  position: absolute;
+  z-index: 9999;
+  left: 8px;
+  top: -5px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-bottom: 7px solid #aaa;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+  top: -1px;
+}
+.sdl-library-selector > .main-container div.heirarchy-list .arrow-up:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-bottom: 7px solid #fff;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+}

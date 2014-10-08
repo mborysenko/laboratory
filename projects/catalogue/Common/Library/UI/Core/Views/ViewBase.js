@@ -33,13 +33,17 @@ SDL.UI.Core.Views.ViewBase.prototype.render = function SDL$UI$Core$View$ViewBase
 
 SDL.UI.Core.Views.ViewBase.prototype.getTemplateData = function SDL$UI$Core$View$ViewBase$getTemplateData()
 {
-	var templateName = this.getTemplateName();
-	var templateResource = SDL.Client.Resources.ResourceManager.getTemplateResource(templateName);
+	var templateResource = this.getTemplateResource();
 	if (!templateResource || !templateResource.loaded)
 	{
-		throw Error("Template resource '" + templateName + "' is not loaded.");
+		throw Error("Template resource '" + this.getTemplateName() + "' is not loaded.");
 	}
 	return templateResource.template;
+};
+
+SDL.UI.Core.Views.ViewBase.prototype.getTemplateResource = function SDL$UI$Core$View$ViewBase$getTemplateResource()
+{
+	return SDL.Client.Resources.ResourceManager.getTemplateResource(this.getTemplateName());
 };
 
 SDL.UI.Core.Views.ViewBase.prototype.getTemplateRenderer = function SDL$UI$Core$View$ViewBase$getTemplateRenderer()

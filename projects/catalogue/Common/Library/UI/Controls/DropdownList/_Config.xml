@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.DropdownList">
+			<files>
+				<file name="DropdownList.js"/>
+				<file name="DropdownList.css"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.ControlBase"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Controls.JQuery.DropdownList">
+			<files>
+				<file name="DropdownList.jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Controls.DropdownList"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

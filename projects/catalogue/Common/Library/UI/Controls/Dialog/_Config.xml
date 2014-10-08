@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SDL.Client.Core/configuration.xsd">
+
+	<resourceGroups>
+		<resourceGroup name="SDL.UI.Controls.Dialog">
+			<files>
+				<file name="Screen.css"/>
+				<file name="Dialog.js"/>
+				<file name="Dialog.css"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.UI.Core.Controls.FocusableControlBase"/>
+				<dependency name="SDL.UI.Controls.JQuery.ActionBar"/>
+				<dependency name="SDL.UI.Core.Css.ZIndexManager"/>
+			</dependencies>
+		</resourceGroup>
+
+		<resourceGroup name="SDL.UI.Controls.JQuery.Dialog">
+			<files>
+				<file name="Dialog.jQuery.js"/>
+			</files>
+			<dependencies>
+				<dependency name="SDL.Client.Libraries.SDL.JQuery"/>
+				<dependency name="SDL.UI.Core.Controls.JQuery"/>
+				<dependency name="SDL.UI.Controls.Dialog"/>
+			</dependencies>
+		</resourceGroup>
+	</resourceGroups>
+
+</configuration>

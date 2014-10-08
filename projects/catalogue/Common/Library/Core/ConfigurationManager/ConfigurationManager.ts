@@ -40,6 +40,7 @@ module SDL.Client.Configuration
 		private coreConfigurationToLoad: Element[] = [];
 		private currentPageConfigurationNode: Element;
 		private currentPageExtensionConfigurationNodes: Element[];
+		private cachedAppSettings: {[name: string]: string} = {};
 
 		initialize(callback?: () => void, nonCoreInitCallback?: () => void): void
 		{
@@ -117,8 +118,33 @@ module SDL.Client.Configuration
 
 		public getAppSetting(name: string): string
 		{
-			return Application.isHosted && Application.sharedSettings && Application.sharedSettings[name] ||
-				Xml.getInnerText(this.configuration, "//configuration/appSettings/setting[@name='" + name +  "']/@value");
+			var value = this.cachedAppSettings[name];
+			if (value === undefined)
+			{
+				if (Application.isHosted && Application.sharedSettings)
+				{
+					value = Application.sharedSettings[name];
+				}
+
+				if (value === undefined)
+				{
+					var settingNode: Element = <Element>Xml.selectSingleNode(this.configuration, "//configuration/appSettings/setting[@name='" + name +  "' and @value]");
+					if (settingNode)
+					{
+						value = settingNode.getAttribute("value");
+						if (value && value.indexOf("~") == 0 && settingNode.getAttribute("type") == "url")
+						{
+							value = Types.Url.getAbsoluteUrl(Types.Url.combinePath(this.corePath, value.slice(2)));
+						}
+					}
+					else
+					{
+						value = null;
+					}
+				}
+				this.cachedAppSettings[name] = value;
+			}
+			return value;
 		}
 
 		public getCurrentPageConfigurationNode(): Element
@@ -144,10 +170,10 @@ module SDL.Client.Configuration
 
 							if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
 							{
-								var baseUrlNodes =  Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
+								var baseUrlNodes: Attr[] = <Attr[]>Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
 								if (baseUrlNodes.length)
 								{
-									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].value, url);
 								}
 							}
 						}
@@ -194,10 +220,10 @@ module SDL.Client.Configuration
 
 							if (!SDL.Client.Types.Url.isAbsoluteUrl(url))
 							{
-								var baseUrlNodes =  Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
+								var baseUrlNodes:Attr[] =  <Attr[]>Xml.selectNodes(pageNode, "ancestor::configuration/@baseUrl");
 								if (baseUrlNodes.length)
 								{
-									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].nodeValue, url);
+									url = SDL.Client.Types.Url.combinePath(baseUrlNodes[baseUrlNodes.length - 1].value, url);
 								}
 							}
 						}
@@ -281,6 +307,16 @@ module SDL.Client.Configuration
 						corePath += "/";
 					}
 					this.corePath = Types.Url.combinePath(baseUrl, corePath);
+				}
+			}
+
+			var urlSettings = Xml.selectNodes(data, "//configuration/appSettings/setting[@type='url']/@value");
+			for (var i = 0, len = urlSettings.length; i < len; i++)
+			{
+				var urlSetting: Attr = <Attr>urlSettings[i];
+				if (urlSetting.value.indexOf("~") != 0 && !Types.Url.isAbsoluteUrl(urlSetting.value))
+				{
+					urlSetting.value = Types.Url.getAbsoluteUrl(Types.Url.combinePath(baseUrl, urlSetting.value));
 				}
 			}
 

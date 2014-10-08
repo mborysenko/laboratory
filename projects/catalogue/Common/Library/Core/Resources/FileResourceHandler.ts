@@ -67,11 +67,14 @@ module SDL.Client.Resources
 
 		_supports(url: string): boolean { return false; }
 		_render(file: IFileResource): void {}
-		public supports(url: string): boolean
+		public supports(url: string, fileType?: string): boolean
 			{
-				var m = url.match(/\.([^\.\/\?\#]+)(\?|\#|$)/);
-				var ext = m ? m[1].toLowerCase() : "";
-				return this._supports(ext);
+				if (!fileType || fileType == "auto")
+				{
+					var m = url.match(/\.([^\.\/\?\#]+)(\?|\#|$)/);
+					fileType = m ? m[1].toLowerCase() : "";
+				}
+				return this._supports(fileType);
 			}
 
 		public render(url: string): void
@@ -294,7 +297,7 @@ module SDL.Client.Resources
 						}
 						else
 						{
-							ResourceLoader.load({ url: fileResource.url, version: fileResource.version }, FileResourceHandler.corePath, sync,
+							ResourceLoader.load({ url: fileResource.url, version: fileResource.version, fileType: fileResource.fileType }, FileResourceHandler.corePath, sync,
 								(data: string, isShared: boolean) =>
 									{
 										fileResource.data = data;
@@ -440,7 +443,7 @@ module SDL.Client.Resources
 							for (var i = 0; i < FileResourceHandler.registeredResourceHandlers.length; i++)
 							{
 								var handler = FileResourceHandler.registeredResourceHandlers[i];
-								if (handler.supports(file.url))
+								if (handler.supports(file.url, file.fileType))
 								{
 									if (errorcallback)
 									{

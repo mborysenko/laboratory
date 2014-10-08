@@ -1,0 +1,160 @@
+﻿@import "../../SDL.Client.UI.Core/Less/vendor-prefixes.less";
+
+@borderColor: #454B53;
+@borderWidth: 1px;
+@borderRadius: 3px;
+@borderShadowColor: rgba(38, 44, 57, 0.15);
+@pointerLength: 9px;
+@pointerWidth: 13px;
+@backgroundColor: white;
+@backgroundColorMenu: #FAFAFA;
+
+.sdl-callout
+{
+	position: fixed;
+	border: @borderWidth solid @borderColor;
+	.border-radius(@borderRadius);
+	.box-shadow(0, 1px, 5px, 0, @borderShadowColor);
+	min-width: 50px;
+	min-height: 50px;
+	background-color: @backgroundColor;
+	z-index: 100;
+	outline: none;
+}
+
+.sdl-callout-hidden
+{
+	visibility: hidden;
+}
+
+.sdl-callout-pointer-above,
+.sdl-callout-pointer-below,
+.sdl-callout-pointer-right,
+.sdl-callout-pointer-left,
+.sdl-callout-pointer-above:after,
+.sdl-callout-pointer-below:after,
+.sdl-callout-pointer-right:after,
+.sdl-callout-pointer-left:after
+{
+	.box-sizing(content-box);
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	border-width: round(@pointerWidth / 2);
+	border-style: solid;
+	border-color: transparent;
+	pointer-events: none;
+}
+
+.sdl-callout-pointer-above,
+.sdl-callout-pointer-below,
+.sdl-callout-pointer-right,
+.sdl-callout-pointer-left
+{
+	position: fixed;
+}
+
+.sdl-callout-pointer-above:after,
+.sdl-callout-pointer-below:after,
+.sdl-callout-pointer-right:after,
+.sdl-callout-pointer-left:after
+{
+	content: "";
+	position: absolute;
+}
+
+.sdl-callout-pointer-above
+{
+	border-bottom: 0 none;
+	border-top-width: @pointerLength;
+	border-top-color: @borderColor;
+}
+
+.sdl-callout-pointer-above:after
+{
+	border-bottom: 0 none;
+	border-top-width: @pointerLength;
+	border-top-color: @backgroundColor;
+	bottom: 1.4px;
+	left: round(-@pointerWidth / 2);
+}
+
+.sdl-callout-pointer-below
+{
+	border-top: 0 none;
+	border-bottom-width: @pointerLength;
+	border-bottom-color: @borderColor;
+}
+
+.sdl-callout-pointer-below:after
+{
+	border-top: 0 none;
+	border-bottom-width: @pointerLength;
+	border-bottom-color: @backgroundColor;
+	top: 1.4px;
+	left: round(-@pointerWidth / 2);
+}
+
+.sdl-callout-pointer-left
+{
+	border-right: 0 none;
+	border-left-width: @pointerLength;
+	border-left-color: @borderColor;
+}
+
+.sdl-callout-pointer-left:after
+{
+	border-right: 0 none;
+	border-left-width: @pointerLength;
+	border-left-color: @backgroundColor;
+	right: 1.4px;
+	top: round(-@pointerWidth / 2);
+}
+
+.sdl-callout-pointer-right
+{
+	border-left: 0 none;
+	border-right-width: @pointerLength;
+	border-right-color: @borderColor;
+}
+
+.sdl-callout-pointer-right:after
+{
+	border-left: 0 none;
+	border-right-width: @pointerLength;
+	border-right-color: @backgroundColor;
+	left: 1.4px;
+	top: round(-@pointerWidth / 2);
+}
+
+// Purpose: MENU styles (grayish)
+.sdl-callout-menu
+{
+	background-color: @backgroundColorMenu;
+}
+
+.sdl-callout-menu .sdl-callout-pointer-above:after
+{
+	border-top-color: @backgroundColorMenu;
+}
+
+.sdl-callout-menu .sdl-callout-pointer-below:after
+{
+	border-bottom-color: @backgroundColorMenu;
+}
+
+.sdl-callout-menu .sdl-callout-pointer-left:after
+{
+	border-left-color: @backgroundColorMenu;
+}
+
+.sdl-callout-menu .sdl-callout-pointer-right:after
+{
+	border-right-color: @backgroundColorMenu;
+}
+
+.sdl-callout-actionbar		// actionbar
+{
+	.border-radius(0 0 (@borderRadius - 1) (@borderRadius - 1));
+}
