@@ -1,4 +1,4 @@
-﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+﻿﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../Button/Button.jQuery.ts" />
 var __extends = this.__extends || function (d, b) {

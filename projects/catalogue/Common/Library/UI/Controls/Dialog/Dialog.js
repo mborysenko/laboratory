@@ -1,4 +1,4 @@
-﻿/// <reference path="../../SDL.Client.UI.Core/Controls/FocusableControlBase.d.ts" />
+﻿﻿/// <reference path="../../SDL.Client.UI.Core/Controls/FocusableControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Css/ZIndexManager.d.ts" />
 /// <reference path="../ActionBar/ActionBar.jQuery.ts" />
 var __extends = this.__extends || function (d, b) {

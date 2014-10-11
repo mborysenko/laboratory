@@ -1,4 +1,4 @@
-﻿/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
+﻿﻿/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../ScrollView/ScrollView.jQuery.ts" />
