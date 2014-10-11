@@ -68,7 +68,7 @@ summary {
     margin-right: 1em;
 }
 
-.b-icons_row .b-icon:last-child
+.b-icons.__row .b-icon:last-child
 {
     margin-right: 0;
 }
@@ -84,24 +84,25 @@ summary {
 }
 
 .__favourites.__48x48 {
-    background: url("Images/icons/48x48/favourites.png") no-repeat;
+    background: url("{PATH}Images/icons/48x48/favourites.png") no-repeat;
 }
 .__favourites.__32x32 {
-    background: url("Images/icons/32x32/favourites.png") no-repeat;
+    background: url("{PATH}Images/icons/32x32/favourites.png") no-repeat;
 }
 
 .__user.__48x48 {
-    background: url("{SETTING:baseUrl}/Images/icons/48x48/user.png") no-repeat;
+    background: url("{PATH}Images/icons/48x48/user.png") no-repeat;
 }
 .__user.__32x32 {
-    background: url("{SETTING:baseUrl}/Images/icons/32x32/user.png") no-repeat;
+    background: url("{PATH}Images/icons/32x32/user.png") no-repeat;
 }
 
 .__chat.__48x48 {
-    background: url({SETTING:baseUrl}/Images/icons/48x48/chat.png) no-repeat;
+    background: url(Images/icons/48x48/chat.png) no-repeat;
 }
 .__chat.__32x32 {
-    background: url({SETTING:baseUrl}/Images/icons/32x32/chat.png) no-repeat;
+    color: white;
+    background: url({ROOT}Library/Images/chat.png) no-repeat;
 }
 
 .__edit.__48x48 {
@@ -119,10 +120,10 @@ summary {
 }
 
 .__logout.__48x48 {
-    background: url("{SETTING:baseUrl}/Images/icons/48x48/logout.png") no-repeat;
+    background: url({SETTING:baseUrl}/Images/icons/48x48/logout.png) no-repeat;
 }
 .__logout.__32x32 {
-    background: url("{SETTING:baseUrl}/Images/icons/32x32/logout.png") no-repeat;
+    background: url({SETTING:baseUrl}/Images/icons/32x32/logout.png) no-repeat;
 }
 
 .__messages.__48x48 {

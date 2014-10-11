@@ -1,12 +1,11 @@
-﻿<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Common/Library/Core/configuration.xsd">
-
-    <resourceGroups>
-        <resourceGroup name="LVF.Themes.Default">
-            <files>
-                <file name="page.css" />
-                <file name="icons.css" />
-            </files>
-        </resourceGroup>
-    </resourceGroups>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Common/Library/Core/configuration.xsd">
+  <resourceGroups>
+    <resourceGroup name="LVF.Themes.Default">
+      <files>
+        <file name="page.sprited.css" />
+        <file name="icons.sprited.css" />
+      </files>
+    </resourceGroup>
+  </resourceGroups>
 </configuration>
