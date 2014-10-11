@@ -98,11 +98,11 @@ summary {
 }
 
 .__chat.__48x48 {
-    background: url(Images/icons/48x48/chat.png) no-repeat;
+    background: url({PATH}Images/icons/48x48/chat.png) no-repeat;
 }
 .__chat.__32x32 {
     color: white;
-    background: url({ROOT}Library/Images/chat.png) no-repeat;
+    background: url({PATH}Images/icons/32x32/chat.png) no-repeat;
 }
 
 .__edit.__48x48 {

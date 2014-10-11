@@ -10,4 +10,3 @@ SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.Button, "but
     { method: "disable" },
     { method: "enable" }
 ]);
-//# sourceMappingURL=Button.jQuery.js.map

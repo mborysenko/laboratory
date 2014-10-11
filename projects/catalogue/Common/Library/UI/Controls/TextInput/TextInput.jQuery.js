@@ -6,4 +6,3 @@ SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.TextInput, "
     { method: "isInvalid", returnsValue: true },
     { method: "setInvalid" }
 ]);
-//# sourceMappingURL=TextInput.jQuery.js.map

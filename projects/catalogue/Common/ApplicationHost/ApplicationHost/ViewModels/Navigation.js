@@ -12,7 +12,7 @@ var SDL;
                         var Url = SDL.Client.Types.Url;
                         var AppHost = SDL.Client.ApplicationHost;
 
-                        Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
+                        Client.Xml.Namespaces["apphost"] = "http://www.sdl.com/2013/ApplicationHost";
 
                         ;
 

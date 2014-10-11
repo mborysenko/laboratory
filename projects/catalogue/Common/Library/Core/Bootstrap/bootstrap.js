@@ -111,18 +111,18 @@
 		var version = "";
 		if (result)
 		{
-			var m = result.match(/^\s*confVersion\s*=\s*(\d+(\.\d+)*)/m);
+			var m = result.match(/^\s*(confVersion|applicationVersion)\s*=\s*(\d+(\.\d+)*)/m);
 			if (m)
 			{
-				// configuration version
-				sdl_configuration.settingsVersion = m[1];
+				// application configuration version
+				sdl_configuration.settingsVersion = m[2];
 			}
 
-			m = result.match(/^\s*initVersion\s*=\s*(\d+(\.\d+)*)/m);
+			m = result.match(/^\s*(initVersion|libraryVersion)\s*=\s*(\d+(\.\d+)*)/m);
 			if (m)
 			{
-				// initial package version
-				version = m[1];
+				// initial library package version
+				version = m[2];
 			}
 		}
 

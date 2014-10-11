@@ -5,4 +5,3 @@
 SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.Checkbox, "checkbox", [
     { method: "getInputElement", returnsValue: true }
 ]);
-//# sourceMappingURL=Checkbox.jQuery.js.map

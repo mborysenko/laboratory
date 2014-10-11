@@ -3,4 +3,3 @@
 /// <reference path="ScrollView.ts" />
 
 SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.ScrollView, "scrollView");
-//# sourceMappingURL=ScrollView.jQuery.js.map

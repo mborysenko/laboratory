@@ -7,4 +7,3 @@ SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.Tooltip, "to
     { method: "hide", implementation: "hideTooltip" },
     { method: "dospose" }
 ]);
-//# sourceMappingURL=Tooltip.jQuery.js.map

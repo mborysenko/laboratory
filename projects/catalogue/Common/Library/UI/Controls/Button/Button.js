@@ -216,13 +216,13 @@ var SDL;
                 };
 
                 Button.prototype.onKeyDown = function (e) {
-                    if (e.which == SDL.UI.Core.Event.Constants.Keys.SPACE || e.which == SDL.UI.Core.Event.Constants.Keys.ENTER) {
+                    if (e.which == 32 /* SPACE */ || e.which == 13 /* ENTER */) {
                         this.onDown();
                     }
                 };
 
                 Button.prototype.onKeyUp = function (e) {
-                    if (e.which == SDL.UI.Core.Event.Constants.Keys.SPACE || e.which == SDL.UI.Core.Event.Constants.Keys.ENTER) {
+                    if (e.which == 32 /* SPACE */ || e.which == 13 /* ENTER */) {
                         this.onUp();
                     }
                 };
@@ -345,4 +345,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=Button.js.map

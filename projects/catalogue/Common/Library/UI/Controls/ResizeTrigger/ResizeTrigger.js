@@ -1,4 +1,4 @@
-﻿﻿// http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/
+﻿// http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -105,4 +105,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=ResizeTrigger.js.map

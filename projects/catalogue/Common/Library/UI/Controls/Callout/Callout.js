@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../../SDL.Client.UI.Core/Controls/FocusableControlBase.d.ts" />
+﻿/// <reference path="../../SDL.Client.UI.Core/Controls/FocusableControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Utils/Dom.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Css/ZIndexManager.d.ts" />
 /// <reference path="../ActionBar/ActionBar.jQuery.ts" />
@@ -378,7 +378,7 @@ var SDL;
                 };
 
                 Callout.prototype.onKeyDown = function (e) {
-                    if (e.which == SDL.UI.Core.Event.Constants.Keys.ESCAPE) {
+                    if (e.which == 27 /* ESCAPE */) {
                         e.stopPropagation();
                         this.executeCloseAction();
                     }
@@ -450,4 +450,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=Callout.js.map

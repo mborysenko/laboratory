@@ -133,7 +133,7 @@ var SDL;
             function loadLibraryResourceGroup(resourceGroupName, jQuery, knockout, callback) {
                 if (Client.Configuration) {
                     Application.addReadyCallback(function () {
-                        Resources.ResourceManager.load(resourceGroupName, callback);
+                        Client.Resources.ResourceManager.load(resourceGroupName, callback);
                     });
                 } else {
                     if (!Application.isHosted) {

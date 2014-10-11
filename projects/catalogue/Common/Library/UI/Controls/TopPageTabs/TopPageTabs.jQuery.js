@@ -12,4 +12,3 @@ SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.TopPageTabs,
     { method: "setSelection" },
     { method: "setSelectedIndex" }
 ]);
-//# sourceMappingURL=TopPageTabs.jQuery.js.map

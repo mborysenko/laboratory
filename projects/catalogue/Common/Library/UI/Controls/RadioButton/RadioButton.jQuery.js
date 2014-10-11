@@ -5,4 +5,3 @@
 SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.RadioButton, "radioButton", [
     { method: "getInputElement", returnsValue: true }
 ]);
-//# sourceMappingURL=RadioButton.jQuery.js.map

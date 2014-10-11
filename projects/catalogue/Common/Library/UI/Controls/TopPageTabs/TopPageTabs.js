@@ -676,35 +676,35 @@ var SDL;
                     if (!e.ctrlKey && !e.shiftKey && (this.isFlyoutMenuShown || document.activeElement == this.properties.element)) {
                         var handled = false;
                         switch (e.which) {
-                            case SDL.UI.Core.Event.Constants.Keys.LEFT:
+                            case 37 /* LEFT */:
                                 this.selectPrevious();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.RIGHT:
+                            case 39 /* RIGHT */:
                                 this.selectNext();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.HOME:
+                            case 36 /* HOME */:
                                 this.selectFirst();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.END:
+                            case 35 /* END */:
                                 this.selectLast();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.UP:
+                            case 38 /* UP */:
                                 if (this.isFlyoutMenuShown) {
                                     this.selectPrevious();
                                     handled = true;
                                 }
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.DOWN:
+                            case 40 /* DOWN */:
                                 if (this.isFlyoutMenuShown) {
                                     this.selectNext();
                                     handled = true;
                                 }
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.ENTER:
+                            case 13 /* ENTER */:
                                 this.hideFlyoutMenu();
                                 e.stopImmediatePropagation();
                                 e.preventDefault();
@@ -977,4 +977,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=TopPageTabs.js.map

@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -101,4 +101,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=Message.js.map

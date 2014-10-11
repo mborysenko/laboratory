@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../../../SDL.Client.Core/Application/Application.d.ts" />
+﻿/// <reference path="../../../SDL.Client.Core/Application/Application.d.ts" />
 /// <reference path="../../../SDL.Client.Core/Application/ApplicationHost.d.ts" />
 /// <reference path="../../../SDL.Client.UI.Core/Renderers/ControlRenderer.d.ts" />
 /// <reference path="../TopBar.ts" />
@@ -84,4 +84,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=TopBar.js.map

@@ -18,7 +18,7 @@ var SDL;
         (function (Core) {
             (function (Knockout) {
                 (function (ViewModels) {
-                    eval(Client.Types.OO.enableCustomInheritance);
+                    eval(SDL.Client.Types.OO.enableCustomInheritance);
 
                     var culture = ko.observable(SDL.Globalize.culture().name);
                     SDL.Client.Event.EventRegister.addEventHandler(SDL.Globalize, "culturechange", function (e) {

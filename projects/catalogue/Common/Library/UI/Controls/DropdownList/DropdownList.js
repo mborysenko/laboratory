@@ -251,33 +251,33 @@ var SDL;
 
                 DropdownList.prototype._onKeyDown = function (e) {
                     switch (e.which) {
-                        case Core.Event.Constants.Keys.ENTER:
+                        case 13 /* ENTER */:
                             this._toggleOptions();
                             break;
-                        case Core.Event.Constants.Keys.SPACE:
+                        case 32 /* SPACE */:
                             if (!this._isOpen()) {
                                 this._showOptions();
                             }
                             break;
-                        case Core.Event.Constants.Keys.ESCAPE:
+                        case 27 /* ESCAPE */:
                             if (this._isOpen()) {
                                 this._hideOptions();
                             }
                             break;
-                        case Core.Event.Constants.Keys.UP:
+                        case 38 /* UP */:
                             this._selectPrevious();
                             e.preventDefault();
                             break;
-                        case Core.Event.Constants.Keys.LEFT:
+                        case 37 /* LEFT */:
                             if (!this._isOpen()) {
                                 this._selectPrevious();
                             }
                             break;
-                        case Core.Event.Constants.Keys.DOWN:
+                        case 40 /* DOWN */:
                             this._selectNext();
                             e.preventDefault();
                             break;
-                        case Core.Event.Constants.Keys.RIGHT:
+                        case 39 /* RIGHT */:
                             if (!this._isOpen()) {
                                 this._selectNext();
                             }
@@ -312,4 +312,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=DropdownList.js.map

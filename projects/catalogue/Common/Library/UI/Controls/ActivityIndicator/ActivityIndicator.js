@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
+﻿/// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../../SDL.Client.Core/ConfigurationManager/ConfigurationManager.d.ts" />
 var __extends = this.__extends || function (d, b) {
@@ -159,4 +159,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=ActivityIndicator.js.map

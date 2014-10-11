@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
+﻿/// <reference path="../../SDL.Client.Core/Libraries/Globalize/SDL.Globalize.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Controls/ControlBase.d.ts" />
 /// <reference path="../../SDL.Client.UI.Core/Event/Constants.d.ts" />
 /// <reference path="../ScrollView/ScrollView.jQuery.ts" />
@@ -618,25 +618,25 @@ var SDL;
                     if (!e.ctrlKey && !e.shiftKey && p.$tabsOverflowButton.hasClass("sdl-topbar-ribbon-overflown-button-pressed")) {
                         var handled = false;
                         switch (e.which) {
-                            case SDL.UI.Core.Event.Constants.Keys.LEFT:
-                            case SDL.UI.Core.Event.Constants.Keys.UP:
+                            case 37 /* LEFT */:
+                            case 38 /* UP */:
                                 this.selectPreviousRibbonTab();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.RIGHT:
-                            case SDL.UI.Core.Event.Constants.Keys.DOWN:
+                            case 39 /* RIGHT */:
+                            case 40 /* DOWN */:
                                 this.selectNextRibbonTab();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.HOME:
+                            case 36 /* HOME */:
                                 this.selectFirstRibbonTab();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.END:
+                            case 35 /* END */:
                                 this.selectLastRibbonTab();
                                 handled = true;
                                 break;
-                            case SDL.UI.Core.Event.Constants.Keys.ENTER:
+                            case 13 /* ENTER */:
                                 this.hideFlyoutMenu();
                                 e.stopImmediatePropagation();
                                 e.preventDefault();
@@ -903,4 +903,3 @@ var SDL;
     })(SDL.UI || (SDL.UI = {}));
     var UI = SDL.UI;
 })(SDL || (SDL = {}));
-//# sourceMappingURL=TopBar.js.map

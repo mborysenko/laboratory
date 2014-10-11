@@ -6,7 +6,7 @@ var SDL;
     (function (Client) {
         (function (Application) {
             Application.addInitializeCallback(function () {
-                if (Application.isHosted && Configuration.ConfigurationManager.getAppSetting("synchronizeCultureWithApplicationHost") !== "false") {
+                if (Application.isHosted && Client.Configuration.ConfigurationManager.getAppSetting("synchronizeCultureWithApplicationHost") !== "false") {
                     Client.Event.EventRegister.addEventHandler(Application.ApplicationHost, "culturechange", function () {
                         Client.Localization.setCulture(Application.ApplicationHost.culture);
                     });

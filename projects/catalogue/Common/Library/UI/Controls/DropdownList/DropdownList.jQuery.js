@@ -9,4 +9,3 @@ SDL.UI.Core.Controls.createJQueryPlugin(SDL.jQuery, SDL.UI.Controls.DropdownList
     { method: "disable" },
     { method: "enable" }
 ]);
-//# sourceMappingURL=DropdownList.jQuery.js.map

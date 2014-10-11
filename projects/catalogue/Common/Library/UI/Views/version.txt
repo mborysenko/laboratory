@@ -1,2 +1,2 @@
-confVersion = 1.5.0.1883
-initVersion = 1.5.0.1883
+confVersion = 1.5.0.1894
+initVersion = 1.5.0.1894
