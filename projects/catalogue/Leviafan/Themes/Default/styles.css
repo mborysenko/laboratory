@@ -1,11 +1,7 @@
-*
-{
-    font-family: Segoe UI, Verdana, Arial, sans-serif;
-    font-size: 100%;
-}
-
 body
 {
+    font-family: "Segoe UI", Verdana, Arial, sans-serif;
+    font-size: 100%;
     background-color: #efefef;
 }
 

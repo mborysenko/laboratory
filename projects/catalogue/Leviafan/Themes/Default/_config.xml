@@ -7,8 +7,8 @@
         <file name="normalize.css" />
         <file name="styles.css" />
         <file name="layout.css" />
-        <file name="page.css" />
         <file name="lists.css" />
+        <file name="theme.css" />
         <file name="icons.css" />
       </files>
     </resourceGroup>

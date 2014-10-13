@@ -1,14 +1,17 @@
 .b-list {
-    font-size: 0.75em;
     list-style: none;
 }
 
-.b-list.__circle
-{
+.b-list.__circle {
     list-style-type: circle;
 }
 
-.b-list li
-{
-    margin: 0.2em;
+.b-list .b-list_item {
+}
+
+.b-list .b-list_action {
+    display: block;
+    padding: 0.5em 0.5em 0.5em 1.2em;
+    font-size: 0.9em;
+    text-decoration: none;
 }

@@ -10,11 +10,37 @@ module LVF.Views
         constructor(element: HTMLElement, settings?: any)
         {
             super(element, settings);
+
+            this._initialize();
         }
 
         public getRenderOptions()
         {
             return this;
+        }
+
+        public render(callback?: () => void): void
+        {
+            var _this = this;
+            var cb = function()
+            {
+                _this._setPageHeight();
+                callback()
+            };
+            this.callBase("SDL.UI.Core.Views.ViewBase", "render", [cb])
+        }
+
+        private _initialize()
+        {
+            var _this = this;
+            SDL.jQuery(window).on("resize", function(){
+                _this._setPageHeight();
+            })
+        }
+
+        private _setPageHeight()
+        {
+            //alert("set page height");
         }
     }
 
