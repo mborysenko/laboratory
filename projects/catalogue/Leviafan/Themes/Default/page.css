@@ -1,8 +1,5 @@
-body
+.b-page
 {
-    background: #080808;
-}
-.lvf-dashboard
-{
-
+    min-height: 100%;
+    height: 100%;
 }

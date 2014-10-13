@@ -1,0 +1,40 @@
+.b-cols
+{}
+
+.b-col-wrapper
+{
+    float: left;
+    width: 100%;
+}
+
+.b-cols.__left .b-col-wrapper
+{
+    margin-left: -220px;
+}
+
+.b-cols.__right .b-col-wrapper
+{
+    margin-right: -220px;
+}
+
+.b-col-wrapper
+
+.b-cols.__right .b-col.__main
+{
+    margin-right: 220px;
+}
+
+.b-cols.__left .b-col.__main
+{
+    margin-left: 220px;
+}
+
+.b-col.__left,
+.b-col.__right
+{
+    position: relative;
+    z-index: 10;
+    float: left;
+    background-color: #039;
+    width: 220px;
+}

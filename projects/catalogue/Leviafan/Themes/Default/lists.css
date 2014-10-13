@@ -1,0 +1,14 @@
+.b-list {
+    font-size: 0.75em;
+    list-style: none;
+}
+
+.b-list.__circle
+{
+    list-style-type: circle;
+}
+
+.b-list li
+{
+    margin: 0.2em;
+}

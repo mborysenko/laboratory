@@ -3,8 +3,13 @@
   <resourceGroups>
     <resourceGroup name="LVF.Themes.Default">
       <files>
-        <file name="page.sprited.css" />
-        <file name="icons.sprited.css" />
+        <file name="reset.css" />
+        <file name="normalize.css" />
+        <file name="styles.css" />
+        <file name="layout.css" />
+        <file name="page.css" />
+        <file name="lists.css" />
+        <file name="icons.css" />
       </files>
     </resourceGroup>
   </resourceGroups>

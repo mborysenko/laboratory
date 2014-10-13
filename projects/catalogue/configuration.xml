@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Common/Library/Core/configuration.xsd" merge="false">
-  <include src="settings.xml" />
-  <pages>
-    <page url="*" resource="SDL.UI.Core.Init" view="LVF.Views.Dashboard" title="Welcome in Catalogue - 0.1" />
-  </pages>
-  <!-- Include main configuration of Common UI Library -->
-  <include src="~/configuration.xml" />
-  <!-- Include configuration of SDL.Authoring application -->
-  <include src="_Config.xml" />
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="Common/Library/Core/configuration.xsd" merge="false">
+    <include src="settings.xml"/>
+    <pages>
+        <page url="*" resource="SDL.UI.Core.Init" view="LVF.Views.Page" title="Welcome in Catalogue - 0.1"/>
+    </pages>
+    <!-- Include main configuration of Common UI Library -->
+    <include src="~/configuration.xml"/>
+    <!-- Include configuration of SDL.Authoring application -->
+    <include src="_Config.xml"/>
 </configuration>
