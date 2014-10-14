@@ -13,6 +13,31 @@
     height: 36px;
     line-height: 36px;
 }
+
+.b-toolbar
+{
+    float: right;
+}
+
+.b-toolbar_section
+{
+    padding: 0 1em;
+    float: left;
+    height: 100%;
+    background-color: #ddd;
+}
+
+.b-toolbar_section .b-toolbar_item:last-child
+{
+    padding-right: 0;
+}
+.b-toolbar_section .b-toolbar_item
+{
+    float: left;
+    height: 100%;
+    padding-right: 0.35em;
+    background-color: #002a80;
+}
 /* /Header styles */
 
 .b-layout {
