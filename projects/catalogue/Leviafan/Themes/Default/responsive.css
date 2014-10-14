@@ -1,0 +1,36 @@
+@media screen and (max-width: 800px) {
+    .b-header {
+        height: 32px;
+        padding: 12px 0;
+    }
+
+    .b-header_tile {
+        height: 32px;
+    }
+
+    .b-header_inner {
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .b-layout {
+        top: 56px;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .b-header {
+        height: 48px;
+        padding: 12px 0;
+    }
+
+    .b-header_inner {
+        height: 48px;
+        line-height: 48px;
+    }
+
+    .b-layout {
+        top: 72px;
+    }
+}
