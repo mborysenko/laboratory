@@ -12,6 +12,21 @@
 .b-list .b-list_action {
     display: block;
     padding: 0.5em 0.5em 0.5em 1.2em;
+    height: 1.6em;
+    line-height: 1.6em;
     font-size: 0.9em;
     text-decoration: none;
+    color: #fff;
+    /*color: #00ebff;*/
+}
+
+.b-list_action:hover,
+.b-list_action.__hover {
+    background-color: #163e66;
+}
+
+.b-list_action.__active {
+    background-color: #efefef;
+    color: #333;
+    font-weight: bold;
 }
