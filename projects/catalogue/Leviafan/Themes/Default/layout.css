@@ -3,13 +3,21 @@
     height: 100%;
 }
 
+/* Header styles */
 .b-header {
-    height: 3em;
+    color: #ccc;
+    height: 36px;
+    padding: 6px 0;
 }
+.b-header_inner {
+    height: 36px;
+    line-height: 36px;
+}
+/* /Header styles */
 
 .b-layout {
     position: absolute;
-    top: 3em;
+    top: 48px;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -22,15 +30,15 @@
 }
 
 .b-layout.__left .b-content {
-    padding-left: 220px;
+    padding-left: 13em;
 }
 
 .b-layout.__has_right_sb .b-content {
-    padding-right: 220px;
+    padding-right: 12em;
 }
 
 .b-layout.__has_left_sb .b-content {
-    padding-left: 220px;
+    padding-left: 13em;
 }
 
 .b-sidebar.__left,
@@ -39,7 +47,7 @@
     top: 0;
     bottom: 0;
     z-index: 10;
-    width: 220px;
+    width: 13em;
 }
 
 .b-sidebar.__left {
