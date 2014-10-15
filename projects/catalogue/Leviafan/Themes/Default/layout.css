@@ -24,7 +24,6 @@
     padding: 0 1em;
     float: left;
     height: 100%;
-    background-color: #ddd;
 }
 
 .b-toolbar_section .b-toolbar_item:last-child
@@ -36,7 +35,6 @@
     float: left;
     height: 100%;
     padding-right: 0.35em;
-    background-color: #002a80;
 }
 /* /Header styles */
 
