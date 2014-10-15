@@ -3,6 +3,18 @@
                xsi:noNamespaceSchemaLocation="../../../Common/Library/Core/configuration.xsd">
     <resourceGroups>
 
+        <resourceGroup name="LVF.Views.Pages.Base">
+            <files>
+                <file name="Base/Base.html"/>
+                <file name="Base/Base.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Init"/>
+                <dependency name="SDL.UI.Core.Views.ViewBase"/>
+                <dependency name="LVF.Themes.Default"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.Views.Pages.Dashboard">
             <files>
                 <file name="Dashboard/Dashboard.html"/>
@@ -14,6 +26,7 @@
                 <dependency name="LVF.Themes.Default"/>
             </dependencies>
         </resourceGroup>
+
 
     </resourceGroups>
 </configuration>

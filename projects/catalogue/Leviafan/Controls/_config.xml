@@ -1,14 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
-    <include src="Pages/_config.xml"/>
-
     <resourceGroups>
 
-        <resourceGroup name="LVF.Views.Main">
+        <resourceGroup name="LVF.Controls.Toolbar">
             <files>
-                <file name="Main/Main.html"/>
-                <file name="Main/Main.js"/>
+                <file name="Toolbar/Toolbar.html"/>
+                <file name="Toolbar/Toolbar.js"/>
             </files>
             <dependencies>
                 <dependency name="SDL.UI.Core.Init"/>
@@ -16,18 +14,6 @@
                 <dependency name="SDL.UI.Core.Knockout.Renderers"/>
                 <dependency name="SDL.UI.Core.Knockout.ViewModels.Base"/>
                 <dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
-                <dependency name="LVF.Themes.Default"/>
-            </dependencies>
-        </resourceGroup>
-
-        <resourceGroup name="LVF.Views.Navigation">
-            <files>
-                <file name="Navigation/Navigation.html"/>
-                <file name="Navigation/Navigation.js"/>
-            </files>
-            <dependencies>
-                <dependency name="SDL.UI.Core.Init"/>
-                <dependency name="SDL.UI.Core.Views.ViewBase"/>
                 <dependency name="LVF.Themes.Default"/>
             </dependencies>
         </resourceGroup>

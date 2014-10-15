@@ -1,5 +1,6 @@
 /// <reference path="../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../Common/Library/Core/Libraries/jQuery/jQuery.d.ts" />
 
 module LVF.Views
 {
