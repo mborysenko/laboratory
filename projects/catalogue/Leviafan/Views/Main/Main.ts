@@ -5,7 +5,7 @@ module LVF.Views
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-    export class Page extends SDL.UI.Core.Views.ViewBase
+    export class Main extends SDL.UI.Core.Views.ViewBase
     {
         constructor(element: HTMLElement, settings?: any)
         {
@@ -44,6 +44,6 @@ module LVF.Views
         }
     }
 
-    SDL.Client.Types.OO.createInterface("LVF.Views.Page", Page)
+    SDL.Client.Types.OO.createInterface("LVF.Views.Main", Main)
 }
 

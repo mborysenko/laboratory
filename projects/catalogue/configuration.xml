@@ -3,10 +3,10 @@
                xsi:noNamespaceSchemaLocation="Common/Library/Core/configuration.xsd" merge="false">
     <include src="settings.xml"/>
     <pages>
-        <page url="*" resource="SDL.UI.Core.Init" view="LVF.Views.Page" title="Welcome in Catalogue - 0.1"/>
+        <page url="*" resource="SDL.UI.Core.Init" view="LVF.Views.Main" title="Welcome in Catalogue - 0.1"/>
     </pages>
     <!-- Include main configuration of Common UI Library -->
     <include src="~/configuration.xml"/>
     <!-- Include configuration of SDL.Authoring application -->
-    <include src="_Config.xml"/>
+    <include src="_config.xml"/>
 </configuration>

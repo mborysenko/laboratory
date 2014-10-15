@@ -1,7 +1,7 @@
-/// <reference path="../../../Common/Library/Core/Types/OO.d.ts" />
-/// <reference path="../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../../Common/Library/Core/Types/OO.d.ts" />
+/// <reference path="../../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
 
-module LVF.Views
+module LVF.Views.Pages
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
@@ -18,6 +18,6 @@ module LVF.Views
         }
     }
 
-    SDL.Client.Types.OO.createInterface("LVF.Views.Dashboard", Dashboard)
+    SDL.Client.Types.OO.createInterface("LVF.Views.Pages.Dashboard", Dashboard)
 }
 

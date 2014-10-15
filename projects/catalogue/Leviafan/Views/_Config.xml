@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
+    <include src="Pages/_config.xml"/>
+
     <resourceGroups>
 
         <resourceGroup name="LVF.Views.Dashboard">
@@ -15,10 +17,10 @@
             </dependencies>
         </resourceGroup>
 
-        <resourceGroup name="LVF.Views.Page">
+        <resourceGroup name="LVF.Views.Main">
             <files>
-                <file name="Page/Page.html"/>
-                <file name="Page/Page.js"/>
+                <file name="Main/Main.html"/>
+                <file name="Main/Main.js"/>
             </files>
             <dependencies>
                 <dependency name="SDL.UI.Core.Init"/>
