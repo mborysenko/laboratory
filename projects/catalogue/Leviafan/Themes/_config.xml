@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
   <include src="Default/_config.xml" />
+  <include src="Gray/_config.xml" />
+  <include src="Blue/_config.xml" />
 </configuration>

@@ -50,6 +50,13 @@ summary {
 }
 
 .b-icon {
+    display: inline-block;
+}
+
+.b-icon.__align-middle {
+    display: block;
+    position: relative;
+    top: 50%;
     display: block;
 }
 
@@ -58,91 +65,114 @@ summary {
     content: " ";
     display: table;
 }
+
 .b-icons.__row:after {
     clear: both;
 }
 
-.b-icons.__row .b-icon
-{
+.b-icons.__row .b-icon {
     float: left;
     margin-right: 1em;
 }
 
-.b-icons.__row .b-icon:last-child
-{
+.b-icons.__row .b-icon:last-child {
     margin-right: 0;
 }
 
-.__32x32 {
+.b-icon.__tiny {
+    width: 16px;
+    height: 16px;
+}
+
+.b-icon.__small {
+    width: 24px;
+    height: 24px;
+}
+
+.b-icon.__middle {
     width: 32px;
     height: 32px;
 }
 
-.__48x48 {
+.b-icon.__big {
     width: 48px;
     height: 48px;
 }
 
-.__favourites.__48x48 {
+.__favourites.__big {
     background: url("{PATH}Images/icons/48x48/favourites.png") no-repeat;
 }
-.__favourites.__32x32 {
+
+.__favourites.__middle {
     background: url("{PATH}Images/icons/32x32/favourites.png") no-repeat;
 }
 
-.__user.__48x48 {
+.__user.__big {
     background: url("{PATH}Images/icons/48x48/user.png") no-repeat;
 }
-.__user.__32x32 {
+
+.__user.__middle {
     background: url("{PATH}Images/icons/32x32/user.png") no-repeat;
 }
 
-.__chat.__48x48 {
+.__chat.__big {
     background: url({PATH}Images/icons/48x48/chat.png) no-repeat;
 }
-.__chat.__32x32 {
+
+.__chat.__middle {
     color: white;
     background: url({PATH}Images/icons/32x32/chat.png) no-repeat;
 }
 
-.__edit.__48x48 {
+.__edit.__big {
     background: url("{SETTING:baseUrl}/Images/icons/48x48/edit.png") no-repeat;
 }
-.__edit.__32x32 {
+
+.__edit.__middle {
     background: url("{SETTING:baseUrl}/Images/icons/32x32/edit.png") no-repeat;
 }
 
-.__home.__48x48 {
+.__home.__big {
     background-image: url("{SETTING:baseUrl}/Images/icons/48x48/home.png");
 }
-.__home.__32x32 {
+
+.__home.__middle {
     background-image: url("{SETTING:baseUrl}/Images/icons/32x32/home.png");
 }
 
-.__logout.__48x48 {
+.__logout.__big {
     background: url({SETTING:baseUrl}/Images/icons/48x48/logout.png) no-repeat;
 }
-.__logout.__32x32 {
+
+.__logout.__middle {
     background: url({SETTING:baseUrl}/Images/icons/32x32/logout.png) no-repeat;
 }
 
-.__messages.__48x48 {
+.__messages.__big {
     background: url("{SETTING:baseUrl}/Images/icons/48x48/messages.png") no-repeat;
 }
-.__messages.__32x32 {
+
+.__messages.__middle {
     background: url("{SETTING:baseUrl}/Images/icons/32x32/messages.png") no-repeat;
 }
 
-.__search.__48x48 {
+.__search.__big {
     background: url("{SETTING:baseUrl}/Images/icons/48x48/search.png") no-repeat;
 }
-.__search.__32x32 {
+
+.__search.__middle {
     background: url("{SETTING:baseUrl}/Images/icons/32x32/search.png") no-repeat;
 }
 
-.__tag.__48x48 {
+.__tag.__big {
     background: url("{SETTING:baseUrl}Images/icons/48x48/tag.png") no-repeat;
 }
-.__tag.__32x32 {
+
+.__tag.__middle {
     background: url("{SETTING:baseUrl}Images/icons/32x32/tag.png") no-repeat;
 }
+
+.__placeholder {
+    background: #d3d2d2;
+}
+

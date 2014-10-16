@@ -36,6 +36,18 @@
     height: 100%;
     padding-right: 0.35em;
 }
+
+.b-toolbar_link {
+    position: relative;
+    display: block;
+    padding: 6px 6px 6px 12px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 0.9em;
+    text-decoration: none;
+    color: #fff;
+    /*color: #00ebff;*/
+}
 /* /Header styles */
 
 .b-layout {
@@ -64,6 +76,10 @@
     padding-left: 13em;
 }
 
+.b-sidebar
+{
+    background-color: #efefef;
+}
 .b-sidebar.__left,
 .b-sidebar.__right {
     position: absolute;

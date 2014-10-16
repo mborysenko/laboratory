@@ -1,8 +1,14 @@
-.__theme_blue
+.__theme_dark
 {
-    background: #123456;
+    background: #011826;
 }
-.__theme_blue_light
+
+.__theme_light
+{
+    background: #1a4b7c;
+}
+
+.__theme_middle
 {
     background: #1a4b7c;
 }
