@@ -17,6 +17,7 @@
                 <dependency name="SDL.UI.Core.Knockout.ViewModels.Base"/>
                 <dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
                 <dependency name="LVF.Themes.Default"/>
+                <dependency name="LVF.Themes.Blue"/>
             </dependencies>
         </resourceGroup>
 
