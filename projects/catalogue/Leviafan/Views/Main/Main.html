@@ -5,19 +5,55 @@
         <!-- Header -->
         <div class="b-header __theme_dark">
             <div class="b-header_inner ">
-                <div class="b-toolbar __cfx">
+                <div class="b-toolbar __cfx __dark">
                     <div class="b-toolbar_section">
                         <ul class="b-list __horizontal __cfx">
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __placeholder"></div>
+                                    <div class="b-icon __tiny __settings"></div>
                                     <span class="b-action_label">Settings</span>
                                 </a>
                             </li>
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __placeholder"></div>
+                                    <div class="b-icon __tiny __profile"></div>
                                     <span class="b-action_label">Profile</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __delete"></div>
+                                    <span class="b-action_label">Delete</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __add"></div>
+                                    <span class="b-action_label">Add</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __remove"></div>
+                                    <span class="b-action_label">Remove</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off __active" href="#">
+                                    <div class="b-icon __tiny __cancel"></div>
+                                    <span class="b-action_label">Cancel</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __edit"></div>
+                                    <span class="b-action_label">Edit</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __save"></div>
+                                    <span class="b-action_label">Save</span>
                                 </a>
                             </li>
                         </ul>
@@ -26,14 +62,26 @@
                         <ul class="b-list __horizontal __cfx">
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __placeholder"></div>
+                                    <div class="b-icon __tiny __notify"></div>
+                                    <span class="b-action_label">Messages</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __logout"></div>
+                                    <span class="b-action_label">Logout</span>
+                                </a>
+                            </li>
+                            <li class="b-list_item">
+                                <a class="b-action __switch_off" href="#">
+                                    <div class="b-icon __tiny __help"></div>
                                     <span class="b-action_label">Help</span>
                                 </a>
                             </li>
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __placeholder"></div>
-                                    <span class="b-action_label">Logout</span>
+                                    <div class="b-icon __tiny __language"></div>
+                                    <span class="b-action_label">Language</span>
                                 </a>
                             </li>
                         </ul>
@@ -45,7 +93,7 @@
 
         <div class="b-layout __has_left_sb">
 
-            <div class="b-sidebar __left __theme_light" data-bind="view: 'LVF.Views.Navigation'"></div>
+            <div class="b-sidebar __left" data-bind="view: 'LVF.Views.Navigation'"></div>
 
             <div class="b-content" data-bind="view: 'LVF.Views.Pages.Base'"></div>
 
