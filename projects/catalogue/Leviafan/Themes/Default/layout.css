@@ -1,10 +1,12 @@
 .b-page {
     min-height: 100%;
-    height: 100%;
 }
 
 /* Header styles */
 .b-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
     color: #ccc;
     height: 36px;
     padding: 6px 0;
@@ -51,11 +53,9 @@
 /* /Header styles */
 
 .b-layout {
-    position: absolute;
-    top: 48px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    margin-top: 48px;
+    position: relative;
+    min-height: 744px;
 }
 
 .b-content {
@@ -84,6 +84,7 @@
 .b-sidebar.__right {
     position: absolute;
     top: 0;
+    /*min-height: 100%;*/
     bottom: 0;
     z-index: 10;
     width: 13em;
