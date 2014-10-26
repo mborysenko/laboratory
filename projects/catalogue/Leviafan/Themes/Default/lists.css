@@ -14,9 +14,10 @@
     float: left;
 }
 
-.b-toolbar .b-action {
-    color: #efefef;
+.__dark .b-action {
+    color: #adadad;
 }
+
 .b-action {
     position: relative;
     display: block;
@@ -25,7 +26,7 @@
     line-height: 24px;
     font-size: 0.9em;
     text-decoration: none;
-    color: #313131;
+    color: #123456;
     /*color: #00ebff;*/
 }
 
@@ -36,8 +37,12 @@
     margin-right: 8px;
 }
 
- .b-action:hover.__switch_off,
-.b-action.__switch_off.__hover {
+.__dark .b-action:hover.__switch_off,
+.__dark .b-action.__switch_off.__hover,
+.__dark .b-action.__switch_off.__active,
+.b-action:hover.__switch_off,
+.b-action.__switch_off.__hover,
+.b-action.__switch_off.__active {
     background-color: inherit;
 }
 
@@ -46,9 +51,26 @@
     background-color: #e6e6e6;
 }
 
+.__dark .b-action.__active {
+    background-color: #1c1e23;
+}
+
+.__dark .b-action:hover,
+.__dark .b-action.__hover {
+    background-color: #494d5a;
+}
+
+.__dark .b-action.__active {
+    color: #fff;
+}
+
+.b-list.__horizontal .b-action.__active {
+    border-right: 0;
+}
+
 .b-action.__active {
     background-color: #dedede;
     border-right: 3px solid #ffd901;
-    color: #333;
-    font-weight: bold;
+    color: #2361a0;
+    /*font-weight: bold;*/
 }
