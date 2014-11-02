@@ -18,6 +18,7 @@ var LVF;
                     _super.call(this, element, settings);
                 }
                 Dashboard.prototype.getRenderOptions = function () {
+                    alert("skjdjfkdsjfh");
                     return this;
                 };
                 return Dashboard;

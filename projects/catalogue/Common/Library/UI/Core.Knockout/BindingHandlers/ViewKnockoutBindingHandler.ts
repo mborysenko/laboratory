@@ -41,6 +41,7 @@ module SDL.UI.Core.Knockout.BindingHandlers
 
 		update(element: HTMLElement, valueAccessor: () => any, allBindingsAccessor: KnockoutAllBindingsAccessor, viewModel: any, bindingContext: KnockoutBindingContext): void
 		{
+            debugger;
 			var value = ko.unwrap(valueAccessor()) || "";
 			if (value)
 			{

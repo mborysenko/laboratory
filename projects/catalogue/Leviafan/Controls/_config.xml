@@ -3,18 +3,21 @@
                xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
     <resourceGroups>
 
-        <resourceGroup name="LVF.Controls.Toolbar">
+        <resourceGroup name="LVF.Controls.Navigation">
             <files>
-                <file name="Toolbar/Toolbar.html"/>
-                <file name="Toolbar/Toolbar.js"/>
+                <file name="Navigation/Navigation.js"/>
             </files>
             <dependencies>
-                <dependency name="SDL.UI.Core.Init"/>
-                <dependency name="SDL.UI.Core.Views.ViewBase"/>
-                <dependency name="SDL.UI.Core.Knockout.Renderers"/>
-                <dependency name="SDL.UI.Core.Knockout.ViewModels.Base"/>
-                <dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
-                <dependency name="LVF.Themes.Default"/>
+                <dependency name="SDL.UI.Core.Knockout.Controls"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.Knockout.Navigation">
+            <files>
+                <file name="Knockout/Navigation.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Controls.Navigation"/>
             </dependencies>
         </resourceGroup>
 

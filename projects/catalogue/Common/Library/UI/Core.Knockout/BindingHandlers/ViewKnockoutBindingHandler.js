@@ -33,6 +33,7 @@ var SDL;
                         };
 
                         ViewKnockoutBindingHandler.prototype.update = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                            debugger;
                             var value = ko.unwrap(valueAccessor()) || "";
                             if (value) {
                                 var $e = SDL.jQuery(element);

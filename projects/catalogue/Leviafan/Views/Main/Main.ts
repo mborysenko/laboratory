@@ -1,6 +1,8 @@
 /// <reference path="../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../Common/Library/UI/Core.Knockout/Libraries/knockout/knockout.d.ts" />
 /// <reference path="../../../Common/Library/Core/Libraries/jQuery/jQuery.d.ts" />
+/// <reference path="../../../Common/Library/Core/Libraries/jQuery/SDL.jQuery.d.ts" />
 
 module LVF.Views
 {
@@ -8,11 +10,14 @@ module LVF.Views
 
     export class Main extends SDL.UI.Core.Views.ViewBase
     {
+        public currentPage: KnockoutObservable<string>;
         constructor(element: HTMLElement, settings?: any)
         {
             super(element, settings);
 
             this._initialize();
+
+            this.currentPage = ko.observable("LVF.Views.Pages.Base")
         }
 
         public getRenderOptions()
@@ -28,7 +33,8 @@ module LVF.Views
                 _this._setPageHeight();
                 callback()
             };
-            this.callBase("SDL.UI.Core.Views.ViewBase", "render", [cb])
+
+            (<any>this).callBase("SDL.UI.Core.Views.ViewBase", "render", [cb])
         }
 
         private _initialize()

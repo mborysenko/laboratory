@@ -14,6 +14,7 @@ module LVF.Views.Pages
 
         public getRenderOptions()
         {
+            alert("skjdjfkdsjfh");
             return this;
         }
     }
