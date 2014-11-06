@@ -10,12 +10,10 @@ module LVF.Controls{
         constructor(element: HTMLElement, options?: any)
         {
             super(element, options);
-            alert("Navigation rendered");
         }
 
         public render()
         {
-            alert("Navigation rendered");
         }
     }
 }

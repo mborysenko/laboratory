@@ -93,89 +93,81 @@
 
         <div class="b-layout __has_left_sb">
 
-            <div class="b-sidebar __left">
-                <div class="b-sidebar_inner __theme_light   ">
+            <div class="b-sidebar __left __theme_light">
+                <div class="b-sidebar_inner">
                     <ul class="b-list" data-bind="control: 'LVF.Controls.Knockout.Navigation'">
                         <li class="b-list_item">
-                            <a href="" class="b-action" data-bind="click: function (){
+                            <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Dashboard');
-                            }">
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Dashboard' }" >
                                 <div class="b-icon __tiny __dashboard"></div>
                                 <span class="b-action_label">Dashboard</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="dashboard/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Reports');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Reports' }">
                                 <div class="b-icon __tiny __reports"></div>
                                 <span class="b-action_label">Reports</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="orders/" class="b-action __active">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Orders');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Orders' }">
                                 <div class="b-icon __tiny __orders"></div>
                                 <span class="b-action_label">Orders</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="customers/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Customers');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Customers' }">
                                 <div class="b-icon __tiny __customers"></div>
                                 <span class="b-action_label">Customers</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="products/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Products');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Products' }">
                                 <div class="b-icon __tiny __products"></div>
                                 <span class="b-action_label">Products</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="collections/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Collections');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Collections' }">
                                 <div class="b-icon __tiny __collections"></div>
                                 <span class="b-action_label">Collections</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="discounts/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Discounts');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Discounts' }">
                                 <div class="b-icon __tiny __discounts"></div>
                                 <span class="b-action_label">Discounts</span>
-                            </a>
+                            </div>
                         </li>
                         <li class="b-list_item">
-                            <a href="giftcards/" class="b-action">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.GiftCards');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.GiftCards' }">
                                 <div class="b-icon __tiny __gift-cards"></div>
                                 <span class="b-action_label">Gift Cards</span>
-                            </a>
-                        </li>
-                        <li class="b-list_item">
-                            <a href="search/" class="b-action">
-                                <div class="b-icon __tiny __search"></div>
-                                <span class="b-action_label">Search</span>
-                            </a>
-                        </li>
-                        <li class="b-list_item">
-                            <a href="search/" class="b-action">
-                                <div class="b-icon __tiny __mail"></div>
-                                <span class="b-action_label">Messages</span>
-                            </a>
-                        </li>
-                        <li class="b-list_item">
-                            <a href="search/" class="b-action">
-                                <div class="b-icon __tiny __chat"></div>
-                                <span class="b-action_label">Chat</span>
-                            </a>
-                        </li>
-                        <li class="b-list_item">
-                            <a href="search/" class="b-action">
-                                <div class="b-icon __tiny __favourites"></div>
-                                <span class="b-action_label">Favourites</span>
-                            </a>
+                            </div>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="b-content" data-bind="view: $root.currentPage()">
-
+            <div class="b-content">
+                <!-- ko with: $root.currentPage -->
+                <div data-bind="view: $root.currentPage()"></div>
+                <!-- /ko -->
             </div>
 
         </div>

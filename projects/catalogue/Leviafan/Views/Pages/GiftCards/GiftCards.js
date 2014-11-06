@@ -12,22 +12,22 @@ var LVF;
         (function (Pages) {
             eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-            var Dashboard = (function (_super) {
-                __extends(Dashboard, _super);
-                function Dashboard(element, settings) {
+            var GiftCards = (function (_super) {
+                __extends(GiftCards, _super);
+                function GiftCards(element, settings) {
                     _super.call(this, element, settings);
                 }
-                Dashboard.prototype.getRenderOptions = function () {
+                GiftCards.prototype.getRenderOptions = function () {
                     return this;
                 };
-                return Dashboard;
+                return GiftCards;
             })(SDL.UI.Core.Views.ViewBase);
-            Pages.Dashboard = Dashboard;
+            Pages.GiftCards = GiftCards;
 
-            SDL.Client.Types.OO.createInterface("LVF.Views.Pages.Dashboard", Dashboard);
+            SDL.Client.Types.OO.createInterface("LVF.Views.Pages.GiftCards", GiftCards);
         })(Views.Pages || (Views.Pages = {}));
         var Pages = Views.Pages;
     })(LVF.Views || (LVF.Views = {}));
     var Views = LVF.Views;
 })(LVF || (LVF = {}));
-//# sourceMappingURL=Dashboard.js.map
+//# sourceMappingURL=GiftCards.js.map
