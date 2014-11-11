@@ -53,9 +53,11 @@
 /* /Header styles */
 
 .b-layout {
-    margin-top: 48px;
-    position: relative;
-    min-height: 744px;
+    top: 48px;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+
 }
 
 .b-content {
