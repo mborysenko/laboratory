@@ -1,5 +1,6 @@
 /// <reference path="../../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../Models/Factory.ts" />
 
 module LVF.Views.Pages
 {
@@ -12,9 +13,17 @@ module LVF.Views.Pages
             super(element, settings);
         }
 
-        public getRenderOptions()
+        public getRenderOptions(): any
         {
-            return this;
+            debugger;
+            var store = LVF.Models.Factory.getSystemRoot();
+            var list: any = store.getProductList();
+
+            //var model = this.properties.model = new SDL.Authoring.ViewModels.EngineList(list);
+
+            list.load();
+
+            return list;
         }
     }
 

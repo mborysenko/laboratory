@@ -11,7 +11,6 @@ module LVF.Views
     export class Main extends SDL.UI.Core.Views.ViewBase
     {
         public currentPage: KnockoutObservable<string>;
-        public isActive: KnockoutComputed<string>;
 
         constructor(element: HTMLElement, settings?: any)
         {
@@ -20,11 +19,6 @@ module LVF.Views
             this._initialize();
 
             this.currentPage = ko.observable("LVF.Views.Pages.Dashboard")
-
-            this.isActive = ko.computed(function(){
-                debugger;
-                return "";
-            }, this)
         }
 
         public getRenderOptions()
