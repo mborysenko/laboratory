@@ -1,6 +1,8 @@
 /// <reference path="../../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
 /// <reference path="../../../Models/Factory.ts" />
+/// <reference path="../../../ViewModels/ProductList.ts" />
+/// <reference path="../../../ViewModelItems/ProductList.ts" />
 
 module LVF.Views.Pages
 {
@@ -16,14 +18,16 @@ module LVF.Views.Pages
         public getRenderOptions(): any
         {
             debugger;
+            var p: any = this.properties;
             var store = LVF.Models.Factory.getSystemRoot();
-            var list: any = store.getProductList();
+            var list: Models.ProductList = store.getProductList();
+            var item: ViewModelItems.ProductList = new LVF.ViewModelItems.ProductList(list);
 
-            //var model = this.properties.model = new SDL.Authoring.ViewModels.EngineList(list);
+            var view = p.model = new LVF.ViewModels.ProductList(item);
 
-            list.load();
+            list.load(true);
 
-            return list;
+            return view;
         }
     }
 

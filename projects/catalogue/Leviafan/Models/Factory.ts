@@ -24,12 +24,12 @@ module LVF.Models
             },
             {
                 id: model.getProductListType(),
-                alias: "LVF_PRODUCT",
-                implementation: "LVF.Models.Product"
+                alias: "LVF_PRODUCT_LIST",
+                implementation: "LVF.Models.ProductList"
             },
             {
                 id: model.getProductType(),
-                alias: "LVF_PRODUCT_LIST",
+                alias: "LVF_PRODUCT",
                 implementation: "LVF.Models.Product"
             }
         ]

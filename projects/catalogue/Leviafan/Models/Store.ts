@@ -3,6 +3,7 @@
 /// <reference path="../../Common/Library/Core/Models/Models.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Base/ListProvider.d.ts" />
 /// <reference path="ProductList.ts" />
+/// <reference path="ModelFactory.ts" />
 
 module LVF.Models
 {
@@ -18,10 +19,28 @@ module LVF.Models
         /**
          * @return ProductList
          */
-        public getProductList(): LVF.Models.ProductList
+        public getProductList():  SDL.Client.Models.Base.List
         {
-            return this.getList(<any>{itemTypes: [(<any>this.getModelFactory()).getProductListType()]});
+            return this.getList(<any>{itemTypes: [(<any>this.getModelFactory()).getProductType()]});
         }
+
+        public getListType(filterOptions?: any): string
+        {
+            var itemTypes = filterOptions && filterOptions.itemTypes;
+
+            if (itemTypes && itemTypes.length == 1)
+            {
+                var factory = <LVF.Models.IModelFactory>this.getModelFactory();
+                switch (itemTypes[0])
+                {
+                    case factory.getProductType():
+                        return "SDL.Authoring.Models.EngineList";
+                    default:
+                        return this.callBase("SDL.Client.Models.Base.ListProvider", "getListType", [filterOptions]);
+                }
+            }
+        }
+
 
     }
 

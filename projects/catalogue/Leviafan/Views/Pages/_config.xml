@@ -57,6 +57,8 @@
             </files>
             <dependencies>
                 <dependency name="LVF.Views.Pages.Needs"/>
+                <dependency name="LVF.ViewModels.ProductList"/>
+                <dependency name="LVF.ViewModelItems.ProductList"/>
             </dependencies>
         </resourceGroup>
 

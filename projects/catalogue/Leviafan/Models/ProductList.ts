@@ -1,4 +1,5 @@
 /// <reference path="../../Common/Library/Core/Types/OO.d.ts" />
+/// <reference path="../../Common/Library/Core/Net/Ajax.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Base/ModelFactory.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Models.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Base/List.d.ts" />
@@ -39,6 +40,18 @@ module LVF.Models
                     description: "<p><strong>Drennan Float Fish</strong> is an excel­lent main line for all types of float fishing.</p>"
                 }
             ]
+        }
+
+        public _processLoadResult(data: string, WebRequest: SDL.Client.Net.IWebRequest): void
+        {
+            var p: any = this.properties;
+
+            p.items = data;
+        }
+
+        public getCount(): number
+        {
+            return this.getItems().length
         }
 
     }

@@ -6,5 +6,7 @@
     <include src="Views/_config.xml"/>
     <include src="Themes/_config.xml"/>
     <include src="Models/_config.xml"/>
+    <include src="ViewModels/_config.xml"/>
+    <include src="ViewModelItems/_config.xml"/>
 
 </configuration>
