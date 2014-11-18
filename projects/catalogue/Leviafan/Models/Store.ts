@@ -34,7 +34,7 @@ module LVF.Models
                 switch (itemTypes[0])
                 {
                     case factory.getProductType():
-                        return "SDL.Authoring.Models.EngineList";
+                        return "LVF.Models.ProductList";
                     default:
                         return this.callBase("SDL.Client.Models.Base.ListProvider", "getListType", [filterOptions]);
                 }

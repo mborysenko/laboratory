@@ -10,11 +10,13 @@ module LVF.ViewModelItems
 
     export class ProductList extends SDL.UI.Core.Knockout.ViewModels.ViewModelItem
     {
+        public items: KnockoutObservableArray<any> = ko.observableArray();
+
         constructor(item: Models.ProductList)
         {
-            debugger;
             var properties: { [property: string]: SDL.UI.Core.Knockout.ViewModels.IPropertyDef; } = {
-                items: {
+                _items: {
+                    getter: "getItems",
                     events: ["load"]
                 },
                 loading: {
@@ -37,6 +39,35 @@ module LVF.ViewModelItems
 
             super(item, properties, methods);
         }
+
+        public _onEvent(evt: JQueryEventObject): void
+        {
+            this.callBase("SDL.UI.Core.Knockout.ViewModels.ViewModelItem", "_onEvent", [evt]);
+
+            switch (evt.type)
+            {
+                case "load":
+                    this._onLoadHandler(evt);
+                    break;
+                default:
+            }
+        }
+
+        private _onLoadHandler(evt: JQueryEventObject): void
+        {
+            var list: any = this._items();
+
+            if (list)
+            {
+                this.items.removeAll();
+                for (var i = 0, len = list.length; i < len; i++)
+                {
+                    var item = list[i];
+                    this.items.push(item);
+                }
+            }
+        }
+
     }
 
     SDL.Client.Types.OO.createInterface("LVF.ViewModelItems.ProductList", ProductList);

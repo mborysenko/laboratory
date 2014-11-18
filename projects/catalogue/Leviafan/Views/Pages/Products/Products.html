@@ -2,7 +2,31 @@
 
     <div class="lvf-dashboard">
 
-        <span data-bind="text: item.count()">Products content</span>
+        <table class="b-grid">
+            <thead>
+                <tr>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: item.items">
+                <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
+                    <td class="b-grid_cell">
+                        <a href="" data-bind="text: sku"></a>
+                    </td>
+                    <td class="b-grid_cell">
+                        <span data-bind="text: title"></span>
+                    </td>
+                    <td class="b-grid_cell">
+                        <span data-bind="text: vendor"></span>
+                    </td>
+                    <td class="b-grid_cell">
+                        <!-- ko with: $data.category -->
+                        <a data-bind="text: title"></a>
+                        <!-- /ko -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
 
     </div>
 
