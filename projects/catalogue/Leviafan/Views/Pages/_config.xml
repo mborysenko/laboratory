@@ -54,11 +54,14 @@
             <files>
                 <file name="Products/Products.html"/>
                 <file name="Products/Products.js"/>
+                <file name="Products/Cultures/Products.js"/>
+                <file name="Products/Cultures/Products.{CULTURE}.js"/>
             </files>
             <dependencies>
                 <dependency name="LVF.Views.Pages.Needs"/>
                 <dependency name="LVF.ViewModels.ProductList"/>
                 <dependency name="LVF.ViewModelItems.ProductList"/>
+                <dependency name="SDL.Client.Libraries.SDL.Globalize"/>
             </dependencies>
         </resourceGroup>
 

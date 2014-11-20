@@ -2,31 +2,56 @@
 
     <div class="lvf-dashboard">
 
-        <table class="b-grid">
-            <thead>
-                <tr>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: item.items">
-                <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
-                    <td class="b-grid_cell">
-                        <a href="" data-bind="text: sku"></a>
-                    </td>
-                    <td class="b-grid_cell">
-                        <span data-bind="text: title"></span>
-                    </td>
-                    <td class="b-grid_cell">
-                        <span data-bind="text: vendor"></span>
-                    </td>
-                    <td class="b-grid_cell">
-                        <!-- ko with: $data.category -->
-                        <a data-bind="text: title"></a>
-                        <!-- /ko -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
+        <div class="b-filter_grid">
+            <div class="b-filter_entries">
+                <div class="b-filter_entry">
+                    All Products
+                </div>
+            </div>
+            <div class="b-filter_content">
+                <div class="b-filter_form">
+
+                </div>
+                <table class="b-grid">
+                    <thead>
+                    <tr>
+                        <th class="b-grid_head">
+                            <span data-bind="text: $root.localize('products.gridTitles.SKU')"></span>
+                        </th>
+                        <th class="b-grid_head">
+                            <span data-bind="text: $root.localize('products.gridTitles.TITLE')"></span>
+                        </th>
+                        <th class="b-grid_head">
+                            <span data-bind="text: $root.localize('products.gridTitles.VENDOR')"></span>
+                        </th>
+                        <th class="b-grid_head">
+                            <span data-bind="text: $root.localize('products.gridTitles.COLLECTIONS')"></span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: item.items">
+                    <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
+                        <td class="b-grid_cell">
+                        <span class="b-link"
+                              data-bind="text: sku, click: function(){ $root.openDetails($data.sku) }"></span>
+                        </td>
+                        <td class="b-grid_cell">
+                            <span data-bind="text: title"></span>
+                        </td>
+                        <td class="b-grid_cell">
+                            <span data-bind="text: vendor"></span>
+                        </td>
+                        <td class="b-grid_cell">
+                            <!-- ko with: $data.category -->
+                            <a data-bind="text: title"></a>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
 
