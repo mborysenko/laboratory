@@ -1,0 +1,57 @@
+.b-grid {
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+}
+
+.b-grid.__wide {
+    width: 100%;
+}
+
+.b-grid_cell,
+.b-grid_head {
+    text-align: left;
+    height: 24px;
+    line-height: 24px;
+    padding: 4px;
+}
+
+.b-grid_cell.__center,
+.b-grid_head.__center {
+    text-align: center;
+}
+
+.b-grid_head {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.b-grid_cell.__sku {
+    width: 48px;
+}
+
+.b-grid_cell.__visibility {
+    width: 64px;
+}
+
+.b-badge {
+    height: 24px;
+    display: inline-block;
+    line-height: 24px;
+    border-radius: 2px;
+    padding: 0 5px;
+    background-color: #e0e4ff;
+    font-size: 90%;
+    color: #0044cc;
+}
+
+.b-caller
+{
+    text-decoration: underline;
+    cursor: pointer;
+    color: #327dcc;
+}
+
+.b-badge.__clickable {
+    cursor: pointer;
+}
