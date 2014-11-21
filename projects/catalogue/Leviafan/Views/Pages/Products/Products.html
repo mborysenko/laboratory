@@ -13,14 +13,20 @@
                 <div class="b-filter_form">
 
                 </div>
-                <table class="b-grid">
+                <table class="b-grid __wide">
                     <thead>
                     <tr>
-                        <th class="b-grid_head">
+                        <th class="b-grid_head  __center">
                             <span data-bind="text: $root.localize('products.gridTitles.SKU')"></span>
                         </th>
                         <th class="b-grid_head">
                             <span data-bind="text: $root.localize('products.gridTitles.TITLE')"></span>
+                        </th>
+                        <th class="b-grid_head __stock">
+                            <span data-bind="text: $root.localize('products.gridTitles.STOCK')"></span>
+                        </th>
+                        <th class="b-grid_head __center">
+                            <span data-bind="text: $root.localize('products.gridTitles.VISIBILITY')"></span>
                         </th>
                         <th class="b-grid_head">
                             <span data-bind="text: $root.localize('products.gridTitles.VENDOR')"></span>
@@ -32,19 +38,25 @@
                     </thead>
                     <tbody data-bind="foreach: item.items">
                     <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
-                        <td class="b-grid_cell">
-                        <span class="b-link"
+                        <td class="b-grid_cell __sku __center">
+                        <span class="b-badge __clickable"
                               data-bind="text: sku, click: function(){ $root.openDetails($data.sku) }"></span>
                         </td>
-                        <td class="b-grid_cell">
-                            <span data-bind="text: title"></span>
+                        <td class="b-grid_cell __title">
+                            <span class="b-caller" data-bind="text: title"></span>
+                        </td>
+                        <td class="b-grid_cell __stock">
+                            <span data-bind="text: stock"></span>
+                        </td>
+                        <td class="b-grid_cell __visibility __center">
+                            <span data-bind="text: $root.localize(visibility)"></span>
                         </td>
                         <td class="b-grid_cell">
                             <span data-bind="text: vendor"></span>
                         </td>
                         <td class="b-grid_cell">
                             <!-- ko with: $data.category -->
-                            <a data-bind="text: title"></a>
+                            <span class="b-caller" data-bind="text: title"></span>
                             <!-- /ko -->
                         </td>
                     </tr>

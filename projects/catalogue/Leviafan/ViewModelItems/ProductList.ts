@@ -1,4 +1,5 @@
 /// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModel.d.ts" />
+/// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModelItem.d.ts" />
 /// <reference path="../../Common/Library/Core/Application/ApplicationHost.d.ts" />
 /// <reference path="../Models/ProductList.ts" />
 /// <reference path="../ViewModels/ProductList.ts" />
@@ -10,10 +11,13 @@ module LVF.ViewModelItems
 
     export class ProductList extends SDL.UI.Core.Knockout.ViewModels.ViewModelItem
     {
-        public items: KnockoutObservableArray<any> = ko.observableArray();
+        public items: KnockoutObservableArray<any>;
+        public _items: KnockoutObservableArray<any>;
 
         constructor(item: Models.ProductList)
         {
+            this.items = ko.observableArray();
+
             var properties: { [property: string]: SDL.UI.Core.Knockout.ViewModels.IPropertyDef; } = {
                 _items: {
                     getter: "getItems",
@@ -63,6 +67,10 @@ module LVF.ViewModelItems
                 for (var i = 0, len = list.length; i < len; i++)
                 {
                     var item = list[i];
+                    if(item.hasOwnProperty("visibility"))
+                    {
+                        item.visibility = item.visibility ? "products.gridTitles.YES" : "products.gridTitles.NO";
+                    }
                     this.items.push(item);
                 }
             }
