@@ -29,7 +29,6 @@ module LVF.Models
 
         public _processLoadResult(data: string, WebRequest: SDL.Client.Net.IWebRequest): void
         {
-            debugger;
             var items = SDL.jQuery.parseJSON(data);
             var p: any = this.properties;
 
@@ -39,11 +38,6 @@ module LVF.Models
         public getCount(): number
         {
             return this.getItems().length
-        }
-
-        public getItems(): any[]
-        {
-            return this.callBase("SDL.Client.Models.Base.List", "getItems");
         }
     }
 

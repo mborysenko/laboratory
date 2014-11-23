@@ -11,9 +11,14 @@
 .b-grid_cell,
 .b-grid_head {
     text-align: left;
+    border-bottom: 1px solid #efefef;
+    vertical-align: middle;
+}
+
+.b-grid_cell,
+.b-grid_head {
     height: 24px;
     line-height: 24px;
-    padding: 4px;
 }
 
 .b-grid_cell.__center,
@@ -21,11 +26,18 @@
     text-align: center;
 }
 
+.b-grid_cell {
+    padding: 8px 4px;
+}
+
 .b-grid_head {
     font-size: 90%;
     font-weight: bold;
+    padding: 4px;
+    white-space: nowrap;
 }
 
+.b-grid_cell.__thumbnail,
 .b-grid_cell.__sku {
     width: 48px;
 }
@@ -45,8 +57,7 @@
     color: #0044cc;
 }
 
-.b-caller
-{
+.b-caller {
     text-decoration: underline;
     cursor: pointer;
     color: #327dcc;

@@ -14,7 +14,16 @@ module LVF.Views.Pages
 
         public getRenderOptions()
         {
-            return this;
+            var p: any = this.properties;
+            var store = LVF.Models.Factory.getSystemRoot();
+            var list: Models.ProductList = store.getCollectionList();
+            var item: ViewModelItems.CollectionList = new LVF.ViewModelItems.CollectionList(list);
+
+            var view = p.model = new LVF.ViewModels.CollectionList(item);
+
+            list.load(true);
+
+            return view;
         }
     }
 
