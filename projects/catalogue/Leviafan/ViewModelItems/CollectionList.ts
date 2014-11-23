@@ -1,16 +1,13 @@
 /// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModel.d.ts" />
-/// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModelItem.d.ts" />
 /// <reference path="../../Common/Library/Core/Application/ApplicationHost.d.ts" />
-/// <reference path="../../Common/Library/Core/Libraries/jQuery/jQuery.d.ts" />
 /// <reference path="../Models/ProductList.ts" />
-/// <reference path="../ViewModels/ProductList.ts" />
-/// <reference path="../Models/ProductList.ts" />
+/// <reference path="../ViewModelItems/ProductList.ts" />
 
 module LVF.ViewModelItems
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-    export class ProductList extends SDL.UI.Core.Knockout.ViewModels.ViewModelItem
+    export class CollectionList extends SDL.UI.Core.Knockout.ViewModels.ViewModelItem
     {
         public items: KnockoutObservableArray<any>;
         public _items: KnockoutObservableArray<any>;
@@ -67,17 +64,10 @@ module LVF.ViewModelItems
                 this.items.removeAll();
                 for (var i = 0, len = list.length; i < len; i++)
                 {
-                    var item = list[i];
-                    if(item.hasOwnProperty("visibility"))
-                    {
-                        item.visibility = item.visibility ? "products.gridTitles.YES" : "products.gridTitles.NO";
-                    }
-                    this.items.push(item);
+                    this.items.push(list[i]);
                 }
             }
         }
-
     }
-
-    SDL.Client.Types.OO.createInterface("LVF.ViewModelItems.ProductList", ProductList);
+    SDL.Client.Types.OO.createInterface("LVF.ViewModelItems.CollectionList", CollectionList);
 }

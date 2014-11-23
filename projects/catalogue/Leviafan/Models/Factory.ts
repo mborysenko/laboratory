@@ -31,6 +31,16 @@ module LVF.Models
                 id: model.getProductType(),
                 alias: "LVF_PRODUCT",
                 implementation: "LVF.Models.Product"
+            },
+            {
+                id: model.getCollectionListType(),
+                alias: "LVF_COLLECTION_LIST",
+                implementation: "LVF.Models.CollectionList"
+            },
+            {
+                id: model.getCollectionType(),
+                alias: "LVF_COLLECTION",
+                implementation: "LVF.Models.Collection"
             }
         ]
     );

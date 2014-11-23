@@ -7,6 +7,7 @@
             <dependencies>
                 <dependency name="SDL.UI.Core.Init"/>
                 <dependency name="SDL.UI.Core.Views.ViewBase"/>
+                <dependency name="SDL.Client.Libraries.SDL.Globalize"/>
             </dependencies>
         </resourceGroup>
 
@@ -61,7 +62,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
                 <dependency name="LVF.ViewModels.ProductList"/>
                 <dependency name="LVF.ViewModelItems.ProductList"/>
-                <dependency name="SDL.Client.Libraries.SDL.Globalize"/>
             </dependencies>
         </resourceGroup>
 
@@ -99,9 +99,13 @@
             <files>
                 <file name="Collections/Collections.html"/>
                 <file name="Collections/Collections.js"/>
+                <file name="Collections/Cultures/Collections.js"/>
+                <file name="Collections/Cultures/Collections.ru.js"/>
             </files>
             <dependencies>
                 <dependency name="LVF.Views.Pages.Needs"/>
+                <dependency name="LVF.ViewModels.CollectionList"/>
+                <dependency name="LVF.ViewModelItems.CollectionList"/>
             </dependencies>
         </resourceGroup>
     </resourceGroups>
