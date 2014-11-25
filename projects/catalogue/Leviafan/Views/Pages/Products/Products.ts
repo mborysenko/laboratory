@@ -17,7 +17,6 @@ module LVF.Views.Pages
 
         public getRenderOptions(): any
         {
-            debugger;
             var p: any = this.properties;
             var store = LVF.Models.Factory.getSystemRoot();
             var list: Models.ProductList = store.getProductList();

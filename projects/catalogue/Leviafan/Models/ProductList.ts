@@ -29,7 +29,6 @@ module LVF.Models
 
         public _processLoadResult(data: string, WebRequest: SDL.Client.Net.IWebRequest): void
         {
-            debugger;
             var items = SDL.jQuery.parseJSON(data);
             var p: any = this.properties;
 
@@ -45,6 +44,16 @@ module LVF.Models
         {
             return this.callBase("SDL.Client.Models.Base.List", "getItems");
         }
+
+        public itemRemoved(itemId: any): void
+        {}
+
+        public updateItemData(item: SDL.Client.Models.UpdatableObject): void
+        {}
+
+        public itemUpdated(item: any): void
+        {}
+
     }
 
     SDL.Client.Types.OO.createInterface("LVF.Models.ProductList", ProductList);

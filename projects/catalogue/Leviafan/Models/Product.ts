@@ -14,6 +14,9 @@ module LVF.Models
             super(id);
         }
 
+        public updateData(data: any, parentId: string): void
+        {}
+
 
     }
 
