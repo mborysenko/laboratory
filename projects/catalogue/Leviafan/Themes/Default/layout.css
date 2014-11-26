@@ -11,29 +11,27 @@
     height: 36px;
     padding: 6px 0;
 }
+
 .b-header_inner {
     height: 36px;
     line-height: 36px;
 }
 
-.b-toolbar
-{
+.b-toolbar {
     float: right;
 }
 
-.b-toolbar_section
-{
+.b-toolbar_section {
     padding: 0 1em;
     float: left;
     height: 100%;
 }
 
-.b-toolbar_section .b-toolbar_item:last-child
-{
+.b-toolbar_section .b-toolbar_item:last-child {
     padding-right: 0;
 }
-.b-toolbar_section .b-toolbar_item
-{
+
+.b-toolbar_section .b-toolbar_item {
     float: left;
     height: 100%;
     padding-right: 0.35em;
@@ -50,6 +48,7 @@
     color: #fff;
     /*color: #00ebff;*/
 }
+
 /* /Header styles */
 
 .b-layout {
@@ -58,30 +57,34 @@
     bottom: 0;
     right: 0;
     position: absolute;
+    background-color: #eeedf0;
 }
 
 .b-content {
     box-sizing: border-box;
     padding: 0;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .b-layout.__left .b-content {
-    padding-left: 13em;
+    left: 13em;
 }
 
 .b-layout.__has_right_sb .b-content {
-    padding-right: 12em;
+    right: 12em;
 }
 
 .b-layout.__has_left_sb .b-content {
-    padding-left: 13em;
+    left: 13em;
 }
 
-.b-sidebar
-{
+.b-sidebar {
     background-color: #efefef;
 }
+
 .b-sidebar.__left,
 .b-sidebar.__right {
     position: absolute;
@@ -102,4 +105,8 @@
 
 .b-sidebar_inner {
     /*padding: 0.5em;*/
+}
+
+.b-scroll_content {
+    overflow-y: auto;
 }

@@ -59,7 +59,7 @@
 
         <div class="b-layout __has_left_sb">
 
-            <div class="b-sidebar __left __theme_light">
+            <div class="b-sidebar __left __theme_light b-scroll_content">
                 <div class="b-sidebar_inner">
                     <ul class="b-list" data-bind="control: 'LVF.Controls.Knockout.Navigation'">
                         <li class="b-list_item">
@@ -130,10 +130,29 @@
                 </div>
             </div>
 
-            <div class="b-content">
-                <!-- ko with: $root.currentPage -->
-                <div data-bind="view: $root.currentPage()"></div>
-                <!-- /ko -->
+            <div class="b-content b-scroll_content">
+                <div class="b-content_page" data-bind="control: { type: 'LVF.Controls.Knockout.ContentPage', data: $root.currentPage() }">
+                    <div class="b-content_page_header">
+                        <ul class="b-list __horizontal" style="float: right">
+                            <li class="b-list_item">
+                                <div class="b-action">
+                                    <span>Save</span>
+                                </div>
+                            </li>
+                            <li class="b-list_item">
+                                <div class="b-action">
+                                    <span>Duplicate</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="b-content_page_title">Content Page Title</div>
+                    </div>
+                    <div class="b-content_context">
+                        <!-- ko with: $root.currentPage -->
+                        <div data-bind="view: $root.currentPage()"></div>
+                        <!-- /ko -->
+                    </div>
+                </div>
             </div>
 
         </div>
