@@ -40,11 +40,6 @@ module LVF.Models
             return this.getItems().length
         }
 
-        public getItems(): any[]
-        {
-            return this.callBase("SDL.Client.Models.Base.List", "getItems");
-        }
-
         public itemRemoved(itemId: any): void
         {}
 
