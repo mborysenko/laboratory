@@ -14,7 +14,7 @@ module SDL.UI.Core.Knockout.Utils
 		var result: any;
 		value = ko.unwrap(value);
 
-		if (maxDepth <= 0 || !value || SDL.jQuery.isWindow(value) || Client.Type.isDate(value) || Client.Type.isNode(value) || Client.Type.isFunction(value))
+		if (maxDepth <= 0 || !value || SDL.jQuery.isWindow(value) || SDL.Client.Type.isDate(value) || SDL.Client.Type.isNode(value) || SDL.Client.Type.isFunction(value))
 		{
 			result = value;
 		}
@@ -31,7 +31,7 @@ module SDL.UI.Core.Knockout.Utils
 
 			if (!result)
 			{
-				if (Client.Type.isArray(value))
+				if (SDL.Client.Type.isArray(value))
 				{
 					result = [];
 				}
@@ -64,7 +64,7 @@ module SDL.UI.Core.Knockout.Utils
 						result = value;
 					}
 				}
-				else if (Client.Type.isFunction(value.valueOf))
+				else if (SDL.Client.Type.isFunction(value.valueOf))
 				{
 					result = value.valueOf();
 				}

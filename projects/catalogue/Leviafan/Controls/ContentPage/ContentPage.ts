@@ -15,16 +15,16 @@ module LVF.Controls{
             super(element, options);
         }
 
-        public render(callback?: () => void, errorcallback?: (error: string) => void): void
+        public render()
         {
-            alert("SDL.UI.Core.Controls.ControlBase rendered");
-            this.callBase("SDL.UI.Core.Controls.ControlBase", "render", arguments);
         }
-        public update(options: any): void
-        {
-            console.log(options);
-            this.callBase("SDL.UI.Core.Controls.ControlBase", "update", arguments);
-        }
+
+        //public update(options: any): void
+        //{
+        //    debugger;
+        //    console.log(options);
+        //    this.callBase("SDL.UI.Core.Controls.ControlBase", "update", arguments);
+        //}
     }
 
     SDL.Client.Types.OO.createInterface("LVF.Controls.ContentPage", ContentPage);

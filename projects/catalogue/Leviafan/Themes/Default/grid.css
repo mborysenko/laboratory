@@ -17,8 +17,6 @@
 
 .b-grid_cell,
 .b-grid_head {
-    height: 24px;
-    line-height: 24px;
 }
 
 .b-grid_cell.__center,
@@ -26,15 +24,24 @@
     text-align: center;
 }
 
+.b-grid_row.__hovered .b-grid_cell,
+.b-grid_row:hover .b-grid_cell {
+    background-color: #fafafa;
+}
+
 .b-grid_cell {
-    padding: 8px 4px;
+    padding: 16px 12px;
+    height: 48px;
+    line-height: 48px;
 }
 
 .b-grid_head {
-    font-size: 90%;
-    font-weight: bold;
-    padding: 4px;
+    font-size: 85%;
+    padding: 16px 12px;
+    height: 16px;
+    line-height: 16px;
     white-space: nowrap;
+    color: #a3a3a3;
 }
 
 .b-grid_cell.__thumbnail,
@@ -52,17 +59,18 @@
     line-height: 24px;
     border-radius: 2px;
     padding: 0 5px;
-    background-color: #e0e4ff;
+    background-color: #00bfe5;
     font-size: 90%;
-    color: #0044cc;
+    color: white;
+    /*color: #0044cc;*/
+}
+
+.b-badge.__clickable {
+    cursor: pointer;
 }
 
 .b-caller {
     text-decoration: underline;
     cursor: pointer;
-    color: #327dcc;
-}
-
-.b-badge.__clickable {
-    cursor: pointer;
+    color: #00bfe5;
 }
