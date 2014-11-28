@@ -3,9 +3,17 @@ body {
     font-size: 90%;
 }
 
-a
-{
+a {
     color: #39c;
+}
+
+@font-face {
+    font-family: "Helvetica Neue Cyrillic Light";
+    src: url("{PATH}Fonts/HelveticaNeueCyrillic-Light.otf");
+}
+@font-face {
+    font-family: "Helvetica Neue Cyrillic Medium";
+    src: url("{PATH}Fonts/HelveticaNeueCyrillic-Medium.otf");
 }
 
 @font-face {

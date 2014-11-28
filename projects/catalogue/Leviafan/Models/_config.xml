@@ -10,6 +10,7 @@
             </files>
             <dependencies>
                 <dependency name="LVF.Models.Products"/>
+                <dependency name="LVF.Models.Collections"/>
                 <dependency name="SDL.Client.Models.Base.ListProvider"/>
             </dependencies>
         </resourceGroup>
@@ -40,6 +41,13 @@
             </dependencies>
         </resourceGroup>
 
+        <resourceGroup name="LVF.Models.Collections">
+            <dependencies>
+                <dependency name="LVF.Models.Collection"/>
+                <dependency name="LVF.Models.CollectionList"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.Models.Product">
             <files>
                 <file name="Product.js"/>
@@ -55,6 +63,24 @@
             </files>
             <dependencies>
                 <dependency name="SDL.Client.Models.Base.List"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Models.CollectionList">
+            <files>
+                <file name="CollectionList.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.Client.Models.Base.List"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Models.Collection">
+            <files>
+                <file name="Collection.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.Client.Models.Classes"/>
             </dependencies>
         </resourceGroup>
 
