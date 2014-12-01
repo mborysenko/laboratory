@@ -1,7 +1,12 @@
+.b-button:hover {
+    border: 1px solid #39dafa;
+}
+
+
 .b-button {
     background-color: #ebfcff;
-    border: 1px solid #39ddfa;
-    color: #39ddfa;
+    border: 1px solid #9cecfc;
+    color: #00bfe5;
     border-radius: 2px;
     height: 30px;
     line-height: 30px;

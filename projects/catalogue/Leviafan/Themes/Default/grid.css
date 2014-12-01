@@ -1,5 +1,4 @@
 .b-grid {
-    border-collapse: collapse;
     padding: 0;
     margin: 0;
 }
@@ -11,12 +10,7 @@
 .b-grid_cell,
 .b-grid_head {
     text-align: left;
-    border-bottom: 1px solid #efefef;
     vertical-align: middle;
-}
-
-.b-grid_cell,
-.b-grid_head {
 }
 
 .b-grid_cell.__center,
@@ -26,22 +20,32 @@
 
 .b-grid_row.__hovered .b-grid_cell,
 .b-grid_row:hover .b-grid_cell {
-    background-color: #fafafa;
+    background-color: #fff;
 }
 
 .b-grid_cell {
     padding: 16px 12px;
     height: 48px;
     line-height: 48px;
+    border-bottom: 1px solid #f3f3f4;
+    background-color: #fafafa;
+}
+
+.b-grid thead tr
+{
+    -webkit-box-shadow: 0px 2px 2px -3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 2px 2px -3px rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 2px -3px rgba(0,0,0,0.5);
 }
 
 .b-grid_head {
     font-size: 85%;
     padding: 16px 12px;
-    height: 16px;
-    line-height: 16px;
+    /*height: 16px;*/
+    /*line-height: 16px;*/
     white-space: nowrap;
     color: #a3a3a3;
+    border-bottom: 1px solid #e2e3e5;
 }
 
 .b-grid_cell.__thumbnail,
@@ -70,7 +74,7 @@
 }
 
 .b-caller {
-    text-decoration: underline;
+    /*text-decoration: underline;*/
     cursor: pointer;
     color: #00bfe5;
 }
