@@ -20,7 +20,7 @@
 
 .b-list.__horizontal .b-list_item {
     float: left;
-    margin-right: 10px;
+    margin-right: 24px;
     margin-bottom: 0;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .__dark .b-action {
-    color: #adadad;
+    color: #39dafa;
 }
 
 .b-action {
@@ -40,12 +40,13 @@
     font-size: 0.9em;
     text-decoration: none;
     color: white;
-    opacity: 0.5;
-    /*color: #123456;*/
-    /*color: #00ebff;*/
 }
 
-.__32x32 .b-action {
+.__main_nav .b-action {
+    opacity: 0.5;
+}
+
+.__32 .b-action {
     height: 32px;
     line-height: 32px;
 }
@@ -65,44 +66,13 @@
     margin-right: 28px;
 }
 
-.__dark .b-action:hover.__switch_off,
-.__dark .b-action.__switch_off.__hover,
-.__dark .b-action.__switch_off.__active,
-.b-action:hover.__switch_off,
-.b-action.__switch_off.__hover,
-.b-action.__switch_off.__active {
-    background-color: inherit;
+.b-action.__switch_off {
+    color: #999;
 }
 
-.b-action:hover,
-.b-action.__hover,
-.b-action.__active {
+.__main_nav .b-action:hover,
+.__main_nav .b-action.__hover,
+.__main_nav .b-action.__active {
     opacity: 1;
-    /*background-color: #e6e6e6;*/
 }
 
-/*.__dark .b-action.__active {*/
-/*opacity: 1;*/
-/*background-color: #1c1e23;*/
-/*}*/
-
-.__dark .b-action:hover,
-.__dark .b-action.__hover {
-    background-color: #494d5a;
-}
-
-.__dark .b-action.__active {
-    color: #fff;
-}
-
-.b-list.__horizontal .b-action.__active {
-    border-right: 0;
-}
-
-/*.b-action.__active {*/
-/*background-color: #dedede;*/
-/*border-right: 3px solid #ffd901;*/
-/*opacity: 1;*/
-/*color: #2361a0;*/
-/*font-weight: bold;*/
-/*}*/

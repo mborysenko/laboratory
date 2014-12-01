@@ -8,13 +8,13 @@
     top: 0;
     width: 100%;
     color: #ccc;
-    height: 36px;
-    padding: 6px 0;
+    height: 32px;
+    padding: 16px 0;
 }
 
 .b-header_inner {
-    height: 36px;
-    line-height: 36px;
+    height: 32px;
+    line-height: 32px;
 }
 
 .b-toolbar {
@@ -52,7 +52,7 @@
 /* /Header styles */
 
 .b-layout {
-    top: 48px;
+    top: 64px;
     left: 0;
     bottom: 0;
     right: 0;
@@ -91,7 +91,7 @@
 }
 
 .b-sidebar {
-    background-color: #efefef;
+    /*background-color: #efefef;*/
 }
 
 .b-sidebar.__left,

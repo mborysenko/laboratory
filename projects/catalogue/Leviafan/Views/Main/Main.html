@@ -7,23 +7,7 @@
             <div class="b-header_inner ">
                 <div class="b-toolbar __cfx __dark">
                     <div class="b-toolbar_section">
-                        <ul class="b-list __horizontal __cfx">
-                            <li class="b-list_item">
-                                <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __settings"></div>
-                                    <span class="b-action_label">Settings</span>
-                                </a>
-                            </li>
-                            <li class="b-list_item">
-                                <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __profile"></div>
-                                    <span class="b-action_label">Profile</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="b-toolbar_section">
-                        <ul class="b-list __horizontal __cfx">
+                        <ul class="b-list __horizontal __32 __cfx">
                             <!--
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
@@ -33,22 +17,19 @@
                             </li>
                             -->
                             <li class="b-list_item">
-                                <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __help"></div>
+                                <div class="b-action">
                                     <span class="b-action_label">Help</span>
-                                </a>
+                                </div>
                             </li>
                             <li class="b-list_item">
-                                <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __language"></div>
+                                <div class="b-action">
                                     <span class="b-action_label">Language</span>
-                                </a>
+                                </div>
                             </li>
                             <li class="b-list_item">
-                                <a class="b-action __switch_off" href="#">
-                                    <div class="b-icon __tiny __logout"></div>
-                                    <span class="b-action_label">Logout</span>
-                                </a>
+                                <div class="b-action __switch_off">
+                                    <span class="b-action_label">p.s.borisenko@gmail.com</span>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -61,7 +42,7 @@
 
             <div class="b-sidebar __left __theme_light b-scroll_content">
                 <div class="b-sidebar_inner">
-                    <ul class="b-list __32x32" data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
+                    <ul class="b-list __32 __main_nav" data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
                         <li class="b-list_item">
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Dashboard');
@@ -124,6 +105,14 @@
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.GiftCards' }">
                                 <div class="b-icon __middle __placeholder"></div>
                                 <span class="b-action_label">Settings</span>
+                            </div>
+                        </li>
+                        <li class="b-list_item">
+                            <div class="b-action" data-bind="click: function (){
+                                $root.currentPage('LVF.Views.Pages.Icons');
+                            }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Icons' }">
+                                <div class="b-icon __middle __placeholder"></div>
+                                <span class="b-action_label">Icons' Demo</span>
                             </div>
                         </li>
                     </ul>
