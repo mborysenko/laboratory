@@ -7,7 +7,7 @@
             <div class="b-header_inner ">
                 <div class="b-toolbar __cfx __dark">
                     <div class="b-toolbar_section">
-                        <ul class="b-list __horizontal __32 __cfx">
+                        <ul class="b-list __horizontal __toolbar __32 __cfx">
                             <!--
                             <li class="b-list_item">
                                 <a class="b-action __switch_off" href="#">
@@ -42,12 +42,12 @@
 
             <div class="b-sidebar __left __theme_light b-scroll_content">
                 <div class="b-sidebar_inner">
-                    <ul class="b-list __32 __main_nav" data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
+                    <ul class="b-list __24 __main_nav" data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
                         <li class="b-list_item">
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Dashboard');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Dashboard' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Dashboard</span>
                             </div>
                         </li>
@@ -55,7 +55,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Reports');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Reports' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Reports</span>
                             </div>
                         </li>
@@ -63,7 +63,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Orders');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Orders' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Orders</span>
                             </div>
                         </li>
@@ -71,7 +71,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Customers');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Customers' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Customers</span>
                             </div>
                         </li>
@@ -79,7 +79,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Products');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Products' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Products</span>
                             </div>
                         </li>
@@ -87,7 +87,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Collections');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Collections' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Collections</span>
                             </div>
                         </li>
@@ -95,7 +95,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Discounts');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Discounts' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Discounts</span>
                             </div>
                         </li>
@@ -103,7 +103,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.GiftCards');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.GiftCards' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Settings</span>
                             </div>
                         </li>
@@ -111,7 +111,7 @@
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Icons');
                             }, css: { __active: $root.currentPage() == 'LVF.Views.Pages.Icons' }">
-                                <div class="b-icon __middle __placeholder"></div>
+                                <div class="b-icon __small __placeholder"></div>
                                 <span class="b-action_label">Icons' Demo</span>
                             </div>
                         </li>
@@ -120,11 +120,15 @@
             </div>
 
             <div class="b-content">
-                <div class="b-content_inner b-scroll_content">
+                <div class="b-content_inner">
+                    <div class="b-progress" data-bind="visible: $root.loading">
+                        <span class="b-progress_content">Loading...</span>
+                    </div>
+
                     <div class="b-content_page"
-                         data-bind="control: { type: 'LVF.Controls.Knockout.ContentPage', data: {} }">
+                         data-bind="control: { type: 'LVF.Controls.Knockout.ContentPage', data: {} }, visible: !$root.loading()">
                         <div class="b-content_page_header">
-                            <ul class="b-list __horizontal" style="float: right">
+                            <ul class="b-list __horizontal __buttons" style="float: right">
                                 <li class="b-list_item">
                                     <div class="b-button">
                                         <span>Save</span>
@@ -141,9 +145,9 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="b-content_page_title">Content Page Title</div>
+                            <div class="b-content_page_title" data>Content Page Title</div>
                         </div>
-                        <div class="b-content_context">
+                        <div class="b-content_context b-scroll_content">
                             <!-- ko with: $root.currentPage -->
                             <div data-bind="view: $root.currentPage()"></div>
                             <!-- /ko -->

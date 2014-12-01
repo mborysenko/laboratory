@@ -336,8 +336,9 @@ summary {
 
 /* /Additional */
 
+.__placeholder.__small,
 .__placeholder {
     /*background: #d3d2d2;*/
-    background-color: white;
+    background: white;
 }
 

@@ -10,8 +10,12 @@
 
 }
 
-.b-list .b-list_item {
+.b-list.__32 .b-list_item {
     margin-bottom: 32px;
+}
+
+.b-list.__24 .b-list_item {
+    margin-bottom: 24px;
 }
 
 .b-list .b-list_item:last-child {
@@ -20,8 +24,15 @@
 
 .b-list.__horizontal .b-list_item {
     float: left;
-    margin-right: 24px;
     margin-bottom: 0;
+}
+
+.b-list.__toolbar .b-list_item {
+    margin-right: 24px;
+}
+
+.b-list.__buttons .b-list_item {
+    margin-right: 12px;
 }
 
 .b-list.__horizontal .b-list_item:last-child {
