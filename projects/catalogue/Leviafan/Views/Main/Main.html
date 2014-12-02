@@ -1,6 +1,6 @@
 <div id="LVF.Views.Main" type="text/html+knockout">
 
-    <div id="page" class="b-page">
+    <div id="page">
 
         <!-- Header -->
         <div class="b-header __theme_dark">
@@ -119,41 +119,15 @@
                 </div>
             </div>
 
-            <div class="b-content">
-                <div class="b-content_inner">
-                    <div class="b-progress" data-bind="visible: $root.loading">
-                        <span class="b-progress_content">Loading...</span>
-                    </div>
 
-                    <div class="b-content_page"
-                         data-bind="control: { type: 'LVF.Controls.Knockout.ContentPage', data: {} }, visible: !$root.loading()">
-                        <div class="b-content_page_header">
-                            <ul class="b-list __horizontal __buttons" style="float: right">
-                                <li class="b-list_item">
-                                    <div class="b-button">
-                                        <span>Save</span>
-                                    </div>
-                                </li>
-                                <li class="b-list_item">
-                                    <div class="b-button">
-                                        <span>Duplicate</span>
-                                    </div>
-                                </li>
-                                <li class="b-list_item">
-                                    <div class="b-button __action">
-                                        <span>Add Product</span>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="b-content_page_title" data>Content Page Title</div>
-                        </div>
-                        <div class="b-content_context b-scroll_content">
-                            <!-- ko with: $root.currentPage -->
-                            <div data-bind="view: $root.currentPage()"></div>
-                            <!-- /ko -->
-                        </div>
-                    </div>
+            <div class="b-content">
+                <!-- ko with: $root.currentPage -->
+                <div class="b-content_inner" data-bind="view: $root.currentPage()">
+                    <!--<div class="b-progress" data-bind="visible: $root.loading">-->
+                        <!--<span class="b-progress_content">Loading...</span>-->
+                    <!--</div>-->
                 </div>
+                <!-- /ko -->
             </div>
 
         </div>
