@@ -4,6 +4,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    overflow: hidden;
 }
 
 .b-page_top {
@@ -14,10 +15,10 @@
     padding: 28px 40px;
     height: 32px;
     line-height: 32px;
-    border-bottom: 1px solid #f3f3f4;
-    /*-webkit-box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.3);*/
-    /*-moz-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);*/
-    /*box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);*/
+    /*border-bottom: 1px solid #f3f3f4;*/
+    -webkit-box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .b-page_title {
@@ -39,7 +40,10 @@
     right: 0;
     height: 32px;
     padding: 14px 40px;
-    background: gray;
+    /*background: gray;*/
+    -webkit-box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .b-grid {
