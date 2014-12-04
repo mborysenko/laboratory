@@ -342,3 +342,24 @@ summary {
     background: white;
 }
 
+.b-icon.__tiny.__left,
+.b-icon.__tiny.__right {
+    background: url("{PATH}Images/icons/16x16/pagination-sprite.png") no-repeat;
+}
+
+.b-icon.__tiny.__left {
+    background-position: 0 0;
+}
+
+.b-icon.__tiny.__left.__active {
+    background-position: 0 -16px;
+}
+
+.b-icon.__tiny.__right {
+    background-position: -16px 0;
+}
+
+.b-icon.__tiny.__right.__active {
+    background-position: -16px -16px;
+}
+
