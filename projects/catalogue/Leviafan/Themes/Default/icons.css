@@ -351,15 +351,19 @@ summary {
     background-position: 0 0;
 }
 
-.b-icon.__tiny.__left.__active {
-    background-position: 0 -16px;
-}
-
 .b-icon.__tiny.__right {
     background-position: -16px 0;
 }
 
-.b-icon.__tiny.__right.__active {
+.b-icon.__tiny.__right.__active,
+.__hover .b-icon.__tiny.__right,
+.b-navigation_action:hover .b-icon.__tiny.__right {
     background-position: -16px -16px;
+}
+
+.b-icon.__tiny.__left.__active,
+.__hover .b-icon.__tiny.__left,
+.b-navigation_action:hover .b-icon.__tiny.__left {
+    background-position: 0 -16px;
 }
 
