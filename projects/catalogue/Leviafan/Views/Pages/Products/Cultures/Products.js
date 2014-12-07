@@ -1,5 +1,6 @@
 ﻿SDL.Globalize.addCultureInfo( "default", {
     messages: {
+        "products.page.title": "Products",
         "products.gridTitles.SKU": "SKU",
         "products.gridTitles.VISIBILITY": "Visible",
         "products.gridTitles.TYPE": "Type",

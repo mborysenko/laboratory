@@ -1,13 +1,14 @@
-﻿SDL.Globalize.addCultureInfo( "nl", {
+﻿SDL.Globalize.addCultureInfo( "ru", {
     messages: {
-        "homePage.welcomeText": "Welkom",
-        "homePage.favoritesTabLabel": "Favorieten",
-        "homePage.search": "Zoeken",
-        "homePage.quickLinks": "Snelkoppelingen",
-        "homePage.quickLinks.gettingStarted": "Startersgids",
-        "homePage.quickLinks.userGuides": "Gebruikershandleidingen",
-        "homePage.quickLinks.configurationGuides": "Configuratie handleidingen",
-        "homePage.quickLinks.apiReference": "API Referentie",
-        "homePage.quickLinks.installationGuides": "Installatie handleidingen"
+        "products.page.title": "Продукты",
+        "products.gridTitles.SKU": "SKU",
+        "products.gridTitles.VISIBILITY": "Видимый",
+        "products.gridTitles.TYPE": "Тип",
+        "products.gridTitles.VENDOR": "Брэнд",
+        "products.gridTitles.STOCK": "В наличии",
+        "products.gridTitles.COLLECTIONS": "Коллекции",
+        "products.gridTitles.YES": "Да",
+        "products.gridTitles.NO": "Нет",
+        "products.gridTitles.TITLE": "Название"
     }
 });

@@ -1,5 +1,12 @@
 <div id="LVF.Views.Pages.Products" type="text/html+knockout">
-    <div class="b-page">
+    <div class="b-progress" data-bind="visible: item.loading">
+        <div class="b-aligner">
+            <div class="b-aligner_inner">
+                <div class="b-progress_indicator">Loading...</div>
+            </div>
+        </div>
+    </div>
+    <div class="b-page" data-bind="visible: !item.loading()">
         <div class="b-page_top">
             <ul class="b-list __horizontal __buttons" style="float: right">
                 <li class="b-list_item">
