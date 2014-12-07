@@ -1,8 +1,40 @@
 <div id="LVF.Views.Pages.Collections" type="text/html+knockout">
 
-    <div class="lvf-dashboard">
-
-        <span>Collections content</span>
+    <div class="b-content_page">
+        <table class="b-grid __wide">
+            <thead>
+            <tr>
+                <th class="b-grid_head __center">
+                    <span data-bind="text: $root.localize('gridTitles.collections.ID')"></span>
+                </th>
+                <th class="b-grid_head">
+                    &nbsp;
+                </th>
+                <th class="b-grid_head">
+                    <span data-bind="text: $root.localize('gridTitles.collections.TITLE')"></span>
+                </th>
+                <th class="b-grid_head __stock">
+                    <span data-bind="text: $root.localize('gridTitles.collections.PRODUCT_CONDITIONS')"></span>
+                </th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: item.items">
+            <tr class="b-grid_row" data-bind="attr: { id: id }">
+                <td class="b-grid_cell __sku __center">
+                        <span class="b-badge __clickable" data-bind="text: id, click: function(){ $root.openDetails($data.id) }"></span>
+                </td>
+                <td class="b-grid_cell __thumbnail">
+                    <div class="b-thumbnail_placeholder __48x48 __no-image"></div>
+                </td>
+                <td class="b-grid_cell __title">
+                    <span class="b-caller" data-bind="text: title"></span>
+                </td>
+                <td class="b-grid_cell __visibility __center">
+                    <span data-bind="text: 'Шманделей'"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
     </div>
 

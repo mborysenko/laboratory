@@ -17,7 +17,7 @@ var SDL;
                         var result;
                         value = ko.unwrap(value);
 
-                        if (maxDepth <= 0 || !value || SDL.jQuery.isWindow(value) || Client.Type.isDate(value) || Client.Type.isNode(value) || Client.Type.isFunction(value)) {
+                        if (maxDepth <= 0 || !value || SDL.jQuery.isWindow(value) || SDL.Client.Type.isDate(value) || SDL.Client.Type.isNode(value) || SDL.Client.Type.isFunction(value)) {
                             result = value;
                         } else {
                             for (var i = 0; i < mappedValues.length; i++) {
@@ -28,7 +28,7 @@ var SDL;
                             }
 
                             if (!result) {
-                                if (Client.Type.isArray(value)) {
+                                if (SDL.Client.Type.isArray(value)) {
                                     result = [];
                                 } else if (typeof value == 'object') {
                                     if ((value instanceof Boolean) || (value instanceof Number) || (value instanceof String)) {
@@ -51,7 +51,7 @@ var SDL;
                                     if (!changed) {
                                         result = value;
                                     }
-                                } else if (Client.Type.isFunction(value.valueOf)) {
+                                } else if (SDL.Client.Type.isFunction(value.valueOf)) {
                                     result = value.valueOf();
                                 } else {
                                     result = value;

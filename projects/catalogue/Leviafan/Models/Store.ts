@@ -1,5 +1,6 @@
 /// <reference path="../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Base/ModelFactory.d.ts" />
+/// <reference path="../../Common/Library/Core/Models/Base/ModelFactory.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Models.d.ts" />
 /// <reference path="../../Common/Library/Core/Models/Base/ListProvider.d.ts" />
 /// <reference path="ProductList.ts" />
@@ -19,9 +20,17 @@ module LVF.Models
         /**
          * @return ProductList
          */
-        public getProductList():  SDL.Client.Models.Base.List
+        public getProductList(): SDL.Client.Models.Base.List
         {
-            return this.getList(<any>{itemTypes: [(<any>this.getModelFactory()).getProductType()]});
+            return this.getList(<SDL.Client.Models.Base.IListFilterProperties>{itemTypes: [(this.getModelFactory()).getProductType()]});
+        }
+
+        /**
+         * @return ProductList
+         */
+        public getCollectionList(): SDL.Client.Models.Base.List
+        {
+            return this.getList(<SDL.Client.Models.Base.IListFilterProperties>{itemTypes: [(this.getModelFactory()).getCollectionType()]});
         }
 
         public getListType(filterOptions?: any): string
@@ -30,17 +39,25 @@ module LVF.Models
 
             if (itemTypes && itemTypes.length == 1)
             {
-                var factory = <LVF.Models.IModelFactory>this.getModelFactory();
+                var factory = this.getModelFactory();
                 switch (itemTypes[0])
                 {
                     case factory.getProductType():
                         return "LVF.Models.ProductList";
+
+                    case factory.getCollectionType():
+                        return "LVF.Models.CollectionList";
+
                     default:
                         return this.callBase("SDL.Client.Models.Base.ListProvider", "getListType", [filterOptions]);
                 }
             }
         }
 
+        public getModelFactory(): LVF.Models.IModelFactory
+        {
+            return this.callBase("SDL.Client.Models.ModelObject", "getModelFactory")
+        }
 
     }
 

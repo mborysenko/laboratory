@@ -6,7 +6,7 @@ module LVF.Models
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-    export class ModelFactory extends SDL.Client.Models.Base.ModelFactory
+    export class ModelFactory extends SDL.Client.Models.Base.ModelFactory implements IModelFactory
     {
         constructor()
         {
@@ -51,10 +51,28 @@ module LVF.Models
         {
             return this.getSettings().prefix + "product_list";
         }
+
+        /**
+         * @return {string}
+         */
+        public getCollectionType(): string
+        {
+            return this.getSettings().prefix + "collection";
+        }
+
+        /**
+         * @return {string}
+         */
+        public getCollectionListType(): string
+        {
+            return this.getSettings().prefix + "collection_list";
+        }
     }
 
     export interface IModelFactory extends SDL.Client.Models.IModelFactory
     {
+        getCollectionListType(): string
+        getCollectionType(): string
         getProductListType(): string
         getProductType(): string
     }

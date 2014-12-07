@@ -21,5 +21,24 @@
             </dependencies>
         </resourceGroup>
 
+        <resourceGroup name="LVF.Controls.ContentPage">
+            <files>
+                <file name="ContentPage/ContentPage.js"/>
+                <file name="ContentPage/ContentPage.css"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.Controls"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.Knockout.ContentPage">
+            <files>
+                <file name="Knockout/ContentPage.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Controls.ContentPage"/>
+            </dependencies>
+        </resourceGroup>
+
     </resourceGroups>
 </configuration>

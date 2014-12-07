@@ -18,7 +18,16 @@ var LVF;
                     _super.call(this, element, settings);
                 }
                 Collections.prototype.getRenderOptions = function () {
-                    return this;
+                    var p = this.properties;
+                    var store = LVF.Models.Factory.getSystemRoot();
+                    var list = store.getCollectionList();
+                    var item = new LVF.ViewModelItems.CollectionList(list);
+
+                    var view = p.model = new LVF.ViewModels.CollectionList(item);
+
+                    list.load(true);
+
+                    return view;
                 };
                 return Collections;
             })(SDL.UI.Core.Views.ViewBase);
