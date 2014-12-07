@@ -19,6 +19,7 @@
                 <dependency name="LVF.Themes.Default"/>
                 <dependency name="LVF.Themes.Blue"/>
                 <dependency name="LVF.Controls.Knockout.Navigation"/>
+                <dependency name="LVF.Controls.Knockout.ContentPage"/>
                 <dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
                 <dependency name="LVF.Models.Factory"/>
             </dependencies>

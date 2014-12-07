@@ -23,13 +23,11 @@ module LVF.Models
         public _executeLoad(reload: boolean): void
         {
             var p: any = this.properties;
-
-            this._onLoad('[{ "sku": "101", "stock": "15", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Double Strength", "description": "<p><strong>Drennan Double Strength is the first Japanese hi-tech line made widely avail­able in the UK.<strong></p><p>It offers excel­lent strength to dia­meter ratios in a wide range of breaking strains. This soft and supple, neutral tone line behaves and handles very well in a wide range of uses.</p>" }, { "sku": "102", "stock": "7", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Feeder Braid", "description": "<p>pecially formulated for feeder fishing, Drennan Feeder Braid is a Dyneema-based reel line with an exceptional high breaking strain and knot strength.</p>" }, { "sku": "103", "stock": "29", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Float Fish", "description": "<p><strong>Drennan Float Fish</strong> is an excel­lent main line for all types of float fishing.</p>" }]', null)
+            setTimeout(() => { this._onLoad('[{ "sku": "101", "stock": "15", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Double Strength", "description": "<p><strong>Drennan Double Strength is the first Japanese hi-tech line made widely avail­able in the UK.<strong></p><p>It offers excel­lent strength to dia­meter ratios in a wide range of breaking strains. This soft and supple, neutral tone line behaves and handles very well in a wide range of uses.</p>" }, { "sku": "102", "stock": "7", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Feeder Braid", "description": "<p>pecially formulated for feeder fishing, Drennan Feeder Braid is a Dyneema-based reel line with an exceptional high breaking strain and knot strength.</p>" }, { "sku": "103", "stock": "29", "category": { "id": "201", "title": "Fishing Lines" }, "visibility": "true", "vendor": "Drennan", "title": "Drennan Float Fish", "description": "<p><strong>Drennan Float Fish</strong> is an excel­lent main line for all types of float fishing.</p>" }]', null); }, 2000);
         }
 
         public _processLoadResult(data: string, WebRequest: SDL.Client.Net.IWebRequest): void
         {
-            debugger;
             var items = SDL.jQuery.parseJSON(data);
             var p: any = this.properties;
 
@@ -41,10 +39,15 @@ module LVF.Models
             return this.getItems().length
         }
 
-        public getItems(): any[]
-        {
-            return this.callBase("SDL.Client.Models.Base.List", "getItems");
-        }
+        public itemRemoved(itemId: any): void
+        {}
+
+        public updateItemData(item: SDL.Client.Models.UpdatableObject): void
+        {}
+
+        public itemUpdated(item: any): void
+        {}
+
     }
 
     SDL.Client.Types.OO.createInterface("LVF.Models.ProductList", ProductList);

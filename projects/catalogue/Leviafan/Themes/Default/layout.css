@@ -1,4 +1,4 @@
-.b-page {
+#page {
     min-height: 100%;
 }
 
@@ -8,32 +8,30 @@
     top: 0;
     width: 100%;
     color: #ccc;
-    height: 36px;
-    padding: 6px 0;
-}
-.b-header_inner {
-    height: 36px;
-    line-height: 36px;
+    height: 32px;
+    padding: 16px 0;
 }
 
-.b-toolbar
-{
+.b-header_inner {
+    height: 32px;
+    line-height: 32px;
+}
+
+.b-toolbar {
     float: right;
 }
 
-.b-toolbar_section
-{
+.b-toolbar_section {
     padding: 0 1em;
     float: left;
     height: 100%;
 }
 
-.b-toolbar_section .b-toolbar_item:last-child
-{
+.b-toolbar_section .b-toolbar_item:last-child {
     padding-right: 0;
 }
-.b-toolbar_section .b-toolbar_item
-{
+
+.b-toolbar_section .b-toolbar_item {
     float: left;
     height: 100%;
     padding-right: 0.35em;
@@ -50,38 +48,52 @@
     color: #fff;
     /*color: #00ebff;*/
 }
+
 /* /Header styles */
 
 .b-layout {
-    top: 48px;
+    top: 64px;
     left: 0;
     bottom: 0;
     right: 0;
     position: absolute;
+    background-color: #eeedf0;
 }
 
 .b-content {
     box-sizing: border-box;
     padding: 0;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.b-content_inner {
+    position: absolute;
+    background-color: white;
+    top: 12px;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
 }
 
 .b-layout.__left .b-content {
-    padding-left: 13em;
+    left: 17em;
 }
 
 .b-layout.__has_right_sb .b-content {
-    padding-right: 12em;
+    right: 12em;
 }
 
 .b-layout.__has_left_sb .b-content {
-    padding-left: 13em;
+    left: 17em;
 }
 
-.b-sidebar
-{
-    background-color: #efefef;
+.b-sidebar {
+    /*background-color: #efefef;*/
 }
+
 .b-sidebar.__left,
 .b-sidebar.__right {
     position: absolute;
@@ -89,7 +101,7 @@
     /*min-height: 100%;*/
     bottom: 0;
     z-index: 10;
-    width: 13em;
+    width: 17em;
 }
 
 .b-sidebar.__left {
@@ -101,5 +113,36 @@
 }
 
 .b-sidebar_inner {
-    /*padding: 0.5em;*/
+    padding: 80px 0 0 48px;
+}
+
+.b-scroll_content {
+    overflow-y: auto;
+}
+
+.b-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+}
+
+.b-progress_indicator {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background-color: rgba(7, 205, 8, 1);
+    color: white;
+}
+.b-aligner {
+    position: absolute;
+    top: 50%;
+    margin: -16px 0 0 50%;
+}
+.b-aligner_inner {
+    margin-left: -50%;
 }

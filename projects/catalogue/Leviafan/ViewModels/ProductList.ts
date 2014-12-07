@@ -9,6 +9,14 @@ module LVF.ViewModels
 
     export class ProductList extends SDL.UI.Core.Knockout.ViewModels.ViewModel
     {
+        public title: KnockoutObservable<string>;
+
+        constructor(item: ViewModelItem, view?: Views.ViewBase)
+        {
+            super(item, view);
+
+            this.title = ko.observable(this.localize("products.page.title"));
+        }
 
     }
     SDL.Client.Types.OO.createInterface("LVF.ViewModels.ProductList", ProductList);

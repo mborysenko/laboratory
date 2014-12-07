@@ -2,11 +2,11 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="../../../Common/Library/Core/configuration.xsd">
     <resourceGroups>
-
         <resourceGroup name="LVF.Views.Pages.Needs">
             <dependencies>
                 <dependency name="SDL.UI.Core.Init"/>
                 <dependency name="SDL.UI.Core.Views.ViewBase"/>
+                <dependency name="SDL.Client.Libraries.SDL.Globalize"/>
             </dependencies>
         </resourceGroup>
 
@@ -19,7 +19,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Dashboard">
             <files>
                 <file name="Dashboard/Dashboard.html"/>
@@ -29,7 +28,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Reports">
             <files>
                 <file name="Reports/Reports.html"/>
@@ -39,7 +37,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Orders">
             <files>
                 <file name="Orders/Orders.html"/>
@@ -49,7 +46,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Products">
             <files>
                 <file name="Products/Products.html"/>
@@ -61,10 +57,8 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
                 <dependency name="LVF.ViewModels.ProductList"/>
                 <dependency name="LVF.ViewModelItems.ProductList"/>
-                <dependency name="SDL.Client.Libraries.SDL.Globalize"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Customers">
             <files>
                 <file name="Customers/Customers.html"/>
@@ -74,7 +68,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.Discounts">
             <files>
                 <file name="Discounts/Discounts.html"/>
@@ -84,7 +77,6 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
         <resourceGroup name="LVF.Views.Pages.GiftCards">
             <files>
                 <file name="GiftCards/GiftCards.html"/>
@@ -94,14 +86,27 @@
                 <dependency name="LVF.Views.Pages.Needs"/>
             </dependencies>
         </resourceGroup>
-
+        <resourceGroup name="LVF.Views.Pages.Icons">
+            <files>
+                <file name="Icons/Icons.html"/>
+                <file name="Icons/Icons.css"/>
+                <file name="Icons/Icons.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Views.Pages.Needs"/>
+            </dependencies>
+        </resourceGroup>
         <resourceGroup name="LVF.Views.Pages.Collections">
             <files>
                 <file name="Collections/Collections.html"/>
                 <file name="Collections/Collections.js"/>
+                <file name="Collections/Cultures/Collections.js"/>
+                <file name="Collections/Cultures/Collections.ru.js"/>
             </files>
             <dependencies>
                 <dependency name="LVF.Views.Pages.Needs"/>
+                <dependency name="LVF.ViewModels.CollectionList"/>
+                <dependency name="LVF.ViewModelItems.CollectionList"/>
             </dependencies>
         </resourceGroup>
     </resourceGroups>
