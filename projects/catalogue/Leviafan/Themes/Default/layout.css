@@ -119,3 +119,30 @@
 .b-scroll_content {
     overflow-y: auto;
 }
+
+.b-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+}
+
+.b-progress_indicator {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background-color: rgba(7, 205, 8, 1);
+    color: white;
+}
+.b-aligner {
+    position: absolute;
+    top: 50%;
+    margin: -16px 0 0 50%;
+}
+.b-aligner_inner {
+    margin-left: -50%;
+}
