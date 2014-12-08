@@ -19,12 +19,12 @@ module LVF.Controls{
         {
         }
 
-        //public update(options: any): void
-        //{
-        //    debugger;
-        //    console.log(options);
-        //    this.callBase("SDL.UI.Core.Controls.ControlBase", "update", arguments);
-        //}
+        public update(options: any): void
+        {
+            debugger;
+            console.log(options);
+            this.callBase("SDL.UI.Core.Controls.ControlBase", "update", arguments);
+        }
     }
 
     SDL.Client.Types.OO.createInterface("LVF.Controls.ContentPage", ContentPage);
