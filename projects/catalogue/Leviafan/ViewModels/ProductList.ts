@@ -11,7 +11,7 @@ module LVF.ViewModels
     {
         public title: KnockoutObservable<string>;
 
-        constructor(item: ViewModelItem, view?: Views.ViewBase)
+        constructor(item: SDL.UI.Core.Knockout.ViewModels.ViewModelItem, view?: SDL.UI.Core.Views.ViewBase)
         {
             super(item, view);
 
