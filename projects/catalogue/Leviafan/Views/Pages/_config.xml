@@ -10,6 +10,20 @@
             </dependencies>
         </resourceGroup>
 
+        <resourceGroup name="LVF.Views.Pages.ContentPage">
+            <files>
+                <file name="ContentPage/ContentPage.html"/>
+                <file name="ContentPage/ContentPage.js"/>
+                <file name="ContentPage/Cultures/ContentPage.js"/>
+                <file name="ContentPage/Cultures/ContentPage.{CULTURE}.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Views.Pages.Needs"/>
+                <dependency name="LVF.ViewModels.ProductList"/>
+                <dependency name="LVF.ViewModelItems.ProductList"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.Views.Pages.Base">
             <files>
                 <file name="Base/Base.html"/>

@@ -12,6 +12,7 @@ module LVF.Views.Pages
     {
         constructor(element: HTMLElement, settings?: any)
         {
+            debugger;
             super(element, settings);
         }
 
@@ -27,6 +28,11 @@ module LVF.Views.Pages
             list.load(true);
 
             return view;
+        }
+
+        public getModel()
+        {
+            return this.properties.model;
         }
     }
 
