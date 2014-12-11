@@ -1,4 +1,4 @@
-<div id="LVF.Views.Pages.Products" type="text/html+knockout">
+<section id="LVF.Views.Pages.Products" type="text/html+knockout">
     <div class="b-progress" data-bind="visible: item.loading">
         <div class="b-aligner">
             <div class="b-aligner_inner">
@@ -8,27 +8,18 @@
     </div>
     <div class="b-page" data-bind="visible: !item.loading()">
         <div class="b-page_top">
-            <ul class="b-list __horizontal __buttons" style="float: right">
+            <!-- ko if: $root.getActions('top').length > 0 -->
+            <ul class="b-list __horizontal __buttons" style="float: right" data-bind="foreach: $root.getActions('top')">
                 <li class="b-list_item">
-                    <div class="b-button">
-                        <span>Save</span>
-                    </div>
-                </li>
-                <li class="b-list_item">
-                    <div class="b-button">
-                        <span>Duplicate</span>
-                    </div>
-                </li>
-                <li class="b-list_item">
-                    <div class="b-button __action">
-                        <span>Add Product</span>
+                    <div data-bind="click: $data.handler, attr: { class: classes }">
+                        <span data-bind="text: $data.title">No title</span>
                     </div>
                 </li>
             </ul>
+            <!-- /ko -->
             <div class="b-page_title" data-bind="text: title">...</div>
         </div>
-        <div class="b-page_content b-scroll_content">
-
+        <div class="b-page_content b-scroll_content" id="page-content">
             <table class="b-grid __wide">
                 <thead>
                 <tr>
@@ -70,13 +61,12 @@
                 </tr>
                 </tbody>
             </table>
-
         </div>
         <div class="b-page_bottom">
             <ul class="b-list __horizontal __buttons" style="float: right">
                 <li class="b-list_item">
                     <label for="page-number">page</label>
-                    <input id="page-number" class="b-input __text __48" type="text" name="" value=""/>
+                    <input id="page-number" class="b-input __text __32" type="text" name="" value=""/>
                     <span>of 201</span>
                 </li>
                 <li class="b-list_item">
@@ -92,4 +82,5 @@
             </ul>
         </div>
     </div>
-</div>
+
+</section>
