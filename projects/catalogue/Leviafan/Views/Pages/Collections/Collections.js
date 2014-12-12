@@ -1,5 +1,8 @@
 /// <reference path="../../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../ViewModelItems/CollectionList.ts" />
+/// <reference path="../../../Models/CollectionList.ts" />
+/// <reference path="../../../Models/Factory.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }

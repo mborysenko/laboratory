@@ -22,6 +22,8 @@
                 <dependency name="LVF.Controls.Knockout.ContentPage"/>
                 <dependency name="SDL.UI.Core.Knockout.BindingHandlers"/>
                 <dependency name="LVF.Models.Factory"/>
+                <dependency name="LVF.ViewModels.Store"/>
+                <dependency name="LVF.ViewModelItems.Store"/>
             </dependencies>
         </resourceGroup>
 

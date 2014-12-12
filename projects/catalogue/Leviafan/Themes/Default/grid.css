@@ -70,17 +70,32 @@
 .b-grid_row:hover .b-grid_cell {
     background-color: #fdfdfd;
 }
+@media screen and (max-width: 1920px) {
 
-.b-grid_cell {
-    padding: 16px 12px;
-    height: 48px;
-    line-height: 48px;
-    border-bottom: 1px solid #f3f3f4;
-    background-color: #fafafa;
+    .b-grid_cell {
+        padding: 16px 12px;
+        min-height: 48px;
+        line-height: 48px;
+        border-bottom: 1px solid #f3f3f4;
+        background-color: #fafafa;
+    }
+
+}
+
+@media screen and (max-width: 1280px) {
+
+    .b-grid_cell {
+        padding: 8px 12px;
+        min-height: 24px;
+        line-height: 24px;
+        border-bottom: 1px solid #f3f3f4;
+        background-color: #fafafa;
+    }
+
 }
 
 .b-grid_head {
-    font-size: 85%;
+    font-size: 90%;
     padding: 16px 12px;
     /*height: 16px;*/
     /*line-height: 16px;*/

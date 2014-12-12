@@ -27,6 +27,7 @@ module LVF.ViewModels
     {
         public title: KnockoutObservable<string>;
         public actions: IActions;
+        public externalOptions: any;
 
         constructor(item: SDL.UI.Core.Knockout.ViewModels.ViewModelItem, view?: SDL.UI.Core.Views.ViewBase)
         {
@@ -59,9 +60,33 @@ module LVF.ViewModels
             this.title = ko.observable(this.localize("products.page.title"));
         }
 
+        public openModal(): void
+        {
+            var options: any = this.getExternalOptions();
+
+            options.isModalVisible(true);
+            options.modalOptions({
+                innerView: "LVF.Views.Pages.Products",
+                data: {
+                    id: "101"
+                }
+            });
+        }
+
         public getActions(section: string): Array<IActionOptions>
         {
             return section && this.actions[section] ? this.actions[section] : [];
+        }
+
+        public setExternalOptions(options: any): void
+        {
+            debugger;
+            this.externalOptions = options;
+        }
+
+        public getExternalOptions(): any
+        {
+            return this.externalOptions;
         }
 
     }

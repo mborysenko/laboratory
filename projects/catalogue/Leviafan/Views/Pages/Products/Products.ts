@@ -12,22 +12,24 @@ module LVF.Views.Pages
     {
         constructor(element: HTMLElement, settings?: any)
         {
-            debugger;
             super(element, settings);
         }
 
         public getRenderOptions(): any
         {
+            debugger;
             var p: any = this.properties;
+            var s: any = p.settings;
             var store = LVF.Models.Factory.getSystemRoot();
             var list: Models.ProductList = store.getProductList();
             var item: ViewModelItems.ProductList = new LVF.ViewModelItems.ProductList(list);
 
-            var view = p.model = new LVF.ViewModels.ProductList(item);
+            var viewModel = p.model = new LVF.ViewModels.ProductList(item, this);
+            viewModel.setExternalOptions(s);
 
             list.load(true);
 
-            return view;
+            return viewModel;
         }
 
         public getModel()
@@ -36,6 +38,9 @@ module LVF.Views.Pages
         }
     }
 
-    SDL.Client.Types.OO.createInterface("LVF.Views.Pages.Products", Products)
+    SDL.Client.Types.OO.createInterface("LVF.Views.Pages.Products", Products);
+    SDL.UI.Core.Knockout.BindingHandlers.enableKnockoutObservableSettings("LVF.Views.Pages.Products");
+
+
 }
 

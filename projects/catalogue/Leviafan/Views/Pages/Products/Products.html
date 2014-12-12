@@ -44,7 +44,7 @@
                 <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
                     <td class="b-grid_cell __sku __center">
                         <span class="b-badge __clickable"
-                              data-bind="text: sku, click: function(){ openDetails(sku) }"></span>
+                              data-bind="text: sku, click: function(){ $root.openModal($data.sku) }"></span>
                     </td>
                     <td class="b-grid_cell __title">
                         <span class="b-caller" data-bind="text: title"></span>

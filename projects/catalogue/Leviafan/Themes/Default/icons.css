@@ -53,9 +53,16 @@ summary {
     background-color: #a6abb8;
 }
 
-.b-thumbnail_placeholder.__48x48 {
+.b-thumbnail_placeholder {
     width: 48px;
     height: 48px;
+}
+
+@media screen and (max-width: 1280px){
+    .b-thumbnail_placeholder {
+        width: 32px;
+        height: 32px;
+    }
 }
 
 .b-icon {
@@ -88,16 +95,16 @@ summary {
     margin-right: 0;
 }
 
-.b-icon.__tiny {
-    width: 16px;
-    height: 16px;
-    background: url("{PATH}Images/icons/16x16/icons-sprite-16x16.png") no-repeat 0 -32px;
-}
 
 .b-icon.__small {
     width: 24px;
     height: 24px;
-    background: url("{PATH}Images/icons/16x16/icons-sprite-24x24.png") no-repeat;
+    background: url("{PATH}Images/icons/24x24/icon-close.png") no-repeat;
+}
+
+.b-icon.__small.__close
+{
+    background-position: 0 0;
 }
 
 .b-icon.__middle {
@@ -108,6 +115,13 @@ summary {
 .b-icon.__big {
     width: 48px;
     height: 48px;
+}
+
+
+.b-icon.__tiny {
+    width: 16px;
+    height: 16px;
+    background: url("{PATH}Images/icons/16x16/icons-sprite-16x16.png") no-repeat 0 -32px;
 }
 
 /* Sidebar */
@@ -366,4 +380,3 @@ summary {
 .b-navigation_action:hover .b-icon.__tiny.__left {
     background-position: 0 -16px;
 }
-
