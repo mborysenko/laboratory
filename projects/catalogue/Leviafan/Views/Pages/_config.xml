@@ -73,6 +73,21 @@
                 <dependency name="LVF.ViewModelItems.ProductList"/>
             </dependencies>
         </resourceGroup>
+
+        <resourceGroup name="LVF.Views.Pages.ProductDetails">
+            <files>
+                <file name="ProductDetails/ProductDetails.html"/>
+                <file name="ProductDetails/ProductDetails.js"/>
+                <file name="ProductDetails/Cultures/ProductDetails.js"/>
+                <file name="ProductDetails/Cultures/ProductDetails.{CULTURE}.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Views.Pages.Needs"/>
+                <dependency name="LVF.ViewModels.Product"/>
+                <dependency name="LVF.ViewModelItems.Product"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.Views.Pages.Customers">
             <files>
                 <file name="Customers/Customers.html"/>

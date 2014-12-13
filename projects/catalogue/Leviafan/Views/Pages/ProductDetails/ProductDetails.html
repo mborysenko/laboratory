@@ -1,0 +1,27 @@
+<section id="LVF.Views.Pages.ProductDetails" type="text/html+knockout">
+    <div class="b-progress" data-bind="visible: item.loading">
+        <div class="b-aligner">
+            <div class="b-aligner_inner">
+                <div class="b-progress_indicator">Loading...</div>
+            </div>
+        </div>
+    </div>
+    <div class="b-page" data-bind="visible: !item.loading()">
+        <div class="b-page_top">
+            <!-- ko if: $root.getActions('top').length > 0 -->
+            <ul class="b-list __horizontal __buttons" style="float: right" data-bind="foreach: $root.getActions('top')">
+                <li class="b-list_item">
+                    <div data-bind="click: $data.handler, attr: { class: classes }">
+                        <span data-bind="text: $data.title">No title</span>
+                    </div>
+                </li>
+            </ul>
+            <!-- /ko -->
+            <div class="b-page_title" data-bind="text: title">...</div>
+        </div>
+        <div class="b-page_content b-scroll_content" id="page-content">
+
+        </div>
+</div>
+
+</section>

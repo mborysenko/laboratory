@@ -21,6 +21,15 @@
             </dependencies>
         </resourceGroup>
 
+        <resourceGroup name="LVF.ViewModels.Product">
+            <files>
+                <file name="Product.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.ViewModels"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.ViewModels.CollectionList">
             <files>
                 <file name="CollectionList.js"/>

@@ -5,7 +5,10 @@
 
         <div class="b-modal_actions __cfx">
             <div class="b-actions __fr">
-                <div class="b-icon __small __close"></div>
+                <div class="b-icon __small __close" data-bind="click: function() {
+                    $root.isModalWindowOpened(false);
+                    $root.modalWindowOptions(null);
+                }"></div>
             </div>
         </div>
         <!-- ko with: modalWindowOptions -->
