@@ -64,7 +64,7 @@ module LVF.ViewModels
         {
             var options: any = this.getExternalOptions();
 
-            options.isModalVisible(true);
+            options.isModalOpened(true);
             options.modalOptions({
                 innerView: "LVF.Views.Pages.Products",
                 data: {
@@ -80,7 +80,6 @@ module LVF.ViewModels
 
         public setExternalOptions(options: any): void
         {
-            debugger;
             this.externalOptions = options;
         }
 
