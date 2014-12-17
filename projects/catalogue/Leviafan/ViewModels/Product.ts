@@ -23,7 +23,7 @@ module LVF.ViewModels
         bottom?: Array<IActionOptions>;
     }
 
-    export class ProductList extends SDL.UI.Core.Knockout.ViewModels.ViewModel
+    export class Product extends SDL.UI.Core.Knockout.ViewModels.ViewModel
     {
         public title: KnockoutObservable<string>;
         public actions: IActions;
@@ -36,10 +36,10 @@ module LVF.ViewModels
             this.actions = {
                 top: [
                     {
-                        title: "Add Product",
+                        title: "Save",
                         handler: function handler()
                         {
-                            alert("Add Product triggered");
+                            alert("Save Product triggered");
                         },
                         control: 'button',
                         classes: "b-button __action"
@@ -57,7 +57,7 @@ module LVF.ViewModels
                 bottom: []
             };
 
-            this.title = ko.observable(this.localize("products.page.title"));
+            this.title = ko.observable(this.item.id());
         }
 
         public openModal(id: string): void
@@ -89,5 +89,5 @@ module LVF.ViewModels
         }
 
     }
-    SDL.Client.Types.OO.createInterface("LVF.ViewModels.ProductList", ProductList);
+    SDL.Client.Types.OO.createInterface("LVF.ViewModels.Product", Product);
 }

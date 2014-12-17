@@ -6,6 +6,28 @@ body {
 a {
     color: #39c;
 }
+.__fl
+{
+    float: left;
+}
+.__fr
+{
+    float: right;
+}
+.__hidden
+{
+    display: none;
+}
+
+.__cfx:before,
+.__cfx:after {
+    content: " ";
+    display: table;
+}
+.__cfx:after {
+    clear: both;
+}
+
 
 @font-face {
     font-family: "Helvetica Neue Cyrillic Light";

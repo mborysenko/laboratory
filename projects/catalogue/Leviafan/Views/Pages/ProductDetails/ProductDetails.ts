@@ -8,7 +8,7 @@ module LVF.Views.Pages
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-    export class Products extends SDL.UI.Core.Views.ViewBase
+    export class ProductDetails extends SDL.UI.Core.Views.ViewBase
     {
         constructor(element: HTMLElement, settings?: any)
         {
@@ -17,17 +17,15 @@ module LVF.Views.Pages
 
         public getRenderOptions(): any
         {
-            debugger;
             var p: any = this.properties;
             var s: any = p.settings;
             var store = LVF.Models.Factory.getSystemRoot();
-            var list: Models.ProductList = store.getProductList();
-            var item: ViewModelItems.ProductList = new LVF.ViewModelItems.ProductList(list);
+            var product: Models.Product = store.getProductList();
+            var item: ViewModelItems.Product = new LVF.ViewModelItems.Product(product);
 
-            var viewModel = p.model = new LVF.ViewModels.ProductList(item, this);
-            viewModel.setExternalOptions(s);
+            var viewModel = p.model = new LVF.ViewModels.Product(item, this);
 
-            list.load(true);
+            product.load(true);
 
             return viewModel;
         }
@@ -38,8 +36,8 @@ module LVF.Views.Pages
         }
     }
 
-    SDL.Client.Types.OO.createInterface("LVF.Views.Pages.Products", Products);
-    SDL.UI.Core.Knockout.BindingHandlers.enableKnockoutObservableSettings("LVF.Views.Pages.Products");
+    SDL.Client.Types.OO.createInterface("LVF.Views.Pages.ProductDetails", ProductDetails);
+    SDL.UI.Core.Knockout.BindingHandlers.enableKnockoutObservableSettings("LVF.Views.Pages.ProductDetails");
 
 
 }

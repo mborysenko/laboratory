@@ -1,5 +1,14 @@
 <div id="LVF.Views.Main" type="text/html+knockout">
 
+    <div class="__hidden" data-bind="control: {
+            type: 'LVF.Controls.Knockout.ModalWindow',
+            data: {
+                    visible: isModalWindowOpened,
+                    withOverlay: true,
+                    data: modalWindowOptions
+                }
+            }"></div>
+
     <div id="page">
 
         <!-- Header -->
@@ -42,7 +51,8 @@
 
             <div class="b-sidebar __left __theme_light b-scroll_content">
                 <div class="b-sidebar_inner">
-                    <ul class="b-list __24 __main_nav" data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
+                    <ul class="b-list __24 __main_nav"
+                        data-bind="control: { type: 'LVF.Controls.Knockout.Navigation' }">
                         <li class="b-list_item">
                             <div class="b-action" data-bind="click: function (){
                                 $root.currentPage('LVF.Views.Pages.Dashboard');
@@ -121,8 +131,8 @@
 
 
             <div class="b-content">
-                <!-- ko with: $root.currentPage -->
-                <div class="b-content_inner b-scroll_content" data-bind="view: { type: $root.currentPage() }"></div>
+                <!-- ko with: currentPage -->
+                <div class="b-content_inner b-scroll_content" data-bind="view: { type: $root.currentPage(), data: { isModalOpened: $root.isModalWindowOpened, modalOptions: $root.modalWindowOptions } }"></div>
                 <!-- /ko -->
             </div>
 

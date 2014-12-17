@@ -17,6 +17,13 @@ module LVF.Models
         public updateData(data: any, parentId: string): void
         {}
 
+        public _executeLoad(force: boolean): void
+        {
+
+        }
+
+        public _processLoadResult(result: string, WebRequest: Net.IWebRequest): void
+        {}
 
     }
 
