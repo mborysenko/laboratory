@@ -14,6 +14,10 @@ a {
 {
     float: right;
 }
+.__hidden
+{
+    display: none;
+}
 
 .__cfx:before,
 .__cfx:after {

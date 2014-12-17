@@ -1,22 +1,14 @@
 <div id="LVF.Views.Main" type="text/html+knockout">
 
-    <div class="b-overlay" data-bind="visible: isModalWindowOpened"></div>
-    <div class="b-modal" data-bind="visible: isModalWindowOpened">
+    <div class="__hidden" data-bind="control: {
+            type: 'LVF.Controls.Knockout.ModalWindow',
+            data: {
+                    visible: isModalWindowOpened,
+                    withOverlay: true,
+                    data: modalWindowOptions
+                }
+            }"></div>
 
-        <div class="b-modal_actions __cfx">
-            <div class="b-actions __fr">
-                <div class="b-icon __small __close" data-bind="click: function() {
-                    $root.isModalWindowOpened(false);
-                    $root.modalWindowOptions(null);
-                }"></div>
-            </div>
-        </div>
-        <!-- ko with: modalWindowOptions -->
-        <div class="b-modal_content" data-bind="view: innerView, data: data">
-        </div>
-        <!-- /ko -->
-
-    </div>
     <div id="page">
 
         <!-- Header -->
