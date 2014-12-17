@@ -17,7 +17,6 @@ module LVF.Views.Pages
 
         public getRenderOptions(): any
         {
-            debugger;
             var p: any = this.properties;
             var s: any = p.settings;
             var store = LVF.Models.Factory.getSystemRoot();

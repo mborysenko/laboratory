@@ -26,7 +26,6 @@ module LVF.Views
 
         public getRenderOptions(): any
         {
-            debugger;
             var item: any = new LVF.ViewModelItems.Store(LVF.Models.Factory.getSystemRoot());
 
             return this.viewModel = new LVF.ViewModels.Store(item);
