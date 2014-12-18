@@ -66,7 +66,7 @@ module LVF.ViewModels
 
             options.isModalOpened(true);
             options.modalOptions({
-                innerView: "LVF.Views.Pages.ProductDetails",
+                innerViewType: "LVF.Views.Pages.ProductDetails",
                 data: {
                     id: id
                 }

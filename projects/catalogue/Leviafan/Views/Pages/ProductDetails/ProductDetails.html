@@ -20,8 +20,49 @@
             <div class="b-page_title" data-bind="text: title">...</div>
         </div>
         <div class="b-page_content b-scroll_content" id="page-content">
+            <!-- ko with: item -->
+            <div class="b-form">
+                <div class="b-form_section b-form_layout __cfx">
+                    <div class="b-form_column __left">
+                        <div class="b-form_section_summary">
+                            <h2>Product Details</h2>
 
+                            <p>
+                                Write a name and description and provide a type and vendor to categorize this product
+                            </p>
+                        </div>
+                    </div>
+                    <div class="b-form_column __main">
+                        <div class="b-form_fieldset">
+                            <div class="b-form_field">
+                                <div class="b-form_field_label">
+                                    <label class="__strong" for="input1">Title</label>
+                                </div>
+                                <div class="b-form_element __text">
+                                    <div class="b-input_container">
+                                        <input id="input1" name="product-title" data-bind="value: name" type="text"
+                                               class="b-input __text"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-form_field">
+                                <div class="b-form_field_label">
+                                    <label class="__strong" for="input1">Description</label>
+                                </div>
+                                <div class="b-form_element __text">
+                                    <div class="b-input_container">
+                                        <textarea id="input2" name="product-description" data-bind="value: description, css: { height: '120px' }" class="b-input __textarea"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /ko -->
         </div>
-</div>
+
+    </div>
 
 </section>

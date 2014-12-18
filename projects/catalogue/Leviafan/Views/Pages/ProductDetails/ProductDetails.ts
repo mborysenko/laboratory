@@ -19,8 +19,7 @@ module LVF.Views.Pages
         {
             var p: any = this.properties;
             var s: any = p.settings;
-            var store = LVF.Models.Factory.getSystemRoot();
-            var product: Models.Product = store.getProductList();
+            var product = LVF.Models.Factory.getItem(s.id);
             var item: ViewModelItems.Product = new LVF.ViewModelItems.Product(product);
 
             var viewModel = p.model = new LVF.ViewModels.Product(item, this);
@@ -35,6 +34,13 @@ module LVF.Views.Pages
             return this.properties.model;
         }
     }
+
+    ProductDetails.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function ()
+    {
+        var p = this.properties;
+
+        p.model.dispose();
+    });
 
     SDL.Client.Types.OO.createInterface("LVF.Views.Pages.ProductDetails", ProductDetails);
     SDL.UI.Core.Knockout.BindingHandlers.enableKnockoutObservableSettings("LVF.Views.Pages.ProductDetails");

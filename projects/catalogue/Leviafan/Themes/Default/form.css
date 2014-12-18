@@ -1,0 +1,86 @@
+.b-form {
+    background-color: #fafafa;
+}
+
+.b-form_layout {
+
+}
+
+.b-form_column.__left {
+    float: left;
+    width: 270px;
+}
+
+.b-form_column.__main {
+    margin-left: 290px;
+}
+
+.b-form_section {
+    padding: 20px 20px 20px 40px;
+    border-bottom: 1px solid #eeeff0;
+}
+
+.b-form_section_summary h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.b-form_fieldset {
+    background-color: white;
+    -webkit-box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.b-input.__text {
+    height: 16px;
+    line-height: 16px;
+    padding: 6px;
+    border: 1px solid #e3e4e6;
+    border-radius: 3px;
+    outline: none;
+    background-color: #fbfafc;
+}
+
+.b-form_field {
+    margin-bottom: 20px;
+}
+
+.b-form_field:last-child {
+    margin-bottom: 0;
+}
+
+.b-form_field_label {
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.b-input.__text.__32 {
+    width: 32px;
+}
+
+.b-input_container {
+    background-color: #fbfafc;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid #e3e4e6;
+}
+
+.b-input_container .b-input.__text,
+.b-input_container .b-input.__textarea {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+.b-input_container .b-input.__text {
+    height: 16px;
+    line-height: 16px;
+}

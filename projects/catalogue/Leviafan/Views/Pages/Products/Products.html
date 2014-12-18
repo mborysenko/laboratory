@@ -44,10 +44,10 @@
                 <tr class="b-grid_row" data-bind="attr: { id: 'sku-' + sku }">
                     <td class="b-grid_cell __sku __center">
                         <span class="b-badge __clickable"
-                              data-bind="text: sku, click: function(){ $root.openModal($data.sku) }"></span>
+                              data-bind="text: sku, click: function(){ $root.openModal($data.id) }"></span>
                     </td>
                     <td class="b-grid_cell __title">
-                        <span class="b-caller" data-bind="text: title"></span>
+                        <span class="b-caller" data-bind="text: name"></span>
                     </td>
                     <td class="b-grid_cell __stock">
                         <span data-bind="text: stock"></span>

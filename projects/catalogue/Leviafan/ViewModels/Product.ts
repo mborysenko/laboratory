@@ -8,21 +8,6 @@ module LVF.ViewModels
 {
     eval(SDL.Client.Types.OO.enableCustomInheritance);
 
-    export interface IActionOptions
-    {
-        control?: string;
-        handler?: () => void;
-        title?: string;
-        controlOptions?: any;
-        classes: string;
-    }
-
-    export interface IActions
-    {
-        top?: Array<IActionOptions>;
-        bottom?: Array<IActionOptions>;
-    }
-
     export class Product extends SDL.UI.Core.Knockout.ViewModels.ViewModel
     {
         public title: KnockoutObservable<string>;
@@ -33,6 +18,7 @@ module LVF.ViewModels
         {
             super(item, view);
 
+            var p: any = this.properties;
             this.actions = {
                 top: [
                     {
@@ -57,7 +43,11 @@ module LVF.ViewModels
                 bottom: []
             };
 
-            this.title = ko.observable(this.item.id());
+            this.title = ko.computed(function ()
+            {
+                return this.item.name();
+            }, this);
+            p.subscriptions = [];
         }
 
         public openModal(id: string): void
@@ -89,5 +79,26 @@ module LVF.ViewModels
         }
 
     }
+
+    Product.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function ()
+    {
+        if(ko.isComputed(this.title))
+        {
+            this.title.dispose();
+            this.title = null;
+        }
+        this.externalOptions = null;
+        this.item.dispose();
+        this.item = null;
+
+
+        var p = this.properties;
+        for (var i = 0, len = p.subscriptions.length; i < len; i++)
+        {
+            // Dispose all subscriptions
+            p.subscriptions[i].dispose();
+        }
+    });
+
     SDL.Client.Types.OO.createInterface("LVF.ViewModels.Product", Product);
 }

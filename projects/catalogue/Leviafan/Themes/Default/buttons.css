@@ -38,18 +38,3 @@
 .b-navigation_action.__right {
     border-radius: 0 3px 3px 0;
 }
-
-.b-input.__text
-{
-    height: 16px;
-    list-style: 16px;
-    padding: 6px 6px;
-    border: 1px solid #e3e4e6;
-    border-radius: 3px;
-    outline: none;
-}
-
-.b-input.__text.__32
-{
-    width: 32px;
-}

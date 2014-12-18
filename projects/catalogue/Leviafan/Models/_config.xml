@@ -54,6 +54,7 @@
             </files>
             <dependencies>
                 <dependency name="SDL.Client.Models.Classes"/>
+                <dependency name="SDL.Client.Models.Base.Item"/>
             </dependencies>
         </resourceGroup>
 

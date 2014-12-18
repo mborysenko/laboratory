@@ -22,7 +22,25 @@ module LVF.ViewModelItems
                     events: ["load", "unload"]
                 },
                 id: {
-                    events: ["load", "unload"]
+                    events: ["load"]
+                },
+                sku: {
+                    events: ["load"]
+                },
+                stock: {
+                    events: ["load"]
+                },
+                name: {
+                    events: ["load"]
+                },
+                categoryId: {
+                    events: ["load"]
+                },
+                vendor: {
+                    events: ["load"]
+                },
+                description: {
+                    events: ["load"]
                 }
             };
 
@@ -36,12 +54,11 @@ module LVF.ViewModelItems
 
             super(item, properties, methods);
         }
-
-        private _onLoadHandler(evt: JQueryEventObject): void
-        {
-        }
-
     }
+
+    Product.prototype.disposeInterface = SDL.Client.Types.OO.nonInheritable(function ()
+    {});
+
 
     SDL.Client.Types.OO.createInterface("LVF.ViewModelItems.Product", Product);
 }
