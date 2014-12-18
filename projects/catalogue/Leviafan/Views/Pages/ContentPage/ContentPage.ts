@@ -15,7 +15,6 @@ module LVF.Views.Pages
 
         constructor(element: HTMLElement, settings?: any)
         {
-            debugger;
             super(element, settings);
 
             this.nestedView = ko.observable(this.properties.settings.nestedView);
