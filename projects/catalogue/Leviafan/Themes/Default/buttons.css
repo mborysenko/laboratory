@@ -1,0 +1,55 @@
+.b-button:hover {
+    border: 1px solid #39dafa;
+}
+
+.b-button {
+    background-color: #ebfcff;
+    border: 1px solid #9cecfc;
+    color: #00bfe5;
+    border-radius: 2px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+}
+
+.b-button.__action {
+    background-color: #39ddfa;
+    border: 1px solid #39ddfa;
+    color: white;
+}
+
+.b-navigation_action {
+    float: left;
+    height: 16px;
+    list-style: 16px;
+    padding: 6px 16px;
+    border: 1px solid #e3e4e6;
+}
+
+.b-navigation_action:hover,
+.b-navigation_action.__hover {
+    border-color: #cacbcc;
+}
+
+.b-navigation_action.__left {
+    border-radius: 3px 0 0 3px;
+}
+
+.b-navigation_action.__right {
+    border-radius: 0 3px 3px 0;
+}
+
+.b-input.__text
+{
+    height: 16px;
+    list-style: 16px;
+    padding: 6px 6px;
+    border: 1px solid #e3e4e6;
+    border-radius: 3px;
+    outline: none;
+}
+
+.b-input.__text.__32
+{
+    width: 32px;
+}

@@ -1,0 +1,55 @@
+.b-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: black;
+    opacity: 0.6;
+    z-index: 10;
+}
+
+.b-modal {
+    position: fixed;
+    top: 88px;
+    bottom: 88px;
+    right: 88px;
+    left: 88px;
+    z-index: 11;
+}
+
+.b-modal_content {
+    background: white;
+    position: absolute;
+    top: 32px;
+    bottom: 32px;
+    left: 32px;
+    right: 32px;
+}
+
+.b-modal_actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+@media screen and (max-width: 1920px) {
+
+
+}
+
+@media screen and (max-width: 1366px) {
+    .b-modal {
+        top: 9px;
+        bottom: 9px;
+        right: 9px;
+        left: 9px;
+    }
+
+    .b-modal_content {
+        top: 32px;
+        bottom: 32px;
+        left: 32px;
+        right: 32px;
+    }
+}

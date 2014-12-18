@@ -3,9 +3,36 @@
                xsi:noNamespaceSchemaLocation="../../Common/Library/Core/configuration.xsd">
     <resourceGroups>
 
+        <resourceGroup name="LVF.ViewModels.Store">
+            <files>
+                <file name="Store.js" />
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.ViewModels"/>
+            </dependencies>
+        </resourceGroup>
+
         <resourceGroup name="LVF.ViewModels.ProductList">
             <files>
                 <file name="ProductList.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.ViewModels"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.ViewModels.Product">
+            <files>
+                <file name="Product.js"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.ViewModels"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.ViewModels.CollectionList">
+            <files>
+                <file name="CollectionList.js"/>
             </files>
             <dependencies>
                 <dependency name="SDL.UI.Core.Knockout.ViewModels"/>

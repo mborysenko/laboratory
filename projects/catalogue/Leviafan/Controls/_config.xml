@@ -9,6 +9,7 @@
             </files>
             <dependencies>
                 <dependency name="SDL.UI.Core.Knockout.Controls"/>
+                <dependency name="SDL.UI.Core.Renderers"/>
             </dependencies>
         </resourceGroup>
 
@@ -20,6 +21,45 @@
                 <dependency name="LVF.Controls.Navigation"/>
             </dependencies>
         </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.ContentPage">
+            <files>
+                <file name="ContentPage/ContentPage.js"/>
+                <file name="ContentPage/ContentPage.css"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.Controls"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.Knockout.ContentPage">
+            <files>
+                <file name="Knockout/ContentPage.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Controls.ContentPage"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.ModalWindow">
+            <files>
+                <file name="ModalWindow/ModalWindow.js"/>
+                <file name="ModalWindow/ModalWindow.css"/>
+            </files>
+            <dependencies>
+                <dependency name="SDL.UI.Core.Knockout.Controls"/>
+            </dependencies>
+        </resourceGroup>
+
+        <resourceGroup name="LVF.Controls.Knockout.ModalWindow">
+            <files>
+                <file name="Knockout/ModalWindow.js"/>
+            </files>
+            <dependencies>
+                <dependency name="LVF.Controls.ModalWindow"/>
+            </dependencies>
+        </resourceGroup>
+
 
     </resourceGroups>
 </configuration>

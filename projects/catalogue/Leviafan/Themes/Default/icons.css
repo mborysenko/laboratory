@@ -49,6 +49,22 @@ summary {
     display: block;
 }
 
+.b-thumbnail_placeholder.__no-image {
+    background-color: #a6abb8;
+}
+
+.b-thumbnail_placeholder {
+    width: 48px;
+    height: 48px;
+}
+
+@media screen and (max-width: 1280px){
+    .b-thumbnail_placeholder {
+        width: 32px;
+        height: 32px;
+    }
+}
+
 .b-icon {
     display: inline-block;
 }
@@ -79,16 +95,16 @@ summary {
     margin-right: 0;
 }
 
-.b-icon.__tiny {
-    width: 16px;
-    height: 16px;
-    background: url("{PATH}Images/icons/16x16/icons-sprite-16x16.png") no-repeat 0 -32px;
-}
 
 .b-icon.__small {
     width: 24px;
     height: 24px;
-    background: url("{PATH}Images/icons/16x16/icons-sprite-24x24.png") no-repeat;
+    background: url("{PATH}Images/icons/24x24/icon-close.png") no-repeat;
+}
+
+.b-icon.__small.__close
+{
+    background-position: 0 0;
 }
 
 .b-icon.__middle {
@@ -101,19 +117,28 @@ summary {
     height: 48px;
 }
 
+
+.b-icon.__tiny {
+    width: 16px;
+    height: 16px;
+    background: url("{PATH}Images/icons/16x16/icons-sprite-16x16.png") no-repeat 0 -32px;
+}
+
 /* Sidebar */
 .__dashboard.__tiny,
 .__home.__tiny {
     background-position: 0 -32px;
 }
+
 .__dark .__dashboard.__tiny,
 .__dark .__home.__tiny {
-    background-position: 0  0;
+    background-position: 0 0;
 }
 
 .__products.__tiny {
     background-position: -16px -32px;
 }
+
 .__dark .__products.__tiny {
     background-position: -16px 0;
 }
@@ -122,6 +147,7 @@ summary {
 .__customers.__tiny {
     background-position: -32px -32px;
 }
+
 .__dark .__users.__tiny,
 .__dark .__customers.__tiny {
     background-position: -32px 0;
@@ -130,6 +156,7 @@ summary {
 .__reports.__tiny {
     background-position: -48px -32px;
 }
+
 .__dark .__reports.__tiny {
     background-position: -48px 0;
 }
@@ -137,12 +164,15 @@ summary {
 .__orders.__tiny {
     background-position: -64px -32px;
 }
+
 .__active .__orders.__tiny {
     background-position: -64px -48px;
 }
+
 .__dark .__orders.__tiny {
     background-position: -64px 0;
 }
+
 .__dark .__active .__orders.__tiny {
     background-position: -64px -16px;
 }
@@ -150,15 +180,18 @@ summary {
 .__collections.__tiny {
     background-position: -80px -32px;
 }
+
 .__dark .__collections.__tiny {
     background-position: -80px 0;
 }
+
 /* /Sidebar */
 
 /* Toolbar */
 .__favourites.__tiny {
     background-position: -96px -32px;
 }
+
 .__dark .__favourites.__tiny {
     background-position: -96px 0;
 }
@@ -166,6 +199,7 @@ summary {
 .__logout.__tiny {
     background-position: -112px -32px;
 }
+
 .__dark .__logout.__tiny {
     background-position: -112px 0;
 }
@@ -173,33 +207,36 @@ summary {
 .__notify.__tiny {
     background-position: -128px -32px;
 }
+
 .__dark .__notify.__tiny {
     background-position: -128px 0;
 }
 
 .__user.__tiny,
-.__profile.__tiny
-{
+.__profile.__tiny {
     background-position: -144px -32px;
 }
+
 .__dark .__user.__tiny,
-.__dark .__profile.__tiny
-{
+.__dark .__profile.__tiny {
     background-position: -144px 0;
 }
 
 .__settings.__tiny {
     background-position: -160px -32px;
 }
+
 .__dark .__settings.__tiny {
     background-position: -160px 0;
 }
+
 /* /Toolbar */
 
 /* Actions */
 .__search.__tiny {
     background-position: -176px -32px;
 }
+
 .__dark .__search.__tiny {
     background-position: -176px -0px;
 }
@@ -207,6 +244,7 @@ summary {
 .__delete.__tiny {
     background-position: -192px -32px;
 }
+
 .__dark .__delete.__tiny {
     background-position: -192px 0;
 }
@@ -214,6 +252,7 @@ summary {
 .__edit.__tiny {
     background-position: -208px -32px;
 }
+
 .__dark .__edit.__tiny {
     background-position: -208px 0;
 }
@@ -221,6 +260,7 @@ summary {
 .__save.__tiny {
     background-position: -2224px -32px;
 }
+
 .__dark .__save.__tiny {
     background-position: -224px 0;
 }
@@ -228,6 +268,7 @@ summary {
 .__remove.__tiny {
     background-position: -240px -32px;
 }
+
 .__dark .__remove.__tiny {
     background-position: -240px 0;
 }
@@ -235,9 +276,11 @@ summary {
 .__add.__tiny {
     background-position: -256px -32px;
 }
+
 .__dark .__add.__tiny {
     background-position: -256px 0;
 }
+
 .__dark .__active .__add.__tiny {
     background-position: -256px -16px;
 }
@@ -245,18 +288,22 @@ summary {
 .__cancel.__tiny {
     background-position: -272px -32px;
 }
+
 .__dark .__cancel.__tiny {
     background-position: -272px 0;
 }
+
 .__dark .__active .__cancel.__tiny {
     background-position: -272px -16px;
 }
+
 /* /Actions */
 
 /* Additional */
 .__chat.__tiny {
     background-position: -288px -32px;
 }
+
 .__dark .__chat.__tiny {
     background-position: -288px 0;
 }
@@ -264,6 +311,7 @@ summary {
 .__mail.__tiny {
     background-position: -304px -32px;
 }
+
 .__dark .__mail.__tiny {
     background-position: -304px 0;
 }
@@ -271,6 +319,7 @@ summary {
 .__image.__tiny {
     background-position: -320px -32px;
 }
+
 .__dark .__image.__tiny {
     background-position: -320px 0;
 }
@@ -278,6 +327,7 @@ summary {
 .__external.__tiny {
     background-position: -336px -32px;
 }
+
 .__dark .__external.__tiny {
     background-position: -336px 0;
 }
@@ -285,6 +335,7 @@ summary {
 .__help.__tiny {
     background-position: -352px -32px;
 }
+
 .__dark .__help.__tiny {
     background-position: -352px 0;
 }
@@ -292,12 +343,40 @@ summary {
 .__language.__tiny {
     background-position: -368px -32px;
 }
+
 .__dark .__language.__tiny {
     background-position: -368px 0;
 }
+
 /* /Additional */
 
+.__placeholder.__small,
 .__placeholder {
     /*background: #d3d2d2;*/
+    background: white;
 }
 
+.b-icon.__tiny.__left,
+.b-icon.__tiny.__right {
+    background: url("{PATH}Images/icons/16x16/pagination-sprite.png") no-repeat;
+}
+
+.b-icon.__tiny.__left {
+    background-position: 0 0;
+}
+
+.b-icon.__tiny.__right {
+    background-position: -16px 0;
+}
+
+.b-icon.__tiny.__right.__active,
+.__hover .b-icon.__tiny.__right,
+.b-navigation_action:hover .b-icon.__tiny.__right {
+    background-position: -16px -16px;
+}
+
+.b-icon.__tiny.__left.__active,
+.__hover .b-icon.__tiny.__left,
+.b-navigation_action:hover .b-icon.__tiny.__left {
+    background-position: 0 -16px;
+}

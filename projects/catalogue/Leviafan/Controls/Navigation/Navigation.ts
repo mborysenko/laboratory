@@ -11,9 +11,5 @@ module LVF.Controls{
         {
             super(element, options);
         }
-
-        public render()
-        {
-        }
     }
 }

@@ -1,5 +1,8 @@
 /// <reference path="../../../../Common/Library/Core/Types/OO.d.ts" />
 /// <reference path="../../../../Common/Library/UI/Core/Views/ViewBase.d.ts" />
+/// <reference path="../../../ViewModelItems/CollectionList.ts" />
+/// <reference path="../../../Models/CollectionList.ts" />
+/// <reference path="../../../Models/Factory.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -18,7 +21,16 @@ var LVF;
                     _super.call(this, element, settings);
                 }
                 Collections.prototype.getRenderOptions = function () {
-                    return this;
+                    var p = this.properties;
+                    var store = LVF.Models.Factory.getSystemRoot();
+                    var list = store.getCollectionList();
+                    var item = new LVF.ViewModelItems.CollectionList(list);
+
+                    var view = p.model = new LVF.ViewModels.CollectionList(item);
+
+                    list.load(true);
+
+                    return view;
                 };
                 return Collections;
             })(SDL.UI.Core.Views.ViewBase);

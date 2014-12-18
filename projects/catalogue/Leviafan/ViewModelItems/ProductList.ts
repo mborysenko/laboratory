@@ -1,6 +1,7 @@
 /// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModel.d.ts" />
 /// <reference path="../../Common/Library/UI/Core.Knockout/ViewModels/ViewModelItem.d.ts" />
 /// <reference path="../../Common/Library/Core/Application/ApplicationHost.d.ts" />
+/// <reference path="../../Common/Library/Core/Libraries/jQuery/jQuery.d.ts" />
 /// <reference path="../Models/ProductList.ts" />
 /// <reference path="../ViewModels/ProductList.ts" />
 /// <reference path="../Models/ProductList.ts" />
