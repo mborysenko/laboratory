@@ -38,10 +38,9 @@ module LVF.Views
 
         public render(callback ?: () => void): void
         {
-            var _this = this;
-            var cb = function ()
+            var cb = () =>
             {
-                _this._setPageHeight();
+                this._setPageHeight();
                 callback()
             };
 
