@@ -1,7 +1,0 @@
-{
-  "views.errorpage.title": "申し訳ございません。エラーが発生しました。",
-  "views.errorpage.showDetails": "詳細を表示",
-  "views.errorpage.hideDetails": "詳細を非表示",
-  "views.errorpage.copyright": "Copyright © 1999-2014 SDL Group.",
-  "views.errorpage.terms": "All rights reserved. 本コンピュータ プログラムの使用にはライセンスが必要です。所有者の許可なく本プログラムまたはその一部を複製、配布、または使用することは禁じられており、刑事罰の対象となる可能性があります。"
-}

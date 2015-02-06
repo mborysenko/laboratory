@@ -1,8 +1,0 @@
-input:not(type).invalid,
-input[type="text"].invalid,
-input[type="password"].invalid,
-input[type="email"].invalid,
-input[type="url"].invalid {
-  border-color: #e04a32;
-  background-color: rgba(224, 74, 50, 0.2);
-}

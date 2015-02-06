@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SDL.Client\SDL.Client.Core\configuration.xsd" generated="true">
-  <include src="Library/Core/configuration.xml" />
-  <include src="Library/UI/Core/configuration.xml" />
-  <include src="Library/UI/Core.Knockout/configuration.xml" />
-  <include src="Library/UI/Controls/configuration.xml" />
-  <include src="Library/UI/Controls.Knockout/configuration.xml" />
-  <include src="Library/UI/Views/configuration.xml" />
-</configuration>

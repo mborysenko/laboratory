@@ -1,1 +1,0 @@
-﻿SDL.UI.Core.Knockout.Controls.createKnockoutBinding(SDL.UI.Controls.DatePicker, "SDL.UI.Controls.Knockout.DatePicker");

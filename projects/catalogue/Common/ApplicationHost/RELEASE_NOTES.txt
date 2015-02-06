@@ -1,3 +1,0 @@
-﻿Application Host v.1.5 Release Notes
-
-Changes between 1.4 and 1.5
