@@ -116,7 +116,7 @@ function GridGenerator() {
 		interval: 2,
 		rowNumber: 7,
 		columnNumber: 7,
-		enableDashboard: false,
+		enableDashboard: true,
 		enableRotation: false
 	};
 
@@ -145,36 +145,26 @@ GridGenerator.prototype.init = function () {
 	b.style.cssText = 'height: 100%';
 	h.style.cssText = 'height: 100%';
 
-	if (this.enableDashboard) {
-		this.renderDashboard();
-	}
-
-	var grid = d.createElement('table');
-
-	grid.setAttribute('id', 'grid');
-	grid.style.cssText = 'height: 100%; width: 100%; border-collapse: collapse';
-
-	b.appendChild(grid);
-	this.gridElement = grid;
-
-	mi.render();
+	this.renderDashboard();
+	b.innerHTML = this._createGrid();
 };
 
-GridGenerator.prototype.render = function () {
+GridGenerator.prototype._createGrid = function () {
 	var mi = this;
 
-	var grid = '<table style="height: 100%; width: 100%; border-collapse: collapse">';
+	var grid = '<table style="height: 100%; width: 100%; border-collapse: collapse" id="grid">';
 	var rows = "";
 	for (var i = 0; i < this.rowNumber; i++) {
 		var row = '<tr>';
 		for (var c = 0; c < this.columnNumber; c++) {
-			var cell = '<td style="background-color: ' + this.getRandomColor() + '">&nbsp;</td>';
+			var cell = '<td style="background-color: ' + this._getRandomColor() + '">&nbsp;</td>';
 			row += cell;
 		}
 		row += '</tr>';
 		rows += row;
 	}
 	grid += rows + '</table>';
+	return grid;
 };
 
 GridGenerator.prototype.renderDashboard = function () {
@@ -266,7 +256,7 @@ GridGenerator.prototype._getRandomColor = function () {
 };
 
 window.addEventListener("DOMContentLoaded", function () {
-	var generator = new SDL.GridGenerator({
+	var generator = new GridGenerator({
 		container: "grid",
 		interval: 7,
 		rowNumber: 150,

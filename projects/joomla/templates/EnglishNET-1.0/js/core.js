@@ -1,1 +1,0 @@
-window.LVF = (window.LVF || {});

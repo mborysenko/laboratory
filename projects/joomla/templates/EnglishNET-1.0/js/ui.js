@@ -1,1 +1,0 @@
-LVF.UI = LVF.UI || {};
