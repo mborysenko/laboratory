@@ -24,7 +24,7 @@ const move = (direction: Direction, target: [row: number, col: number], distance
     return [row, moves[direction](col)];
 }
 function* createRoute(done: boolean = false) {
-    let firstRun = true;
+    var firstRun = true;
     let r = 2, d = 2, l = 2, u = 2;
     if(firstRun) {
         firstRun = false;

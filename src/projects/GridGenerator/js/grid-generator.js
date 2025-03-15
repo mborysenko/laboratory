@@ -12,9 +12,9 @@ SDL.GridGenerator = (function () {
 	};
 
 	function GridGenerator(options) {
-		var d = document, block;
+		var block;
 
-		if (!options.container || !(block = d.getElementById(options.container))) {
+		if (!options.container || !(block = document.getElementById(options.container))) {
 			throw new Error("Error: container has not been defined.")
 		}
 
@@ -140,7 +140,7 @@ function GridGenerator() {
 }
 
 GridGenerator.prototype.init = function () {
-	var d = document, b = d.getElementsByTagName('body')[0], h = d.getElementsByTagName('html')[0], mi = this; // Main instance
+	var b = d.getElementsByTagName('body')[0], h = document.getElementsByTagName('html')[0]; // Main instance
 
 	b.style.cssText = 'height: 100%';
 	h.style.cssText = 'height: 100%';
@@ -150,8 +150,6 @@ GridGenerator.prototype.init = function () {
 };
 
 GridGenerator.prototype._createGrid = function () {
-	var mi = this;
-
 	var grid = '<table style="height: 100%; width: 100%; border-collapse: collapse" id="grid">';
 	var rows = "";
 	for (var i = 0; i < this.rowNumber; i++) {
@@ -207,15 +205,9 @@ GridGenerator.prototype.renderDashboard = function () {
 	inner.appendChild(table);
 	wrapper.appendChild(inner);
 	b.appendChild(wrapper);
-
-	var values = d.getElementsByClassName('number');
-
-	for (var i = 0, len = values.length; i < len; i++) {
-		var value = values[i];
-	}
 };
 
-GridGenerator.prototype._startRotation = function (elem) {
+GridGenerator.prototype._startRotation = function () {
 	if (this.enableRotation) {
 		if (this.intervalId) clearInterval(this.intervalId);
 		this.intervalId = setInterval(function () {
@@ -237,8 +229,8 @@ GridGenerator.prototype.updateGrid = function (elem) {
 	var v = elem.value, mi = this;
 	if (this.updateTimeouts[elem.name]) clearTimeout(this.updateTimeouts[elem.name]);
 	this.updateTimeouts[elem.name] = setTimeout(function () {
-		if (!isNaN(v) && v && v.trim() != '') {
-			if (v == mi[elem.name]) return;
+		if (!isNaN(v) && v && v.trim() !== '') {
+			if (v === mi[elem.name]) return;
 			mi[elem.name] = v;
 			mi.render();
 		}
@@ -256,7 +248,7 @@ GridGenerator.prototype._getRandomColor = function () {
 };
 
 window.addEventListener("DOMContentLoaded", function () {
-	var generator = new GridGenerator({
+	new GridGenerator({
 		container: "grid",
 		interval: 7,
 		rowNumber: 150,
